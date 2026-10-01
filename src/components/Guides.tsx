@@ -505,6 +505,20 @@ const SOURCES: Source[] = [
     title: 'Comparative analysis of nitrogen content and its influence on actinorhizal nodule and rhizospheric microorganism diversity in three Alnus species',
     journal: 'Frontiers in Microbiology, 14, 1230170 (DOI: 10.3389/fmicb.2023.1230170)',
     note: 'Compares Alnus glutinosa, A. formosana and A. cremastogyne; summarises that black, red and sitka alders fix 40–300 kg N/ha/yr (comparable to alfalfa and clover), with the amount of fixed N transferred to nearby soils varying greatly within that range.'
+  },
+  {
+    id: 'fn-48',
+    author: 'Ledgard, S. F., & Steele, K. W. (1992)',
+    title: 'Biological nitrogen fixation in mixed legume/grass pastures',
+    journal: 'Plant and Soil, 141(1), pp. 137–153 (DOI: 10.1007/BF00011314)',
+    note: 'Review of N fixation in legume/grass pastures (13–682 kg N/ha/yr worldwide; 55–296 kg N/ha/yr in grazed white clover pastures); estimates the fixed N transferred below-ground to associated grasses, predominantly through decomposition of legume roots and nodules, at 3–102 kg N/ha/yr (2–26% of fixation).'
+  },
+  {
+    id: 'fn-49',
+    author: 'Butler, G. W., Greenwood, R. M., & Soper, K. (1959)',
+    title: 'Effects of shading and defoliation on the turnover of root and nodule tissue of plants of Trifolium repens, Trifolium pratense, and Lotus uliginosus',
+    journal: 'New Zealand Journal of Agricultural Research, 2(3), pp. 415–426 (DOI: 10.1080/00288233.1959.10418027)',
+    note: 'Glass-sided box study: under recurrent defoliation, white clover lost roots and nodules but more than replaced them with new growth, leading to a rapid turnover of root and nodule tissue.'
   }
 ];
 
@@ -761,7 +775,7 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   badge={tr.guides23CutsSeasonHigh}
                   cut={tr.guidesMowShearEarlySummerAfter}
                   much={tr.guidesCutTop5070Aboveground}
-                  spread={tr.guidesLeaveClippingsSituGroundRake}
+                  spread={<RichText text={tr.guidesLeaveClippingsSituGroundRake} onFootnote={scrollToFootnote} />}
                 />
                 <ChopCard
                   tr={tr}

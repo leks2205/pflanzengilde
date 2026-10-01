@@ -103,8 +103,8 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Cut top 50–70% of aboveground foliage down to 4–6 cm height. Never scalp ground-level stolons.'
     },
     whereToSpread: {
-      de: 'Schnittgut direkt an Ort und Stelle liegen lassen oder an Baum-Feinwurzeln rechen. Durch den Blattschnitt sterben Knöllchen an den Wurzeln ab und setzen bis zu 150 kg Reinstickstoff/ha frei.',
-      en: 'Leave clippings in situ on the ground or rake into Zone 2 around tree feeder roots. Pruning triggers root nodule dieback underground, releasing up to 150 kg N/ha.'
+      de: 'Schnittgut direkt an Ort und Stelle liegen lassen oder in Zone 2 an die Feinwurzeln der Bäume rechen. Wiederholter Schnitt lässt Weißklee einen Teil seiner Wurzeln und Wurzelknöllchen abstoßen, die anschließend nachwachsen; bei ihrer Zersetzung wird ihr Stickstoff für Nachbarpflanzen verfügbar – in Klee-Gras-Beständen geschätzt 3–102 kg N/ha und Jahr.',
+      en: 'Leave clippings in situ on the ground or rake into Zone 2 around tree feeder roots. Repeated cutting makes white clover shed part of its roots and root nodules, which then regrow; as they decompose, their nitrogen becomes available to neighboring plants – an estimated 3–102 kg N/ha per year in clover–grass swards.'
     },
     nutrientBenefit: {
       de: 'Biologischer Reinstickstoff durch Rhizobien-Knöllchenbakterien. Schnelle Zersetzung innerhalb von 2–3 Wochen.',
