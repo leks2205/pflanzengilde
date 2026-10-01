@@ -64,6 +64,14 @@ export const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-nepal-alder': 'chop-plant-tea-shade-trees',
   'plant-albizia': 'chop-plant-tea-shade-trees',
   'tree-seabuckthorn-star': 'chop-plant-seabuckthorn',
+  'plant-sorghum-sudangrass': 'chop-plant-sorghum-sudangrass',
+  'plant-buckwheat': 'chop-plant-buckwheat',
+  'plant-phacelia': 'chop-plant-phacelia',
+  'plant-fodder-radish': 'chop-plant-fodder-radish',
+  'plant-indian-mustard': 'chop-plant-indian-mustard',
+  'plant-tithonia': 'chop-plant-tithonia',
+  'plant-gliricidia': 'chop-plant-gliricidia',
+  'plant-common-vetch': 'chop-plant-common-vetch',
 };
 
 interface ChopInstruction {
@@ -474,6 +482,186 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
     },
     sources: [
       'Royal Horticultural Society (n.d.). How to grow rhubarb. RHS Grow Your Own. https://www.rhs.org.uk/vegetables/rhubarb/grow-your-own'
+    ]
+  },
+  'plant-sorghum-sudangrass': {
+    howToCut: {
+      de: 'Mähen, sobald die Halme 0,9–1,2 m erreichen; bei Sommerschnitten mindestens 15 cm Stoppeln für den Nachwuchs stehen lassen. Der Schnitt steigert die Wurzelmasse auf das Fünf- bis Achtfache.',
+      en: 'Mow whenever the stalks reach 0.9–1.2 m; for mid-summer cuts leave at least 15 cm of stubble for regrowth. Mowing raises root mass five- to eightfold.'
+    },
+    howMuch: {
+      de: 'Zum Schluss den ganzen Bestand häckseln und noch grün und vor dem ersten Frost einarbeiten – sonst geht die Wirkung gegen Nematoden verloren.',
+      en: 'At the end, chop the whole stand and work it in while still green and before the first frost – otherwise the effect against nematodes is lost.'
+    },
+    whereToSpread: {
+      de: 'Auf dem künftigen Pflanzplatz oder in der Fahrgasse einer jungen Anlage einarbeiten, nicht rund um junge Bäume: Sein Wurzelausscheidungsstoff Sorgoleon hemmte in Baumschulversuchen auch Gehölzsämlinge.',
+      en: 'Work it into the future planting spot or the alley of a young orchard, not around young trees: its root exudate sorgoleone also suppressed tree seedlings in nursery tests.'
+    },
+    nutrientBenefit: {
+      de: 'Etwa 4,5–5,6 t/ha Trockenmasse. Vor einer Pfirsich-Nachpflanzung grün eingearbeitet, unterdrückte eine Sorghum-Gründüngung Ringnematoden anfangs etwa so gut wie Methylbromid.',
+      en: 'About 4.5–5.6 t/ha of dry matter. Worked in green before replanting peach, a sorghum green manure suppressed ring nematodes about as well as methyl bromide at first.'
+    },
+    sources: [
+      'Clark, A. (Ed.) (2007). Sorghum sudangrass hybrids. In Managing Cover Crops Profitably (3rd ed., SARE Handbook Series 9). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/sorghum-sudangrass/',
+      'Nyczepir, A. P., & Rodriguez-Kabana, R. (2007). Preplant biofumigation with sorghum or methyl bromide compared for managing Criconemoides xenoplax in a young peach orchard. Plant Disease, 91(12), 1607–1611. doi:10.1094/PDIS-91-12-1607'
+    ]
+  },
+  'plant-buckwheat': {
+    howToCut: {
+      de: 'Spätestens 10 Tage nach Blühbeginn mähen (etwa 6 Wochen nach der Saat), bevor Samen reifen.',
+      en: 'Mow no later than 10 days after the plants begin to flower (about 6 weeks after sowing), before seed sets.'
+    },
+    howMuch: {
+      de: 'Den ganzen Bestand schneiden, sonst sät er sich selbst aus. Mehrere Aussaaten pro Sommer sind möglich.',
+      en: 'Cut the whole stand; otherwise it reseeds itself. Several sowings per summer are possible.'
+    },
+    whereToSpread: {
+      de: 'Das Schnittgut als Mulch in der Traufzone (Zone 3) liegen lassen oder flach einarbeiten; beim Abbau gibt es den aufgenommenen Phosphor an die Folgekultur ab.',
+      en: 'Leave the cut plants as mulch in the drip zone (Zone 3) or work them in shallowly; as the residue breaks down it releases the phosphorus it took up to the next crop.'
+    },
+    nutrientBenefit: {
+      de: 'Erschließt calciumgebundenen Bodenphosphor: In einem Versuch nahm er 40 kg P/ha auf, Weizen 16 kg, und hinterließ mehr verfügbaren P für die Folgekultur.',
+      en: 'Mobilises calcium-bound soil phosphorus: in one trial it took up 40 kg P/ha against 16 kg for wheat and left more available P for the next crop.'
+    },
+    sources: [
+      'Björkman, T., Bellinder, R. R., Hahn, R. R., & Shail, J. W. (2008). Buckwheat cover crop handbook. Cornell University, Geneva, NY. http://www.hort.cornell.edu/bjorkman/lab/covercrops/pdf/bwbrochure.pdf',
+      'Teboh, J. M., & Franzen, D. W. (2011). Buckwheat (Fagopyrum esculentum Moench) potential to contribute solubilized soil phosphorus to subsequent crops. Communications in Soil Science and Plant Analysis, 42(13), 1544–1550. doi:10.1080/00103624.2011.581724'
+    ]
+  },
+  'plant-phacelia': {
+    howToCut: {
+      de: 'Nach dem Ende der Blüte und vor der Samenreife mähen oder vor Ort mulchen; Spätsommersaaten erfrieren bei etwa -8 °C und können im Winter gemulcht werden.',
+      en: 'Mow or mulch in place once flowering ends, before the seeds ripen; late-summer sowings are killed by frost at about -8 °C and can be mulched in winter.'
+    },
+    howMuch: {
+      de: 'Den ganzen Bestand schneiden; für Bienen gestaffelt säen und jeweils nur einen Streifen schneiden.',
+      en: 'Cut the whole stand; for bees, sow in succession and cut one strip at a time.'
+    },
+    whereToSpread: {
+      de: 'Den Mulch in der Fahrgasse oder Traufzone liegen lassen: In einem Weinberg beschleunigte im Winter vor Ort gemulchte Phazelie den Abbau von Rebresten und senkte das Botrytis-Inokulum und die Traubenfäule.',
+      en: 'Leave the mulch in place in the inter-row or drip zone: in a vineyard, phacelia mulched in place in winter sped up the breakdown of vine debris and lowered Botrytis inoculum and bunch rot.'
+    },
+    nutrientBenefit: {
+      de: 'Als Zwischenfrucht steigerte sie die Phosphoraufnahme der Folgekulturen und den Boden-P etwa so stark wie Stallmist, Kompost oder mineralischer P-Dünger.',
+      en: 'As a catch crop it raised the phosphorus uptake of following crops and soil P about as much as manure, compost or mineral P fertiliser.'
+    },
+    sources: [
+      'Eichler-Löbermann, B., Köhne, S., Kowalski, B., & Schnug, E. (2008). Effect of catch cropping on phosphorus bioavailability in comparison to organic and inorganic fertilization. Journal of Plant Nutrition, 31(4), 659–676. doi:10.1080/01904160801926517',
+      'Jacometti, M. A., Wratten, S. D., & Walter, M. (2007). Enhancing ecosystem services in vineyards: using cover crops to decrease botrytis bunch rot severity. International Journal of Agricultural Sustainability, 5(4), 305–314. doi:10.1080/14735903.2007.9684830',
+      'Smither-Kopperl, M. (2018). Plant guide for lacy phacelia (Phacelia tanacetifolia). USDA-Natural Resources Conservation Service, Lockeford Plant Materials Center, Lockeford, CA. https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_phta.pdf'
+    ]
+  },
+  'plant-fodder-radish': {
+    howToCut: {
+      de: 'Im August säen; Frost um etwa -7 °C lässt ihn an Ort und Stelle absterben. In milden Herbsten vor der Samenbildung mähen oder einarbeiten, damit er nicht verunkrautet.',
+      en: 'Sow in August; frost at about -7 °C kills it in place. In mild autumns mow or till before seed set so that it does not become a weed.'
+    },
+    howMuch: {
+      de: 'Den ganzen Aufwuchs schneiden und die Wurzeln im Boden verrotten lassen.',
+      en: 'Cut the whole top and leave the roots to decompose in the soil.'
+    },
+    whereToSpread: {
+      de: 'Das abgestorbene Kraut als Mulch in der Traufzone liegen lassen. Auf einem Nachbau-Pflanzplatz stattdessen als Biofumigation nutzen: zur Blüte häckseln und sofort einarbeiten.',
+      en: 'Leave the dead tops as mulch in the drip zone. On a replant spot use it as biofumigation instead: chop at flowering and work it in at once.'
+    },
+    nutrientBenefit: {
+      de: 'Wurzeln tiefer als 2,4 m nehmen Nitrat auf, das unter normale Wurzeln ausgewaschen wurde; die Reste geben diese Nährstoffe an die Folgekultur ab.',
+      en: 'Roots deeper than 2.4 m take up nitrate that has leached below ordinary roots; the residue releases these nutrients to the next crop.'
+    },
+    sources: [
+      'Kristensen, H. L., & Thorup-Kristensen, K. (2004). Root growth and nitrate uptake of three different catch crops in deep soil layers. Soil Science Society of America Journal, 68(2), 529–537. doi:10.2136/sssaj2004.5290',
+      'Sundermeier, A. (2008). Oilseed radish cover crop (SAG-5). Ohio State University Extension. https://ohioline.osu.edu/factsheet/SAG-5',
+      'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016). Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease. Plant and Soil, 406(1–2), 389–408. doi:10.1007/s11104-016-2876-3'
+    ]
+  },
+  'plant-indian-mustard': {
+    howToCut: {
+      de: 'Zur Blüte häckseln und sofort in den Boden einarbeiten, damit die aus den Glucosinolaten freigesetzten Isothiocyanate im Boden wirken.',
+      en: 'Chop at flowering and work it into the soil immediately, so that the isothiocyanates released from its glucosinolates act in the soil.'
+    },
+    howMuch: {
+      de: 'Den ganzen Bestand vor dem Einarbeiten möglichst fein zerkleinern.',
+      en: 'Chop the whole stand as finely as possible before working it in.'
+    },
+    whereToSpread: {
+      de: 'Auf dem künftigen Pflanzplatz eines Baumes auf Boden mit Nachbaukrankheit einarbeiten. In Feldversuchen war die Wirkung auf Apfelunterlagen an manchen Standorten deutlich, an anderen fehlte sie, und sie war schwächer als eine chemische Bodenentseuchung.',
+      en: 'Work it into the future planting spot of a tree on replant-disease soil. In field trials the effect on apple rootstocks was clear at some sites and absent at others, and weaker than chemical fumigation.'
+    },
+    nutrientBenefit: {
+      de: 'Biofumigation: Seine Glucosinolate zerfallen im Boden zu Isothiocyanaten. Auf Boden mit Nachbaukrankheit wuchsen Apfelunterlagen an einem Standort mit 148 % mehr Sprossmasse, an einem zweiten nicht.',
+      en: 'Biofumigation: its glucosinolates break down into isothiocyanates in the soil. On replant-disease soil, apple rootstocks grew 148 % more shoot mass at one site but not at a second.'
+    },
+    sources: [
+      'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016). Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease. Plant and Soil, 406(1–2), 389–408. doi:10.1007/s11104-016-2876-3',
+      'Yim, B., Nitt, H., Wrede, A., Jacquiod, S., Sørensen, S. J., Winkelmann, T., & Smalla, K. (2017). Effects of soil pre-treatment with Basamid granules, Brassica juncea, Raphanus sativus, and Tagetes patula on bacterial and fungal communities at two apple replant disease sites. Frontiers in Microbiology, 8, 1604. doi:10.3389/fmicb.2017.01604',
+      'SARE Outreach (2007). Brassicas and mustards (contributors: Chen, G., Clark, A., Kremen, A., Lawley, Y., Price, A., Stocking, L., & Weil, R.). In Managing Cover Crops Profitably (3rd ed.). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/brassicas-and-mustards/'
+    ]
+  },
+  'plant-tithonia': {
+    howToCut: {
+      de: 'Blätter und weiche Triebe regelmäßig schneiden, immer vor der Samenreife: Sie blüht und fruchtet ganzjährig und ist außerhalb ihrer Heimat invasiv.',
+      en: 'Cut leaves and soft shoots regularly, always before seed set: it flowers and seeds all year and is invasive outside its native range.'
+    },
+    howMuch: {
+      de: 'Eine reine Hecke liefert rund 1 kg Trockenmasse pro Meter und Jahr; die grünen Blätter enthalten etwa 3,5 % N, 0,37 % P und 4,1 % K in der Trockenmasse.',
+      en: 'A pure hedge yields about 1 kg of dry biomass per metre per year; the green leaves hold about 3.5 % N, 0.37 % P and 4.1 % K of dry matter.'
+    },
+    whereToSpread: {
+      de: 'Die Blätter in den Wurzelbereich der Star-Pflanze tragen und als Mulch verteilen; sie zersetzen sich schnell. Das verteilt Nährstoffe im Garten um, statt neue zuzuführen.',
+      en: 'Carry the leaves to the root zone of the star plant and spread them as mulch; they decompose rapidly. This moves nutrients within the garden rather than adding new ones.'
+    },
+    nutrientBenefit: {
+      de: 'Die Blätter enthalten etwa 3,5 % N, 0,37 % P und 4,1 % K in der Trockenmasse; 5 t/ha Blatt-Trockenmasse liefern etwa 159 kg N, 15 kg P, 161 kg K und 100 kg Ca je Hektar.',
+      en: 'Leaves hold about 3.5 % N, 0.37 % P and 4.1 % K of dry matter; 5 t/ha of leafy dry matter supply about 159 kg N, 15 kg P, 161 kg K and 100 kg Ca per hectare.'
+    },
+    sources: [
+      'Jama, B., Palm, C. A., Buresh, R. J., Niang, A., Gachengo, C., Nziguheba, G., & Amadalo, B. (2000). Tithonia diversifolia as a green manure for soil fertility improvement in western Kenya: A review. Agroforestry Systems, 49(2), 201–221. doi:10.1023/A:1006339025728',
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Tithonia diversifolia. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Tithonia_diversifolia.PDF'
+    ]
+  },
+  'plant-gliricidia': {
+    howToCut: {
+      de: 'Erster Schnitt etwa 12–18 Monate nach der Pflanzung, danach alle 8–12 Monate, immer vor der Blüte.',
+      en: 'First lopping about 12–18 months after planting, then every 8–12 months, always before flowering.'
+    },
+    howMuch: {
+      de: 'Auf 0,3–1,5 m zurückschneiden, um den Blattaustrieb anzuregen; Blätter und Triebspitzen sind die Gründüngung.',
+      en: 'Prune at 0.3–1.5 m to stimulate leaf production; the leaves and shoot tips are the green manure.'
+    },
+    whereToSpread: {
+      de: 'Blätter und Triebspitzen als Mulch zwischen den Teesträuchern verteilen; in einer Feldstudie in Sri Lanka wurden etwa 80 % des Stickstoffs eingearbeiteter Blätter innerhalb von 4–5 Wochen freigesetzt. Blätter, Samen und Rinde sind giftig, daher nicht verfüttern.',
+      en: 'Spread leaves and shoot tips between the tea bushes as mulch; about 80 % of the nitrogen in incorporated leaves was released within 4–5 weeks in a Sri Lankan field study. Leaves, seeds and bark are toxic, so do not use them as fodder.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffbindende Leguminose; etwa 80 % des Stickstoffs eingearbeiteter Blätter wurden innerhalb von 4–5 Wochen freigesetzt.',
+      en: 'Nitrogen-fixing legume; about 80 % of the nitrogen in incorporated leaves was released within 4–5 weeks.'
+    },
+    sources: [
+      'Tea Research Institute of Sri Lanka (2018). Guidelines for establishment of energy plantations with Gliricidia sepium and Calliandra calothrysus (Guideline No. 04/2018). TRI, Talawakelle. https://www.tri.lk/wp-content/uploads/2023/05/TRISL_Guideline_04_2018_E.pdf',
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Gliricidia sepium. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Gliricidia_sepium.PDF',
+      'Herath, U. S., Wickramasinghe, W. M. D. M., Rankoth, L. M., & Egodawatta, W. C. P. (2023). Decomposition and nitrogen mineralization of Gliricidia sepium leaf green manure under diverse nutrient management strategies in irrigated lowland rice cropping systems in Sri Lanka. Tropical Agricultural Research and Extension, 26(3), 162–179. doi:10.4038/tare.v26i3.5648'
+    ]
+  },
+  'plant-common-vetch': {
+    howToCut: {
+      de: 'Kurz vor der Rebblüte häckseln, spätestens bei etwa 80 % Blüte und vor der Samenreife, denn ihre hartschaligen Samen können sie zum Unkraut machen.',
+      en: 'Chop just before grape flowering, at the latest at about 80 % bloom and before seed set, because its hard seed can make it weedy.'
+    },
+    howMuch: {
+      de: 'Den ganzen Bestand schneiden und zerkleinern.',
+      en: 'Cut and chop the whole stand.'
+    },
+    whereToSpread: {
+      de: 'In den Boden der Fahrgasse einarbeiten oder dort als Mulch liegen lassen. Im Weinbergversuch senkte eine Frühjahrsbegrünung aus 92 % Wicke, vor der Rebblüte eingearbeitet, den Falschen und Echten Mehltau in unbehandelten Parzellen.',
+      en: 'Work it into the inter-row soil or leave it as mulch there. In the vineyard trial, a spring cover of 92 % vetch worked in before grape flowering reduced downy and powdery mildew in unsprayed plots.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffbindende Leguminose (Rhizobium leguminosarum bv. viciae); die Frühjahrsbegrünung mit Wicke senkte außerdem Falschen und Echten Mehltau der Rebe in unbehandelten Parzellen.',
+      en: 'Nitrogen-fixing legume (Rhizobium leguminosarum bv. viciae); the spring vetch cover also reduced downy and powdery mildew of grapevine in unsprayed plots.'
+    },
+    sources: [
+      'Southern Cover Crops Council (n.d.). Cover crop information sheet: Vetch, common (Vicia sativa). https://southerncovercrops.org/wp-content/uploads/2018/10/Vetch-Common-Row-Crop-CP.pdf',
+      'Hasanaliyeva, G., Furiosi, M., Rossi, V., & Caffi, T. (2024). Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management. Frontiers in Plant Science, 15, 1498848. doi:10.3389/fpls.2024.1498848'
     ]
   }
 };

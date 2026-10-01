@@ -19,8 +19,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Dynamischer Akkumulator'
     },
     description: {
-      en: 'Plants with a documented deep taproot or nutrient-rich leaves or litter, used as mulch. The permaculture idea that they pump subsoil minerals up to neighbouring plants is popular but little tested.',
-      de: 'Pflanzen mit belegter tiefer Pfahlwurzel oder nährstoffreichem Laub bzw. Streu, das als Mulch dient. Die Permakultur-Idee, dass sie Mineralstoffe aus dem Unterboden für Nachbarpflanzen nach oben holen, ist verbreitet, aber kaum geprüft.'
+      en: 'Plants with a documented deep root system or mineral-rich leaves or litter, used as mulch: in field trials chicory took up nitrogen from 1.2 m depth and fodder radish rooted deeper than 2.4 m, and pasture herbs such as chicory, plantain and dandelion contain more minerals than grass and clover. Cutting them returns these nutrients to the topsoil; the permaculture idea that living plants pump subsoil minerals up to their neighbours is popular but little tested.',
+      de: 'Pflanzen mit belegtem tiefem Wurzelwerk oder mineralstoffreichem Laub bzw. Streu, das als Mulch dient: In Feldversuchen nahm Wegwarte Stickstoff aus 1,2 m Tiefe auf und Ölrettich wurzelte tiefer als 2,4 m, und Weidekräuter wie Wegwarte, Spitzwegerich und Löwenzahn enthalten mehr Mineralstoffe als Gras und Klee. Der Schnitt bringt diese Nährstoffe in den Oberboden zurück; die Permakultur-Idee, dass lebende Pflanzen Mineralstoffe aus dem Unterboden für ihre Nachbarn nach oben pumpen, ist verbreitet, aber kaum geprüft.'
     }
   },
   {
@@ -41,8 +41,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Schädlingsabwehr & Verwirrpflanze'
     },
     description: {
-      en: 'Only plants that reduced a specific pest of a specific crop in field trials (e.g. rosemary against the tea geometrid). The effect does not carry over to other pests or trees; the popular claim that aromatic herbs in general repel pests is unproven. See the pest evidence guide.',
-      de: 'Nur Pflanzen, die in Feldversuchen einen bestimmten Schädling einer bestimmten Kultur verringert haben (z. B. Rosmarin gegen den Tee-Spanner). Die Wirkung lässt sich nicht auf andere Schädlinge oder Bäume übertragen; die verbreitete Annahme, Duftkräuter wehrten Schädlinge allgemein ab, ist nicht belegt. Siehe den Schädlings-Faktencheck.'
+      en: 'Plants after which field trials measured fewer pests on a specific crop, either because they repel the pest (e.g. rosemary against the tea geometrid) or because they feed and shelter its natural enemies such as parasitoid wasps, ladybirds and spiders (e.g. sweet alyssum against the woolly apple aphid, or a green vineyard floor against the grapevine moth). The effect does not carry over to other pests or trees; the popular claim that aromatic herbs in general repel pests is unproven. See the pest evidence guide.',
+      de: 'Pflanzen, nach denen Feldversuche an einer bestimmten Kultur weniger Schädlinge gemessen haben – entweder weil sie den Schädling abwehren (z. B. Rosmarin gegen den Teespanner) oder weil sie seine Gegenspieler wie Schlupfwespen, Marienkäfer und Spinnen ernähren und beherbergen (z. B. Duftsteinrich gegen die Blutlaus oder eine grüne Rebgasse gegen den Traubenwickler). Die Wirkung lässt sich nicht auf andere Schädlinge oder Bäume übertragen; die verbreitete Annahme, Duftkräuter wehrten Schädlinge allgemein ab, ist nicht belegt. Siehe den Schädlings-Faktencheck.'
     }
   },
   {
@@ -63,8 +63,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Grasbarriere / Zwiebelring'
     },
     description: {
-      en: 'Dense stands shown in field trials to suppress weeds (e.g. hemp against annual weeds). That bulb or allium rings around a trunk hold back lawn grass is unproven; mulching the tree basin is more reliable.',
-      de: 'Dichte Bestände, die in Feldversuchen Unkraut unterdrückt haben (z. B. Hanf gegen einjährige Unkräuter). Dass Zwiebel- oder Lauchringe um den Stamm Rasengras zurückhalten, ist nicht belegt; Mulchen der Baumscheibe ist verlässlicher.'
+      en: 'Dense plantings shown in field trials to suppress weeds in the tree strip, e.g. peppermint and nasturtium as living mulch under apple trees, subterranean clover in an apricot orchard, or hemp against annual weeds. The trials mostly measured annual weeds in the planted strip; none tested whether such plants keep established lawn grass from creeping in, and some living mulches compete with young trees. Mulching the tree basin remains the most reliable way to keep turf away.',
+      de: 'Dichte Pflanzungen, die in Feldversuchen Unkraut im Baumstreifen unterdrückt haben, z. B. Pfefferminze und Kapuzinerkresse als lebender Mulch unter Apfelbäumen, Bodenfrüchtiger Klee in einer Aprikosenanlage oder Hanf gegen einjährige Unkräuter. Gemessen wurden meist einjährige Unkräuter im bepflanzten Streifen; ob solche Pflanzen eingewachsenen Rasen abhalten, wurde nicht geprüft, und manche lebenden Mulche konkurrieren mit jungen Bäumen. Mulchen der Baumscheibe bleibt der verlässlichste Weg, Rasen fernzuhalten.'
     }
   },
   {
@@ -74,8 +74,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Natürlicher Pilzhemmer'
     },
     description: {
-      en: 'Plants whose cultivation suppressed a fungal disease in experiments (e.g. Welsh onion against Fusarium wilt of cucumber in the soil). Lab effects of extracts and oils do not show that a living companion protects a tree, and no study was found showing that companions reduce apple scab.',
-      de: 'Pflanzen, deren Anbau in Versuchen eine Pilzkrankheit unterdrückt hat (z. B. Winterheckenzwiebel gegen Fusarium-Welke der Gurke im Boden). Laborwirkungen von Extrakten und Ölen zeigen nicht, dass ein lebender Begleiter einen Baum schützt, und eine Studie, nach der Begleiter Apfelschorf verringern, wurde nicht gefunden.'
+      en: 'Plants that reduced plant diseases in field or container trials, as living cover, mixed crop or green manure (e.g. vineyard covers against mildew and grey mould, mustard and radish against apple replant disease). No study was found showing that living companions reduce apple scab.',
+      de: 'Pflanzen, die in Feld- oder Containerversuchen als lebende Begrünung, Mischkultur oder Gründüngung Pflanzenkrankheiten verringerten (z. B. Weinbergbegrünungen gegen Mehltau und Grauschimmel, Senf und Rettich gegen die Apfel-Nachbaukrankheit). Eine Studie, nach der lebende Begleiter Apfelschorf verringern, wurde nicht gefunden.'
     }
   },
   {

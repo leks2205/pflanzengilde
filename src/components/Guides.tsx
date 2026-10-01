@@ -1002,6 +1002,104 @@ const SOURCES: Source[] = [
     title: 'Refiring of Over-Steamed Tea (Fukamushi-cha)',
     journal: 'Chagyo Kenkyu Hokoku (Tea Research Journal), 1982(55), pp. 63–67 (DOI: 10.5979/cha.1982.63)',
     note: 'Study on refiring Fukamushi-cha, which the title identifies as "over-steamed tea", i.e. Japanese green tea steamed for longer than usual.'
+  },
+  {
+    id: 'fn-119',
+    author: 'Golian, J., Anyszka, Z., & Kwiatkowska, J. (2023)',
+    title: 'Multifunctional living mulches for weeds control in organic apple orchards',
+    journal: 'Acta Scientiarum Polonorum Hortorum Cultus, 22(2), pp. 73–84 (DOI: 10.24326/asphc.2023.4473)',
+    note: 'Living mulches in the tree rows of an organic apple orchard in Poland, compared with the natural cover: peppermint cut summer weed numbers by 53.6 % and weed cover by about 70 %, nasturtium halved spring weed numbers (-50.4 %), lady\'s mantle reduced summer weed numbers by 37.4 %, and strawberry reduced summer weed cover by about 30 % but weed numbers by only 16.7 %. Tree growth was not measured.'
+  },
+  {
+    id: 'fn-120',
+    author: 'Restuccia, A., Scavo, A., Lombardo, S., Pandino, G., Fontanazza, S., Anastasi, U., Abbate, C., & Mauromicale, G. (2020)',
+    title: 'Long-term effect of cover crops on species abundance and diversity of weed flora',
+    journal: 'Plants, 9(11), 1506 (DOI: 10.3390/plants9111506)',
+    note: 'Five-season trial in a Sicilian apricot orchard: subterranean clover covers reduced weed biomass by 32.3–40.9 % on average (up to 86 % in single seasons) and the weed seedbank by 40.5–57 % compared with tilled soil.'
+  },
+  {
+    id: 'fn-121',
+    author: 'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010)',
+    title: 'Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard',
+    journal: 'BioControl, 55(6), pp. 741–751 (DOI: 10.1007/s10526-010-9301-2)',
+    note: 'In a Chinese pear orchard, five aromatic intercrops (among them basil, summer savory and cornflower) all lowered pest numbers compared with natural grass; only the cornflower plots also changed predator and parasitoid numbers significantly.'
+  },
+  {
+    id: 'fn-122',
+    author: 'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016)',
+    title: 'Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease',
+    journal: 'Plant and Soil, 406(1–2), pp. 389–408 (DOI: 10.1007/s11104-016-2876-3)',
+    note: 'Indian mustard and oilseed radish grown, chopped and incorporated as biofumigation on apple replant-disease soil; apple rootstocks grew clearly better than in untreated soil at some sites but not at others, and the effect was weaker than soil disinfection with Basamid.'
+  },
+  {
+    id: 'fn-123',
+    author: 'Pirhofer-Walzl, K., Eriksen, J., Rasmussen, J., Høgh-Jensen, H., Søegaard, K., & Rasmussen, J. (2013)',
+    title: 'Effect of four plant species on soil 15N-access and herbage yield in temporary agricultural grasslands',
+    journal: 'Plant and Soil, 371(1–2), pp. 313–325 (DOI: 10.1007/s11104-013-1694-0)',
+    note: '15N-enriched ammonium sulphate was placed at 0.4, 0.8 and 1.2 m depth: "deep-rooting chicory acquired relatively large amounts of deep soil 15N"; the legumes (lucerne, white clover) fixed large amounts of N2 and spared N for non-leguminous plants.'
+  },
+  {
+    id: 'fn-124',
+    author: 'Kristensen, H. L., & Thorup-Kristensen, K. (2004)',
+    title: 'Root growth and nitrate uptake of three different catch crops in deep soil layers',
+    journal: 'Soil Science Society of America Journal, 68(2), pp. 529–537 (DOI: 10.2136/sssaj2004.5290)',
+    note: 'Fodder radish roots grew deeper than 2.4 m (Italian ryegrass 0.6 m, winter rye 1.1 m), and fodder radish left 18 kg nitrate-N/ha in the soil versus 87 kg under ryegrass.'
+  },
+  {
+    id: 'fn-125',
+    author: 'Clark, A. (Ed.) (2007)',
+    title: 'Sorghum sudangrass hybrids. In: Managing Cover Crops Profitably (3rd ed.)',
+    journal: 'SARE Handbook Series 9, Sustainable Agriculture Research and Education (https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/sorghum-sudangrass/)',
+    note: '"Mowing whenever stalks reach 3 to 4 feet tall increases root mass five to eight times"; "For mid-summer cuttings, leave at least 6 inches of stubble"; for nematode control "the cover crop needs to be tilled before frost while it is still green. Otherwise, the nematicidal effect is lost"; the root exudate sorgoleone suppressed pine and redbud tree seedlings in nursery tests.'
+  },
+  {
+    id: 'fn-126',
+    author: 'Björkman, T., Bellinder, R. R., Hahn, R. R., & Shail, J. W. (2008)',
+    title: 'Buckwheat Cover Crop Handbook',
+    journal: 'Cornell University, Geneva, NY (http://www.hort.cornell.edu/bjorkman/lab/covercrops/pdf/bwbrochure.pdf)',
+    note: '"Mow no later than 10 days after plants begin to flower (about 6 weeks after seeding). Or else, leave to reseed."'
+  },
+  {
+    id: 'fn-127',
+    author: 'Jacometti, M. A., Wratten, S. D., & Walter, M. (2007)',
+    title: 'Enhancing ecosystem services in vineyards: using cover crops to decrease botrytis bunch rot severity',
+    journal: 'International Journal of Agricultural Sustainability, 5(4), pp. 305–314 (DOI: 10.1080/14735903.2007.9684830)',
+    note: 'In a New Zealand Chardonnay vineyard, inter-row phacelia mulched in place in winter raised soil moisture and biological activity, sped up the breakdown of vine debris, reduced Botrytis cinerea inoculum on that debris and lowered bunch rot severity at flowering and harvest.'
+  },
+  {
+    id: 'fn-128',
+    author: 'Sundermeier, A. (2008)',
+    title: 'Oilseed Radish Cover Crop (SAG-5)',
+    journal: 'Ohio State University Extension (https://ohioline.osu.edu/factsheet/SAG-5)',
+    note: 'Oilseed radish needs about 60 days of growth; freezing at about 20 °F (-7 °C) kills it, and in mild autumns it should be mowed or tilled before seed set because it can become a weed.'
+  },
+  {
+    id: 'fn-129',
+    author: 'Jama, B., Palm, C. A., Buresh, R. J., Niang, A., Gachengo, C., Nziguheba, G., & Amadalo, B. (2000); Orwa, C., et al. (2009); Kriticos, J. M., & Kriticos, D. J. (2021)',
+    title: 'Tithonia diversifolia as a green manure for soil fertility improvement in western Kenya: A review / Agroforestree Database 4.0: Tithonia diversifolia / Pretty (and) invasive: The potential global distribution of Tithonia diversifolia under current and future climates',
+    journal: 'Agroforestry Systems, 49(2), pp. 201–221 (DOI: 10.1023/A:1006339025728); World Agroforestry Centre (https://apps.worldagroforestry.org/treedb/AFTPDFS/Tithonia_diversifolia.PDF); Invasive Plant Science and Management, 14(4), pp. 205–213 (DOI: 10.1017/inp.2021.29)',
+    note: 'Jama et al.: green tithonia leaves average about 3.5 % N, 0.37 % P and 4.1 % K of dry matter; a sole hedge yields about 1 kg dry biomass per metre per year; the biomass decomposes rapidly; transferring it redistributes nutrients within the farm. Orwa et al.: tithonia flowers and produces seeds throughout the year, and its light seeds are dispersed by wind, water and animals. Kriticos & Kriticos: an invasive plant and notorious environmental weed in introduced habitats.'
+  },
+  {
+    id: 'fn-130',
+    author: 'Tea Research Institute of Sri Lanka (2018) & Orwa, C., et al. (2009)',
+    title: 'Guidelines for establishment of energy plantations with Gliricidia sepium and Calliandra calothrysus (Guideline No. 04/2018) / Agroforestree Database 4.0: Gliricidia sepium',
+    journal: 'TRI, Talawakelle (https://www.tri.lk/wp-content/uploads/2023/05/TRISL_Guideline_04_2018_E.pdf); World Agroforestry Centre (https://apps.worldagroforestry.org/treedb/AFTPDFS/Gliricidia_sepium.PDF)',
+    note: 'TRI: "First lopping of branches can be done about 12 - 18 months after planting. Branches can be lopped at 8 - 12 month intervals before flowering." Orwa et al.: "Pruning at 0.3-1.5 m will stimulate leaf production"; leaves, seeds and bark are toxic.'
+  },
+  {
+    id: 'fn-131',
+    author: 'Herath, U. S., Wickramasinghe, W. M. D. M., Rankoth, L. M., & Egodawatta, W. C. P. (2023)',
+    title: 'Decomposition and nitrogen mineralization of Gliricidia sepium leaf green manure under diverse nutrient management strategies in irrigated lowland rice cropping systems in Sri Lanka',
+    journal: 'Tropical Agricultural Research and Extension, 26(3), pp. 162–179 (DOI: 10.4038/tare.v26i3.5648)',
+    note: 'About 80 % of the nitrogen in incorporated Gliricidia leaves was released within 4–5 weeks.'
+  },
+  {
+    id: 'fn-132',
+    author: 'Southern Cover Crops Council (n.d.)',
+    title: 'Cover crop information sheet: Vetch, common (Vicia sativa)',
+    journal: 'Southern Cover Crops Council (https://southerncovercrops.org/wp-content/uploads/2018/10/Vetch-Common-Row-Crop-CP.pdf)',
+    note: 'Preferred soil pH 6.0–7.0; inoculate with Rhizobium leguminosarum bv. viciae; terminate at about 80 % bloom; hard seed can make it a weed.'
   }
 ];
 
@@ -1534,6 +1632,86 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   cut={tr.guidesLopSideBranchesPruningSaw}
                   much={<RichText text={tr.guidesThinUntilRoughly2535} onFootnote={scrollToFootnote} />}
                   spread={<RichText text={tr.guidesLeaveLeavesTwigsPodsBetween} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-sorghum-sudangrass"
+                  name={tr.guidesChopSorghumSudangrassName}
+                  latin={tr.guidesChopSorghumSudangrassLatin}
+                  badge={tr.guidesChopSorghumSudangrassBadge}
+                  cut={<RichText text={tr.guidesChopSorghumSudangrassCut} onFootnote={scrollToFootnote} />}
+                  much={<RichText text={tr.guidesChopSorghumSudangrassMuch} onFootnote={scrollToFootnote} />}
+                  spread={<RichText text={tr.guidesChopSorghumSudangrassSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-buckwheat"
+                  name={tr.guidesChopBuckwheatName}
+                  latin={tr.guidesChopBuckwheatLatin}
+                  badge={tr.guidesChopBuckwheatBadge}
+                  cut={<RichText text={tr.guidesChopBuckwheatCut} onFootnote={scrollToFootnote} />}
+                  much={tr.guidesChopBuckwheatMuch}
+                  spread={tr.guidesChopBuckwheatSpread}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-phacelia"
+                  name={tr.guidesChopPhaceliaName}
+                  latin={tr.guidesChopPhaceliaLatin}
+                  badge={tr.guidesChopPhaceliaBadge}
+                  cut={tr.guidesChopPhaceliaCut}
+                  much={tr.guidesChopPhaceliaMuch}
+                  spread={<RichText text={tr.guidesChopPhaceliaSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-fodder-radish"
+                  name={tr.guidesChopFodderRadishName}
+                  latin={tr.guidesChopFodderRadishLatin}
+                  badge={tr.guidesChopFodderRadishBadge}
+                  cut={<RichText text={tr.guidesChopFodderRadishCut} onFootnote={scrollToFootnote} />}
+                  much={tr.guidesChopFodderRadishMuch}
+                  spread={<RichText text={tr.guidesChopFodderRadishSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-indian-mustard"
+                  name={tr.guidesChopIndianMustardName}
+                  latin={tr.guidesChopIndianMustardLatin}
+                  badge={tr.guidesChopIndianMustardBadge}
+                  cut={tr.guidesChopIndianMustardCut}
+                  much={tr.guidesChopIndianMustardMuch}
+                  spread={<RichText text={tr.guidesChopIndianMustardSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-tithonia"
+                  name={tr.guidesChopTithoniaName}
+                  latin={tr.guidesChopTithoniaLatin}
+                  badge={tr.guidesChopTithoniaBadge}
+                  cut={<RichText text={tr.guidesChopTithoniaCut} onFootnote={scrollToFootnote} />}
+                  much={<RichText text={tr.guidesChopTithoniaMuch} onFootnote={scrollToFootnote} />}
+                  spread={<RichText text={tr.guidesChopTithoniaSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-gliricidia"
+                  name={tr.guidesChopGliricidiaName}
+                  latin={tr.guidesChopGliricidiaLatin}
+                  badge={tr.guidesChopGliricidiaBadge}
+                  cut={<RichText text={tr.guidesChopGliricidiaCut} onFootnote={scrollToFootnote} />}
+                  much={<RichText text={tr.guidesChopGliricidiaMuch} onFootnote={scrollToFootnote} />}
+                  spread={<RichText text={tr.guidesChopGliricidiaSpread} onFootnote={scrollToFootnote} />}
+                />
+                <ChopCard
+                  tr={tr}
+                  id="chop-plant-common-vetch"
+                  name={tr.guidesChopCommonVetchName}
+                  latin={tr.guidesChopCommonVetchLatin}
+                  badge={tr.guidesChopCommonVetchBadge}
+                  cut={<RichText text={tr.guidesChopCommonVetchCut} onFootnote={scrollToFootnote} />}
+                  much={tr.guidesChopCommonVetchMuch}
+                  spread={<RichText text={tr.guidesChopCommonVetchSpread} onFootnote={scrollToFootnote} />}
                 />
               </div>
             </div>

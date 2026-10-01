@@ -73,13 +73,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Trifolium repens',
     layer: 'GROUND_COVER',
-    roles: ['NITROGEN_FIXER', 'LIVING_MULCH', 'POLLINATOR_MAGNET'],
+    roles: ['NITROGEN_FIXER', 'LIVING_MULCH', 'POLLINATOR_MAGNET', 'PEST_REPELLER', 'ANTIFUNGAL'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       chopAndDropSeasons: ['SUMMER', 'AUTUMN'],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER'],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
     },
@@ -92,8 +92,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: true,
     notes: {
-      en: 'Low-growing living carpet that fixes atmospheric nitrogen in symbiosis with Rhizobium leguminosarum bv. trifolii. Semi-evergreen, keeping soil covered through cold months. A major nectar plant: in Britain, white clover is one of four species that together supply over half of all nectar, visited mainly by bumblebees. Listed as juglone-tolerant by the Ontario Ministry of Agriculture and UW–Madison Extension (observation-based lists).',
-      de: 'Flach wachsender Teppich, der in Symbiose mit Knöllchenbakterien (Rhizobium leguminosarum bv. trifolii) Luftstickstoff bindet. Wintergrün für ganzjährigen Bodenschutz. Bedeutende Nektarpflanze: In Großbritannien liefert Weißklee zusammen mit drei weiteren Arten über die Hälfte des gesamten Nektarangebots, besucht vor allem von Hummeln. Vom Landwirtschaftsministerium Ontarios und von UW–Madison Extension als juglontolerant gelistet (Beobachtungslisten).'
+      en: 'Low-growing living carpet that fixes atmospheric nitrogen in symbiosis with Rhizobium leguminosarum bv. trifolii. Semi-evergreen, keeping soil covered through cold months. A major nectar plant: in Britain, white clover is one of four species that together supply over half of all nectar, visited mainly by bumblebees. Listed as juglone-tolerant by the Ontario Ministry of Agriculture and UW–Madison Extension (observation-based lists). In a four-year French peach trial, white clover in the tree row (together with less irrigation late in fruit growth) gave the lowest brown rot incidence, probably by limiting soil water after heavy rain and thus fruit micro-cracks (Bussi et al. 2016). In unsprayed vineyard plots, an autumn-sown cover with white clover, sainfoin and ryegrass cut powdery mildew by over 80 % and downy mildew slightly (Hasanaliyeva et al. 2024). As part of a green vineyard floor it also works against the European grapevine moth, through cover and natural enemies rather than scent: across 38 French vineyards, berry damage fell as ground vegetation cover rose (Tortosa et al. 2025), and caterpillar parasitism was higher in vineyards with ground cover (Carlos et al. 2022); this was shown for the cover, not for clover alone. Caution under young apple trees: sown at orchard establishment, a living mulch of 20 % white clover and 80 % sheep\'s fescue limited the growth and yield potential of the young trees in their first two seasons (Furmanczyk & Malusà 2025), and in another apple orchard couch grass overran a white-clover living mulch (Licznar-Malanczuk 2014).',
+      de: 'Flach wachsender Teppich, der in Symbiose mit Knöllchenbakterien (Rhizobium leguminosarum bv. trifolii) Luftstickstoff bindet. Wintergrün für ganzjährigen Bodenschutz. Bedeutende Nektarpflanze: In Großbritannien liefert Weißklee zusammen mit drei weiteren Arten über die Hälfte des gesamten Nektarangebots, besucht vor allem von Hummeln. Vom Landwirtschaftsministerium Ontarios und von UW–Madison Extension als juglontolerant gelistet (Beobachtungslisten). In einem vierjährigen französischen Pfirsichversuch ergab Weißklee im Baumstreifen (zusammen mit weniger Bewässerung in der letzten Fruchtwachstumsphase) den geringsten Monilia-Befall, vermutlich weil er nach Starkregen das Bodenwasser begrenzt und so Mikrorisse an den Früchten verringert (Bussi et al. 2016). In unbehandelten Weinbergparzellen senkte eine im Herbst gesäte Begrünung mit Weißklee, Esparsette und Weidelgras den Echten Mehltau um über 80 % und den Falschen Mehltau leicht (Hasanaliyeva et al. 2024). Als Teil einer grünen Rebgasse wirkt er auch gegen den Traubenwickler, und zwar über Bodendeckung und Nützlinge statt über Duft: In 38 französischen Weinbergen nahmen die Beerenschäden mit höherer Bodenbedeckung ab (Tortosa et al. 2025), und in begrünten Weinbergen waren mehr Raupen parasitiert (Carlos et al. 2022); belegt ist das für die Begrünung, nicht für Klee allein. Vorsicht unter jungen Apfelbäumen: Bei der Pflanzung eingesät, begrenzte ein lebender Mulch aus 20 % Weißklee und 80 % Schafschwingel in den ersten beiden Jahren Wachstum und Ertragspotenzial der Jungbäume (Furmanczyk & Malusà 2025), und in einer anderen Apfelanlage überwucherte Quecke eine Weißklee-Mulchdecke (Licznar-Malanczuk 2014).'
     },
     color: '#10b981',
     iconName: 'Shield',
@@ -120,7 +120,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Svenning, M. M., Junttila, O., & Solheim, B. (1991). Symbiotic growth of indigenous white clover (Trifolium repens) with local Rhizobium leguminosarum biovar trifolii. Physiologia Plantarum, 83(3), 381–389. doi:10.1034/j.1399-3054.1991.830308.x',
       'Baude, M., Kunin, W. E., Boatman, N. D., Conyers, S., Davies, N., Gillespie, M. A. K., Morton, R. D., Smart, S. M., & Memmott, J. (2016). Historical nectar assessment reveals the fall and rise of floral resources in Britain. Nature, 530(7588), 85–88. doi:10.1038/nature16532',
       'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity',
-      'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/'
+      'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/',
+      'Bussi, C., Parveaud, C.-E., Mercier, V., & Lescourret, F. (2016). Effects of irrigation deprivation and ground cover (Trifolium repens) in the tree row on brown rot incidence in peach. Crop Protection, 88, 37–44. doi:10.1016/j.cropro.2016.05.010',
+      'Hasanaliyeva, G., Furiosi, M., Rossi, V., & Caffi, T. (2024). Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management. Frontiers in Plant Science, 15, 1498848. doi:10.3389/fpls.2024.1498848',
+      'Tortosa, A., Vialatte, A., Laroche, F., Rusch, A., Entling, M. H., & Giffard, B. (2025). Landscape heterogeneity and pesticide reduction favor predation, but also grape infestation by Lobesia botrana. Ecological Applications, 35(4), e70045. doi:10.1002/eap.70045',
+      'Carlos, C., Gonçalves, F., Villemant, C., Paredes, D., Salvação, J., & Torres, L. (2022). Parasitoids of Lobesia botrana (Lepidoptera: Tortricidae) in the Douro Demarcated Region vineyards and the prospects for enhancing conservation biological control. Bulletin of Entomological Research, 112(5), 697–706. doi:10.1017/S0007485322000116',
+      'Furmanczyk, E. M., & Malusà, E. (2025). In-depth insight into the short-term effect of floor management practice on young apple trees development and soil microbial biodiversity and activity. PLOS One, 20(8), e0329979. doi:10.1371/journal.pone.0329979',
+      'Licznar-Małańczuk, M. (2014). The diversity of weed species occurring in living mulch in an apple orchard. Acta Agrobotanica, 67(1), 47–54. doi:10.5586/aa.2014.001'
     ]
   },
   {
@@ -132,13 +138,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Achillea millefolium',
     layer: 'HERBACEOUS',
-    roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH'],
+    roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['SUMMER', 'AUTUMN'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       chopAndDropSeasons: ['SUMMER'],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
     },
@@ -151,8 +157,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.6,
     perennial: true,
     notes: {
-      en: 'Flat flower heads with feathery aromatic foliage. It is often recommended for attracting beneficial insects, but in olfactometer tests yarrow flowers actually repelled three parasitoid wasp species. Fewer aphids and codling moths with less fruit damage have been shown in apple orchards with sown multi-species perennial flower strips, not with single plants. Listed as juglone-tolerant by Penn State Extension (observation-based list). It spreads by rhizomes and seed and can be used as a ground cover or lawn alternative in low-traffic areas.',
-      de: 'Flache Blütenstände und gefiedertes, würzig duftendes Laub. Wird oft als Nützlingsmagnet empfohlen, doch in Olfaktometer-Versuchen wirkten Schafgarbenblüten auf drei Schlupfwespenarten sogar abstoßend. Weniger Blattläuse und Apfelwickler mit geringeren Fruchtschäden sind in Apfelanlagen nur für eingesäte, artenreiche mehrjährige Blühstreifen belegt, nicht für Einzelpflanzen. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste). Sie breitet sich über Rhizome und Samen aus und eignet sich als Bodendecker oder Rasenersatz für wenig betretene Flächen.'
+      en: 'Flat flower heads with feathery aromatic foliage. It is often recommended for attracting beneficial insects, but in olfactometer tests yarrow flowers actually repelled three parasitoid wasp species. Its pest-control value comes through natural enemies in a flower mix, not through scent: perennial strips of native wild flowers sown in the alleys of organic apple orchards in 7 European countries brought more natural enemies onto the trees, fewer codling moths and less fruit damage (Cahenzli et al. 2019). Yarrow, with flat flower heads and easily reached nectar and pollen, is the kind of native perennial such strips are built from; the effect is proven for the mix, not for yarrow alone. Listed as juglone-tolerant by Penn State Extension (observation-based list). It spreads by rhizomes and seed and can be used as a ground cover or lawn alternative in low-traffic areas.',
+      de: 'Flache Blütenstände und gefiedertes, würzig duftendes Laub. Wird oft als Nützlingsmagnet empfohlen, doch in Olfaktometer-Versuchen wirkten Schafgarbenblüten auf drei Schlupfwespenarten sogar abstoßend. Ihr Nutzen gegen Schädlinge entsteht über Nützlinge in einer Blühmischung, nicht über Duft: Mehrjährige Blühstreifen aus heimischen Wildblumen in den Fahrgassen von Bio-Apfelanlagen in 7 europäischen Ländern brachten mehr Nützlinge auf die Bäume, weniger Apfelwickler und geringere Fruchtschäden (Cahenzli et al. 2019). Schafgarbe mit ihren flachen Blütenständen und leicht erreichbarem Nektar und Pollen ist die Art von heimischer Staude, aus der solche Streifen bestehen; belegt ist die Wirkung für die Mischung, nicht für Schafgarbe allein. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste). Sie breitet sich über Rhizome und Samen aus und eignet sich als Bodendecker oder Rasenersatz für wenig betretene Flächen.'
     },
     color: '#eab308',
     iconName: 'Sparkles',
@@ -361,7 +367,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Tropaeolum majus',
     layer: 'GROUND_COVER',
-    roles: ['LIVING_MULCH', 'EDIBLE_UNDERSTORY'],
+    roles: ['LIVING_MULCH', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['SUMMER', 'AUTUMN'],
       floweringSeasons: ['SUMMER', 'AUTUMN'],
@@ -380,8 +386,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.3,
     perennial: false,
     notes: {
-      en: 'Often called an aphid trap crop, but there is no evidence that it draws aphids away from trees or that its mustard oils confuse woolly apple aphids and whiteflies. Dies down as winter mulch. Trailing types can be grown as a ground cover.',
-      de: 'Gilt oft als Fangpflanze für Blattläuse, doch es gibt keinen Beleg, dass sie Läuse von Gehölzen weglockt oder ihre Senföle Schädlinge verwirren. Bildet im Herbst nahrhaften Frostmulch. Rankende Sorten lassen sich als Bodendecker ziehen.'
+      en: 'Often called an aphid trap crop, but there is no evidence that it draws aphids away from trees or that its mustard oils confuse woolly apple aphids and whiteflies. The first frost kills it, and the dead foliage stays on the ground as winter mulch. Trailing types can be grown as a ground cover. Sown each spring in the tree rows of an organic apple orchard, it halved weed numbers in spring (-50 %) and cut spring weed cover by 60-70 % compared with the natural cover; as an annual it has to be re-sown every year (Golian et al. 2023).',
+      de: 'Gilt oft als Fangpflanze für Blattläuse, doch es gibt keinen Beleg, dass sie Läuse von Gehölzen weglockt oder ihre Senföle Schädlinge verwirren. Der erste Frost lässt sie absterben, und das abgestorbene Laub bleibt als Wintermulch liegen. Rankende Sorten lassen sich als Bodendecker ziehen. Jedes Frühjahr in die Baumreihen einer ökologischen Apfelanlage gesät, halbierte sie die Unkrautzahl im Frühjahr (-50 %) und senkte den Unkrautdeckungsgrad im Frühjahr um 60-70 % gegenüber dem natürlichen Bewuchs; als Einjährige muss sie jedes Jahr neu gesät werden (Golian et al. 2023).'
     },
     color: '#f97316',
     iconName: 'Sparkles',
@@ -409,7 +415,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'herb-hemp'
     ],
     sources: [
-      'Mahr, S. (n.d.). Nasturtium, Tropaeolum species. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/nasturtium-tropaeolum-majus/'
+      'Mahr, S. (n.d.). Nasturtium, Tropaeolum species. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/nasturtium-tropaeolum-majus/',
+      'Golian, J., Anyszka, Z., & Kwiatkowska, J. (2023). Multifunctional living mulches for weeds control in organic apple orchards. Acta Scientiarum Polonorum Hortorum Cultus, 22(2), 73–84. doi:10.24326/asphc.2023.4473'
     ]
   },
   {
@@ -859,7 +866,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Galium odoratum',
     layer: 'GROUND_COVER',
-    roles: ['LIVING_MULCH', 'EDIBLE_UNDERSTORY'],
+    roles: ['LIVING_MULCH', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['LATE_SPRING'],
@@ -878,8 +885,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: true,
     notes: {
-      en: 'Creeping woodland ground cover that thrives under dense shade and deciduous leaf litter. Listed as juglone-tolerant by Penn State and UW–Madison Extension (observation-based lists). Its sweet, hay-like scent comes mainly from coumarin, which forms from bound precursors as the leaves wilt and dry.',
-      de: 'Wald-Bodendecker für dichten Schatten und Falllaub. Von Penn State und UW–Madison Extension als juglontolerant gelistet (Beobachtungslisten). Der süße, heuartige Duft stammt vor allem von Cumarin, das beim Welken und Trocknen der Blätter aus gebundenen Vorstufen entsteht.'
+      en: 'Creeping woodland ground cover that thrives under dense shade and deciduous leaf litter. Listed as juglone-tolerant by Penn State and UW–Madison Extension (observation-based lists). Its sweet, hay-like scent comes mainly from coumarin, which forms from bound precursors as the leaves wilt and dry. In young apple orchards in British Columbia, a sweet-woodruff living mulch reduced other orchard herbs compared with forage grasses for two of three seasons, but voles still killed many young trees, so use a trunk guard (Sullivan et al. 2018).',
+      de: 'Wald-Bodendecker für dichten Schatten und Falllaub. Von Penn State und UW–Madison Extension als juglontolerant gelistet (Beobachtungslisten). Der süße, heuartige Duft stammt vor allem von Cumarin, das beim Welken und Trocknen der Blätter aus gebundenen Vorstufen entsteht. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Waldmeister in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern; Wühlmäuse töteten dennoch viele Jungbäume, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
     },
     color: '#15803d',
     iconName: 'Shield',
@@ -904,7 +911,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Herre, I., & Stegemann, T. (2026). Sweet woodruff (Galium odoratum L.)—More than just coumarin: From fundamental to biomass valorization. Molecules, 31(16), 2920. doi:10.3390/molecules31162920',
       'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
-      'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/'
+      'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/',
+      'Sullivan, T. P., Sullivan, D. S., & Granatstein, D. M. (2018). Influence of living mulches on vole populations and feeding damage to apple trees. Crop Protection, 108, 78–86. doi:10.1016/j.cropro.2018.02.007'
     ]
   },
   {
@@ -916,7 +924,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Thymus serpyllum',
     layer: 'GROUND_COVER',
-    roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET'],
+    roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['SUMMER'],
@@ -935,8 +943,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.1,
     perennial: true,
     notes: {
-      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers.',
-      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars.'
+      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers. In young apple orchards in British Columbia, a creeping-thyme living mulch reduced other orchard herbs compared with forage grasses for two of three seasons, but vole feeding still killed many young trees: no living mulch protected them as well as herbicide-kept bare soil, so use a trunk guard (Sullivan et al. 2018).',
+      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Sand-Thymian in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern; Wühlmausfraß tötete dennoch viele Jungbäume: Kein lebender Mulch schützte sie so gut wie mit Herbizid offen gehaltener Boden, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
     },
     color: '#9333ea',
     iconName: 'Shield',
@@ -961,7 +969,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Ložionė, K., & Venskutonis, P. R. (2006). Chemical composition of the essential oil of Thymus serpyllum L. ssp. serpyllum growing wild in Lithuania. Journal of Essential Oil Research, 18(2), 206–211. doi:10.1080/10412905.2006.9699067',
       'Álvarez-García, S., Moumni, M., & Romanazzi, G. (2023). Antifungal activity of volatile organic compounds from essential oils against the postharvest pathogens Botrytis cinerea, Monilinia fructicola, Monilinia fructigena, and Monilinia laxa. Frontiers in Plant Science, 14, 1274770. doi:10.3389/fpls.2023.1274770',
-      'NC State Extension (n.d.). Thymus serpyllum. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/thymus-serpyllum/'
+      'NC State Extension (n.d.). Thymus serpyllum. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/thymus-serpyllum/',
+      'Sullivan, T. P., Sullivan, D. S., & Granatstein, D. M. (2018). Influence of living mulches on vole populations and feeding damage to apple trees. Crop Protection, 108, 78–86. doi:10.1016/j.cropro.2018.02.007'
     ]
   },
   {
@@ -973,7 +982,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Salvia officinalis',
     layer: 'HERBACEOUS',
-    roles: ['POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY'],
+    roles: ['POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER'],
@@ -992,8 +1001,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.6,
     perennial: true,
     notes: {
-      en: 'Aromatic evergreen subshrub. A sprayed sage extract controlled grapevine downy mildew (Plasmopara viticola) in greenhouse trials and in one of two field seasons, but was easily washed off by rain; whether a living sage plant protects nearby vines has not been tested. In lab tests, sage extracts also reduced egg-laying by the diamondback moth on cabbage leaves. Violet flower spikes are visited by bees. Requires a sunny, dry microclimate on the southern drip line.',
-      de: 'Aromatischer, immergrüner Halbstrauch. Ein gespritzter Salbeiextrakt bekämpfte Falschen Mehltau der Rebe (Plasmopara viticola) im Gewächshaus und in einer von zwei Freilandsaisons, wurde aber leicht vom Regen abgewaschen; ob eine lebende Salbeipflanze benachbarte Reben schützt, wurde nie geprüft. Im Labor verringerten Salbeiextrakte zudem die Eiablage der Kohlmotte auf Kohlblättern. Violette Blütenähren werden von Bienen besucht. Bevorzugt trockene, sonnige Standorte am Südrand.'
+      en: 'Aromatic evergreen subshrub. A sprayed sage extract controlled grapevine downy mildew (Plasmopara viticola) in greenhouse trials and in one of two field seasons, but was easily washed off by rain; whether a living sage plant protects nearby vines has not been tested. In lab tests, sage extracts also reduced egg-laying by the diamondback moth on cabbage leaves. Violet flower spikes are visited by bees. Requires a sunny, dry microclimate on the southern drip line. Planted along the rows of a young olive orchard in southern Italy, sage formed an almost continuous hedge within six months that left weeds only at ground level beneath it, reducing the need for weeding along the row without affecting the growth of the young trees (Las Casas et al. 2022).',
+      de: 'Aromatischer, immergrüner Halbstrauch. Ein gespritzter Salbeiextrakt bekämpfte Falschen Mehltau der Rebe (Plasmopara viticola) im Gewächshaus und in einer von zwei Freilandsaisons, wurde aber leicht vom Regen abgewaschen; ob eine lebende Salbeipflanze benachbarte Reben schützt, wurde nie geprüft. Im Labor verringerten Salbeiextrakte zudem die Eiablage der Kohlmotte auf Kohlblättern. Violette Blütenähren werden von Bienen besucht. Bevorzugt trockene, sonnige Standorte am Südrand. Entlang der Reihen einer jungen Olivenanlage in Süditalien gepflanzt, bildete Salbei binnen sechs Monaten eine fast geschlossene Hecke, unter der Unkraut nur bodennah wuchs; das verringerte das Jäten in der Reihe, ohne das Wachstum der Jungbäume zu beeinträchtigen (Las Casas et al. 2022).'
     },
     color: '#059669',
     iconName: 'ShieldAlert',
@@ -1021,7 +1030,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     ],
     sources: [
       'Dagostin, S., Formolo, T., Giovannini, O., Pertot, I., & Schmitt, A. (2010). Salvia officinalis extract can protect grapevine against Plasmopara viticola. Plant Disease, 94(5), 575–580. doi:10.1094/PDIS-94-5-0575',
-      'Dover, J. W. (1985). The responses of some Lepidoptera to labiate herb and white clover extracts. Entomologia Experimentalis et Applicata, 39(2), 177–182. doi:10.1111/j.1570-7458.1985.tb03560.x'
+      'Dover, J. W. (1985). The responses of some Lepidoptera to labiate herb and white clover extracts. Entomologia Experimentalis et Applicata, 39(2), 177–182. doi:10.1111/j.1570-7458.1985.tb03560.x',
+      'Las Casas, G., Ciaccia, C., Iovino, V., Ferlito, F., Torrisi, B., Lodolini, E. M., Giuffrida, A., Catania, R., Nicolosi, E., & Bella, S. (2022). Effects of different inter-row soil management and intra-row living mulch on spontaneous flora, beneficial insects, and growth of young olive trees in Southern Italy. Plants, 11(4), 545. doi:10.3390/plants11040545'
     ]
   },
   {
@@ -1033,7 +1043,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Fragaria vesca',
     layer: 'GROUND_COVER',
-    roles: ['EDIBLE_UNDERSTORY', 'LIVING_MULCH', 'POLLINATOR_MAGNET'],
+    roles: ['EDIBLE_UNDERSTORY', 'LIVING_MULCH', 'POLLINATOR_MAGNET', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
@@ -1052,8 +1062,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: true,
     notes: {
-      en: 'Low, clumping woodland strawberry. Everbearing (alpine) forms carry a mutation in the TFL1 flowering-repressor gene and keep flowering throughout the favourable season, giving small crops of tiny, aromatic berries intermittently over the summer. In Lithuania its flowers were visited by solitary bees, ants and flies in comparable numbers. Runner-forming types spread into a low ground cover, while runnerless alpine cultivars stay as clumps.',
-      de: 'Niedrige, horstbildende Walderdbeere. Immertragende Monatserdbeeren tragen eine Mutation im Blühhemmer-Gen TFL1 und blühen die ganze günstige Jahreszeit hindurch; sie liefern über den Sommer verteilt immer wieder kleine Mengen winziger, aromatischer Beeren. In Litauen wurden die Blüten von Wildbienen, Ameisen und Fliegen in vergleichbarer Zahl besucht. Ausläufer bildende Formen breiten sich zu einem niedrigen Bodendecker aus, ausläuferlose Monatserdbeeren bleiben dagegen horstig.'
+      en: 'Low, clumping woodland strawberry. Everbearing (alpine) forms carry a mutation in the TFL1 flowering-repressor gene and keep flowering throughout the favourable season, giving small crops of tiny, aromatic berries intermittently over the summer. In Lithuania its flowers were visited by solitary bees, ants and flies in comparable numbers. Runner-forming types spread into a low ground cover, while runnerless alpine cultivars stay as clumps. Planted as a living mulch in the tree rows of an organic apple orchard, it reduced weed cover by about 30 % in summer compared with the natural cover, but weed numbers by only 17 % (Golian et al. 2023).',
+      de: 'Niedrige, horstbildende Walderdbeere. Immertragende Monatserdbeeren tragen eine Mutation im Blühhemmer-Gen TFL1 und blühen die ganze günstige Jahreszeit hindurch; sie liefern über den Sommer verteilt immer wieder kleine Mengen winziger, aromatischer Beeren. In Litauen wurden die Blüten von Wildbienen, Ameisen und Fliegen in vergleichbarer Zahl besucht. Ausläufer bildende Formen breiten sich zu einem niedrigen Bodendecker aus, ausläuferlose Monatserdbeeren bleiben dagegen horstig. Als lebender Mulch in den Baumreihen einer ökologischen Apfelanlage gepflanzt, senkte sie den Unkrautdeckungsgrad im Sommer um etwa 30 % gegenüber dem natürlichen Bewuchs, die Unkrautzahl aber nur um 17 % (Golian et al. 2023).'
     },
     color: '#ef4444',
     iconName: 'Apple',
@@ -1072,11 +1082,12 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Frühsommer bis Frühherbst (Jun–Sep je nach Sorte)',
       en: 'Early summer to early autumn (Jun–Sep depending on type)'
     },
-    recommendedForTrees: ['tree-plum'],
+    recommendedForTrees: ['tree-plum', 'tree-apple'],
     sources: [
       'Iwata, H., Gaston, A., Remay, A., Thouroude, T., Jeauffre, J., Kawamura, K., Hibrand-Saint Oyant, L., Araki, T., Denoyes, B., & Foucher, F. (2012). The TFL1 homologue KSN is a regulator of continuous flowering in rose and strawberry. The Plant Journal, 69(1), 116–125. doi:10.1111/j.1365-313X.2011.04776.x',
       'Royal Horticultural Society (n.d.). How to grow strawberries. RHS. https://www.rhs.org.uk/fruit/strawberries/grow-your-own',
-      'Blažytė-Čereškienė, L., Būda, V., & Bagdonaitė, E. (2012). Three wild Lithuanian strawberry species and their pollinators. Plant Systematics and Evolution, 298(4), 819–826. doi:10.1007/s00606-012-0593-9'
+      'Blažytė-Čereškienė, L., Būda, V., & Bagdonaitė, E. (2012). Three wild Lithuanian strawberry species and their pollinators. Plant Systematics and Evolution, 298(4), 819–826. doi:10.1007/s00606-012-0593-9',
+      'Golian, J., Anyszka, Z., & Kwiatkowska, J. (2023). Multifunctional living mulches for weeds control in organic apple orchards. Acta Scientiarum Polonorum Hortorum Cultus, 22(2), 73–84. doi:10.24326/asphc.2023.4473'
     ]
   },
   {
@@ -1088,13 +1099,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Ajuga reptans',
     layer: 'GROUND_COVER',
-    roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET'],
+    roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       floweringSeasons: ['LATE_SPRING'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       chopAndDropSeasons: [],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING'],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING']
     },
@@ -1107,8 +1118,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: true,
     notes: {
-      en: 'Evergreen to semi-evergreen mat spreading by runners; in cool, shady areas where grass will not grow it forms a thick ground cover (suppression of established grasses has not been measured). Blue flower spikes attract bumblebees. Listed as juglone-tolerant by Penn State Extension (observation-based list).',
-      de: 'Immergrüner bis halbimmergrüner, sich über Ausläufer ausbreitender Teppich; an kühlen, schattigen Stellen, an denen kein Gras wächst, bildet er eine dichte Bodendecke (eine Unterdrückung etablierter Gräser wurde nicht gemessen). Blaue Blütenkerzen locken Hummeln an. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste).'
+      en: 'Evergreen to semi-evergreen mat spreading by runners; in cool, shady areas where grass will not grow it forms a thick ground cover (suppression of established grasses has not been measured). Blue flower spikes attract bumblebees. Listed as juglone-tolerant by Penn State Extension (observation-based list). As an early-flowering native perennial it adds spring flowers to the kind of perennial alley flower strip that, in organic apple orchards in 7 European countries, brought more natural enemies onto the trees and lowered codling moth numbers and fruit damage (Cahenzli et al. 2019); it works through natural enemies, not scent, and the effect is proven for the mix, not for bugleweed alone.',
+      de: 'Immergrüner bis halbimmergrüner, sich über Ausläufer ausbreitender Teppich; an kühlen, schattigen Stellen, an denen kein Gras wächst, bildet er eine dichte Bodendecke (eine Unterdrückung etablierter Gräser wurde nicht gemessen). Blaue Blütenkerzen locken Hummeln an. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste). Als früh blühende heimische Staude ergänzt er Frühjahrsblüten in der Art von mehrjährigem Fahrgassen-Blühstreifen, der in Bio-Apfelanlagen in 7 europäischen Ländern mehr Nützlinge auf die Bäume brachte und Apfelwickler-Zahlen und Fruchtschäden senkte (Cahenzli et al. 2019); er wirkt über Nützlinge, nicht über Duft, und belegt ist die Wirkung für die Mischung, nicht für Günsel allein.'
     },
     color: '#2563eb',
     iconName: 'Shield',
@@ -1130,7 +1141,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     recommendedForTrees: ['tree-hazelnut', 'tree-alder', 'shrub-elderberry'],
     sources: [
       'North Carolina State Extension (n.d.). Ajuga reptans. NC Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/ajuga-reptans/',
-      'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants'
+      'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
+      'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011'
     ]
   },
   {
@@ -2218,13 +2230,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Tagetes patula',
     layer: 'HERBACEOUS',
-    roles: ['POLLINATOR_MAGNET'],
+    roles: ['POLLINATOR_MAGNET', 'PEST_REPELLER', 'ANTIFUNGAL'],
     seasonalActivity: {
       activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: ['AUTUMN'],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
       plantingSeasons: ['LATE_SPRING'],
       harvestSeasons: ['SUMMER', 'AUTUMN']
     },
@@ -2237,8 +2249,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.35,
     perennial: false,
     notes: {
-      en: 'Well-known nematode cover crop. Its roots release alpha-terthienyl; grown densely for at least two months before the following crop on the same spot, it suppresses mainly root-knot (Meloidogyne spp.) and lesion nematodes (Pratylenchus spp.). Intercropping marigold with other crops does not appear to be effective, so no nematode protection should be expected for neighbouring trees. Claims that its scent masks trees from whiteflies and aphids are also unproven. Flowers continuously until the autumn frosts. Listed as juglone-tolerant by UW–Madison Extension (observation-based list). In a US trial its flowers were visited by hoverflies, honey bees and wild bees; single-flowered French marigold cultivars were among the most visited, crested ones among the least.',
-      de: 'Bekannte Nematoden-Vorkultur. Die Wurzeln geben alpha-Terthienyl ab; dicht gesät und mindestens zwei Monate vor der Folgekultur am selben Platz angebaut, senkt sie vor allem Wurzelgallenälchen (Meloidogyne spp.) und Wurzelläsionsnematoden (Pratylenchus spp.). Als Mischkultur neben anderen Pflanzen scheint sie nicht zu wirken, ein Nematodenschutz für benachbarte Bäume ist also nicht zu erwarten. Eine Duftmaskierung gegen Weiße Fliegen und Blattläuse ist ebenfalls unbewiesen. Blüht durchgehend bis zu den ersten Herbstfrösten. Von UW–Madison Extension als juglontolerant gelistet (Beobachtungsliste). In einem US-Versuch besuchten Schwebfliegen, Honigbienen und Wildbienen die Blüten; einfach blühende Sorten der Studentenblume gehörten zu den meistbesuchten, Sorten mit Kammblüten zu den am wenigsten besuchten.'
+      en: 'Nematode catch crop for the planting spot, not a companion that protects an existing tree from nematodes. Its roots release alpha-terthienyl; grown densely (plants less than 18 cm apart, weeds removed) for at least two months on the exact spot of the next crop, it suppresses mainly lesion nematodes (Pratylenchus spp.) and root-knot nematodes (Meloidogyne spp.). In field trials, a 105-day marigold crop cut Pratylenchus penetrans by about 90 % in the top 40 cm and by about 80 % below 50 cm (Pudasaini et al. 2006), and strawberries grew three years after marigold without nematode damage (Evenhuis et al. 2004). In five German apple nurseries and orchards with replant disease, apple rootstocks planted after a season of Tagetes thickened on average 30 % more than after grass, and the share of plant-parasitic nematodes in the soil was lower (Kanfra et al. 2021); on apple replant soil a Tagetes pre-crop also increased rootstock shoot mass by 175 % at one site and by 52 % at a second (Yim et al. 2017). Use it for one season on the spot where an apple (or another tree) will be planted or replanted. Intercropping marigold with other crops does not appear to be effective against nematodes, and some other nematodes, such as stubby-root nematodes, multiply on it. Its scent does affect some insect pests: in a four-year apple orchard trial in China, plots with French marigold plus catnip or ageratum had significantly fewer spirea aphids than natural vegetation (Song et al. 2017), and grown next to glasshouse tomatoes from the start it slowed whitefly build-up (Conboy et al. 2019). Results are not consistent: in French apple orchards it reduced neither rosy apple aphids (Rizzi et al. 2025) nor codling moth damage (Laffon et al. 2022). Marigold can itself carry Verticillium wilt, so keep it away from sea buckthorn and linden. Flowers continuously until the autumn frosts. Listed as juglone-tolerant by UW–Madison Extension (observation-based list). In a US trial its flowers were visited by hoverflies, honey bees and wild bees; single-flowered French marigold cultivars were among the most visited, crested ones among the least.',
+      de: 'Nematoden-Fangpflanze für den Pflanzplatz, kein Begleiter, der einen bestehenden Baum vor Nematoden schützt. Die Wurzeln geben alpha-Terthienyl ab; dicht gepflanzt (weniger als 18 cm Abstand, unkrautfrei) und mindestens zwei Monate genau dort angebaut, wo die Folgekultur stehen soll, senkt sie vor allem Wurzelläsionsnematoden (Pratylenchus spp.) und Wurzelgallenälchen (Meloidogyne spp.). In Feldversuchen senkte ein 105-tägiger Tagetes-Bestand Pratylenchus penetrans in den oberen 40 cm um rund 90 % und unterhalb von 50 cm um rund 80 % (Pudasaini et al. 2006), und Erdbeeren wuchsen noch drei Jahre nach Tagetes ohne Nematodenschäden (Evenhuis et al. 2004). In fünf deutschen Apfelbaumschulen und -anlagen mit Nachbaukrankheit legten Apfelunterlagen nach einer Saison Tagetes im Mittel 30 % mehr an Stammdicke zu als nach Gras, und der Anteil pflanzenparasitärer Nematoden im Boden war geringer (Kanfra et al. 2021); auf Böden mit Apfel-Nachbaukrankheit erhöhte eine Tagetes-Vorkultur außerdem die Sprossmasse von Apfelunterlagen an einem Standort um 175 % und an einem zweiten um 52 % (Yim et al. 2017). Eine Saison lang dort anbauen, wo ein Apfel (oder ein anderer Baum) gepflanzt oder nachgepflanzt wird. Als Mischkultur neben anderen Pflanzen scheint sie gegen Nematoden nicht zu wirken, und einige andere Nematoden, etwa Trichodoriden (Stummelwurzelnematoden), vermehren sich an ihr. Ihr Duft wirkt auf manche Schadinsekten: In einem vierjährigen Apfelanlagen-Versuch in China hatten Parzellen mit Studentenblume plus Katzenminze oder Leberbalsam deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs (Song et al. 2017), und von Anfang an neben Gewächshaustomaten gepflanzt bremste sie die Vermehrung der Weißen Fliege (Conboy et al. 2019). Die Ergebnisse sind nicht einheitlich: In französischen Apfelanlagen senkte sie weder die Mehlige Apfelblattlaus (Rizzi et al. 2025) noch die Apfelwickler-Schäden (Laffon et al. 2022). Tagetes kann selbst Verticillium tragen, daher von Sanddorn und Linde fernhalten. Blüht durchgehend bis zu den ersten Herbstfrösten. Von UW–Madison Extension als juglontolerant gelistet (Beobachtungsliste). In einem US-Versuch besuchten Schwebfliegen, Honigbienen und Wildbienen die Blüten; einfach blühende Sorten der Studentenblume gehörten zu den meistbesuchten, Sorten mit Kammblüten zu den am wenigsten besuchten.'
     },
     color: '#f59e0b',
     iconName: 'Sparkles',
@@ -2250,12 +2262,12 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Gedeiht in jedem durchlässigen, sonnigen Gartenboden.'
     },
     plantingTime: {
-      de: 'Frühjahr (Apr–Mai nach den Eisheiligen als Aussaat oder Setzling)',
-      en: 'Spring (Apr–May after last frosts as seeds or transplants)'
+      de: 'Frühjahr (Mai nach den Eisheiligen als Aussaat oder Setzling); als Nematoden-Vorkultur die Saison vor der Baumpflanzung',
+      en: 'Spring (May after the last frosts as seeds or transplants); as a nematode pre-crop, the season before the tree is planted'
     },
     harvestTime: {
-      de: 'Juni bis Oktober (durchgehende Blütezeit)',
-      en: 'June to October (continuous flowering)'
+      de: 'Juni bis Oktober (durchgehende Blütezeit); Vorkultur im Herbst häckseln und einarbeiten',
+      en: 'June to October (continuous flowering); chop and work in the pre-crop in autumn'
     },
     recommendedForTrees: [
       'tree-fig',
@@ -2268,7 +2280,15 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Krueger, R., Dover, K. E., McSorley, R., & Wang, K.-H. (2019). Marigolds (Tagetes spp.) for Nematode Management (ENY-056/NG045). UF/IFAS Extension. https://edis.ifas.ufl.edu/publication/NG045',
       'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/',
-      'Browning, A., Smitley, D., Studyvin, J., Runkle, E. S., Huang, Z. Y., & Hotchkiss, E. (2023). Variation in pollinator visitation among garden cultivars of marigold, portulaca, and bidens. Journal of Economic Entomology, 116(3), 872–881. doi:10.1093/jee/toad050'
+      'Browning, A., Smitley, D., Studyvin, J., Runkle, E. S., Huang, Z. Y., & Hotchkiss, E. (2023). Variation in pollinator visitation among garden cultivars of marigold, portulaca, and bidens. Journal of Economic Entomology, 116(3), 872–881. doi:10.1093/jee/toad050',
+      'Kanfra, X., Obawolu, T., Wrede, A., Strolka, B., Winkelmann, T., Hardeweg, B., & Heuer, H. (2021). Alleviation of nematode-mediated apple replant disease by pre-cultivation of Tagetes. Horticulturae, 7(11), 433. doi:10.3390/horticulturae7110433',
+      'Pudasaini, M. P., Viaene, N., & Moens, M. (2006). Effect of marigold (Tagetes patula) on population dynamics of Pratylenchus penetrans in a field. Nematology, 8(4), 477–484. doi:10.1163/156854106778613930',
+      'Evenhuis, A., Korthals, G. W., & Molendijk, L. P. G. (2004). Tagetes patula as an effective catch crop for long-term control of Pratylenchus penetrans. Nematology, 6(6), 877–881. doi:10.1163/1568541044038632',
+      'Yim, B., Nitt, H., Wrede, A., Jacquiod, S., Sørensen, S. J., Winkelmann, T., & Smalla, K. (2017). Effects of soil pre-treatment with Basamid granules, Brassica juncea, Raphanus sativus, and Tagetes patula on bacterial and fungal communities at two apple replant disease sites. Frontiers in Microbiology, 8, 1604. doi:10.3389/fmicb.2017.01604',
+      'Song, B., Liang, Y., Liu, S., Zhang, L., Tang, G., Ma, T., & Yao, Y. (2017). Behavioral responses of Aphis citricola (Hemiptera: Aphididae) and its natural enemy Harmonia axyridis (Coleoptera: Coccinellidae) to non-host plant volatiles. Florida Entomologist, 100(2), 411–421. doi:10.1653/024.100.0202',
+      'Conboy, N. J. A., McDaniel, T., Ormerod, A., George, D., Gatehouse, A. M. R., Wharton, E., Donohoe, P., Curtis, R., & Tosh, C. R. (2019). Companion planting with French marigolds protects tomato plants from glasshouse whiteflies through the emission of airborne limonene. PLOS ONE, 14(3), e0213071. doi:10.1371/journal.pone.0213071',
+      'Rizzi, L., Rafiq, M., Cabrol, M., Simon, S., Gomez, L., Lavigne, C., Franck, P., & Gautier, H. (2025). Effect of intercropping apple trees with basil (Ocimum basilicum) or French marigold (Tagetes patula) on the rosy apple aphid regulation (Dysaphis plantaginea) and the abundance of its natural enemies. Pest Management Science, 81(3), 1373–1383. doi:10.1002/ps.8538',
+      'Laffon, L., Bischoff, A., Gautier, H., Gilles, F., Gomez, L., Lescourret, F., & Franck, P. (2022). Conservation biological control of codling moth (Cydia pomonella): Effects of two aromatic plants, basil (Ocimum basilicum) and French marigolds (Tagetes patula). Insects, 13(10), 908. doi:10.3390/insects13100908'
     ]
   },
   {
@@ -2559,8 +2579,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.3,
     perennial: true,
     notes: {
-      en: 'Deep-taproot pioneer: the taproot usually reaches 15–30 cm but can grow to about 90 cm, helping it survive drought. Flowers very early in spring and is an important early nectar source for bees when little else blooms. Its pollen is used mainly by Asteraceae-specialist bees; for bumblebees it is a poor sole pollen diet, so it works best within a diverse spring flower mix. Listed as juglone-tolerant by the Ontario Ministry of Agriculture (observation-based list).',
-      de: 'Tiefwurzelnder Pionier: Die Pfahlwurzel reicht meist 15–30 cm tief, kann aber bis etwa 90 cm lang werden und hilft so bei Trockenheit. Blüht sehr früh im Jahr und ist eine wichtige frühe Nektarquelle für Bienen, wenn sonst wenig blüht. Der Pollen wird vor allem von auf Korbblütler spezialisierten Wildbienen genutzt; für Hummeln ist er als alleinige Pollenquelle wenig geeignet, daher am besten in einem vielfältigen Frühjahrsblühangebot. Vom Landwirtschaftsministerium Ontarios als juglontolerant gelistet (Beobachtungsliste).'
+      en: 'Deep-taproot pioneer: the taproot usually reaches 15–30 cm but can grow to about 90 cm, helping it survive drought. Flowers very early in spring and is an important early nectar source for bees when little else blooms. Its pollen is used mainly by Asteraceae-specialist bees; for bumblebees it is a poor sole pollen diet, so it works best within a diverse spring flower mix. Listed as juglone-tolerant by the Ontario Ministry of Agriculture (observation-based list). On a New Zealand organic dairy farm, dandelion, like chicory and narrow-leaved plantain, often had significantly higher magnesium, manganese, copper, zinc, boron, cobalt and selenium contents than ryegrass and white clover (Harrington et al. 2006), so cut leaves return these minerals as mulch.',
+      de: 'Tiefwurzelnder Pionier: Die Pfahlwurzel reicht meist 15–30 cm tief, kann aber bis etwa 90 cm lang werden und hilft so bei Trockenheit. Blüht sehr früh im Jahr und ist eine wichtige frühe Nektarquelle für Bienen, wenn sonst wenig blüht. Der Pollen wird vor allem von auf Korbblütler spezialisierten Wildbienen genutzt; für Hummeln ist er als alleinige Pollenquelle wenig geeignet, daher am besten in einem vielfältigen Frühjahrsblühangebot. Vom Landwirtschaftsministerium Ontarios als juglontolerant gelistet (Beobachtungsliste). Auf einem neuseeländischen Bio-Milchviehbetrieb enthielt Löwenzahn, wie Wegwarte und Spitzwegerich, oft signifikant mehr Magnesium, Mangan, Kupfer, Zink, Bor, Kobalt und Selen als Weidelgras und Weißklee (Harrington et al. 2006); geschnittene Blätter geben diese Mineralstoffe als Mulch zurück.'
     },
     color: '#eab308',
     iconName: 'Flower2',
@@ -2590,7 +2610,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Mahr, S. (2026). Dandelion, Taraxacum officinale. Wisconsin Horticulture, University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/dandelion-taraxacum-officinale/',
       'Vanderplanck, M., et al. (2020). Asteraceae paradox: Chemical and mechanical protection of Taraxacum pollen. Insects, 11(5), 304. doi:10.3390/insects11050304',
-      'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity'
+      'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity',
+      'Harrington, K. C., Thatcher, A., & Kemp, P. D. (2006). Mineral composition and nutritive value of some common pasture weeds. New Zealand Plant Protection, 59, 261–265. doi:10.30843/nzpp.2006.59.4414'
     ]
   },
   {
@@ -2726,13 +2747,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Nepeta cataria',
     layer: 'HERBACEOUS',
-    roles: ['POLLINATOR_MAGNET'],
+    roles: ['POLLINATOR_MAGNET', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: ['SUMMER', 'AUTUMN'],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
       plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
       harvestSeasons: ['SUMMER']
     },
@@ -2745,8 +2766,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.8,
     perennial: true,
     notes: {
-      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers.',
-      de: 'Bildet Nepetalacton, das Stechmücken und Fliegen über den Reizrezeptor TRPA1 der Insekten abschreckt; Katzenminzenöl wirkte im Labor stark abschreckend auf Wadenstecher und Stubenfliegen. Nepetalacton ist zugleich Bestandteil des Blattlaus-Sexualpheromons: In Fallenversuchen lockte es Blattlaus-Schlupfwespen der Gattung Praon (vor allem im Herbst) und Männchen von Chrysopa-Florfliegen an, schreckte aber die Gemeine Florfliege (Chrysoperla carnea) ab. Bienen aller Art, Wespen, Fliegen und viele Schmetterlinge besuchen die nektarreichen Blüten.'
+      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers. Intercropped between apple rows together with French marigold or ageratum, catnip plots had significantly fewer spirea aphids than natural vegetation over four years (Song et al. 2017), and in a pear orchard it was one of five aromatic intercrops that all lowered pest numbers (Song et al. 2010).',
+      de: 'Bildet Nepetalacton, das Stechmücken und Fliegen über den Reizrezeptor TRPA1 der Insekten abschreckt; Katzenminzenöl wirkte im Labor stark abschreckend auf Wadenstecher und Stubenfliegen. Nepetalacton ist zugleich Bestandteil des Blattlaus-Sexualpheromons: In Fallenversuchen lockte es Blattlaus-Schlupfwespen der Gattung Praon (vor allem im Herbst) und Männchen von Chrysopa-Florfliegen an, schreckte aber die Gemeine Florfliege (Chrysoperla carnea) ab. Bienen aller Art, Wespen, Fliegen und viele Schmetterlinge besuchen die nektarreichen Blüten. Zusammen mit Studentenblume oder Leberbalsam zwischen Apfelreihen gepflanzt, hatten Katzenminze-Parzellen über vier Jahre deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs (Song et al. 2017); in einer Birnenanlage war sie eine von fünf Duftpflanzen-Zwischenkulturen, die alle die Schädlingszahlen senkten (Song et al. 2010).'
     },
     color: '#818cf8',
     iconName: 'Flower2',
@@ -2771,13 +2792,15 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-peach',
       'tree-plum',
       'tree-cherry',
-      'tree-fig', 'tree-linden'],
+      'tree-fig', 'tree-linden', 'tree-pear'],
     sources: [
       'Melo, N., et al. (2021). The irritant receptor TRPA1 mediates the mosquito repellent effect of catnip. Current Biology, 31(9), 1988–1994.e5. doi:10.1016/j.cub.2021.02.010',
       'Zhu, J., et al. (2009). Efficacy and safety of catnip (Nepeta cataria) as a novel filth fly repellent. Medical and Veterinary Entomology, 23(3), 209–216. doi:10.1111/j.1365-2915.2009.00809.x',
       'Hardie, J., et al. (1994). The responses of Praon spp. parasitoids to aphid sex pheromone components in the field. Entomologia Experimentalis et Applicata, 71(2), 95–99. doi:10.1111/j.1570-7458.1994.tb01775.x',
       'Koczor, S., et al. (2010). Attraction of Chrysoperla carnea complex and Chrysopa spp. lacewings (Neuroptera: Chrysopidae) to aphid sex pheromone components and a synthetic blend of floral compounds in Hungary. Pest Management Science, 66(12), 1374–1379. doi:10.1002/ps.2030',
-      'Mahr, S. (n.d., revised 2026). Catnip, Nepeta cataria. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/catnip-nepeta-cataria/'
+      'Mahr, S. (n.d., revised 2026). Catnip, Nepeta cataria. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/catnip-nepeta-cataria/',
+      'Song, B., Liang, Y., Liu, S., Zhang, L., Tang, G., Ma, T., & Yao, Y. (2017). Behavioral responses of Aphis citricola (Hemiptera: Aphididae) and its natural enemy Harmonia axyridis (Coleoptera: Coccinellidae) to non-host plant volatiles. Florida Entomologist, 100(2), 411–421. doi:10.1653/024.100.0202',
+      'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2'
     ]
   },
   {
@@ -2911,7 +2934,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Mentha x piperita',
     layer: 'GROUND_COVER',
-    roles: ['PEST_REPELLER', 'LIVING_MULCH', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY'],
+    roles: ['PEST_REPELLER', 'LIVING_MULCH', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['SUMMER', 'AUTUMN'],
@@ -2930,8 +2953,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.45,
     perennial: true,
     notes: {
-      en: 'Menthol- and menthone-rich aromatic groundcover. In a field trial, peppermint intercrops reduced spotted-wing drosophila emergence from fruit and supported more predators and pollinators than a ryegrass/clover mix; potted peppermint did not reduce green peach aphids. The oil repelled spider mites in lab tests. Vigorous stoloniferous living mulch, listed as tolerant of black walnut (juglone).',
-      de: 'Bodendecker reich an Menthol und Menthon. In einem Feldversuch verringerte Pfefferminze als Zwischenkultur den Schlupf der Kirschessigfliege aus Früchten und förderte mehr Räuber und Bestäuber als eine Weidelgras-Klee-Mischung; auf Grüne Pfirsichblattläuse hatte sie im Topfversuch keinen Effekt. Das ätherische Öl wirkte im Labor abschreckend auf Spinnmilben. Wüchsiger, Ausläufer bildender Bodendecker, gilt als tolerant gegenüber Walnuss-Juglon.'
+      en: 'Menthol- and menthone-rich aromatic groundcover. In a field trial, peppermint intercrops reduced spotted-wing drosophila emergence from fruit and supported more predators and pollinators than a ryegrass/clover mix; potted peppermint did not reduce green peach aphids. The oil repelled spider mites in lab tests. Vigorous stoloniferous living mulch, listed as tolerant of black walnut (juglone). Planted as a living mulch in the tree rows of an organic apple orchard, it cut weed numbers by 54 % in summer and weed cover by about 70 % compared with the natural cover, the strongest summer effect of the species tested; its effect on the trees was not measured (Golian et al. 2023).',
+      de: 'Bodendecker reich an Menthol und Menthon. In einem Feldversuch verringerte Pfefferminze als Zwischenkultur den Schlupf der Kirschessigfliege aus Früchten und förderte mehr Räuber und Bestäuber als eine Weidelgras-Klee-Mischung; auf Grüne Pfirsichblattläuse hatte sie im Topfversuch keinen Effekt. Das ätherische Öl wirkte im Labor abschreckend auf Spinnmilben. Wüchsiger, Ausläufer bildender Bodendecker, gilt als tolerant gegenüber Walnuss-Juglon. Als lebender Mulch in den Baumreihen einer ökologischen Apfelanlage gepflanzt, senkte sie die Unkrautzahl im Sommer um 54 % und den Unkrautdeckungsgrad um etwa 70 % gegenüber dem natürlichen Bewuchs, die stärkste Sommerwirkung der geprüften Arten; die Wirkung auf die Bäume wurde nicht gemessen (Golian et al. 2023).'
     },
     color: '#0d9488',
     iconName: 'Leaf',
@@ -2964,7 +2987,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Gowton, C. M., Cabra-Arias, C., & Carrillo, J. (2021). Intercropping with peppermint increases ground dwelling insect and pollinator abundance and decreases Drosophila suzukii in fruit. Frontiers in Sustainable Food Systems, 5, 700842. doi:10.3389/fsufs.2021.700842',
       'Rohloff, J., Dragland, S., Mordal, R., & Iversen, T.-H. (2005). Effect of harvest time and drying method on biomass production, essential oil yield, and quality of peppermint (Mentha × piperita L.). Journal of Agricultural and Food Chemistry, 53(10), 4143–4148. doi:10.1021/jf047998s',
       'Morton Arboretum (n.d.). Black walnut toxicity. https://mortonarb.org/plant-and-protect/tree-plant-care/plant-care-resources/black-walnut-toxicity/',
-      'NC State Extension (n.d.). Mentha x piperita. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/mentha-x-piperita/'
+      'NC State Extension (n.d.). Mentha x piperita. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/mentha-x-piperita/',
+      'Golian, J., Anyszka, Z., & Kwiatkowska, J. (2023). Multifunctional living mulches for weeds control in organic apple orchards. Acta Scientiarum Polonorum Hortorum Cultus, 22(2), 73–84. doi:10.24326/asphc.2023.4473'
     ]
   },
   {
@@ -2995,8 +3019,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.9,
     perennial: true,
     notes: {
-      en: 'Deep-rooted perennial legume fixing nitrogen with Sinorhizobium meliloti; reported fixation ranges widely (about 45–470 kg N/ha/yr) and drops when soil N is plentiful. The taproot can exceed 4.5 m in unrestricted soils, but compacted pans stop it, so loosen hardpans before sowing. The growth regulator triacontanol was first isolated from alfalfa meal, which boosted growth of several crops. Observed to be juglone-sensitive; keep away from walnuts. It is bee-pollinated: bees collecting nectar or pollen trip the flowers, and leafcutter bees are the preferred pollinators for seed crops.',
-      de: 'Tiefwurzelnde, mehrjährige Leguminose, die mit Sinorhizobium meliloti Stickstoff bindet; die berichtete Bindung schwankt stark (ca. 45–470 kg N/ha/Jahr) und sinkt bei hohem Bodenstickstoff. Die Pfahlwurzel kann in ungestörten Böden über 4,5 m tief reichen, wird aber von Verdichtungen gestoppt – Verdichtungen vor der Saat lockern. Aus Luzernemehl wurde erstmals der Wuchsregulator Triacontanol isoliert; das Mehl förderte das Wachstum mehrerer Kulturen. Gilt als juglonempfindlich – Abstand zu Walnüssen halten. Sie wird von Bienen bestäubt: Bienen, die Nektar oder Pollen sammeln, lösen den Schnellmechanismus der Blüte aus; für die Saatgutvermehrung gelten Blattschneiderbienen als bevorzugte Bestäuber.'
+      en: 'Deep-rooted perennial legume fixing nitrogen with Sinorhizobium meliloti; reported fixation ranges widely (about 45–470 kg N/ha/yr) and drops when soil N is plentiful. The taproot can exceed 4.5 m in unrestricted soils, but compacted pans stop it, so loosen hardpans before sowing. The growth regulator triacontanol was first isolated from alfalfa meal, which boosted growth of several crops. Observed to be juglone-sensitive; keep away from walnuts. It is bee-pollinated: bees collecting nectar or pollen trip the flowers, and leafcutter bees are the preferred pollinators for seed crops. In a Danish field trial with 15N tracer placed at 0.4, 0.8 and 1.2 m depth, lucerne was grown as one of the deep-rooting species; it fixed large amounts of nitrogen and spared soil nitrogen for non-legume neighbours, while it was chicory that took up relatively large amounts of the deep 15N (Pirhofer-Walzl et al. 2013).',
+      de: 'Tiefwurzelnde, mehrjährige Leguminose, die mit Sinorhizobium meliloti Stickstoff bindet; die berichtete Bindung schwankt stark (ca. 45–470 kg N/ha/Jahr) und sinkt bei hohem Bodenstickstoff. Die Pfahlwurzel kann in ungestörten Böden über 4,5 m tief reichen, wird aber von Verdichtungen gestoppt – Verdichtungen vor der Saat lockern. Aus Luzernemehl wurde erstmals der Wuchsregulator Triacontanol isoliert; das Mehl förderte das Wachstum mehrerer Kulturen. Gilt als juglonempfindlich – Abstand zu Walnüssen halten. Sie wird von Bienen bestäubt: Bienen, die Nektar oder Pollen sammeln, lösen den Schnellmechanismus der Blüte aus; für die Saatgutvermehrung gelten Blattschneiderbienen als bevorzugte Bestäuber. In einem dänischen Feldversuch mit 15N-Markierung in 0,4, 0,8 und 1,2 m Tiefe wurde Luzerne als tiefwurzelnde Art geprüft; sie band viel Stickstoff und ließ Bodenstickstoff für Nicht-Leguminosen übrig, während es die Wegwarte war, die verhältnismäßig viel 15N aus dem Unterboden aufnahm (Pirhofer-Walzl et al. 2013).'
     },
     color: '#6366f1',
     iconName: 'Sprout',
@@ -3027,7 +3051,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Kubesch, J. (2026). Establishing alfalfa for forage (FSA15). University of Arkansas Division of Agriculture. https://www.uaex.uada.edu/publications/pdf/FSA-15.pdf',
       'Ries, S. K., Wert, V. F., Sweeley, C. C., & Leavitt, R. A. (1977). Triacontanol: A new naturally occurring plant growth regulator. Science, 195(4284), 1339–1341. doi:10.1126/science.195.4284.1339',
       'Dana, M. N., & Lerner, B. R. (2001). Black walnut toxicity (HO-193-W). Purdue University Cooperative Extension Service. https://www.purdue.edu/hla/sites/yardandgarden/wp-content/uploads/sites/2/2016/10/HO-193.pdf',
-      'Canadian Food Inspection Agency (2012). The Biology of Medicago sativa L. (Alfalfa). Biology document, Directive 94-08. Government of Canada. https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/medicago-sativa'
+      'Canadian Food Inspection Agency (2012). The Biology of Medicago sativa L. (Alfalfa). Biology document, Directive 94-08. Government of Canada. https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/medicago-sativa',
+      'Pirhofer-Walzl, K., Eriksen, J., Rasmussen, J., Høgh-Jensen, H., Søegaard, K., & Rasmussen, J. (2013). Effect of four plant species on soil 15N-access and herbage yield in temporary agricultural grasslands. Plant and Soil, 371(1–2), 313–325. doi:10.1007/s11104-013-1694-0'
     ]
   },
   {
@@ -3673,8 +3698,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.5,
     perennial: true,
     notes: {
-      en: 'Perennial, non-bulbing allium kept as a clump at the root collar. Its foliage emits sulfur-containing volatiles, which become stronger when the leaves are cut or crushed. In experiments, soil cultivated with Welsh onion suppressed Fusarium wilt of cucumber via antagonistic rhizosphere bacteria (Flavobacterium). Protection of fruit trees from Fusarium, root rot or clearwing borers (Synanthedon spp.) is unproven.',
-      de: 'Ausdauernde, nicht zwiebelbildende Heckenzwiebel für den Wurzelhalsbereich. Das Laub gibt schwefelhaltige Duftstoffe ab, verstärkt beim Schneiden oder Quetschen. In Versuchen unterdrückte mit Winterheckenzwiebel bepflanzter Boden die Fusarium-Welke an Gurken durch antagonistische Rhizosphärenbakterien (Flavobacterium). Ein Schutz von Obstbäumen vor Fusarium, Wurzelfäule oder Glasflüglern (Synanthedon spp.) ist unbewiesen.'
+      en: 'Perennial, non-bulbing allium kept as a clump at the root collar. Its foliage emits sulfur-containing volatiles, which become stronger when the leaves are cut or crushed. In experiments, soil cultivated with Welsh onion suppressed Fusarium wilt of cucumber via antagonistic rhizosphere bacteria (Flavobacterium). Grown as a living mixed crop beside young apple trees in replant-disease soil (outdoor containers, two years), it raised tree dry weight by about 24 %, increased soil fungal diversity and suppressed Fusarium (Zhao et al. 2022). Field tests in orchards and protection against clearwing borers (Synanthedon spp.) are lacking.',
+      de: 'Ausdauernde, nicht zwiebelbildende Heckenzwiebel für den Wurzelhalsbereich. Das Laub gibt schwefelhaltige Duftstoffe ab, verstärkt beim Schneiden oder Quetschen. In Versuchen unterdrückte mit Winterheckenzwiebel bepflanzter Boden die Fusarium-Welke an Gurken durch antagonistische Rhizosphärenbakterien (Flavobacterium). Als lebende Mischkultur neben jungen Apfelbäumen in Boden mit Nachbaukrankheit angebaut (Freiland-Container, zwei Jahre), erhöhte sie die Trockenmasse der Bäume um rund 24 %, steigerte die Vielfalt der Bodenpilze und drängte Fusarium zurück (Zhao et al. 2022). Feldversuche in Obstanlagen und ein Schutz vor Glasflüglern (Synanthedon spp.) fehlen.'
     },
     color: '#22c55e',
     iconName: 'Shield',
@@ -3702,7 +3727,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-cherry', 'shrub-red-currant'],
     sources: [
       'Kusano, M., et al. (2016). Unbiased profiling of volatile organic compounds in the headspace of Allium plants using an in-tube extraction device. BMC Research Notes, 9, 133. doi:10.1186/s13104-016-1942-5',
-      'Nishioka, T., et al. (2019). Microbial basis of Fusarium wilt suppression by Allium cultivation. Scientific Reports, 9, 1715. doi:10.1038/s41598-018-37559-7'
+      'Nishioka, T., et al. (2019). Microbial basis of Fusarium wilt suppression by Allium cultivation. Scientific Reports, 9, 1715. doi:10.1038/s41598-018-37559-7',
+      'Zhao, L., Wang, G., Liu, X., Chen, X., Shen, X., Yin, C., & Mao, Z. (2022). Control of apple replant disease using mixed cropping with Brassica juncea or Allium fistulosum. Agriculture, 12(1), 68. doi:10.3390/agriculture12010068'
     ]
   },
   {
@@ -4294,13 +4320,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Lobularia maritima',
     layer: 'GROUND_COVER',
-    roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH'],
+    roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: [],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
     },
@@ -4313,8 +4339,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: false,
     notes: {
-      en: 'Low, honey-scented annual that flowers from late spring well into autumn. Its tiny open flowers feed spiders, predatory bugs and hoverflies. In Washington State field trials, apple trees next to alyssum had fewer woolly apple aphids within a week, and predators marked on the flowers were later caught in the trees (Gontijo et al. 2013). Sow it along the drip line; it self-seeds lightly. Being shallow-rooted, low and spreading, it makes a good living mulch or seasonal ground cover.',
-      de: 'Niedrige, nach Honig duftende Einjährige, die vom späten Frühjahr bis weit in den Herbst blüht. Die kleinen offenen Blüten ernähren Spinnen, Raubwanzen und Schwebfliegen. In Feldversuchen im US-Bundesstaat Washington hatten Apfelbäume neben Duftsteinrich schon nach einer Woche weniger Blutläuse; auf den Blüten markierte Räuber wurden später in den Bäumen gefangen (Gontijo et al. 2013). An der Traufkante aussäen; sät sich schwach selbst aus. Flach wurzelnd, niedrig und ausladend, eignet es sich gut als lebender Mulch oder saisonaler Bodendecker.'
+      en: 'Low, honey-scented annual that flowers from late spring well into autumn. Its tiny open flowers feed spiders, predatory bugs and hoverflies. In Washington State field trials, apple trees next to alyssum had fewer woolly apple aphids within a week, and predators marked on the flowers were later caught in the trees (Gontijo et al. 2013). Sow it along the drip line; it self-seeds lightly. Being shallow-rooted, low and spreading, it makes a good living mulch or seasonal ground cover. It counts as a pest repeller through these natural enemies, not through its scent. Caution: in a 6-year Hungarian apple trial, sown flowering alleys of mixed species increased woolly aphids (Markó et al. 2013), so the evidence is specific to alyssum and still contested.',
+      de: 'Niedrige, nach Honig duftende Einjährige, die vom späten Frühjahr bis weit in den Herbst blüht. Die kleinen offenen Blüten ernähren Spinnen, Raubwanzen und Schwebfliegen. In Feldversuchen im US-Bundesstaat Washington hatten Apfelbäume neben Duftsteinrich schon nach einer Woche weniger Blutläuse; auf den Blüten markierte Räuber wurden später in den Bäumen gefangen (Gontijo et al. 2013). An der Traufkante aussäen; sät sich schwach selbst aus. Flach wurzelnd, niedrig und ausladend, eignet es sich gut als lebender Mulch oder saisonaler Bodendecker. Als Schädlingsabwehr wirkt es über diese Nützlinge, nicht über seinen Duft. Vorsicht: In einem 6-jährigen ungarischen Apfelversuch erhöhten eingesäte artenreiche Blühgassen den Blutlausbefall (Markó et al. 2013); der Beleg gilt also speziell für Duftsteinrich und ist noch umstritten.'
     },
     color: '#f5f5f4',
     iconName: 'Flower',
@@ -4336,7 +4362,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     recommendedForTrees: ['tree-apple'],
     sources: [
       'Gontijo, L. M., Beers, E. H., & Snyder, W. E. (2013). Flowers promote aphid suppression in apple orchards. Biological Control, 66(1), 8–15. doi:10.1016/j.biocontrol.2013.03.007',
-      'Mahr, S. (2026). Sweet alyssum, Lobularia maritima. Wisconsin Horticulture, University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/sweet-alyssum-lobularia-maritima/'
+      'Mahr, S. (2026). Sweet alyssum, Lobularia maritima. Wisconsin Horticulture, University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/sweet-alyssum-lobularia-maritima/',
+      'Markó, V., Jenser, G., Kondorosy, E., Ábrahám, L., & Balázs, K. (2013). Flowers for better pest control? The effects of apple orchard ground cover management on green apple aphids (Aphis spp.) (Hemiptera: Aphididae), their predators and the canopy insect community. Biocontrol Science and Technology, 23(2), 126–145. doi:10.1080/09583157.2012.743972'
     ]
   },
   {
@@ -4348,13 +4375,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Daucus carota',
     layer: 'HERBACEOUS',
-    roles: ['POLLINATOR_MAGNET'],
+    roles: ['POLLINATOR_MAGNET', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: [],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
       plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
     },
@@ -4367,8 +4394,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.8,
     perennial: false,
     notes: {
-      en: 'Native biennial umbellifer and one of the native flowers used in perennial alley flower strips tested in 23 organic apple orchard blocks across Europe, where the strips lowered codling moth numbers and slowed the rise in fruit damage (Cahenzli et al. 2019). Its open umbels feed the codling moth parasitoid Ascogaster quadridentata, which lived more than twice as long with wild carrot flowers in the lab (Mátray & Herz 2022). Sow as part of a native mix in the alley; it self-seeds. Listed as juglone-tolerant by the Ontario Ministry of Agriculture (observation-based list).',
-      de: 'Heimischer, zweijähriger Doldenblütler und eine der heimischen Arten der mehrjährigen Blühstreifen, die in 23 Bio-Apfelanlagen-Blöcken in ganz Europa getestet wurden: Die Streifen senkten die Apfelwickler-Zahlen und bremsten den Anstieg der Fruchtschäden (Cahenzli et al. 2019). Die offenen Dolden ernähren die Wickler-Schlupfwespe Ascogaster quadridentata, die im Labor mit Möhrenblüten mehr als doppelt so lange lebte (Mátray & Herz 2022). Als Teil einer heimischen Mischung in der Fahrgasse aussäen; sät sich selbst aus. Vom Landwirtschaftsministerium Ontarios als juglontolerant gelistet (Beobachtungsliste).'
+      en: 'Native biennial umbellifer and one of the native flowers used in perennial alley flower strips tested in 23 organic apple orchard blocks across Europe, where the strips lowered codling moth numbers and slowed the rise in fruit damage (Cahenzli et al. 2019). Its open umbels feed the codling moth parasitoid Ascogaster quadridentata, which lived more than twice as long with wild carrot flowers in the lab (Mátray & Herz 2022). It counts as a pest repeller through these natural enemies, not through scent. Sow as part of a native mix in the alley; it self-seeds. Listed as juglone-tolerant by the Ontario Ministry of Agriculture (observation-based list).',
+      de: 'Heimischer, zweijähriger Doldenblütler und eine der heimischen Arten der mehrjährigen Blühstreifen, die in 23 Bio-Apfelanlagen-Blöcken in ganz Europa getestet wurden: Die Streifen senkten die Apfelwickler-Zahlen und bremsten den Anstieg der Fruchtschäden (Cahenzli et al. 2019). Die offenen Dolden ernähren die Wickler-Schlupfwespe Ascogaster quadridentata, die im Labor mit Möhrenblüten mehr als doppelt so lange lebte (Mátray & Herz 2022). Als Schädlingsabwehr wirkt sie über diese Nützlinge, nicht über Duft. Als Teil einer heimischen Mischung in der Fahrgasse aussäen; sät sich selbst aus. Vom Landwirtschaftsministerium Ontarios als juglontolerant gelistet (Beobachtungsliste).'
     },
     color: '#fafaf9',
     iconName: 'Flower2',
@@ -4404,13 +4431,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Onobrychis viciifolia',
     layer: 'HERBACEOUS',
-    roles: ['NITROGEN_FIXER', 'POLLINATOR_MAGNET', 'LIVING_MULCH', 'BIOMASS_PRODUCER'],
+    roles: ['NITROGEN_FIXER', 'POLLINATOR_MAGNET', 'LIVING_MULCH', 'BIOMASS_PRODUCER', 'ANTIFUNGAL', 'PEST_REPELLER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: ['LATE_SPRING'],
-      pestDeterrenceSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER'],
       plantingSeasons: ['LATE_SPRING', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER']
     },
@@ -4423,8 +4450,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.6,
     perennial: true,
     notes: {
-      en: 'Deep-rooted, nitrogen-fixing legume of dry limestone grassland and an outstanding bee plant with abundant nectar. It made up 43 % of an autumn-sown vineyard cover crop (with perennial ryegrass and white clover) that, in unsprayed plots, cut powdery mildew by over 80 % and downy mildew slightly; cover crops in the same study reduced rain splash from the ground that carries spores (Hasanaliyeva et al. 2024). Mow high once around full bloom and leave the cuttings.',
-      de: 'Tiefwurzelnde, stickstoffbindende Leguminose der Kalkmagerrasen und hervorragende Bienenweide mit reichlich Nektar. Sie machte 43 % einer im Herbst gesäten Weinberg-Begrünung aus (mit Deutschem Weidelgras und Weißklee), die in unbehandelten Parzellen den Echten Mehltau um über 80 % und den Falschen Mehltau leicht senkte; Begrünungen verringerten in derselben Studie das Aufspritzen von Regentropfen, die Sporen vom Boden tragen (Hasanaliyeva et al. 2024). Um die Vollblüte einmal hoch mähen und das Schnittgut liegen lassen.'
+      en: 'Deep-rooted, nitrogen-fixing legume of dry limestone grassland and an outstanding bee plant with abundant nectar. It made up 43 % of an autumn-sown vineyard cover crop (with perennial ryegrass and white clover) that, in unsprayed plots, cut powdery mildew by over 80 % and downy mildew slightly; cover crops in the same study reduced rain splash from the ground that carries spores (Hasanaliyeva et al. 2024). Mow high once around full bloom and leave the cuttings. In species-rich vineyard covers it also works against the European grapevine moth, through natural enemies rather than scent: in Austrian vineyards, predation of moth pupae was about 10 % higher under species-rich than under species-poor cover crops (Reiff et al. 2021); this was shown for the cover, not for sainfoin alone.',
+      de: 'Tiefwurzelnde, stickstoffbindende Leguminose der Kalkmagerrasen und hervorragende Bienenweide mit reichlich Nektar. Sie machte 43 % einer im Herbst gesäten Weinberg-Begrünung aus (mit Deutschem Weidelgras und Weißklee), die in unbehandelten Parzellen den Echten Mehltau um über 80 % und den Falschen Mehltau leicht senkte; Begrünungen verringerten in derselben Studie das Aufspritzen von Regentropfen, die Sporen vom Boden tragen (Hasanaliyeva et al. 2024). Um die Vollblüte einmal hoch mähen und das Schnittgut liegen lassen. In artenreichen Weinbergbegrünungen wirkt sie auch gegen den Traubenwickler, und zwar über Nützlinge statt über Duft: In österreichischen Weinbergen wurden unter artenreicher Begrünung etwa 10 % mehr Puppen des Wicklers gefressen als unter artenarmer (Reiff et al. 2021); belegt ist das für die Begrünung, nicht für Esparsette allein.'
     },
     color: '#db2777',
     iconName: 'Flower',
@@ -4447,7 +4474,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Hasanaliyeva, G., Furiosi, M., Rossi, V., & Caffi, T. (2024). Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management. Frontiers in Plant Science, 15, 1498848. doi:10.3389/fpls.2024.1498848',
       'Tilley, D., Ogle, D., & St. John, L. (2008). Plant guide: Sainfoin, Onobrychis viciifolia. USDA NRCS Plant Materials Center, Aberdeen, ID. https://agresearch.montana.edu/wtarc/producerinfo/agronomy-nutrient-management/Sainfoin/NRCSPLantGuide.pdf',
-      'Government of Alberta (n.d.). Sainfoin. Alberta Agriculture. https://www.alberta.ca/sainfoin'
+      'Government of Alberta (n.d.). Sainfoin. Alberta Agriculture. https://www.alberta.ca/sainfoin',
+      'Reiff, J. M., Kolb, S., Entling, M. H., Herndl, T., Möth, S., Walzer, A., Kropf, M., Hoffmann, C., & Winter, S. (2021). Organic farming and cover-crop management reduce pest predation in Austrian vineyards. Insects, 12(3), 220. doi:10.3390/insects12030220'
     ]
   },
   {
@@ -4560,6 +4588,1188 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Iowa State University Extension and Outreach (n.d.). Seed inoculation. Integrated Crop Management Encyclopedia. https://crops.extension.iastate.edu/encyclopedia/seed-inoculation',
       'Lin, M.-H., Gresshoff, P. M., & Ferguson, B. J. (2012). Systemic regulation of soybean nodulation by acidic growth conditions. Plant Physiology, 160(4), 2028–2039. doi:10.1104/pp.112.204149',
       'Bauder, S. (2024). Delayed planting due to soil temperatures? SDSU Extension. https://extension.sdstate.edu/delayed-planting-due-soil-temperatures'
+    ]
+  },
+  {
+    id: 'plant-subterranean-clover',
+    climateZones: ['SUBTROPICAL'],
+    commonName: {
+      en: 'Subterranean Clover',
+      de: 'Bodenfrüchtiger Klee'
+    },
+    botanicalName: 'Trifolium subterraneum',
+    layer: 'GROUND_COVER',
+    roles: ['GRASS_BARRIER', 'NITROGEN_FIXER', 'LIVING_MULCH'],
+    seasonalActivity: {
+      activeSeasons: ['AUTUMN', 'WINTER', 'EARLY_SPRING', 'LATE_SPRING'],
+      floweringSeasons: ['LATE_SPRING'],
+      foliageSeasons: ['AUTUMN', 'WINTER', 'EARLY_SPRING', 'LATE_SPRING'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'SUMMER'],
+      harvestSeasons: ['LATE_SPRING']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.6,
+    maxDistanceM: 3.7,
+    spreadM: 0.4,
+    heightM: 0.2,
+    perennial: false,
+    notes: {
+      en: 'Low, self-reseeding cool-season annual legume: it grows from autumn to spring, flowers in late spring, pushes its seed burs into the soil and dies back naturally in early summer; the seeds germinate again in late summer. In a five-season trial in a Sicilian apricot orchard, subterranean clover cut weed biomass by 32-41 % on average (up to 86 % in some seasons) and shrank the weed seedbank by 40-57 % compared with tilled ground; the more clover biomass, the fewer weeds. In the same orchard it raised soil ammonium and nitrate. Young trees can suffer: kill it at least a year before planting peach trees; an Arkansas study advised sowing it between tree rows only from August of the trees\' second summer. Its flowers are inconspicuous, so it is not a bee plant. In Maryland tests it winter-killed when temperatures fell to about -9 °C or lower; suited to mild-winter regions (hardiness zone 7 and warmer).',
+      de: 'Niedrige, sich selbst aussäende einjährige Leguminose der kühlen Jahreszeit: Sie wächst von Herbst bis Frühjahr, blüht im späten Frühjahr, schiebt ihre Samenkletten in den Boden und stirbt im Frühsommer von selbst ab; im Spätsommer keimen die Samen erneut. In einem fünfjährigen Versuch in einer sizilianischen Aprikosenanlage senkte Bodenfrüchtiger Klee die Unkrautbiomasse im Mittel um 32-41 % (in einzelnen Jahren bis 86 %) und verkleinerte die Unkrautsamenbank um 40-57 % gegenüber bearbeitetem Boden; je mehr Kleebiomasse, desto weniger Unkraut. In derselben Anlage erhöhte er Ammonium und Nitrat im Boden. Junge Bäume können leiden: Den Klee mindestens ein Jahr vor dem Pflanzen von Pfirsichbäumen beseitigen; eine Studie aus Arkansas riet, ihn zwischen den Baumreihen erst ab August des zweiten Standjahres der Bäume einzusäen. Seine Blüten sind unscheinbar, er ist keine Bienenpflanze. In Versuchen in Maryland erfror er bei etwa -9 °C und kälter; geeignet für Regionen mit milden Wintern (Winterhärtezone 7 und wärmer).'
+    },
+    color: '#16a34a',
+    iconName: 'Shield',
+    imageUrl: '/images/plants/plant-subterranean-clover.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'SILT', 'CLAY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Thrives on soils of low to moderate fertility, from moderately acidic to slightly alkaline; common cultivars do best at pH 5.5-7.5, so lime soils below pH 5.5. In the apricot trial it grew on a clay soil of pH 8.0. Needs mild, moist winters and tolerates dry summers, during which it survives as seed.',
+      de: 'Gedeiht auf mäßig bis wenig fruchtbaren Böden von mäßig sauer bis schwach alkalisch; gängige Sorten wachsen am besten bei pH 5,5-7,5, Böden unter pH 5,5 daher kalken. Im Aprikosenversuch wuchs er auf einem Tonboden mit pH 8,0. Braucht milde, feuchte Winter und übersteht trockene Sommer als Samen.'
+    },
+    plantingTime: {
+      de: 'Spätsommer bis Frühherbst (Sep bis Anfang Okt) als Saatgut',
+      en: 'Late summer to early autumn (Sep to early Oct) by seed'
+    },
+    harvestTime: {
+      de: 'Spätes Frühjahr (Blüte, unscheinbar); keine Ernte',
+      en: 'Late spring (inconspicuous bloom); not harvested'
+    },
+    recommendedForTrees: ['tree-apricot', 'tree-fig'],
+    sources: [
+      'Restuccia, A., Scavo, A., Lombardo, S., Pandino, G., Fontanazza, S., Anastasi, U., Abbate, C., & Mauromicale, G. (2020). Long-term effect of cover crops on species abundance and diversity of weed flora. Plants, 9(11), 1506. doi:10.3390/plants9111506',
+      'Scavo, A., Restuccia, A., Abbate, C., Lombardo, S., Fontanazza, S., Pandino, G., Anastasi, U., & Mauromicale, G. (2021). Trifolium subterraneum cover cropping enhances soil fertility and weed seedbank dynamics in a Mediterranean apricot orchard. Agronomy for Sustainable Development, 41(6), 70. doi:10.1007/s13593-021-00721-z',
+      'SARE Outreach (2007). Subterranean clover. In Managing Cover Crops Profitably (3rd ed.). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/legume-cover-crops/subterranean-clover/'
+    ]
+  },
+  {
+    id: 'plant-ladys-mantle',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: "Lady's Mantle",
+      de: 'Gewöhnlicher Frauenmantel'
+    },
+    botanicalName: 'Alchemilla vulgaris',
+    layer: 'GROUND_COVER',
+    roles: ['GRASS_BARRIER', 'LIVING_MULCH'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['LATE_SPRING', 'SUMMER']
+    },
+    preferredZone: 'ZONE_2_MID',
+    preferredSector: 'EAST_MORNING',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.5,
+    maxDistanceM: 2.5,
+    spreadM: 0.75,
+    heightM: 0.3,
+    perennial: true,
+    notes: {
+      en: 'Clump-forming perennial with scallop-edged, light green leaves and greenish-yellow flowers from May to August. Planted in the tree rows of an organic apple orchard in Poland, it reduced weed numbers by 37 % in summer and weed cover by about 30 % compared with the natural cover; peppermint suppressed weeds more strongly. Its effect on the apple trees was not measured. In a New York field trial of 15 groundcover perennials, the related A. mollis was among the four most strongly weed-suppressive species. Where it is happy it self-seeds, sometimes aggressively; deadheading prevents this.',
+      de: 'Horstbildende Staude mit gewellt gelappten, hellgrünen Blättern und grünlich-gelben Blüten von Mai bis August. In die Baumreihen einer ökologischen Apfelanlage in Polen gepflanzt, senkte sie die Zahl der Unkräuter im Sommer um 37 % und den Unkrautdeckungsgrad um etwa 30 % gegenüber dem natürlichen Bewuchs; Pfefferminze unterdrückte Unkraut stärker. Die Wirkung auf die Apfelbäume wurde nicht gemessen. In einem Feldversuch in New York mit 15 Bodendecker-Stauden gehörte der verwandte Weiche Frauenmantel (A. mollis) zu den vier am stärksten unkrautunterdrückenden Arten. An zusagenden Standorten sät sie sich selbst aus, mitunter stark; Ausputzen nach der Blüte verhindert das.'
+    },
+    color: '#a3c43a',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-ladys-mantle.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'SILT'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Average, moist but well-drained soil in full sun to part shade (afternoon shade in full-sun sites). In the apple orchard trial it grew on a loamy sand with pH 6.2 in the semi-shade under the tree crowns.',
+      de: 'Durchschnittlicher, frischer, aber durchlässiger Boden in Sonne bis Halbschatten (an sonnigen Standorten Nachmittagsschatten). Im Apfelversuch wuchs sie auf lehmigem Sand mit pH 6,2 im Halbschatten unter den Baumkronen.'
+    },
+    plantingTime: {
+      de: 'Herbst (Sep–Okt) oder Frühjahr (Mär–Apr) als Jungpflanze',
+      en: 'Autumn (Sep–Oct) or spring (Mar–Apr) as young plants'
+    },
+    harvestTime: {
+      de: 'Mai bis August (Blüte)',
+      en: 'May to August (bloom)'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-plum'],
+    sources: [
+      'Golian, J., Anyszka, Z., & Kwiatkowska, J. (2023). Multifunctional living mulches for weeds control in organic apple orchards. Acta Scientiarum Polonorum Hortorum Cultus, 22(2), 73–84. doi:10.24326/asphc.2023.4473',
+      'Eom, S. H., Senesac, A. F., Tsontakis-Bradley, I., & Weston, L. A. (2005). Evaluation of herbaceous perennials as weed suppressive groundcovers for use along roadsides or in landscapes. Journal of Environmental Horticulture, 23(4), 198–203. doi:10.24266/0738-2898-23.4.198',
+      "Chicago Botanic Garden (n.d.). Alchemilla vulgaris (Lady's-mantle). Plant Finder. https://www.chicagobotanic.org/plant-information/plant-finder/alchemilla-vulgaris-ladys-mantle"
+    ]
+  },
+  {
+    id: 'plant-creeping-phlox',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Creeping Phlox',
+      de: 'Polster-Phlox'
+    },
+    botanicalName: 'Phlox subulata',
+    layer: 'GROUND_COVER',
+    roles: ['GRASS_BARRIER', 'LIVING_MULCH', 'POLLINATOR_MAGNET'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
+      harvestSeasons: ['EARLY_SPRING', 'LATE_SPRING']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.5,
+    maxDistanceM: 4.5,
+    spreadM: 0.6,
+    heightM: 0.15,
+    perennial: true,
+    notes: {
+      en: 'Dense, spreading mat of needle-like leaves, 10-15 cm tall, covered in pink, lavender, purple or white flowers in April and May, which attract bees and butterflies. In a field trial of 15 groundcover perennials at two New York sites it was one of four species that strongly suppressed weeds, both where weeds were removed and where they were left; suppression rose in the second year once the plants were established, mainly through dense foliage that shades the soil. The trial was on roadside and landscape plots, not under trees. Prefers full sun, so it belongs at the sunny outer edge of the tree basin. Cut back by half after flowering to keep it dense.',
+      de: 'Dichter, sich ausbreitender Teppich aus nadelartigen Blättern, 10-15 cm hoch, im April und Mai übersät mit rosa, lavendelfarbenen, purpurnen oder weißen Blüten, die Bienen und Schmetterlinge anlocken. In einem Feldversuch mit 15 Bodendecker-Stauden an zwei Standorten in New York gehörte er zu den vier Arten, die Unkraut stark unterdrückten, sowohl mit als auch ohne Unkrautentfernung; im zweiten Jahr, nach dem Einwachsen, stieg die Wirkung, vor allem durch dichtes, bodenbeschattendes Laub. Der Versuch lief auf Straßenrand- und Grünflächen, nicht unter Bäumen. Bevorzugt volle Sonne und gehört daher an den sonnigen Außenrand der Baumscheibe. Nach der Blüte um die Hälfte zurückschneiden, damit er dicht bleibt.'
+    },
+    color: '#c026d3',
+    iconName: 'Flower',
+    imageUrl: '/images/plants/plant-creeping-phlox.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Well-drained, humus-rich soil; tolerates sandy and rocky ground and acid to neutral pH. Moderately drought tolerant once established.',
+      de: 'Durchlässiger, humusreicher Boden; verträgt sandigen und steinigen Grund sowie saure bis neutrale Bodenreaktion. Eingewachsen mäßig trockenheitsverträglich.'
+    },
+    plantingTime: {
+      de: 'Frühjahr (Mär–Apr) oder Herbst (Sep–Okt) als Topfpflanze',
+      en: 'Spring (Mar–Apr) or autumn (Sep–Oct) as potted plants'
+    },
+    harvestTime: {
+      de: 'April bis Mai (Blüte)',
+      en: 'April to May (bloom)'
+    },
+    recommendedForTrees: ['tree-peach', 'tree-cherry', 'tree-seabuckthorn-star', 'vine-grape'],
+    sources: [
+      'Eom, S. H., Senesac, A. F., Tsontakis-Bradley, I., & Weston, L. A. (2005). Evaluation of herbaceous perennials as weed suppressive groundcovers for use along roadsides or in landscapes. Journal of Environmental Horticulture, 23(4), 198–203. doi:10.24266/0738-2898-23.4.198',
+      'NC State Extension (n.d.). Phlox subulata. NC Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/phlox-subulata/'
+    ]
+  },
+  {
+    id: 'plant-sorghum-sudangrass',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Sudangrass / Sorghum-Sudangrass',
+      de: 'Sudangras / Sorghum-Sudangras'
+    },
+    botanicalName: 'Sorghum × drummondii',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['SUMMER', 'AUTUMN'],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 4.5,
+    maxDistanceM: 7.0,
+    spreadM: 0.5,
+    heightM: 2.0,
+    perennial: false,
+    notes: {
+      en: 'Heat-loving annual grass grown as a green manure on the spot where a tree will be planted or replanted, or in the alley of a young orchard. In a US peach orchard with a history of peach tree short life, a sorghum green manure worked in before planting suppressed ring nematodes (Mesocriconema xenoplax) about as well as methyl bromide at first; under plastic with urea the effect lasted about 19 months, against 24 months for methyl bromide (Nyczepir & Rodriguez-Kabana 2007). In a vegetable field trial, Sudan grass and a sorghum-sudangrass hybrid grown as a summer cover crop and worked in green reduced root-knot nematodes (Meloidogyne) for the following crop: both are poor hosts and release hydrogen cyanide; in follow-up experiments the best results came from at most one month of growth and one month between incorporation and planting, and the effect was weaker on clay (Djian-Caporalino et al. 2019). Chop and work it in while still green and before frost, otherwise the nematode effect is lost. Its roots release sorgoleone, which suppresses weeds and has also suppressed tree seedlings in nursery tests, so do not grow it right next to young trees. Produces about 4.5 to 5.6 t/ha of dry matter; mowing whenever the stalks reach 0.9 to 1.2 m (leaving at least 15 cm stubble) increases root mass five- to eightfold. Caution: young, drought-stressed or frosted plants can cause prussic acid poisoning in grazing livestock.',
+      de: 'Wärmeliebendes einjähriges Gras, das als Gründüngung auf dem Platz angebaut wird, an dem ein Baum gepflanzt oder nachgepflanzt werden soll, oder in der Fahrgasse einer jungen Anlage. In einer US-Pfirsichanlage mit Vorgeschichte von Peach Tree Short Life unterdrückte eine vor der Pflanzung eingearbeitete Sorghum-Gründüngung Ringnematoden (Mesocriconema xenoplax) anfangs etwa so gut wie Methylbromid; unter Folie mit Harnstoff hielt die Wirkung rund 19 Monate an, gegenüber 24 Monaten bei Methylbromid (Nyczepir & Rodriguez-Kabana 2007). In einem Gemüse-Feldversuch senkten Sudangras und eine Sorghum-Sudangras-Hybride als Sommer-Zwischenfrucht, grün eingearbeitet, die Wurzelgallenälchen (Meloidogyne) für die Folgekultur: Beide sind schlechte Wirte und setzen Blausäure frei; in Folgeversuchen wirkten höchstens ein Monat Wachstum und ein Monat zwischen Einarbeiten und Pflanzung am besten, auf Ton war die Wirkung schwächer (Djian-Caporalino et al. 2019). Grün und vor dem Frost häckseln und einarbeiten, sonst geht die Wirkung gegen Nematoden verloren. Die Wurzeln geben Sorgoleon ab, das Unkraut unterdrückt und in Baumschulversuchen auch Gehölzsämlinge hemmte, daher nicht direkt neben junge Bäume säen. Liefert etwa 4,5 bis 5,6 t/ha Trockenmasse; ein Schnitt, sobald die Halme 0,9 bis 1,2 m erreichen (mindestens 15 cm Stoppeln stehen lassen), steigert die Wurzelmasse auf das Fünf- bis Achtfache. Vorsicht: Junge, trockengestresste oder erfrorene Pflanzen können bei Weidetieren Blausäurevergiftungen auslösen.'
+    },
+    color: '#9a3412',
+    iconName: 'Sprout',
+    imageUrl: '/images/plants/plant-sorghum-sudangrass.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'SILT', 'CHALKY', 'CLAY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Tolerates pH 5.0 to 9.0 and low fertility but grows best on fertile, near-neutral soil and usually needs extra nitrogen for full growth. Once established it survives drought by going nearly dormant. Its nematode-trapping effect was weaker on clay than on sandy or sandy-loam soils.',
+      de: 'Verträgt pH 5,0 bis 9,0 und magere Böden, wächst aber am besten auf fruchtbaren, nahezu neutralen Böden und braucht für volles Wachstum meist zusätzlichen Stickstoff. Einmal etabliert, übersteht es Trockenheit, indem es fast in Ruhe geht. Die Fangwirkung gegen Nematoden war auf Ton schwächer als auf Sand- oder sandigen Lehmböden.'
+    },
+    plantingTime: {
+      de: 'Aussaat in warmen Boden (etwa 18-21 °C), Ende Mai bis Juli, spätestens sechs Wochen vor dem ersten Frost',
+      en: 'Sow into warm soil (about 18-21 °C), late May to July, at least six weeks before the first frost'
+    },
+    harvestTime: {
+      de: 'Jul-Okt: grün häckseln und einarbeiten, vor dem ersten Frost',
+      en: 'Jul-Oct: chop and work in while green, before the first frost'
+    },
+    recommendedForTrees: ['tree-peach'],
+    sources: [
+      'Nyczepir, A. P., & Rodriguez-Kabana, R. (2007). Preplant biofumigation with sorghum or methyl bromide compared for managing Criconemoides xenoplax in a young peach orchard. Plant Disease, 91(12), 1607–1611. doi:10.1094/PDIS-91-12-1607',
+      'Djian-Caporalino, C., Mateille, T., Bailly-Bechet, M., Marteu, N., Fazari, A., Bautheac, P., Raptopoulo, A., Van Duong, L., Tavoillot, J., Martiny, B., Goillon, C., & Castagnone-Sereno, P. (2019). Evaluating sorghums as green manure against root-knot nematodes. Crop Protection, 122, 142–150. doi:10.1016/j.cropro.2019.05.002',
+      'Clark, A. (Ed.) (2007). Sorghum sudangrass hybrids. In Managing Cover Crops Profitably (3rd ed., SARE Handbook Series 9). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/sorghum-sudangrass/'
+    ]
+  },
+  {
+    id: 'plant-chicory',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Chicory',
+      de: 'Gemeine Wegwarte'
+    },
+    botanicalName: 'Cichorium intybus',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['LATE_SPRING', 'SUMMER']
+    },
+    preferredZone: 'ZONE_2_MID',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 3.5,
+    spreadM: 0.5,
+    heightM: 1.5,
+    perennial: true,
+    notes: {
+      en: 'Deep-rooted perennial herb with a taproot. In a Danish field trial with 15N tracer placed at 0.4, 0.8 and 1.2 m depth, chicory took up relatively large amounts of nitrogen from deep soil (Pirhofer-Walzl et al. 2013). Forage herbs including chicory had higher concentrations of P, Mg, K and S (and Zn and B) than grasses and legumes (Pirhofer-Walzl et al. 2011), and on a New Zealand organic dairy farm chicory often had significantly more Mg, Mn, Cu, Zn, B, Co and Se than ryegrass and white clover (Harrington et al. 2006), so cut leaves return these minerals as mulch. In a UK grassland study chicory combined high pollinator visitation with good agronomic properties (Orford et al. 2016). Blue flowers July to October. Young leaves are edible but turn bitter and tough when mature.',
+      de: 'Tiefwurzelnde Staude mit Pfahlwurzel. In einem dänischen Feldversuch mit 15N-Markierung in 0,4, 0,8 und 1,2 m Tiefe nahm die Wegwarte verhältnismäßig viel Stickstoff aus dem Unterboden auf (Pirhofer-Walzl et al. 2013). Futterkräuter einschließlich Wegwarte hatten höhere Gehalte an P, Mg, K und S (sowie Zn und B) als Gräser und Leguminosen (Pirhofer-Walzl et al. 2011), und auf einem neuseeländischen Bio-Milchviehbetrieb enthielt die Wegwarte oft signifikant mehr Mg, Mn, Cu, Zn, B, Co und Se als Weidelgras und Weißklee (Harrington et al. 2006) – geschnittene Blätter geben diese Mineralstoffe als Mulch zurück. In einer britischen Grünlandstudie verband die Wegwarte hohe Bestäuberbesuche mit guten agronomischen Eigenschaften (Orford et al. 2016). Blaue Blüten Juli bis Oktober. Junge Blätter sind essbar, werden aber im Alter bitter und zäh.'
+    },
+    color: '#60a5fa',
+    iconName: 'Flower2',
+    imageUrl: '/images/plants/plant-chicory.webp',
+    suitableSoils: ['LOAM', 'CLAY', 'SANDY', 'CHALKY', 'SILT'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows on sandy, loamy and clay soils if well drained; prefers pH 5.5–7 and tolerates pH 4.5–8.3. Needs full sun and will not grow in shade.',
+      de: 'Wächst auf Sand-, Lehm- und Tonböden, sofern sie gut dräniert sind; bevorzugt pH 5,5–7 und verträgt pH 4,5–8,3. Braucht volle Sonne und wächst nicht im Schatten.'
+    },
+    plantingTime: {
+      de: 'Direktsaat Mai bis Juni',
+      en: 'Sow in situ May to June'
+    },
+    harvestTime: {
+      de: 'Junge Blätter vor der Blüte (später bitter und zäh); Blüte Juli bis Oktober',
+      en: 'Young leaves before flowering (bitter and tough later); flowers July to October'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-cherry', 'tree-plum', 'tree-quince', 'tree-mulberry'],
+    sources: [
+      'Pirhofer-Walzl, K., Eriksen, J., Rasmussen, J., Høgh-Jensen, H., Søegaard, K., & Rasmussen, J. (2013). Effect of four plant species on soil 15N-access and herbage yield in temporary agricultural grasslands. Plant and Soil, 371(1–2), 313–325. doi:10.1007/s11104-013-1694-0',
+      'Pirhofer-Walzl, K., Søegaard, K., Høgh-Jensen, H., Eriksen, J., Sanderson, M. A., Rasmussen, J., & Rasmussen, J. (2011). Forage herbs improve mineral composition of grassland herbage. Grass and Forage Science, 66(3), 415–423. doi:10.1111/j.1365-2494.2011.00799.x',
+      'Harrington, K. C., Thatcher, A., & Kemp, P. D. (2006). Mineral composition and nutritive value of some common pasture weeds. New Zealand Plant Protection, 59, 261–265. doi:10.30843/nzpp.2006.59.4414',
+      'Orford, K. A., Murray, P. J., Vaughan, I. P., & Memmott, J. (2016). Modest enhancements to conventional grassland diversity improve the provision of pollination services. Journal of Applied Ecology, 53(3), 906–915. doi:10.1111/1365-2664.12608',
+      'Plants For A Future (n.d.). Cichorium intybus – Chicory. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Cichorium+intybus'
+    ]
+  },
+  {
+    id: 'plant-ribwort-plantain',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Ribwort Plantain',
+      de: 'Spitzwegerich'
+    },
+    botanicalName: 'Plantago lanceolata',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'EARLY_SPRING'],
+      harvestSeasons: ['LATE_SPRING', 'SUMMER']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.0,
+    spreadM: 0.2,
+    heightM: 0.5,
+    perennial: true,
+    notes: {
+      en: 'Perennial pasture herb with a fibrous root system (not a deep taproot). It is valued for mineral-rich leaves: on a New Zealand organic dairy farm narrow-leaved plantain often had significantly more Mg, Mn, Cu, Zn, B, Co and Se than ryegrass and white clover (Harrington et al. 2006), and in a Danish trial forage herbs including plantain had higher P, Mg, K and S than grasses and legumes (Pirhofer-Walzl et al. 2011). Cut leaves return these minerals as mulch. Caution: ribwort plantain is the summer host of the rosy apple aphid (Dysaphis plantaginea), a key pest of apple (Blommers et al. 2004), so do not plant it under apple. A common lawn weed; flowers April to August.',
+      de: 'Ausdauerndes Weidekraut mit Faserwurzelsystem (keine tiefe Pfahlwurzel). Geschätzt wegen seiner mineralstoffreichen Blätter: Auf einem neuseeländischen Bio-Milchviehbetrieb enthielt Spitzwegerich oft signifikant mehr Mg, Mn, Cu, Zn, B, Co und Se als Weidelgras und Weißklee (Harrington et al. 2006), und in einem dänischen Versuch hatten Futterkräuter einschließlich Spitzwegerich höhere P-, Mg-, K- und S-Gehalte als Gräser und Leguminosen (Pirhofer-Walzl et al. 2011). Geschnittene Blätter geben diese Mineralstoffe als Mulch zurück. Achtung: Spitzwegerich ist der Sommerwirt der Mehligen Apfelblattlaus (Dysaphis plantaginea), eines Hauptschädlings des Apfels (Blommers et al. 2004) – daher nicht unter Apfelbäume pflanzen. Häufiges Rasenunkraut; Blüte April bis August.'
+    },
+    color: '#4d7c0f',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-ribwort-plantain.webp',
+    suitableSoils: ['LOAM', 'CLAY', 'SANDY', 'CHALKY', 'SILT'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows on sandy, loamy and clay soils, including nutrient-poor ground; prefers neutral to basic soils and tolerates very alkaline ones. Needs sun and will not grow in shade.',
+      de: 'Wächst auf Sand-, Lehm- und Tonböden, auch auf nährstoffarmen Standorten; bevorzugt neutrale bis basische Böden und verträgt auch stark alkalische. Braucht Sonne und wächst nicht im Schatten.'
+    },
+    plantingTime: {
+      de: 'Direktsaat Mitte bis Ende Frühling (Apr–Mai)',
+      en: 'Sow in situ in mid to late spring (Apr–May)'
+    },
+    harvestTime: {
+      de: 'Blütezeit April bis August (hier nicht als Nahrungspflanze geführt)',
+      en: 'Bloom April to August (not listed here as a food plant)'
+    },
+    recommendedForTrees: ['tree-cherry', 'tree-plum', 'tree-mulberry'],
+    sources: [
+      'Harrington, K. C., Thatcher, A., & Kemp, P. D. (2006). Mineral composition and nutritive value of some common pasture weeds. New Zealand Plant Protection, 59, 261–265. doi:10.30843/nzpp.2006.59.4414',
+      'Pirhofer-Walzl, K., Søegaard, K., Høgh-Jensen, H., Eriksen, J., Sanderson, M. A., Rasmussen, J., & Rasmussen, J. (2011). Forage herbs improve mineral composition of grassland herbage. Grass and Forage Science, 66(3), 415–423. doi:10.1111/j.1365-2494.2011.00799.x',
+      'Blommers, L. H. M., Helsen, H. H. M., & Vaal, F. W. N. M. (2004). Life history data of the rosy apple aphid Dysaphis plantaginea (Pass.) (Homopt., Aphididae) on plantain and as migrant to apple. Journal of Pest Science, 77(3), 155–163. doi:10.1007/s10340-004-0046-5',
+      'Plants For A Future (n.d.). Plantago lanceolata – Ribwort Plantain. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Plantago+lanceolata'
+    ]
+  },
+  {
+    id: 'plant-salad-burnet',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Salad Burnet',
+      de: 'Kleiner Wiesenknopf'
+    },
+    botanicalName: 'Sanguisorba minor',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      chopAndDropSeasons: ['SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
+      harvestSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'AUTUMN', 'WINTER']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 3.5,
+    spreadM: 0.3,
+    heightM: 0.6,
+    perennial: true,
+    notes: {
+      en: 'Evergreen perennial herb of calcareous grassland. In a two-year Danish field trial, the forage herbs chicory, plantain, caraway and salad burnet in general had higher concentrations of P, Mg, K and S and of Zn and B than grasses and legumes (Pirhofer-Walzl et al. 2011), so cuttings return these minerals as mulch. Supplies fresh, cucumber-flavoured leaves all year, even in quite severe winters; for salad use, keep it from flowering. Flowers May to August. Often self-sows, sometimes to the point of nuisance.',
+      de: 'Immergrüne Staude kalkreicher Magerrasen. In einem zweijährigen dänischen Feldversuch hatten die Futterkräuter Wegwarte, Spitzwegerich, Kümmel und Kleiner Wiesenknopf insgesamt höhere Gehalte an P, Mg, K und S sowie an Zn und B als Gräser und Leguminosen (Pirhofer-Walzl et al. 2011) – Schnittgut gibt diese Mineralstoffe als Mulch zurück. Liefert das ganze Jahr frische, gurkenartig schmeckende Blätter, selbst in recht strengen Wintern; für die Salaternte am Blühen hindern. Blüte Mai bis August. Sät sich oft selbst aus, mitunter lästig stark.'
+    },
+    color: '#9f1239',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-salad-burnet.webp',
+    suitableSoils: ['CHALKY', 'SANDY', 'LOAM', 'SILT'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Prefers light, dry, calcareous soil but succeeds in most good soils and also on poor ground; tolerates very alkaline soils. Dislikes shade.',
+      de: 'Bevorzugt leichten, trockenen, kalkhaltigen Boden, gedeiht aber in den meisten guten Böden und auch auf mageren Standorten; verträgt stark alkalische Böden. Meidet Schatten.'
+    },
+    plantingTime: {
+      de: 'Aussaat März/April oder September/Oktober; Teilung im Frühjahr',
+      en: 'Sow March/April or September/October; divide in spring'
+    },
+    harvestTime: {
+      de: 'Blätter ganzjährig, am besten vor der Blüte; Blüte Mai bis August',
+      en: 'Leaves all year, best before flowering; flowers May to August'
+    },
+    recommendedForTrees: ['tree-apricot', 'tree-peach', 'vine-grape', 'tree-mulberry', 'tree-fig'],
+    sources: [
+      'Pirhofer-Walzl, K., Søegaard, K., Høgh-Jensen, H., Eriksen, J., Sanderson, M. A., Rasmussen, J., & Rasmussen, J. (2011). Forage herbs improve mineral composition of grassland herbage. Grass and Forage Science, 66(3), 415–423. doi:10.1111/j.1365-2494.2011.00799.x',
+      'Plants For A Future (n.d.). Sanguisorba minor – Salad Burnet. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Sanguisorba+minor'
+    ]
+  },
+  {
+    id: 'plant-buckwheat',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Buckwheat',
+      de: 'Echter Buchweizen'
+    },
+    botanicalName: 'Fagopyrum esculentum',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR', 'POLLINATOR_MAGNET', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.0,
+    spreadM: 0.3,
+    heightM: 0.8,
+    perennial: false,
+    notes: {
+      en: 'Fast summer annual and phosphorus mobiliser. In growth-chamber tests it took up nearly 10 times more P from rock phosphate than spring wheat, probably by acidifying its rhizosphere, and the authors suggest it to activate P in calcareous soils (Zhu et al. 2002). In a silty clay, calcium-bound P made up 72 % of the inorganic P that became available; buckwheat took up 40 kg P/ha versus 16 kg for wheat and left more available P behind (Teboh & Franzen 2011). Its dense fibrous roots sit in the top 25 cm and its residue releases the P to later crops as it breaks down. Flowering can start within three weeks of sowing and last up to 10 weeks; the flowers attract beneficial insects that attack aphids and mites, and honey bees made up at least 95 % of flower visitors in New York fields (Björkman 1995). Not frost tolerant. Mow no later than 10 days after flowering starts (about 6 weeks after sowing) to avoid volunteers.',
+      de: 'Schnellwüchsige Sommer-Einjährige, die Phosphor mobilisiert. In Klimakammerversuchen nahm Buchweizen fast 10-mal mehr P aus Rohphosphat auf als Sommerweizen, vermutlich durch Ansäuern der Rhizosphäre; die Autoren empfehlen ihn, um P in kalkreichen Böden zu erschließen (Zhu et al. 2002). In einem schluffigen Ton stammten 72 % des verfügbar gewordenen anorganischen P aus calciumgebundenem P; Buchweizen nahm 40 kg P/ha auf, Weizen 16 kg, und hinterließ mehr verfügbaren P (Teboh & Franzen 2011). Die dichten Faserwurzeln liegen in den oberen 25 cm, und die Pflanzenreste geben den P beim Abbau an Folgekulturen ab. Die Blüte kann drei Wochen nach der Saat beginnen und bis zu 10 Wochen dauern; die Blüten locken Nützlinge an, die Blattläuse und Milben angreifen, und Honigbienen stellten auf Feldern in New York mindestens 95 % der Blütenbesucher (Björkman 1995). Nicht frosthart. Spätestens 10 Tage nach Blühbeginn (etwa 6 Wochen nach der Saat) mähen, damit er sich nicht selbst aussät.'
+    },
+    color: '#e7e5e4',
+    iconName: 'Flower',
+    imageUrl: '/images/plants/plant-buckwheat.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'CHALKY', 'SILT', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Prefers dry sandy soils but succeeds on poor, heavy or acid soils; best at pH 5–6.5 (tolerates 4.4–7.5). Seeds rot if the soil is water-saturated even for a few hours, so avoid waterlogged spots.',
+      de: 'Bevorzugt trockene Sandböden, gedeiht aber auch auf mageren, schweren oder sauren Böden; am besten bei pH 5–6,5 (verträgt 4,4–7,5). Das Saatgut fault, wenn der Boden auch nur wenige Stunden wassergesättigt ist – Staunässe meiden.'
+    },
+    plantingTime: {
+      de: 'Direktsaat Mitte Frühling bis Frühsommer in warmen Boden (nach den Frösten)',
+      en: 'Sow in situ from mid-spring to early summer into warm soil (after frosts)'
+    },
+    harvestTime: {
+      de: 'Blüte ab etwa 3 Wochen nach der Saat, bis zu 10 Wochen lang (Jul–Sep); als Gründüngung ca. 6 Wochen nach der Saat mähen',
+      en: 'Flowers from about 3 weeks after sowing for up to 10 weeks (Jul–Sep); mow as green manure about 6 weeks after sowing'
+    },
+    recommendedForTrees: ['tree-apricot', 'tree-fig', 'tree-mulberry', 'tree-peach'],
+    sources: [
+      'Zhu, Y.-G., He, Y.-Q., Smith, S. E., & Smith, F. A. (2002). Buckwheat (Fagopyrum esculentum Moench) has high capacity to take up phosphorus (P) from a calcium (Ca)-bound source. Plant and Soil, 239(1), 1–8. doi:10.1023/A:1014958029905',
+      'Teboh, J. M., & Franzen, D. W. (2011). Buckwheat (Fagopyrum esculentum Moench) potential to contribute solubilized soil phosphorus to subsequent crops. Communications in Soil Science and Plant Analysis, 42(13), 1544–1550. doi:10.1080/00103624.2011.581724',
+      'Björkman, T. (1995). Role of honey bees (Hymenoptera: Apidae) in the pollination of buckwheat in eastern North America. Journal of Economic Entomology, 88(6), 1739–1745. doi:10.1093/jee/88.6.1739',
+      'eOrganic (2009). Buckwheat for cover cropping in organic farming (adapted from Clark, A. (Ed.) (2007). Managing cover crops profitably, 3rd ed. SARE). https://eorganic.org/node/467',
+      'Björkman, T., Bellinder, R. R., Hahn, R. R., & Shail, J. W. (2008). Buckwheat cover crop handbook. Cornell University, Geneva, NY. http://www.hort.cornell.edu/bjorkman/lab/covercrops/pdf/bwbrochure.pdf',
+      'Plants For A Future (n.d.). Fagopyrum esculentum – Buckwheat. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Fagopyrum+esculentum'
+    ]
+  },
+  {
+    id: 'plant-phacelia',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Lacy Phacelia',
+      de: 'Rainfarn-Phazelie (Büschelschön)'
+    },
+    botanicalName: 'Phacelia tanacetifolia',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR', 'POLLINATOR_MAGNET', 'BIOMASS_PRODUCER', 'ANTIFUNGAL'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['AUTUMN', 'WINTER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER', 'EARLY_SPRING'],
+      harvestSeasons: ['SUMMER', 'AUTUMN', 'LATE_SPRING']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.0,
+    spreadM: 0.3,
+    heightM: 0.6,
+    perennial: false,
+    notes: {
+      en: 'Annual green manure and bee plant. In a three-year field trial on a P-poor loamy sand in north-east Germany, phacelia as a catch crop significantly increased the P uptake of the following crops and the P content of the soil, with an effect comparable to manure, compost or mineral P fertiliser, whereas ryegrass reduced P availability (Eichler-Löbermann et al. 2008). In a New Zealand Chardonnay vineyard, inter-row phacelia mulched in place in winter raised soil moisture and soil biological activity, sped up the breakdown of vine debris, reduced Botrytis cinerea inoculum on that debris and lowered bunch rot severity at flowering and harvest (Jacometti et al. 2007). An outstanding bee plant: plots in England sown from early May to late July reached peak densities of more than 2,000 to 4,000 flowers and over 20 bees per m², flowered from early July until the December frosts, and honey bees and eight bumblebee species foraged on them mostly for nectar (Williams & Christian 1991); hoverflies visit it too, and frost at about -8 °C kills it (Smither-Kopperl 2018). Sequential sowings feed pollinators after crops have finished flowering (Carreck & Williams 2002). A prolific self-seeder that can become weedy. It hosts Sclerotinia minor and Rhizoctonia solani, so do not grow it next to crops that suffer from these pathogens.',
+      de: 'Einjährige Gründüngung und Bienenpflanze. In einem dreijährigen Feldversuch auf P-armem lehmigem Sand in Nordostdeutschland steigerte Phazelie als Zwischenfrucht die P-Aufnahme der Folgekulturen und den P-Gehalt im Boden signifikant, vergleichbar mit Stallmist, Kompost oder mineralischem P-Dünger, während Weidelgras die P-Verfügbarkeit senkte (Eichler-Löbermann et al. 2008). In einem neuseeländischen Chardonnay-Weinberg erhöhte im Winter vor Ort gemulchte Phazelie in der Fahrgasse Bodenfeuchte und Bodenleben, beschleunigte den Abbau von Rebresten, verringerte das Botrytis-cinerea-Inokulum auf diesen Resten und senkte die Traubenfäule zur Blüte und zur Ernte (Jacometti et al. 2007). Hervorragende Bienenweide: Von Anfang Mai bis Ende Juli gesäte Versuchsflächen in England erreichten zur Spitzenzeit über 2.000 bis 4.000 Blüten und über 20 Bienen pro m², blühten von Anfang Juli bis zu den Dezemberfrösten, und Honigbienen und acht Hummelarten sammelten dort überwiegend Nektar (Williams & Christian 1991); auch Schwebfliegen besuchen sie, und Frost um -8 °C tötet sie ab (Smither-Kopperl 2018). Gestaffelte Aussaaten versorgen Bestäuber, wenn die Kulturen verblüht sind (Carreck & Williams 2002). Sät sich reichlich selbst aus und kann verunkrauten. Sie ist Wirt von Sclerotinia minor und Rhizoctonia solani, daher nicht neben Kulturen anbauen, die unter diesen Erregern leiden.'
+    },
+    color: '#8b5cf6',
+    iconName: 'Flower2',
+    imageUrl: '/images/plants/plant-phacelia.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'SILT', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Succeeds in any moderately fertile, well-drained soil in a sunny position, from mildly acid to mildly alkaline, and is drought-tolerant; it prefers well-drained sandy and gravelly ground and does not perform well under waterlogged conditions, so avoid wet, heavy clay.',
+      de: 'Gedeiht in jedem mäßig nährstoffreichen, gut dränierten Boden in sonniger Lage, von schwach sauer bis schwach alkalisch, und ist trockenheitsverträglich; bevorzugt gut dränierte Sand- und Kiesböden und gedeiht bei Staunässe schlecht, daher nassen, schweren Ton meiden.'
+    },
+    plantingTime: {
+      de: 'Direktsaat Ende Frühling (Mai) bis Hochsommer (Juli), gestaffelt; in der Rebgasse auch Frühjahr (Apr) oder Spätsommer (Aug), etwa 0,6 cm tief',
+      en: 'Sow in situ from late spring (May) to midsummer (July), in succession; in the vineyard inter-row also in spring (Apr) or late summer (Aug), about 0.6 cm deep'
+    },
+    harvestTime: {
+      de: 'Blüte Juni bis Oktober, bei Julisaat bis zum ersten Frost (nicht essbar); Spätsommersaat im Winter vor Ort mulchen',
+      en: 'Flowers June to October, from a July sowing until the first frost (not edible); mulch late-summer sowings in place in winter'
+    },
+    recommendedForTrees: ['tree-cherry', 'tree-peach', 'tree-apricot', 'vine-grape', 'tree-mulberry'],
+    sources: [
+      'Eichler-Löbermann, B., Köhne, S., Kowalski, B., & Schnug, E. (2008). Effect of catch cropping on phosphorus bioavailability in comparison to organic and inorganic fertilization. Journal of Plant Nutrition, 31(4), 659–676. doi:10.1080/01904160801926517',
+      'Jacometti, M. A., Wratten, S. D., & Walter, M. (2007). Enhancing ecosystem services in vineyards: using cover crops to decrease botrytis bunch rot severity. International Journal of Agricultural Sustainability, 5(4), 305–314. doi:10.1080/14735903.2007.9684830',
+      'Williams, I. H., & Christian, D. G. (1991). Observations on Phacelia tanacetifolia Bentham (Hydrophyllaceae) as a food plant for honey bees and bumble bees. Journal of Apicultural Research, 30(1), 3–12. doi:10.1080/00218839.1991.11101227',
+      'Carreck, N. L., & Williams, I. H. (2002). Food for insect pollinators on farmland: insect visits to flowers of annual seed mixtures. Journal of Insect Conservation, 6(1), 13–23. doi:10.1023/A:1015764925536',
+      'Smither-Kopperl, M. (2018). Plant guide for lacy phacelia (Phacelia tanacetifolia). USDA-Natural Resources Conservation Service, Lockeford Plant Materials Center, Lockeford, CA. https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_phta.pdf',
+      'Plants For A Future (n.d.). Phacelia tanacetifolia – Fiddleneck, Lacy phacelia. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Phacelia+tanacetifolia'
+    ]
+  },
+  {
+    id: 'plant-fodder-radish',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Fodder Radish (Oilseed Radish)',
+      de: 'Ölrettich'
+    },
+    botanicalName: 'Raphanus sativus var. oleiformis',
+    layer: 'HERBACEOUS',
+    roles: ['DYNAMIC_ACCUMULATOR', 'BIOMASS_PRODUCER', 'ANTIFUNGAL'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['AUTUMN', 'SUMMER'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['AUTUMN', 'SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['SUMMER', 'LATE_SPRING'],
+      harvestSeasons: ['AUTUMN', 'SUMMER']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.5,
+    maxDistanceM: 4.5,
+    spreadM: 0.3,
+    heightM: 0.9,
+    perennial: false,
+    notes: {
+      en: 'Catch crop and biofumigation green manure with very deep roots; its leaf rosette grows 0.6–0.9 m tall, and the flower stalks rise above it (SARE 2007; Jacobs 2012). In a Danish field study its roots went deeper than 2.4 m, against 0.6 m for Italian ryegrass and 1.1 m for winter rye, and it left only 18 kg nitrate-N/ha in the soil versus 87 kg under ryegrass; deep-rooted catch crops can recycle nitrogen that has leached into deeper layers (Kristensen & Thorup-Kristensen 2004). It reached 1 m depth after about 750 degree-days, and at 1.0–1.5 m it cut soil-water nitrate from 119 to 1.5 µg/L (Thorup-Kristensen 2001). Grown, chopped and worked in on the future planting site, it acts against apple replant disease: apple rootstocks planted after an incorporated oilseed radish crop grew 165 % more shoot mass than in untreated soil at one site, but not at a second site (Yim et al. 2016, 2017), and in greenhouse tests radish reduced later Rhizoctonia seedling disease of potato (Larkin & Griffin 2007). Effects are site-dependent and lower than with chemical soil fumigation. Freezing at about -7 °C (20 °F) kills it, and the residue releases nutrients to the next crop. Needs 60 days or more of growth; mow or till in mild autumns to prevent seed set, as it can become a weed.',
+      de: 'Zwischenfrucht und Biofumigations-Gründüngung mit sehr tiefen Wurzeln; die Blattrosette wird 0,6–0,9 m hoch, die Blütenstängel wachsen darüber hinaus (SARE 2007; Jacobs 2012). In einer dänischen Feldstudie wurzelte Ölrettich tiefer als 2,4 m (Welsches Weidelgras 0,6 m, Winterroggen 1,1 m) und hinterließ nur 18 kg Nitrat-N/ha im Boden, unter Weidelgras 87 kg; tiefwurzelnde Zwischenfrüchte können in tiefere Schichten ausgewaschenen Stickstoff zurückholen (Kristensen & Thorup-Kristensen 2004). Er erreichte 1 m Tiefe nach etwa 750 Gradtagen und senkte in 1,0–1,5 m Tiefe das Nitrat im Bodenwasser von 119 auf 1,5 µg/L (Thorup-Kristensen 2001). Auf dem künftigen Pflanzplatz angebaut, gehäckselt und eingearbeitet, wirkt er gegen die Apfel-Nachbaukrankheit: Apfelunterlagen wuchsen nach eingearbeitetem Ölrettich an einem Standort mit 165 % mehr Sprossmasse als im unbehandelten Boden, an einem zweiten Standort jedoch nicht (Yim et al. 2016, 2017), und im Gewächshaus verringerte Rettich eine spätere Rhizoctonia-Keimlingskrankheit an Kartoffeln (Larkin & Griffin 2007). Die Wirkung hängt vom Standort ab und ist schwächer als eine chemische Bodenentseuchung. Frost um etwa -7 °C (20 °F) lässt ihn absterben, und die Reste geben Nährstoffe an die Folgekultur ab. Braucht mindestens 60 Tage Wachstum; in milden Herbsten mähen oder einarbeiten, damit er keine Samen bildet, da er verunkrauten kann.'
+    },
+    color: '#a3e635',
+    iconName: 'Sprout',
+    imageUrl: '/images/plants/plant-fodder-radish.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY', 'CHALKY'],
+    unsuitableSoils: ['ACIDIC', 'CLAY'],
+    soilNotes: {
+      en: 'Prefers a rich, light, moist soil of neutral to mildly alkaline pH; dislikes very heavy or acid soils and needs water in dry spells. Like other brassica cover crops it grows best on well-drained soils of about pH 5.5–8.5 and poorly on badly drained ground, especially during establishment.',
+      de: 'Bevorzugt nährstoffreichen, leichten, frischen Boden mit neutralem bis schwach alkalischem pH; meidet sehr schwere oder saure Böden und braucht in Trockenphasen Wasser. Wie andere Kreuzblütler-Gründüngungen wächst er am besten auf gut drainierten Böden mit pH etwa 5,5–8,5 und schlecht auf schlecht drainierten Böden, besonders beim Auflaufen.'
+    },
+    plantingTime: {
+      de: 'Aussaat im August (mindestens 60 Tage vor starkem Frost); als Biofumigation auch im Frühjahr (Apr–Mai) auf dem künftigen Pflanzplatz',
+      en: 'Sow in August (at least 60 days before hard frost); for biofumigation also in spring (Apr–May) on the future planting site'
+    },
+    harvestTime: {
+      de: 'Herbst: in milden Herbsten vor der Samenbildung mähen; als Biofumigation zur Blüte häckseln und einarbeiten; stirbt bei etwa -7 °C ab (nicht als Nahrungspflanze geführt)',
+      en: 'Autumn: in mild autumns mow before seed set; for biofumigation chop and work in at flowering; killed at about -7 °C (not listed here as a food plant)'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-cherry'],
+    sources: [
+      'Kristensen, H. L., & Thorup-Kristensen, K. (2004). Root growth and nitrate uptake of three different catch crops in deep soil layers. Soil Science Society of America Journal, 68(2), 529–537. doi:10.2136/sssaj2004.5290',
+      'Thorup-Kristensen, K. (2001). Are differences in root growth of nitrogen catch crops important for their ability to reduce soil nitrate-N content, and how can this be measured? Plant and Soil, 230(2), 185–195. doi:10.1023/A:1010306425468',
+      'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016). Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease. Plant and Soil, 406(1–2), 389–408. doi:10.1007/s11104-016-2876-3',
+      'Yim, B., Nitt, H., Wrede, A., Jacquiod, S., Sørensen, S. J., Winkelmann, T., & Smalla, K. (2017). Effects of soil pre-treatment with Basamid granules, Brassica juncea, Raphanus sativus, and Tagetes patula on bacterial and fungal communities at two apple replant disease sites. Frontiers in Microbiology, 8, 1604. doi:10.3389/fmicb.2017.01604',
+      'Larkin, R. P., & Griffin, T. S. (2007). Control of soilborne potato diseases using Brassica green manures. Crop Protection, 26(7), 1067–1077. doi:10.1016/j.cropro.2006.10.004',
+      'SARE Outreach (2007). Brassicas and mustards (contributors: Chen, G., Clark, A., Kremen, A., Lawley, Y., Price, A., Stocking, L., & Weil, R.). In Managing Cover Crops Profitably (3rd ed.). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/brassicas-and-mustards/',
+      'Sundermeier, A. (2008). Oilseed radish cover crop (SAG-5). Ohio State University Extension. https://ohioline.osu.edu/factsheet/SAG-5',
+      'Jacobs, A. A. (2012). Plant guide for oilseed radish (Raphanus sativus L.). USDA-Natural Resources Conservation Service, Booneville Plant Materials Center, Booneville, AR. https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_rasa2.pdf',
+      'Plants For A Future (n.d.). Raphanus sativus – Radish. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Raphanus+sativus'
+    ]
+  },
+  {
+    id: 'plant-tithonia',
+    climateZones: ['SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Mexican Sunflower (Tithonia)',
+      de: 'Mexikanische Sonnenblume (Tithonie)'
+    },
+    botanicalName: 'Tithonia diversifolia',
+    layer: 'SHRUB',
+    roles: ['DYNAMIC_ACCUMULATOR', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      floweringSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      chopAndDropSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['SUMMER', 'AUTUMN', 'WINTER', 'EARLY_SPRING', 'LATE_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 3.0,
+    maxDistanceM: 8.0,
+    spreadM: 1.0,
+    heightM: 3.0,
+    perennial: true,
+    notes: {
+      en: 'Woody herb or shrub 1.2–3 m tall, grown as boundary hedges for cut-and-carry green manure. Its green leaves average about 3.5 % N, 0.37 % P and 4.1 % K of dry matter, a sole hedge yields about 1 kg dry biomass per metre per year, and the biomass decomposes rapidly; moving it to crops redistributes nutrients within the farm rather than adding new ones (Jama et al. 2000). 5 t/ha of leafy dry matter supplies about 159 kg N, 15 kg P, 161 kg K and 100 kg Ca per hectare (Orwa et al. 2009). Caution: an invasive plant and notorious environmental weed where introduced (Kriticos & Kriticos 2021); it flowers and seeds all year and its light seeds spread by wind, water and animals (Orwa et al. 2009). Cut before seed set and check local invasive-species rules before planting.',
+      de: 'Holzige Staude bzw. Strauch, 1,2–3 m hoch, als Randhecke für Schnitt-und-Trage-Gründüngung genutzt. Die grünen Blätter enthalten im Mittel etwa 3,5 % N, 0,37 % P und 4,1 % K in der Trockenmasse, eine reine Hecke liefert rund 1 kg Trockenmasse pro Meter und Jahr, und die Biomasse zersetzt sich schnell; das Umlagern auf die Kulturen verteilt Nährstoffe innerhalb des Betriebs um, statt neue zuzuführen (Jama et al. 2000). 5 t/ha Blatt-Trockenmasse liefern etwa 159 kg N, 15 kg P, 161 kg K und 100 kg Ca je Hektar (Orwa et al. 2009). Achtung: invasive Art und berüchtigtes Umweltunkraut außerhalb ihrer Heimat (Kriticos & Kriticos 2021); sie blüht und fruchtet ganzjährig, und die leichten Samen werden von Wind, Wasser und Tieren verbreitet (Orwa et al. 2009). Vor der Samenreife schneiden und vor dem Pflanzen die örtlichen Regeln zu invasiven Arten prüfen.'
+    },
+    color: '#f59e0b',
+    iconName: 'Flower2',
+    imageUrl: '/images/plants/plant-tithonia.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'CLAY', 'SILT', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Succeeds in any well-drained, moderately fertile soil in sun, including nutrient-poor soils; mildly acid to mildly alkaline. Best with 1,000–2,000 mm annual rainfall and mean temperatures of 15–31 °C; moderately drought-resistant.',
+      de: 'Gedeiht in jedem gut dränierten, mäßig nährstoffreichen Boden in Sonne, auch auf mageren Böden; schwach sauer bis schwach alkalisch. Am besten bei 1.000–2.000 mm Jahresniederschlag und 15–31 °C Jahresmitteltemperatur; mäßig trockenheitsresistent.'
+    },
+    plantingTime: {
+      de: 'Direktsaat an Ort und Stelle',
+      en: 'Sow in situ'
+    },
+    harvestTime: {
+      de: 'Ganzjährig blühend; Blätter und weiche Triebe regelmäßig vor der Samenreife schneiden (nicht essbar)',
+      en: 'Flowers all year; cut leaves and soft shoots regularly before seed set (not edible)'
+    },
+    recommendedForTrees: ['tree-tea-assamica', 'tree-fig'],
+    sources: [
+      'Jama, B., Palm, C. A., Buresh, R. J., Niang, A., Gachengo, C., Nziguheba, G., & Amadalo, B. (2000). Tithonia diversifolia as a green manure for soil fertility improvement in western Kenya: A review. Agroforestry Systems, 49(2), 201–221. doi:10.1023/A:1006339025728',
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Tithonia diversifolia. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Tithonia_diversifolia.PDF',
+      'Kriticos, J. M., & Kriticos, D. J. (2021). Pretty (and) invasive: The potential global distribution of Tithonia diversifolia under current and future climates. Invasive Plant Science and Management, 14(4), 205–213. doi:10.1017/inp.2021.29',
+      'Plants For A Future (n.d.). Tithonia diversifolia – Mexican Sunflower. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Tithonia+diversifolia'
+    ]
+  },
+  {
+    id: 'plant-gliricidia',
+    climateZones: ['SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Gliricidia / Madre de Cacao (Tea Shade Tree)',
+      de: 'Gliricidie / Madre de Cacao (Tee-Schattenbaum)'
+    },
+    botanicalName: 'Gliricidia sepium',
+    layer: 'SUB_CANOPY',
+    roles: ['NITROGEN_FIXER', 'DYNAMIC_ACCUMULATOR', 'BIOMASS_PRODUCER', 'POLLINATOR_MAGNET'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      floweringSeasons: ['WINTER', 'EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['SUMMER', 'AUTUMN'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['WINTER', 'EARLY_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 3.0,
+    maxDistanceM: 8.0,
+    spreadM: 4.0,
+    heightM: 6.0,
+    perennial: true,
+    notes: {
+      en: 'Nitrogen-fixing leguminous tree, widely grown as shade for tea, coffee and cocoa; its fine, feathery foliage gives light shade and it withstands repeated pruning (Orwa et al. 2009). The Tea Research Institute of Sri Lanka recommends applying its leaves and shoot tips to tea fields as green manure and mulch, adding nutrients and conserving soil moisture; first lopping 12–18 months after planting, then every 8–12 months before flowering (TRI 2018). About 80 % of the nitrogen in incorporated leaves was released within 4–5 weeks in a Sri Lankan field study (Herath et al. 2023). It produces much litter, recycles soil nutrients and has deep roots when mature; the flowers attract honey bees. Leaves fall below about 15 °C. Not edible: leaves, seeds and bark are toxic (used as a rodenticide). Pods burst and throw seeds up to 25 m, so it establishes readily on disturbed ground.',
+      de: 'Stickstoffbindender Leguminosenbaum, weit verbreitet als Schattenbaum für Tee, Kaffee und Kakao; das feine, gefiederte Laub wirft lichten Schatten, und er verträgt wiederholten Rückschnitt (Orwa et al. 2009). Das Tea Research Institute of Sri Lanka empfiehlt, Blätter und Triebspitzen als Gründüngung und Mulch in Teefelder zu bringen, was Nährstoffe zuführt und Bodenfeuchte hält; erster Schnitt 12–18 Monate nach der Pflanzung, danach alle 8–12 Monate vor der Blüte (TRI 2018). In einer Feldstudie in Sri Lanka wurden etwa 80 % des Stickstoffs eingearbeiteter Blätter innerhalb von 4–5 Wochen freigesetzt (Herath et al. 2023). Er liefert viel Streu, führt Bodennährstoffe zurück und wurzelt im Alter tief; die Blüten locken Honigbienen an. Unter etwa 15 °C wirft er das Laub ab. Nicht essbar: Blätter, Samen und Rinde sind giftig (als Rattengift genutzt). Die Hülsen springen auf und schleudern die Samen bis 25 m weit, daher etabliert er sich leicht auf gestörten Flächen.'
+    },
+    color: '#db2777',
+    iconName: 'Sprout',
+    imageUrl: '/images/plants/plant-gliricidia.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'SILT', 'CLAY', 'ACIDIC', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows on soils from pure sand to deep alluvial deposits; in much of its native range the soils are acidic (pH 4.5–6.2), over limestone slightly alkaline, but it does not tolerate very acidic soils. Needs 600–3,500 mm annual rainfall and mean temperatures of 15–30 °C.',
+      de: 'Wächst auf Böden von reinem Sand bis zu tiefgründigen Schwemmböden; im natürlichen Verbreitungsgebiet meist sauer (pH 4,5–6,2), über Kalkstein schwach alkalisch, verträgt aber keine sehr sauren Böden. Braucht 600–3.500 mm Jahresniederschlag und 15–30 °C Jahresmitteltemperatur.'
+    },
+    plantingTime: {
+      de: 'Setzstangen (Stumps) bei feuchtem Wetter pflanzen, innerhalb von 48 h nach dem Schnitt',
+      en: 'Plant stakes (stumps) in wet weather, within 48 h of cutting'
+    },
+    harvestTime: {
+      de: 'Schnitt alle 8–12 Monate, jeweils vor der Blüte (nicht essbar)',
+      en: 'Lop every 8–12 months, before flowering (not edible)'
+    },
+    recommendedForTrees: ['tree-tea-assamica'],
+    sources: [
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Gliricidia sepium. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Gliricidia_sepium.PDF',
+      'Tea Research Institute of Sri Lanka (2018). Guidelines for establishment of energy plantations with Gliricidia sepium and Calliandra calothrysus (Guideline No. 04/2018). TRI, Talawakelle. https://www.tri.lk/wp-content/uploads/2023/05/TRISL_Guideline_04_2018_E.pdf',
+      'Herath, U. S., Wickramasinghe, W. M. D. M., Rankoth, L. M., & Egodawatta, W. C. P. (2023). Decomposition and nitrogen mineralization of Gliricidia sepium leaf green manure under diverse nutrient management strategies in irrigated lowland rice cropping systems in Sri Lanka. Tropical Agricultural Research and Extension, 26(3), 162–179. doi:10.4038/tare.v26i3.5648'
+    ]
+  },
+  {
+    id: 'plant-basil',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Sweet Basil',
+      de: 'Basilikum'
+    },
+    botanicalName: 'Ocimum basilicum',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
+      plantingSeasons: ['LATE_SPRING'],
+      harvestSeasons: ['SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.5,
+    spreadM: 0.3,
+    heightM: 0.45,
+    perennial: false,
+    notes: {
+      en: 'Tender, aromatic annual herb. Sown between the tree rows of a Chinese apple orchard, basil lowered the number of spirea aphids (Aphis citricola) on the trees compared with natural vegetation, mainly by shifting the balance between the aphids and their predators (Song et al. 2013); as part of an aromatic-plant intercrop it also lowered herbivore numbers in apple (Song et al. 2012), and in a pear orchard it was one of five aromatic intercrops that all lowered pest numbers (Song et al. 2010). In a French apple orchard, rosy apple aphid colonies close to potted basil were fewer and spread less in the second year, but not in the first (Rizzi et al. 2025). Basil does not protect against codling moth: in a field trial it raised parasitism but did not reduce moth numbers or fruit damage (Laffon et al. 2022). Plant it after the frosts in a sunny spot near the drip line and renew it every year.',
+      de: 'Frostempfindliches, aromatisches einjähriges Kraut. Zwischen den Baumreihen einer chinesischen Apfelanlage gesät, senkte Basilikum die Zahl der Grünen Apfelblattläuse (Aphis citricola) an den Bäumen gegenüber natürlichem Bewuchs, vor allem indem es das Verhältnis zwischen Blattläusen und ihren Räubern verschob (Song et al. 2013); als Teil einer Duftpflanzen-Zwischenkultur senkte es auch die Zahl der Pflanzenfresser im Apfel (Song et al. 2012), und in einer Birnenanlage war es eine von fünf Duftpflanzen-Zwischenkulturen, die alle die Schädlingszahlen senkten (Song et al. 2010). In einer französischen Apfelanlage gab es im zweiten Versuchsjahr nahe Basilikum-Töpfen weniger und kleinere Kolonien der Mehligen Apfelblattlaus, im ersten Jahr nicht (Rizzi et al. 2025). Gegen den Apfelwickler hilft Basilikum nicht: Im Feldversuch stieg zwar die Parasitierung, Wicklerzahl und Fruchtschäden sanken aber nicht (Laffon et al. 2022). Nach den Frösten sonnig nahe der Traufkante pflanzen und jedes Jahr neu setzen.'
+    },
+    color: '#16a34a',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-basil.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY'],
+    unsuitableSoils: ['CLAY'],
+    soilNotes: {
+      en: 'Needs warm, fertile, moist but well-drained soil rich in organic matter and full sun; cold soil and nights around 10 °C stunt growth and blacken the leaves. Avoid cold, wet, heavy clay.',
+      de: 'Braucht warmen, nährstoffreichen, frischen, aber durchlässigen Boden mit viel organischer Substanz und volle Sonne; kalter Boden und Nächte um 10 °C hemmen das Wachstum und färben die Blätter schwarz. Kalten, nassen, schweren Ton meiden.'
+    },
+    plantingTime: {
+      de: 'Nach den Eisheiligen (Mitte Mai), Boden mindestens 15 °C',
+      en: 'After the last frost (mid-May), soil at least 15 °C'
+    },
+    harvestTime: {
+      de: 'Jun–Sep (Blätter und Triebspitzen laufend)',
+      en: 'Jun–Sep (leaves and shoot tips continuously)'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear'],
+    sources: [
+      'Song, B., Tang, G., Sang, X., Zhang, J., Yao, Y., & Wiggins, N. (2013). Intercropping with aromatic plants hindered the occurrence of Aphis citricola in an apple orchard system by shifting predator–prey abundances. Biocontrol Science and Technology, 23(4), 381–395. doi:10.1080/09583157.2013.763904',
+      'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2',
+      'Song, B., Zhang, J., Wiggins, N. L., Yao, Y., Tang, G., & Sang, X. (2012). Intercropping with aromatic plants decreases herbivore abundance, species richness, and shifts arthropod community trophic structure. Environmental Entomology, 41(4), 872–879. doi:10.1603/EN12053',
+      'Rizzi, L., Rafiq, M., Cabrol, M., Simon, S., Gomez, L., Lavigne, C., Franck, P., & Gautier, H. (2025). Effect of intercropping apple trees with basil (Ocimum basilicum) or French marigold (Tagetes patula) on the rosy apple aphid regulation (Dysaphis plantaginea) and the abundance of its natural enemies. Pest Management Science, 81(3), 1373–1383. doi:10.1002/ps.8538',
+      'Laffon, L., Bischoff, A., Gautier, H., Gilles, F., Gomez, L., Lescourret, F., & Franck, P. (2022). Conservation biological control of codling moth (Cydia pomonella): Effects of two aromatic plants, basil (Ocimum basilicum) and French marigolds (Tagetes patula). Insects, 13(10), 908. doi:10.3390/insects13100908',
+      'University of Illinois Extension (n.d.). Basil. Herb Gardening. https://extension.illinois.edu/herbs/basil',
+      'North Carolina Extension Gardener Plant Toolbox (n.d.). Ocimum basilicum. NC State Extension. https://plants.ces.ncsu.edu/plants/ocimum-basilicum/'
+    ]
+  },
+  {
+    id: 'plant-summer-savory',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Summer Savory',
+      de: 'Sommer-Bohnenkraut'
+    },
+    botanicalName: 'Satureja hortensis',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER', 'EDIBLE_UNDERSTORY', 'POLLINATOR_MAGNET'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
+      plantingSeasons: ['LATE_SPRING'],
+      harvestSeasons: ['SUMMER']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.5,
+    spreadM: 0.3,
+    heightM: 0.4,
+    perennial: false,
+    notes: {
+      en: 'Low, bushy annual culinary herb whose flowers are very attractive to bees. In a Chinese pear orchard, summer savory was one of five aromatic intercrops that all lowered the pest population compared with natural grass, and the decrease was particularly marked with savory (Song et al. 2010). In an organic apple orchard, a savory–ageratum–French marigold intercrop raised parasitoid numbers and lowered three leafroller species (Song et al. 2014; mixture, savory not tested alone). Sow after the frosts in a sunny strip near the drip line; cut leafy tops as the first buds appear.',
+      de: 'Niedriges, buschiges einjähriges Küchenkraut, dessen Blüten Bienen stark anlocken. In einer chinesischen Birnenanlage war Bohnenkraut eine von fünf Duftpflanzen-Zwischenkulturen, die alle den Schädlingsbestand gegenüber natürlichem Gras senkten; besonders deutlich war der Rückgang mit Bohnenkraut (Song et al. 2010). In einer Bio-Apfelanlage erhöhte eine Mischung aus Bohnenkraut, Leberbalsam und Studentenblume die Zahl der Schlupfwespen und senkte drei Wicklerarten (Song et al. 2014; Mischung, Bohnenkraut nicht einzeln getestet). Nach den Frösten in einen sonnigen Streifen nahe der Traufkante säen; beblätterte Triebspitzen schneiden, sobald sich die ersten Knospen zeigen.'
+    },
+    color: '#a78bfa',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-summer-savory.webp',
+    suitableSoils: ['LOAM', 'SILT', 'CHALKY'],
+    unsuitableSoils: ['CLAY'],
+    soilNotes: {
+      en: 'Prefers light, moist but well-drained, rather alkaline soil in full sun; it does not do well in damp soil or shade.',
+      de: 'Bevorzugt leichten, frischen, aber durchlässigen, eher kalkhaltigen Boden in voller Sonne; auf nassen Böden und im Schatten gedeiht es schlecht.'
+    },
+    plantingTime: {
+      de: 'Direktsaat nach den letzten Frösten (Mitte Mai); Lichtkeimer, nur flach säen',
+      en: 'Direct sow after the last frost (mid-May); needs light to germinate, sow shallow'
+    },
+    harvestTime: {
+      de: 'Jul–Aug (Triebspitzen bei Knospenbeginn)',
+      en: 'Jul–Aug (shoot tips as buds appear)'
+    },
+    recommendedForTrees: ['tree-pear', 'tree-apple'],
+    sources: [
+      'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2',
+      'Song, B., Jiao, H., Tang, G., & Yao, Y. (2014). Combining repellent and attractive aromatic plants to enhance biological control of three tortricid species (Lepidoptera: Tortricidae) in an apple orchard. Florida Entomologist, 97(4), 1679–1689. doi:10.1653/024.097.0442',
+      'University of Illinois Extension (n.d.). Savory: Summer. Herb Gardening. https://extension.illinois.edu/herbs/savory-summer',
+      'North Carolina Extension Gardener Plant Toolbox (n.d.). Satureja hortensis. NC State Extension. https://plants.ces.ncsu.edu/plants/satureja-hortensis/'
+    ]
+  },
+  {
+    id: 'plant-cornflower',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Cornflower',
+      de: 'Kornblume'
+    },
+    botanicalName: 'Centaurea cyanus',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER'],
+      plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
+      harvestSeasons: ['SUMMER', 'LATE_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.5,
+    maxDistanceM: 6.0,
+    spreadM: 0.3,
+    heightM: 0.6,
+    perennial: false,
+    notes: {
+      en: 'Hardy, cool-season annual with intense blue flowers. Intercropped between pear trees in China, cornflower gave one of the strongest drops in pest numbers among five aromatic plants and was the only one that also significantly changed the numbers of predators and parasitoids (Song et al. 2010). It is also part of the annual flower strip that cut cereal leaf beetle larvae by 40 % and leaf damage by 61 % in neighbouring Swiss wheat fields (Tschumi et al. 2015; seven-species mix). It self-seeds and naturalises easily; deadhead if you do not want it to spread.',
+      de: 'Winterharte einjährige Pflanze der kühlen Jahreszeit mit leuchtend blauen Blüten. Als Zwischenkultur zwischen Birnbäumen in China brachte die Kornblume einen der stärksten Rückgänge der Schädlingszahlen unter fünf Duftpflanzen und veränderte als einzige auch die Zahl der Räuber und Parasitoide signifikant (Song et al. 2010). Außerdem gehört sie zu dem einjährigen Blühstreifen, der in angrenzenden Schweizer Weizenfeldern die Larven des Getreidehähnchens um 40 % und den Blattfraß um 61 % senkte (Tschumi et al. 2015; Mischung aus sieben Arten). Sät sich leicht selbst aus und verwildert; Verblühtes abschneiden, wenn sie sich nicht ausbreiten soll.'
+    },
+    color: '#2563eb',
+    iconName: 'Flower2',
+    imageUrl: '/images/plants/plant-cornflower.webp',
+    suitableSoils: ['LOAM', 'SILT', 'CLAY', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Very adaptable: tolerates poor soils and needs no fertiliser; prefers medium-moist, well-drained soil in full sun to light shade. Too much shade makes the stems flop.',
+      de: 'Sehr anpassungsfähig: verträgt magere Böden und braucht keinen Dünger; bevorzugt mäßig frischen, durchlässigen Boden in Sonne bis lichtem Schatten. Zu viel Schatten lässt die Stängel umkippen.'
+    },
+    plantingTime: {
+      de: 'Vorziehen 6–8 Wochen vor dem letzten Frost (Mär–Apr) oder in milden Lagen Herbstsaat ins Freiland',
+      en: 'Start indoors 6–8 weeks before the last frost (Mar–Apr) or, in mild areas, sow outdoors in autumn'
+    },
+    harvestTime: {
+      de: 'Blüte Jun–Aug',
+      en: 'Flowers Jun–Aug'
+    },
+    recommendedForTrees: ['tree-pear'],
+    sources: [
+      'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2',
+      'Tschumi, M., Albrecht, M., Entling, M. H., & Jacot, K. (2015). High effectiveness of tailored flower strips in reducing pests and crop plant damage. Proceedings of the Royal Society B: Biological Sciences, 282(1814), 20151369. doi:10.1098/rspb.2015.1369',
+      'North Carolina Extension Gardener Plant Toolbox (n.d.). Centaurea cyanus. NC State Extension. https://plants.ces.ncsu.edu/plants/centaurea-cyanus/'
+    ]
+  },
+  {
+    id: 'plant-pot-marigold',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Pot Marigold (Calendula)',
+      de: 'Garten-Ringelblume'
+    },
+    botanicalName: 'Calendula officinalis',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER'],
+      plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
+      harvestSeasons: ['SUMMER', 'LATE_SPRING', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'TOLERANT',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.5,
+    spreadM: 0.4,
+    heightM: 0.45,
+    perennial: false,
+    notes: {
+      en: 'Easy annual from southern Europe with edible orange or yellow petals; not a true marigold (Tagetes). Sown in plots between the rows of a Chinese apple orchard, it attracted ladybirds, hoverflies and lacewings, and at the second aphid peak the trees in calendula plots carried significantly fewer spirea aphids (Aphis spiraecola) than in the other plots (Cai et al. 2021; single study). It can itself host aphids, whiteflies and powdery mildew. Reseeds in the garden. Listed as juglone-tolerant by Penn State and UW–Madison Extension (observation-based lists).',
+      de: 'Anspruchslose Einjährige aus Südeuropa mit essbaren orangefarbenen oder gelben Blütenblättern; keine Studentenblume (Tagetes). In Parzellen zwischen den Reihen einer chinesischen Apfelanlage gesät, lockte sie Marienkäfer, Schwebfliegen und Florfliegen an, und zum zweiten Blattlausgipfel trugen die Bäume in den Ringelblumen-Parzellen deutlich weniger Grüne Apfelblattläuse (Aphis spiraecola) als in den anderen Parzellen (Cai et al. 2021; Einzelstudie). Sie kann selbst Blattläuse, Weiße Fliegen und Echten Mehltau tragen. Sät sich im Garten selbst aus. Von Penn State und UW–Madison Extension als juglontolerant gelistet (Beobachtungslisten).'
+    },
+    color: '#f97316',
+    iconName: 'Flower2',
+    imageUrl: '/images/plants/plant-pot-marigold.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY', 'CLAY', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Easy in any well-drained, average, moderately fertile soil in full sun; flowers best without heavy fertilising and with moderate watering. Struggles in hot, dry summer weather.',
+      de: 'Gedeiht in jedem durchlässigen, durchschnittlichen, mäßig nährstoffreichen Boden in voller Sonne; blüht am besten ohne starke Düngung und bei mäßigem Gießen. Leidet in heißem, trockenem Sommerwetter.'
+    },
+    plantingTime: {
+      de: 'Direktsaat kurz vor dem letzten Frost (Apr–Mai), etwa 1 cm tief (Dunkelkeimer); Folgesaaten möglich',
+      en: 'Direct sow just before the last frost (Apr–May), about 1 cm deep (light inhibits germination); repeat sowings possible'
+    },
+    harvestTime: {
+      de: 'Blüte Jun–Okt (Blütenblätter laufend ernten)',
+      en: 'Flowers Jun–Oct (pick petals continuously)'
+    },
+    recommendedForTrees: ['tree-apple'],
+    sources: [
+      'Cai, Z., Ouyang, F., Zhang, X., Chen, J., Xiao, Y., Ge, F., & Zhang, J. (2021). Biological control of Aphis spiraecola (Hemiptera: Aphididae) using three different flowering plants in apple orchards. Journal of Economic Entomology, 114(3), 1128–1137. doi:10.1093/jee/toab064',
+      'Mahr, S. (2025). Calendula, Calendula officinalis (revised 7 Aug 2025). Wisconsin Horticulture, University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/calendula-calendula-officinalis/',
+      'North Carolina Extension Gardener Plant Toolbox (n.d.). Calendula officinalis. NC State Extension. https://plants.ces.ncsu.edu/plants/calendula-officinalis/',
+      'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
+      'Joy, A., Hudelson, B., & Jull, L. (2024). Black walnut toxicity (UW Plant Disease Facts D0021, last revised 28 Feb 2024). University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/black-walnut-toxicity/'
+    ]
+  },
+  {
+    id: 'plant-african-marigold',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'African Marigold',
+      de: 'Aufrechte Studentenblume'
+    },
+    botanicalName: 'Tagetes erecta',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['SUMMER', 'AUTUMN'],
+      plantingSeasons: ['LATE_SPRING'],
+      harvestSeasons: ['SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.6,
+    maxDistanceM: 3.0,
+    spreadM: 0.4,
+    heightM: 0.9,
+    perennial: false,
+    notes: {
+      en: 'Tall, tender annual from Mexico and Guatemala with large, mostly double flowers and fragrant leaves. Its odour repels the tea green leafhopper (reported as Empoasca flavescens), and in a Chinese tea field a push-pull intercrop of African marigold inside the tea with Flemingia macrophylla as the attractive pull plant had far fewer leafhoppers than tea without intercrop (Niu et al. 2022). The effect was measured for the combination, not for marigold alone. Not edible: the sap can cause skin rashes. It can host Verticillium wilt, so keep it out of the root zone of sea buckthorn and linden.',
+      de: 'Hohe, frostempfindliche Einjährige aus Mexiko und Guatemala mit großen, meist gefüllten Blüten und duftenden Blättern. Ihr Duft vertreibt die Grüne Teezikade (berichtet als Empoasca flavescens), und in einem chinesischen Teefeld hatte eine Push-Pull-Mischkultur aus Studentenblumen im Tee und Flemingia macrophylla als anlockender Pull-Pflanze weit weniger Zikaden als Tee ohne Zwischenkultur (Niu et al. 2022). Gemessen wurde die Kombination, nicht die Studentenblume allein. Nicht essbar: der Pflanzensaft kann Hautausschläge auslösen. Sie kann von der Verticillium-Welke befallen werden, daher nicht in den Wurzelbereich von Sanddorn und Linde pflanzen.'
+    },
+    color: '#eab308',
+    iconName: 'Sparkles',
+    imageUrl: '/images/plants/plant-african-marigold.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY', 'CLAY', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Tolerates clay, dry and acidic to alkaline soils but prefers evenly moist, well-drained soil in full sun with light afternoon shade; dislikes full shade. A light feeder; avoid waterlogging.',
+      de: 'Verträgt Ton, Trockenheit sowie saure bis kalkhaltige Böden, bevorzugt aber gleichmäßig frischen, durchlässigen Boden in voller Sonne mit leichtem Nachmittagsschatten; vollen Schatten mag sie nicht. Schwachzehrer; Staunässe vermeiden.'
+    },
+    plantingTime: {
+      de: 'Vorziehen ab Mär, auspflanzen nach den Eisheiligen (Mitte Mai)',
+      en: 'Start indoors from Mar, plant out after the last frost (mid-May)'
+    },
+    harvestTime: {
+      de: 'Blüte Jul–Okt',
+      en: 'Flowers Jul–Oct'
+    },
+    recommendedForTrees: ['tree-tea-sinensis', 'tree-tea-assamica'],
+    sources: [
+      'Niu, Y., Han, S., Wu, Z., Pan, C., Wang, M., Tang, Y., Zhang, Q.-H., Tan, G., & Han, B. (2022). A push-pull strategy for controlling the tea green leafhopper (Empoasca flavescens F.) using semiochemicals from Tagetes erecta and Flemingia macrophylla. Pest Management Science, 78(6), 2161–2172. doi:10.1002/ps.6840',
+      'North Carolina Extension Gardener Plant Toolbox (n.d.). Tagetes erecta. NC State Extension. https://plants.ces.ncsu.edu/plants/tagetes-erecta/',
+      'Mortensen, L. (n.d.). Marigolds. Wisconsin Horticulture, University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/marigolds/',
+      'Saleem, H., et al. (2026). Biogenic Fe2O3 nanoparticles enhance carotenoid pathway gene expression and suppress verticillium root rot in marigold (Tagetes erecta). BMC Plant Biology, 26, 1091. doi:10.1186/s12870-026-08901-3'
+    ]
+  },
+  {
+    id: 'plant-chinese-motherwort',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Chinese Motherwort',
+      de: 'Chinesisches Herzgespann'
+    },
+    botanicalName: 'Leonurus japonicus',
+    layer: 'HERBACEOUS',
+    roles: ['PEST_REPELLER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      plantingSeasons: ['LATE_SPRING', 'EARLY_SPRING'],
+      harvestSeasons: ['SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.8,
+    maxDistanceM: 3.0,
+    spreadM: 0.4,
+    heightM: 1.0,
+    perennial: false,
+    notes: {
+      en: 'Upright annual or biennial mint-family herb (30–120 cm) with whorls of white, pink or purplish-red flowers from June to September; a traditional Chinese medicinal plant, not a food. In two years of field trials in northern China, tea intercropped with it (as Leonurus artemisia) had significantly fewer tea green leafhoppers (Empoasca onukii); the second pest, a plant bug, was not reduced (Zhang et al. 2017). Besides Asia it is also recorded in Africa and the Americas; cut it before the seeds ripen to keep it from spreading.',
+      de: 'Aufrechtes ein- oder zweijähriges Lippenblütler-Kraut (30–120 cm) mit weißen, rosa oder purpurroten Blütenquirlen von Juni bis September; eine traditionelle chinesische Heilpflanze, kein Lebensmittel. In zweijährigen Feldversuchen in Nordchina hatte Tee mit dieser Zwischenkultur (als Leonurus artemisia) deutlich weniger Grüne Teezikaden (Empoasca onukii); der zweite Schädling, eine Weichwanze, ging nicht zurück (Zhang et al. 2017). Außer in Asien kommt sie auch in Afrika und Amerika vor; vor der Samenreife schneiden, damit sie sich nicht ausbreitet.'
+    },
+    color: '#c026d3',
+    iconName: 'Shield',
+    imageUrl: '/images/plants/plant-chinese-motherwort.webp',
+    suitableSoils: ['LOAM', 'SILT', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows wild in sunny places from sea level to 3,400 m and was tested between tea rows, i.e. on acidic tea-garden soil. No further horticultural soil data were found.',
+      de: 'Wächst wild an sonnigen Standorten vom Meeresspiegel bis 3.400 m und wurde zwischen Teereihen getestet, also auf saurem Teegartenboden. Weitere gärtnerische Bodenangaben wurden nicht gefunden.'
+    },
+    plantingTime: {
+      de: 'Aussaat Apr–Mai (Planungswert, keine Kulturanleitung gefunden)',
+      en: 'Sow Apr–May (planning value, no cultivation guide found)'
+    },
+    harvestTime: {
+      de: 'Blüte Jun–Sep; vor der Samenreife (Sep–Okt) schneiden',
+      en: 'Flowers Jun–Sep; cut before seeds ripen (Sep–Oct)'
+    },
+    recommendedForTrees: ['tree-tea-sinensis', 'tree-tea-assamica'],
+    sources: [
+      'Zhang, Z., Zhou, C., Xu, Y., Huang, X., Zhang, L., & Mu, W. (2017). Effects of intercropping tea with aromatic plants on population dynamics of arthropods in Chinese tea plantations. Journal of Pest Science, 90(1), 227–237. doi:10.1007/s10340-016-0783-2',
+      'Flora of China Editorial Committee (1994). Leonurus japonicus Houttuyn. Flora of China, Vol. 17, p. 163. Science Press & Missouri Botanical Garden Press. http://www.efloras.org/florataxon.aspx?flora_id=2&taxon_id=210000972',
+      'Qin, D., Zhang, L., Xiao, Q., Dietrich, C., & Matsumura, M. (2015). Clarification of the identity of the tea green leafhopper based on morphological comparison between Chinese and Japanese specimens. PLoS ONE, 10(9), e0139202. doi:10.1371/journal.pone.0139202'
+    ]
+  },
+  {
+    id: 'plant-indian-mustard',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Indian Mustard / Brown Mustard',
+      de: 'Sareptasenf / Brauner Senf'
+    },
+    botanicalName: 'Brassica juncea',
+    layer: 'HERBACEOUS',
+    roles: ['ANTIFUNGAL', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['AUTUMN', 'SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['SUMMER', 'LATE_SPRING'],
+      harvestSeasons: ['AUTUMN', 'SUMMER']
+    },
+    preferredZone: 'ZONE_2_MID',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.3,
+    maxDistanceM: 4.5,
+    spreadM: 0.3,
+    heightM: 1.8,
+    perennial: false,
+    notes: {
+      en: 'Biofumigation green manure for the planting site: grown, chopped and worked into the soil, its glucosinolates break down into volatile isothiocyanates. On replant-disease soil, apple rootstocks planted after an incorporated Indian mustard crop grew 148 % more shoot mass than in untreated soil at one site, but not at a second site (Yim et al. 2016, 2017). Grown as a living mixed crop beside young apple trees in replant soil (outdoor containers, two years), it raised tree dry weight by 26–32 %, increased soil fungal diversity and suppressed Fusarium (Zhao et al. 2022). In on-farm potato trials, an Indian mustard green manure reduced powdery scab compared with oats and common scab by 25 % compared with ryegrass, and in greenhouse tests it reduced later Rhizoctonia seedling disease (Larkin & Griffin 2007). Glucosinolate levels were highest in the flowers, so incorporate at flowering. Effects are site-dependent and lower than with chemical soil fumigation.',
+      de: 'Biofumigations-Gründüngung für den Pflanzplatz: angebaut, gehäckselt und eingearbeitet, zerfallen seine Glucosinolate zu flüchtigen Isothiocyanaten. Auf Böden mit Nachbaukrankheit wuchsen Apfelunterlagen nach eingearbeitetem Sareptasenf an einem Standort mit 148 % mehr Sprossmasse als im unbehandelten Boden, an einem zweiten Standort jedoch nicht (Yim et al. 2016, 2017). Als lebende Mischkultur neben jungen Apfelbäumen in Nachbauboden angebaut (Freiland-Container, zwei Jahre), erhöhte er die Trockenmasse der Bäume um 26–32 %, steigerte die Vielfalt der Bodenpilze und drängte Fusarium zurück (Zhao et al. 2022). In Praxisversuchen mit Kartoffeln senkte Sareptasenf als Gründüngung den Pulverschorf gegenüber Hafer und den Gewöhnlichen Schorf um 25 % gegenüber Weidelgras, und im Gewächshaus verringerte er eine spätere Rhizoctonia-Keimlingskrankheit (Larkin & Griffin 2007). Die Glucosinolatgehalte waren in den Blüten am höchsten, daher zur Blüte einarbeiten. Die Wirkung hängt vom Standort ab und ist schwächer als eine chemische Bodenentseuchung.'
+    },
+    color: '#ca8a04',
+    iconName: 'Sprout',
+    imageUrl: '/images/plants/plant-indian-mustard.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Brassica cover crops grow best on well-drained soils with a pH of about 5.5–8.5 and do poorly on poorly drained soils, especially during establishment.',
+      de: 'Kreuzblütler-Gründüngungen wachsen am besten auf gut drainierten Böden mit einem pH von etwa 5,5–8,5 und gedeihen auf schlecht drainierten Böden schlecht, besonders beim Auflaufen.'
+    },
+    plantingTime: {
+      de: 'Aussaat Spätsommer (Aug) oder Frühjahr (Apr–Mai) auf dem künftigen Pflanzplatz; zur Blüte häckseln und sofort einarbeiten',
+      en: 'Sow in late summer (Aug) or spring (Apr–May) on the future planting site; chop at flowering and work in immediately'
+    },
+    harvestTime: {
+      de: 'Nicht als Ernte gedacht; Blüte etwa Jul–Okt je nach Saattermin (Einarbeitungszeitpunkt)',
+      en: 'Not grown for harvest; flowers about Jul–Oct depending on sowing date (time to incorporate)'
+    },
+    recommendedForTrees: ['tree-apple'],
+    sources: [
+      'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016). Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease. Plant and Soil, 406(1–2), 389–408. doi:10.1007/s11104-016-2876-3',
+      'Yim, B., Nitt, H., Wrede, A., Jacquiod, S., Sørensen, S. J., Winkelmann, T., & Smalla, K. (2017). Effects of soil pre-treatment with Basamid granules, Brassica juncea, Raphanus sativus, and Tagetes patula on bacterial and fungal communities at two apple replant disease sites. Frontiers in Microbiology, 8, 1604. doi:10.3389/fmicb.2017.01604',
+      'Zhao, L., Wang, G., Liu, X., Chen, X., Shen, X., Yin, C., & Mao, Z. (2022). Control of apple replant disease using mixed cropping with Brassica juncea or Allium fistulosum. Agriculture, 12(1), 68. doi:10.3390/agriculture12010068',
+      'Larkin, R. P., & Griffin, T. S. (2007). Control of soilborne potato diseases using Brassica green manures. Crop Protection, 26(7), 1067–1077. doi:10.1016/j.cropro.2006.10.004',
+      'SARE Outreach (2007). Brassicas and mustards (contributors: Chen, G., Clark, A., Kremen, A., Lawley, Y., Price, A., Stocking, L., & Weil, R.). In Managing Cover Crops Profitably (3rd ed.). Sustainable Agriculture Research and Education. https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/brassicas-and-mustards/'
+    ]
+  },
+  {
+    id: 'plant-common-vetch',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Common Vetch',
+      de: 'Saat-Wicke / Futterwicke'
+    },
+    botanicalName: 'Vicia sativa',
+    layer: 'HERBACEOUS',
+    roles: ['ANTIFUNGAL', 'NITROGEN_FIXER', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
+      floweringSeasons: ['LATE_SPRING'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
+      chopAndDropSeasons: ['LATE_SPRING'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['EARLY_SPRING'],
+      harvestSeasons: ['LATE_SPRING']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.0,
+    maxDistanceM: 4.5,
+    spreadM: 0.5,
+    heightM: 0.6,
+    perennial: false,
+    notes: {
+      en: 'Annual cool-season legume with a prostrate, viny habit for the vineyard inter-row. In two organic vineyards in northern Italy over two years, a spring-sown cover of 92 % common vetch and 8 % mustard (Sinapis), chopped and worked in just before grapevine flowering, delayed downy and powdery mildew and, in plots without fungicide, reduced the season-long downy mildew level by 22 % and powdery mildew by 99 % compared with bare soil and natural grass; covers also cut rain splash that carries spores from the ground (Hasanaliyeva et al. 2024). Fixes nitrogen with Rhizobium leguminosarum bv. viciae. Cut at about 80 % bloom, before seed set: its hard seed can make it weedy. Caution: in a South African vineyard cover-crop trial, grazing vetch (a related vetch) appeared to be a good host of root-knot nematodes (Addison & Fourie 2008), so check for these nematodes before sowing vetch between vines.',
+      de: 'Einjährige Leguminose der kühlen Jahreszeit mit niederliegendem, rankendem Wuchs für die Rebgasse. In zwei Bio-Weinbergen in Norditalien verzögerte über zwei Jahre eine im Frühjahr gesäte Begrünung aus 92 % Saat-Wicke und 8 % Senf (Sinapis), die kurz vor der Rebblüte gehäckselt und eingearbeitet wurde, den Falschen und Echten Mehltau und senkte in Parzellen ohne Fungizid den Befall über die Saison beim Falschen Mehltau um 22 % und beim Echten Mehltau um 99 % gegenüber offenem Boden mit natürlichem Bewuchs; Begrünungen verringerten auch das Aufspritzen von Regentropfen, die Sporen vom Boden tragen (Hasanaliyeva et al. 2024). Bindet Stickstoff mit Rhizobium leguminosarum bv. viciae. Bei etwa 80 % Blüte und vor der Samenreife schneiden: Ihre hartschaligen Samen können sie zum Unkraut machen. Vorsicht: In einem südafrikanischen Weinberg-Begrünungsversuch erwies sich Zottelwicke (eine verwandte Wicke) als guter Wirt für Wurzelgallenälchen (Addison & Fourie 2008); vor der Aussaat zwischen Reben daher auf diese Nematoden prüfen.'
+    },
+    color: '#7e22ce',
+    iconName: 'Bean',
+    imageUrl: '/images/plants/plant-common-vetch.webp',
+    suitableSoils: ['LOAM', 'SILT', 'SANDY'],
+    unsuitableSoils: ['ACIDIC'],
+    soilNotes: {
+      en: 'Preferred soil pH 6.0–7.0. Inoculate seed with Rhizobium leguminosarum bv. viciae.',
+      de: 'Bevorzugter Boden-pH 6,0–7,0. Saatgut mit Rhizobium leguminosarum bv. viciae impfen.'
+    },
+    plantingTime: {
+      de: 'Aussaat Vorfrühling (Ende Feb–Anfang Mär), 2,5–5 cm tief',
+      en: 'Sow in late winter to early spring (late Feb–early Mar), 2.5–5 cm deep'
+    },
+    harvestTime: {
+      de: 'Kurz vor der Rebblüte (Mai–Jun), spätestens bei etwa 80 % Blüte, häckseln und einarbeiten (nicht essbar)',
+      en: 'Chop and work in just before grapevine flowering (May–Jun), at the latest at about 80 % bloom (not edible)'
+    },
+    recommendedForTrees: ['vine-grape'],
+    sources: [
+      'Hasanaliyeva, G., Furiosi, M., Rossi, V., & Caffi, T. (2024). Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management. Frontiers in Plant Science, 15, 1498848. doi:10.3389/fpls.2024.1498848',
+      'Southern Cover Crops Council (n.d.). Cover crop information sheet: Vetch, common (Vicia sativa). https://southerncovercrops.org/wp-content/uploads/2018/10/Vetch-Common-Row-Crop-CP.pdf',
+      'Addison, P., & Fourie, J. C. (2008). Cover crop management in vineyards of the Lower Orange River region, South Africa: 2. Effect on plant parasitic nematodes. South African Journal of Enology and Viticulture, 29(1), 26–32. doi:10.21548/29-1-1448'
+    ]
+  },
+  {
+    id: 'plant-garlic-chives',
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Garlic Chives / Chinese Chives',
+      de: 'Schnittknoblauch'
+    },
+    botanicalName: 'Allium tuberosum',
+    layer: 'BULB_ROOT',
+    roles: ['ANTIFUNGAL', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING'],
+      harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
+    },
+    preferredZone: 'ZONE_1_BULB',
+    preferredSector: 'EAST_MORNING',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 0.4,
+    maxDistanceM: 1.8,
+    spreadM: 0.45,
+    heightM: 0.45,
+    perennial: true,
+    notes: {
+      en: 'Clump-forming perennial allium whose flat leaves are used like chives. In South China, banana is intercropped and rotated with garlic chives against Fusarium wilt (Panama disease); in field trials in 2017 and 2018, intercropping with three garlic chive cultivars significantly reduced disease incidence and raised banana yield (Li et al. 2020). Its leaf and root volatiles (2-methyl-2-pentenal and organic sulfides) inhibited the fungus in the laboratory (Zhang et al. 2013). Protection of temperate fruit trees has not been tested. Caution: spreads aggressively by self-seeding and can become a weed, so cut the flower heads before seed set.',
+      de: 'Horstbildendes, ausdauerndes Lauchgewächs, dessen flache Blätter wie Schnittlauch verwendet werden. In Südchina werden Bananen gegen die Fusarium-Welke (Panamakrankheit) im Mischanbau und Fruchtwechsel mit Schnittknoblauch angebaut; in Feldversuchen 2017 und 2018 senkte der Mischanbau mit drei Schnittknoblauch-Sorten den Befall deutlich und erhöhte den Bananenertrag (Li et al. 2020). Duftstoffe aus Blättern und Wurzeln (2-Methyl-2-pentenal und organische Sulfide) hemmten den Pilz im Labor (Zhang et al. 2013). Ein Schutz von Obstbäumen gemäßigter Breiten wurde nicht geprüft. Vorsicht: sät sich stark selbst aus und kann verunkrauten, daher Blütenstände vor der Samenreife abschneiden.'
+    },
+    color: '#4ade80',
+    iconName: 'Shield',
+    imageUrl: '/images/plants/plant-garlic-chives.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'SILT', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Easily grown in average, dry to medium-moist, well-drained soil in full sun to part shade.',
+      de: 'Wächst problemlos in normalem, trockenem bis mäßig feuchtem, gut drainiertem Boden in voller Sonne bis Halbschatten.'
+    },
+    plantingTime: {
+      de: 'Frühjahr (Mär–Mai) durch Aussaat oder Horstteilung',
+      en: 'Spring (Mar–May) by seed or clump division'
+    },
+    harvestTime: {
+      de: 'Blätter Mai–Okt fortlaufend schneiden; Blüte Aug–Sep (weiß)',
+      en: 'Cut leaves continuously May–Oct; white flowers Aug–Sep'
+    },
+    recommendedForTrees: [
+      'tree-apple', 'tree-peach', 'tree-plum', 'tree-apricot', 'tree-cherry',
+      'shrub-blackcurrant', 'shrub-red-currant'
+    ],
+    sources: [
+      'Li, Z., Wang, T., He, C., Cheng, K., Zeng, R., & Song, Y. (2020). Control of Panama disease of banana by intercropping with Chinese chive (Allium tuberosum Rottler): cultivar differences. BMC Plant Biology, 20, 432. doi:10.1186/s12870-020-02640-9',
+      'Zhang, H., Mallik, A., & Zeng, R. S. (2013). Control of Panama disease of banana by rotating and intercropping with Chinese chive (Allium tuberosum Rottler): role of plant volatiles. Journal of Chemical Ecology, 39(2), 243–252. doi:10.1007/s10886-013-0243-x',
+      'Missouri Botanical Garden (n.d.). Allium tuberosum (garlic chives). Plant Finder. https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?kempercode=u770'
     ]
   }
 ];

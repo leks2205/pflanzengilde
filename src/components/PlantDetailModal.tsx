@@ -43,6 +43,14 @@ const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-nepal-alder': 'chop-plant-tea-shade-trees',
   'plant-albizia': 'chop-plant-tea-shade-trees',
   'tree-seabuckthorn-star': 'chop-plant-seabuckthorn',
+  'plant-sorghum-sudangrass': 'chop-plant-sorghum-sudangrass',
+  'plant-buckwheat': 'chop-plant-buckwheat',
+  'plant-phacelia': 'chop-plant-phacelia',
+  'plant-fodder-radish': 'chop-plant-fodder-radish',
+  'plant-indian-mustard': 'chop-plant-indian-mustard',
+  'plant-tithonia': 'chop-plant-tithonia',
+  'plant-gliricidia': 'chop-plant-gliricidia',
+  'plant-common-vetch': 'chop-plant-common-vetch',
 };
 
 const ROLE_ANCHOR_MAP: Record<string, string> = {

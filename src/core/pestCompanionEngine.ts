@@ -28,6 +28,11 @@ export interface PestDefenseRule {
   evidence: BadgeEvidenceLevel;
   citations: EvidenceCitation[];
   companionPlantIds: string[];
+  /**
+   * Weaker tier for single companions added to a rule on less evidence than its main companions
+   * (e.g. one field study). Omitted companions carry the rule's `evidence`.
+   */
+  companionEvidence?: Partial<Record<string, BadgeEvidenceLevel>>;
   scientificMechanism: LocalizedString;
   companionRoles: Record<string, LocalizedString>;
 }
@@ -62,6 +67,13 @@ const PLANT_ZONES = new Map(GUILD_PLANTS.map(p => [p.id, p.climateZones]));
 
 const growsInZone = (plantId: string, zone?: ClimateZone): boolean =>
   !zone || !!PLANT_ZONES.get(plantId)?.includes(zone);
+
+const companionEvidence = (rule: PestDefenseRule, plantId: string): BadgeEvidenceLevel =>
+  rule.companionEvidence?.[plantId] ?? rule.evidence;
+
+/** Strongest tier among the companions that count (e.g. those growing in the selected zone). */
+const strongestEvidence = (rule: PestDefenseRule, plantIds: string[]): BadgeEvidenceLevel =>
+  plantIds.some(id => companionEvidence(rule, id) === 'field-proven') ? 'field-proven' : 'scientific';
 
 const CAHENZLI_2019: EvidenceCitation = {
   label: 'Cahenzli et al. 2019, Agric. Ecosyst. Environ. 278:43–53 (organic apple orchards in 7 European countries)',
@@ -181,10 +193,10 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     starTreeIds: ['vine-grape'],
     evidence: 'scientific',
     citations: [HASANALIYEVA_2024],
-    companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
+    companionPlantIds: ['plant-white-clover', 'plant-sainfoin', 'plant-common-vetch'],
     scientificMechanism: {
-      en: 'In two organic vineyards over two years, an autumn-sown cover crop in the inter-rows (seed mix: perennial ryegrass 48 %, sainfoin 43 %, white clover 9 %) delayed the onset of downy mildew by about 3 weeks in unsprayed plots and reduced its seasonal severity by 12.5 %; in sprayed plots it gave no extra effect. In small-scale tests, a cover-crop canopy cut the rain-splash droplets escaping from the soil by 75–95 %, so fewer spores are splashed up from the ground. The cover was chopped and worked into the soil just before grape flowering. The effect comes from the dense cover as a whole, not from one species.',
-      de: 'In zwei Bio-Weinbergen über zwei Jahre verzögerte eine im Herbst gesäte Begrünung der Fahrgassen (Saatmischung: Deutsches Weidelgras 48 %, Esparsette 43 %, Weißklee 9 %) den Beginn des Falschen Mehltaus in unbehandelten Parzellen um etwa 3 Wochen und senkte seine Stärke über die Saison um 12,5 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. In Kleinversuchen verringerte eine Begrünungsdecke die aus dem Boden spritzenden Regentropfen um 75–95 %, sodass weniger Sporen vom Boden hochgespritzt werden. Die Begrünung wurde kurz vor der Rebblüte gemulcht und eingearbeitet. Die Wirkung kommt von der dichten Pflanzendecke als Ganzes, nicht von einer einzelnen Art.'
+      en: 'In two organic vineyards over two years, an autumn-sown cover crop in the inter-rows (seed mix: perennial ryegrass 48 %, sainfoin 43 %, white clover 9 %) delayed the onset of downy mildew by about 3 weeks in unsprayed plots and reduced its seasonal severity by 12.5 %; in sprayed plots it gave no extra effect. A spring-sown cover of 92 % common vetch and 8 % mustard reduced the seasonal downy mildew level in unsprayed plots by 22 %. In small-scale tests, a cover-crop canopy cut the rain-splash droplets escaping from the soil by 75–95 %, so fewer spores are splashed up from the ground. The cover was chopped and worked into the soil just before grape flowering. The effect comes from the dense cover as a whole, not from one species.',
+      de: 'In zwei Bio-Weinbergen über zwei Jahre verzögerte eine im Herbst gesäte Begrünung der Fahrgassen (Saatmischung: Deutsches Weidelgras 48 %, Esparsette 43 %, Weißklee 9 %) den Beginn des Falschen Mehltaus in unbehandelten Parzellen um etwa 3 Wochen und senkte seine Stärke über die Saison um 12,5 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. Eine im Frühjahr gesäte Begrünung aus 92 % Saat-Wicke und 8 % Senf senkte den Falschen Mehltau über die Saison in unbehandelten Parzellen um 22 %. In Kleinversuchen verringerte eine Begrünungsdecke die aus dem Boden spritzenden Regentropfen um 75–95 %, sodass weniger Sporen vom Boden hochgespritzt werden. Die Begrünung wurde kurz vor der Rebblüte gemulcht und eingearbeitet. Die Wirkung kommt von der dichten Pflanzendecke als Ganzes, nicht von einer einzelnen Art.'
     },
     companionRoles: {
       'plant-white-clover': {
@@ -194,6 +206,10 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
       'plant-sainfoin': {
         en: 'Main legume of the tested cover mix (43 % of the seed); its foliage helps form the dense canopy that intercepts rain splash from the soil.',
         de: 'Hauptleguminose der getesteten Begrünungsmischung (43 % des Saatguts); ihr Laub bildet mit die dichte Decke, die Spritzwasser vom Boden abfängt.'
+      },
+      'plant-common-vetch': {
+        en: 'Main species (92 % of the seed) of the tested spring-sown cover, chopped and worked in just before grape flowering; in unsprayed plots downy mildew was 22 % lower than with bare soil and natural grass.',
+        de: 'Hauptart (92 % des Saatguts) der getesteten Frühjahrsbegrünung, die kurz vor der Rebblüte gehäckselt und eingearbeitet wurde; in unbehandelten Parzellen lag der Falsche Mehltau 22 % niedriger als bei offenem Boden mit natürlichem Bewuchs.'
       }
     }
   },
@@ -209,10 +225,10 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     starTreeIds: ['vine-grape'],
     evidence: 'scientific',
     citations: [HASANALIYEVA_2024],
-    companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
+    companionPlantIds: ['plant-white-clover', 'plant-sainfoin', 'plant-common-vetch'],
     scientificMechanism: {
-      en: 'In the same vineyard trial, the autumn-sown cover crop delayed the onset of powdery mildew by about 30 days and reduced its seasonal severity by 84 % in unsprayed plots; in sprayed plots it gave no extra effect. Results varied with site and year. The authors note that fungal fruiting bodies on the vine bark are considered the main spring source of the fungus, so keep up normal hygiene.',
-      de: 'Im selben Weinbergversuch verzögerte die Herbst-Begrünung den Beginn des Echten Mehltaus in unbehandelten Parzellen um etwa 30 Tage und senkte seine Stärke über die Saison um 84 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. Die Ergebnisse schwankten je nach Standort und Jahr. Laut den Autoren gelten Fruchtkörper des Pilzes an der Rebrinde als wichtigste Infektionsquelle im Frühjahr – normale Hygiene also beibehalten.'
+      en: 'In the same vineyard trial, the autumn-sown cover crop delayed the onset of powdery mildew by about 30 days and reduced its seasonal severity by 84 % in unsprayed plots; in sprayed plots it gave no extra effect. The spring-sown vetch cover reduced it by 99 % in unsprayed plots. Results varied with site and year. The authors note that fungal fruiting bodies on the vine bark are considered the main spring source of the fungus, so keep up normal hygiene.',
+      de: 'Im selben Weinbergversuch verzögerte die Herbst-Begrünung den Beginn des Echten Mehltaus in unbehandelten Parzellen um etwa 30 Tage und senkte seine Stärke über die Saison um 84 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. Die im Frühjahr gesäte Wicken-Begrünung senkte ihn in unbehandelten Parzellen um 99 %. Die Ergebnisse schwankten je nach Standort und Jahr. Laut den Autoren gelten Fruchtkörper des Pilzes an der Rebrinde als wichtigste Infektionsquelle im Frühjahr – normale Hygiene also beibehalten.'
     },
     companionRoles: {
       'plant-white-clover': {
@@ -222,6 +238,10 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
       'plant-sainfoin': {
         en: 'Main legume of the tested cover mix (43 % of the seed); its foliage helps form the dense cover layer.',
         de: 'Hauptleguminose der getesteten Begrünungsmischung (43 % des Saatguts); ihr Laub bildet mit die dichte Pflanzendecke.'
+      },
+      'plant-common-vetch': {
+        en: 'Main species (92 % of the seed) of the tested spring-sown cover; in unsprayed plots powdery mildew was 99 % lower than with bare soil and natural grass.',
+        de: 'Hauptart (92 % des Saatguts) der getesteten Frühjahrsbegrünung; in unbehandelten Parzellen lag der Echte Mehltau 99 % niedriger als bei offenem Boden mit natürlichem Bewuchs.'
       }
     }
   },
@@ -258,6 +278,32 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     }
   },
 
+  // 6b. Botrytis bunch rot / grey mould (Botrytis cinerea) – phacelia mulched in the inter-row (added 2026-10-01)
+  {
+    id: 'rule-grape-botrytis',
+    ruleTitle: {
+      en: 'Botrytis Bunch Rot of Grapevine (Botrytis cinerea)',
+      de: 'Grauschimmelfäule der Rebe (Botrytis cinerea)'
+    },
+    keywords: ['botrytis', 'bunch rot', 'grauschimmel'],
+    starTreeIds: ['vine-grape'],
+    evidence: 'scientific',
+    citations: [
+      { label: 'Jacometti, Wratten & Walter 2007, Int. J. Agric. Sustain. 5:305–314 (Chardonnay vineyard, New Zealand, one season)', doi: '10.1080/14735903.2007.9684830' }
+    ],
+    companionPlantIds: ['plant-phacelia'],
+    scientificMechanism: {
+      en: 'In a replicated trial under 10-year-old Chardonnay vines in New Zealand, inter-row phacelia (and ryegrass) mulched in place in winter kept the soil moister and raised soil biological activity 1.5 to 4.5-fold compared with bare ground. Vine debris on the ground broke down faster, carried less Botrytis cinerea inoculum, and bunch rot severity was lower at flowering and at harvest. This is a single vineyard and season; in the Italian cover-crop trial behind the mildew rules, grey mould did not develop, so it could not be tested there. Keep up canopy airflow and remove infected bunches.',
+      de: 'In einem wiederholten Versuch unter 10-jährigen Chardonnay-Reben in Neuseeland hielt im Winter vor Ort gemulchte Phazelie (wie auch Weidelgras) in der Fahrgasse den Boden feuchter und steigerte das Bodenleben gegenüber offenem Boden um das 1,5- bis 4,5-Fache. Rebreste am Boden wurden schneller abgebaut, trugen weniger Botrytis-cinerea-Inokulum, und die Grauschimmelfäule war zur Blüte und zur Ernte schwächer. Belegt ist das für einen Weinberg und eine Saison; im italienischen Begrünungsversuch hinter den Mehltau-Regeln trat Grauschimmel nicht auf und ließ sich dort nicht prüfen. Gute Durchlüftung der Laubwand und das Entfernen befallener Trauben bleiben wichtig.'
+    },
+    companionRoles: {
+      'plant-phacelia': {
+        en: 'Sown in the inter-row and mulched in place in winter; the mulch layer speeds up the breakdown of fallen vine debris on which Botrytis survives.',
+        de: 'In der Fahrgasse gesät und im Winter vor Ort gemulcht; die Mulchschicht beschleunigt den Abbau herabgefallener Rebreste, auf denen Botrytis überdauert.'
+      }
+    }
+  },
+
   // 7. Tea Green Leafhopper (Empoasca onukii) – sicklepod intercrop
   {
     id: 'rule-tea-green-leafhopper',
@@ -270,17 +316,31 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     evidence: 'field-proven',
     citations: [
       { label: 'Zhang Z. et al. 2014, Phytoparasitica 42:595–607 (field intercrop, southern China; pest reported as Empoasca vitis)', doi: '10.1007/s12600-014-0400-y' },
-      { label: 'Zhang Z. et al. 2017, J. Pest Sci. 90:227–237 (field, 2014–2015, northern China, 4 plants compared)', doi: '10.1007/s10340-016-0783-2' }
+      { label: 'Zhang Z. et al. 2017, J. Pest Sci. 90:227–237 (field, 2014–2015, northern China, 4 plants compared)', doi: '10.1007/s10340-016-0783-2' },
+      { label: 'Niu et al. 2022, Pest Manag. Sci. 78:2161–2172 (push-pull field trial; pest reported as Empoasca flavescens)', doi: '10.1002/ps.6840' },
+      { label: 'Qin et al. 2015, PLoS ONE 10:e0139202 (the Chinese tea green leafhopper is E. onukii)', doi: '10.1371/journal.pone.0139202' }
     ],
-    companionPlantIds: ['plant-sicklepod'],
+    companionPlantIds: ['plant-sicklepod', 'plant-chinese-motherwort', 'plant-african-marigold'],
+    companionEvidence: {
+      'plant-chinese-motherwort': 'scientific',
+      'plant-african-marigold': 'scientific'
+    },
     scientificMechanism: {
-      en: 'Two field studies by different research groups, in southern and northern Chinese tea plantations, found markedly fewer tea green leafhoppers where tea was intercropped with sicklepod (Senna tora, syn. Cassia tora), plus more natural enemies such as spiders, ladybirds and lacewings. Sicklepod volatiles repelled the leafhopper in behavioural tests. Sicklepod is a warm-season annual, so this only works on subtropical or very warm sites.',
-      de: 'Zwei Feldstudien verschiedener Forschungsgruppen in süd- und nordchinesischen Teegärten fanden deutlich weniger Grüne Teezikaden, wo Tee mit Sichelhülse (Senna tora, syn. Cassia tora) im Mischanbau stand, dazu mehr Nützlinge wie Spinnen, Marienkäfer und Florfliegen. Duftstoffe der Sichelhülse wehrten die Zikade in Verhaltensversuchen ab. Die Sichelhülse ist eine wärmeliebende Einjährige; das funktioniert daher nur an subtropischen oder sehr warmen Standorten.'
+      en: 'Two field studies by different research groups, in southern and northern Chinese tea plantations, found markedly fewer tea green leafhoppers where tea was intercropped with sicklepod (Senna tora, syn. Cassia tora), plus more natural enemies such as spiders, ladybirds and lacewings. Sicklepod volatiles repelled the leafhopper in behavioural tests. Sicklepod is a warm-season annual, so it only works on subtropical or very warm sites. Two further intercrops each lowered the leafhopper in one field study: Chinese motherwort in the northern Chinese trial that also tested sicklepod, and African marigold inside the tea as the repellent push plant, combined with Flemingia macrophylla as the attractive pull plant. As single studies they count as scientific, not field-proven; both grow as summer annuals in temperate gardens too.',
+      de: 'Zwei Feldstudien verschiedener Forschungsgruppen in süd- und nordchinesischen Teegärten fanden deutlich weniger Grüne Teezikaden, wo Tee mit Sichelhülse (Senna tora, syn. Cassia tora) im Mischanbau stand, dazu mehr Nützlinge wie Spinnen, Marienkäfer und Florfliegen. Duftstoffe der Sichelhülse wehrten die Zikade in Verhaltensversuchen ab. Die Sichelhülse ist eine wärmeliebende Einjährige; sie wirkt daher nur an subtropischen oder sehr warmen Standorten. Zwei weitere Zwischenkulturen senkten die Zikade in je einer Feldstudie: Chinesisches Herzgespann im nordchinesischen Versuch, der auch die Sichelhülse prüfte, und die Aufrechte Studentenblume im Tee als abwehrende Push-Pflanze, kombiniert mit Flemingia macrophylla als anlockender Pull-Pflanze. Als Einzelstudien gelten sie als wissenschaftlich, nicht als feldbewiesen; beide wachsen auch in gemäßigten Gärten als Sommer-Einjährige.'
     },
     companionRoles: {
       'plant-sicklepod': {
         en: 'Its volatiles repelled the leafhopper, and tea intercropped with it carried more spiders, ladybirds and lacewings.',
         de: 'Ihre Duftstoffe wehrten die Zikade ab, und Tee im Mischanbau mit ihr trug mehr Spinnen, Marienkäfer und Florfliegen.'
+      },
+      'plant-chinese-motherwort': {
+        en: 'In two years of field trials in northern China (2014–2015), tea intercropped with it (reported as Leonurus artemisia) had significantly fewer tea green leafhoppers; a plant bug was not reduced. One study.',
+        de: 'In zwei Jahren Feldversuchen in Nordchina (2014–2015) hatte Tee im Mischanbau mit ihr (berichtet als Leonurus artemisia) deutlich weniger Grüne Teezikaden; eine Weichwanze ging nicht zurück. Eine Studie.'
+      },
+      'plant-african-marigold': {
+        en: 'Its odour repelled the leafhopper; planted inside the tea as the push plant, with Flemingia macrophylla as the pull plant, the push-pull plots had far fewer leafhoppers than tea without intercrop. Measured for the combination, not for marigold alone; one study.',
+        de: 'Ihr Duft wehrte die Zikade ab; als Push-Pflanze im Tee, mit Flemingia macrophylla als Pull-Pflanze, hatten die Push-Pull-Parzellen weit weniger Zikaden als Tee ohne Zwischenkultur. Gemessen für die Kombination, nicht für die Studentenblume allein; eine Studie.'
       }
     }
   },
@@ -601,7 +661,7 @@ export function resolvePestDefense(pestText: string, starTreeId?: string, zone?:
         scientificMechanism: rule.scientificMechanism,
         ruleTitle: rule.ruleTitle,
         ruleId: rule.id,
-        evidence: rule.evidence,
+        evidence: strongestEvidence(rule, companionPlantIds),
         citations: rule.citations
       };
     }
@@ -662,7 +722,7 @@ export function getCompanionPestDefenseForTree(
           ruleTitle: rule.ruleTitle,
           scientificMechanism: rule.scientificMechanism,
           companionRole: rule.companionRoles[companion.id] || rule.scientificMechanism,
-          evidence: rule.evidence,
+          evidence: companionEvidence(rule, companion.id),
           citations: rule.citations
         });
       }

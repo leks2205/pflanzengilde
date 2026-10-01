@@ -85,9 +85,15 @@ const EXPECTED: Record<string, string[]> = {
   'tree-apple': ['rule-codling-moth-flower-strip', 'rule-woolly-aphid'],
   'tree-quince': ['rule-codling-moth-flower-strip'],
   'tree-peach': ['rule-peach-brown-rot'],
-  'vine-grape': ['rule-grape-downy-mildew', 'rule-grape-powdery-mildew', 'rule-lobesia-botrana'],
+  // Common vetch joined both grape mildew rules on 2026-10-01 (Hasanaliyeva 2024, spring vetch cover):
+  // same badges, one more companion each.
+  // Botrytis bunch rot added 2026-10-01: phacelia mulched in the inter-row (Jacometti et al. 2007,
+  // one vineyard trial measuring bunch rot severity -> 'scientific').
+  'vine-grape': ['rule-grape-downy-mildew', 'rule-grape-powdery-mildew', 'rule-grape-botrytis', 'rule-lobesia-botrana'],
   // Blister blight (soybean intercrop) moved to research notes: the only source's accessible
   // abstract does not name blister blight, so the badge claim could not be verified.
+  // Leafhopper rule: sicklepod (field-proven) plus Chinese motherwort and African marigold (scientific,
+  // added 2026-10-01); see the zone checks in §8.
   'tree-tea-sinensis': ['rule-tea-green-leafhopper', 'rule-tea-geometrid'],
   'tree-tea-assamica': ['rule-tea-green-leafhopper', 'rule-tea-geometrid']
 };
@@ -147,14 +153,26 @@ for (const star of STAR_TREES) {
 }
 const sinensis = STAR_TREES.find(t => t.id === 'tree-tea-sinensis')!;
 const sicklepod = GUILD_PLANTS.find(p => p.id === 'plant-sicklepod')!;
-if (resolvePestDefense('Tea Green Leafhopper (Empoasca onukii)', sinensis.id, 'TEMPERATE').combatable) {
-  fail('Tea leafhopper must be greyed out in TEMPERATE (sicklepod does not grow there)');
+const motherwort = GUILD_PLANTS.find(p => p.id === 'plant-chinese-motherwort')!;
+// Since 2026-10-01 the leafhopper rule also lists Chinese motherwort (Zhang 2017) and African marigold
+// (Niu 2022), one field study each. In TEMPERATE sicklepod does not grow, so the badge stays on but
+// drops to their tier: 'scientific', listing only the two annuals; in SUBTROPICAL sicklepod keeps it
+// field-proven.
+const leafTemperate = resolvePestDefense('Tea Green Leafhopper (Empoasca onukii)', sinensis.id, 'TEMPERATE');
+if (!leafTemperate.combatable || leafTemperate.evidence !== 'scientific' ||
+    leafTemperate.companionPlantIds.join() !== 'plant-chinese-motherwort,plant-african-marigold') {
+  fail(`Tea leafhopper in TEMPERATE must be 'scientific' via motherwort + African marigold only, got ${leafTemperate.evidence} [${leafTemperate.companionPlantIds}]`);
 }
-if (!resolvePestDefense('Tea Green Leafhopper (Empoasca onukii)', sinensis.id, 'SUBTROPICAL').combatable) {
-  fail('Tea leafhopper must be combatable in SUBTROPICAL');
+const leafSubtropical = resolvePestDefense('Tea Green Leafhopper (Empoasca onukii)', sinensis.id, 'SUBTROPICAL');
+if (!leafSubtropical.combatable || leafSubtropical.evidence !== 'field-proven') {
+  fail('Tea leafhopper must be field-proven in SUBTROPICAL (sicklepod grows there)');
 }
 if (getCompanionPestDefenseForTree(sicklepod, sinensis, 'TEMPERATE').length !== 0) {
   fail('Sicklepod modal must not claim a defense in TEMPERATE');
+}
+const motherwortDefense = getCompanionPestDefenseForTree(motherwort, sinensis, 'SUBTROPICAL');
+if (motherwortDefense.length !== 1 || motherwortDefense[0].evidence !== 'scientific') {
+  fail('Chinese motherwort modal must show one scientific (not field-proven) leafhopper defense');
 }
 for (const star of STAR_TREES) {
   const recommended = new Set([

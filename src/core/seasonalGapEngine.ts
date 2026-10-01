@@ -243,8 +243,8 @@ export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[], starTree?:
             role,
             season: 'SUMMER',
             reason: {
-              en: 'Summer Grass Barrier Gap: None of the selected barrier plants is active in summer, after spring bulbs have died back. That such plantings hold back lawn grass is unproven; mulching the tree basin is the more reliable option.',
-              de: 'Grasbarriere-Sommerlücke: Keine der gewählten Barrierepflanzen ist im Sommer aktiv, wenn Frühjahrszwiebeln eingezogen sind. Dass solche Pflanzungen Rasengras zurückhalten, ist nicht belegt; Mulchen der Baumscheibe ist verlässlicher.'
+              en: 'Summer Weed Barrier Gap: None of the selected weed-suppressing plants is active in summer, when weeds grow fastest in the tree strip. In an organic apple orchard, peppermint and lady\'s mantle living mulches cut summer weeds most; that any planting holds back lawn grass is untested, so mulching the tree basin stays the more reliable option.',
+              de: 'Unkrautbarriere-Sommerlücke: Keine der gewählten unkrautunterdrückenden Pflanzen ist im Sommer aktiv, wenn Unkraut im Baumstreifen am stärksten wächst. In einer Bio-Apfelanlage senkten lebende Mulche aus Pfefferminze und Frauenmantel das Sommerunkraut am stärksten; dass eine Pflanzung Rasengras zurückhält, ist nicht geprüft, Mulchen der Baumscheibe bleibt daher verlässlicher.'
             },
             suggestedPlantIds: candidates
           });

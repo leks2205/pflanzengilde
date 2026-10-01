@@ -34,6 +34,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rheum_rhabarbarum.2006-04-27.uellue.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-african-marigold.webp": {
+    "title": "Inniswood - Tagetes erecta 1.jpg",
+    "author": "Sixflashphoto",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Inniswood_-_Tagetes_erecta_1.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-albizia.webp": {
     "title": "Albizia chinensis - Chinese Albizia young leaves at Periya 2018 (1).jpg",
     "author": "Vinayaraj",
@@ -66,6 +74,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Symphyotrichum_novae-angliae3.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-basil.webp": {
+    "title": "Ocimum basilicum CG NBG LR.jpg",
+    "author": "PumpkinSky",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ocimum_basilicum_CG_NBG_LR.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-blackcurrant.webp": {
     "title": "Ribes nigrum - Cassis à Grez-Doiceau 001.jpg",
     "author": "VerboseDreamer",
@@ -88,6 +104,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Borago_officinalis_(2025).jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-buckwheat.webp": {
+    "title": "Fagopyrum esculentum kz12.jpg",
+    "author": "Krzysztof Ziarnek, Kenraiz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fagopyrum_esculentum_kz12.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-bugleweed.webp": {
@@ -114,6 +138,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matricaria_recutita_001.JPG",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-chicory.webp": {
+    "title": "Cichorium intybus-alvesgaspar1.jpg",
+    "author": "Alvesgaspar",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cichorium_intybus-alvesgaspar1.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-chinese-motherwort.webp": {
+    "title": "Leonurus japonicus kz02.jpg",
+    "author": "Krzysztof Ziarnek, Kenraiz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leonurus_japonicus_kz02.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-chives.webp": {
     "title": "Allium schoenoprasum - Bombus lapidarius - Tootsi.jpg",
     "author": "Ivar Leidus",
@@ -128,6 +168,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Symphytum_officinale_01.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-common-vetch.webp": {
+    "title": "Vicia sativa kz05.jpg",
+    "author": "Krzysztof Ziarnek, Kenraiz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vicia_sativa_kz05.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-cornflower.webp": {
+    "title": "Centaurea cyanus RF.jpg",
+    "author": "Robert Flogaus-Faust",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Centaurea_cyanus_RF.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-cowslip.webp": {
@@ -152,6 +208,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lysimachia_nummularia0.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-creeping-phlox.webp": {
+    "title": "Phlox subulata Floks szydlasty 2017-05-01 01.jpg",
+    "author": "Agnieszka Kwiecień, Nova",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Phlox_subulata_Floks_szydlasty_2017-05-01_01.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-crocus.webp": {
@@ -218,12 +282,36 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Foeniculum_July_2011-1a.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-fodder-radish.webp": {
+    "title": "Bladrammenas groenbemesting Raphanus sativus subsp. oleiferus.jpg",
+    "author": "Rasbak",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bladrammenas_groenbemesting_Raphanus_sativus_subsp._oleiferus.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-garlic-chives.webp": {
+    "title": "Allium tuberosum, 2021-09-05, Beechview, 01.jpg",
+    "author": "Cbaile19",
+    "license": "CC0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Allium_tuberosum,_2021-09-05,_Beechview,_01.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-garlic.webp": {
     "title": "Knoblauch Blüte focus stack-20250713-RM-111019.jpg",
     "author": "Reinhold Möller Ermell",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Knoblauch_Bl%C3%BCte_focus_stack-20250713-RM-111019.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-gliricidia.webp": {
+    "title": "Gliricidia sepium (Fabaceae) 01.jpg",
+    "author": "Filo gèn'",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gliricidia_sepium_(Fabaceae)_01.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-goumi.webp": {
@@ -280,6 +368,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hyssop_(Hyssopus_officinalis).jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-indian-mustard.webp": {
+    "title": "Brassica juncea var. juncea.JPG",
+    "author": "Dalgial",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brassica_juncea_var._juncea.JPG",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-ladys-mantle.webp": {
+    "title": "Alchemilla vulgaris with raindrops.jpg",
+    "author": "Ansgar Koreng",
+    "license": "CC BY-SA 3.0 de",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alchemilla_vulgaris_with_raindrops.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-lavender.webp": {
@@ -410,6 +514,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pfefferminze_natur_peppermint.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-phacelia.webp": {
+    "title": "Phacelia tanacetifolia (KPFC) 01.jpg",
+    "author": "KPFC",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Phacelia_tanacetifolia_(KPFC)_01.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-pot-marigold.webp": {
+    "title": "Ringelblume (Calendula officinalis) Blüte focus stack-20220619-RM-165610.jpg",
+    "author": "Ermell",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ringelblume_(Calendula_officinalis)_Bl%C3%BCte_focus_stack-20220619-RM-165610.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-red-currant.webp": {
     "title": "Ribes rubrum 1.jpg",
     "author": "Thue",
@@ -434,6 +554,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rheum_rhabarbarum.2006-04-27.uellue.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-ribwort-plantain.webp": {
+    "title": "Plantago lanceolata kz09.jpg",
+    "author": "Krzysztof Ziarnek, Kenraiz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plantago_lanceolata_kz09.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-rosemary.webp": {
     "title": "Rosemary in bloom.JPG",
     "author": "Margalob",
@@ -456,6 +584,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "Public domain",
     "licenseUrl": "",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onobrychis_viciifolia_Inflorescence_11April2009_CampoCalatrava.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-salad-burnet.webp": {
+    "title": "Sanguisorba minor (female flowers).jpg",
+    "author": "Hans Hillewaert",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sanguisorba_minor_(female_flowers).jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-seabuckthorn.webp": {
@@ -490,6 +626,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Galanthus_nivalis.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-sorghum-sudangrass.webp": {
+    "title": "Sudangras,Sudan grass,-Sorghum bicolor (L.) Moench nothosubsp. drummondii (Steud.) de Wet ex Davidse-.jpg",
+    "author": "Daniel Georg Döhne",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sudangras,Sudan_grass,-Sorghum_bicolor_(L.)_Moench_nothosubsp._drummondii_(Steud.)_de_Wet_ex_Davidse-.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-southernwood.webp": {
     "title": "Artemisia abrotanum0.jpg",
     "author": "Kurt Stüber",
@@ -512,6 +656,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fragaria_vesca_-_metsmaasikas.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-subterranean-clover.webp": {
+    "title": "Trifolium subterraneum (flowers).jpg",
+    "author": "Hans Hillewaert",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trifolium_subterraneum_(flowers).jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-summer-savory.webp": {
+    "title": "Satureja hortensis, Insektenbesuch, Josef Schlaghecken.jpg",
+    "author": "Josef Schlaghecken",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Satureja_hortensis,_Insektenbesuch,_Josef_Schlaghecken.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-sweet-alyssum.webp": {
@@ -568,6 +728,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Thymus_serpyllum1.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-tithonia.webp": {
+    "title": "Tithonia diversifolia I.jpg",
+    "author": "Rjcastillo",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tithonia_diversifolia_I.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-welsh-onion.webp": {

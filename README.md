@@ -43,7 +43,7 @@ Pflanzengilde puts that knowledge in one place. Each companion recommendation co
 
 ### Guild planner
 - **28 star trees and shrubs.** Fruit and nut trees, nitrogen-fixing trees, and tea (*Camellia sinensis* var. *sinensis* and *assamica*), each with its own pest profile and site needs.
-- **75 companion species** grouped into **9 ecological roles**: nitrogen fixer, dynamic accumulator, pollinator attractor, pest repeller, living mulch, grass barrier, and more.
+- **96 companion species** grouped into **9 ecological roles**: nitrogen fixer, dynamic accumulator, pollinator attractor, pest repeller, living mulch, grass barrier, and more.
 - **Radial zone plan.** Companions are placed automatically into zones (collar, bulb ring, mid taproots, drip line, outer buffer), and the harvest path is kept clear.
 - **Role coverage and seasonal gaps.** Shows which roles your guild still lacks and when nothing is flowering.
 

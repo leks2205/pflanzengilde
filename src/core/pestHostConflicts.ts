@@ -117,24 +117,24 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
     kind: 'INTERNAL',
     severity: 'WARNING',
     starTreeIds: ['tree-seabuckthorn-star', 'tree-linden'],
-    hostPlantIds: ['plant-horseradish', 'plant-marigold', 'plant-peppermint', 'plant-strawberry'],
+    hostPlantIds: ['plant-horseradish', 'plant-marigold', 'plant-african-marigold', 'plant-peppermint', 'plant-strawberry'],
     hostStarIds: [],
     safeDistanceM: 3,
-    antagonistName: { de: 'Verticillium-Wirte (Meerrettich, Studentenblume, Pfefferminze, Erdbeere)', en: 'Verticillium hosts (horseradish, marigold, peppermint, strawberry)' },
-    antagonistBotanical: 'Armoracia rusticana, Tagetes spp., Mentha × piperita, Fragaria spp.',
+    antagonistName: { de: 'Verticillium-Wirte (Meerrettich, Studentenblumen, Pfefferminze, Erdbeere)', en: 'Verticillium hosts (horseradish, French and African marigold, peppermint, strawberry)' },
+    antagonistBotanical: 'Armoracia rusticana, Tagetes patula, Tagetes erecta, Mentha × piperita, Fragaria spp.',
     title: {
       de: 'Verticillium-Welke: Wirtspflanzen im Wurzelraum',
       en: 'Verticillium Wilt: Host Plants in the Root Zone'
     },
     mechanism: {
-      de: 'Diese Begleiter können von Verticillium dahliae befallen werden (Meerrettich, Studentenblume, Pfefferminze, Erdbeere). Der Pilz hat über 200 Wirtsarten, und seine Mikrosklerotien können ohne Wirt bis zu 14 Jahre im Boden überdauern. Auch Sanddorn und Linde können an Verticillium-Welke erkranken.',
-      en: 'These companions can be infected by Verticillium dahliae (horseradish, marigold, peppermint, strawberry). The fungus has more than 200 host species, and its microsclerotia can survive in soil for up to 14 years without a host. Sea buckthorn and linden can also develop Verticillium wilt.'
+      de: 'Diese Begleiter können von Verticillium dahliae befallen werden (Meerrettich, Studentenblumen, Pfefferminze, Erdbeere). Der Pilz hat über 200 Wirtsarten, und seine Mikrosklerotien können ohne Wirt bis zu 14 Jahre im Boden überdauern. Auch Sanddorn und Linde können an Verticillium-Welke erkranken.',
+      en: 'These companions can be infected by Verticillium dahliae (horseradish, French and African marigold, peppermint, strawberry). The fungus has more than 200 host species, and its microsclerotia can survive in soil for up to 14 years without a host. Sea buckthorn and linden can also develop Verticillium wilt.'
     },
     scientificCitations: [
       'Yu, J. M., Cafarov, I. H., & Babadoost, M. (2016). Morphology, molecular identity, and pathogenicity of Verticillium dahliae and V. longisporum associated with internally discolored horseradish roots. Plant Disease, 100(4), 749–757. doi:10.1094/PDIS-08-15-0846-RE',
       'Harris, D. C., & Yang, J. R. (1996). The relationship between the amount of Verticillium dahliae in soil and the incidence of strawberry wilt as a basis for disease risk prediction. Plant Pathology, 45(1), 106–114. doi:10.1046/j.1365-3059.1996.d01-96.x',
       'Johnson, D. A., & Santo, G. S. (2001). Development of wilt in mint in response to infection by two pathotypes of Verticillium dahliae and co-infection by Pratylenchus penetrans. Plant Disease, 85(11), 1189–1192. doi:10.1094/PDIS.2001.85.11.1189',
-      'Saleem, H., et al. (2026). Biogenic Fe₂O₃ nanoparticles enhance carotenoid pathway gene expression and suppress verticillium root rot in marigold (Tagetes erecta). BMC Plant Biology, 26, 1091. doi:10.1186/s12870-026-08901-3',
+      'Saleem, H., et al. (2026). Biogenic Fe2O3 nanoparticles enhance carotenoid pathway gene expression and suppress verticillium root rot in marigold (Tagetes erecta). BMC Plant Biology, 26, 1091. doi:10.1186/s12870-026-08901-3',
       'Klosterman, S. J., Atallah, Z. K., Vallad, G. E., & Subbarao, K. V. (2009). Diversity, pathogenicity, and management of Verticillium species. Annual Review of Phytopathology, 47, 39–62. doi:10.1146/annurev-phyto-080508-081748',
       'Kennedy, D. M. (1987). Verticillium wilt of sea buckthorn (Hippophae rhamnoides). Plant Pathology, 36(3), 420–422. doi:10.1111/j.1365-3059.1987.tb02257.x',
       'Harada, Y., Furueda, T., & Murata, K. (1997). Verticillium wilt of Tilia japonica and Acer palmatum, the first report on the occurrence of Verticillium dahliae on trees in Japan. Japanese Journal of Phytopathology, 63(4), 345–350. doi:10.3186/jjphytopath.63.345'
@@ -142,6 +142,32 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
     spatialAdvice: {
       de: 'Keine Verticillium-Wirte in den Wurzelbereich von Sanddorn oder Linde pflanzen. Die 3 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
       en: 'Keep Verticillium hosts out of the root zone of sea buckthorn or linden. The 3 m distance is a precautionary planning value, not a measured limit.'
+    }
+  },
+  {
+    id: 'internal-plantain-rosy-apple-aphid',
+    kind: 'INTERNAL',
+    severity: 'WARNING',
+    starTreeIds: ['tree-apple'],
+    hostPlantIds: ['plant-ribwort-plantain'],
+    hostStarIds: [],
+    safeDistanceM: 20,
+    antagonistName: { de: 'Spitzwegerich', en: 'Ribwort Plantain' },
+    antagonistBotanical: 'Plantago lanceolata',
+    title: {
+      de: 'Sommerwirt der Mehligen Apfelblattlaus (Dysaphis plantaginea)',
+      en: 'Summer Host of the Rosy Apple Aphid (Dysaphis plantaginea)'
+    },
+    mechanism: {
+      de: 'Die Mehlige Apfelblattlaus wechselt den Wirt: Sie überwintert als Ei am Apfelbaum, die Frühjahrsgenerationen saugen am Apfel, und im Frühsommer fliegen geflügelte Läuse auf Spitzwegerich ab, wo sie den Sommer verbringen; im Herbst kehren die Geschlechtstiere zur Eiablage auf den Apfel zurück. Spitzwegerich ist ihr Sommerwirt und kann so Läuse für den Rückflug in benachbarte Apfelbäume liefern.',
+      en: 'The rosy apple aphid alternates hosts: it overwinters as eggs on apple, the spring generations feed on apple, and in early summer winged aphids migrate to ribwort plantain, where they spend the summer; in autumn the sexual forms fly back to apple to lay eggs. Ribwort plantain is its summer host and can therefore supply aphids for the return flight to nearby apple trees.'
+    },
+    scientificCitations: [
+      'Blommers, L. H. M., Helsen, H. H. M., & Vaal, F. W. N. M. (2004). Life history data of the rosy apple aphid Dysaphis plantaginea (Pass.) (Homopt., Aphididae) on plantain and as migrant to apple. Journal of Pest Science, 77(3), 155–163. doi:10.1007/s10340-004-0046-5'
+    ],
+    spatialAdvice: {
+      de: 'Keinen Spitzwegerich in die Apfelgilde setzen. Die 20 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Keep ribwort plantain out of apple guilds. The 20 m distance is a precautionary planning value, not a measured limit.'
     }
   },
   {

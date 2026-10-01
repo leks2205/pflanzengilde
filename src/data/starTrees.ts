@@ -94,7 +94,16 @@ export const STAR_TREES: StarTree[] = [
       'plant-red-currant',
       'plant-rhubarb',
       'plant-sweet-alyssum',
-      'plant-wild-carrot'
+      'plant-wild-carrot',
+      'plant-ladys-mantle',
+      'plant-chicory',
+      'plant-fodder-radish',
+      'plant-basil',
+      'plant-summer-savory',
+      'plant-pot-marigold',
+      'plant-indian-mustard',
+      'plant-garlic-chives',
+      'plant-strawberry'
     ],
     sources: [
       'Oster, M., et al. (2021). Comfrey (Symphytum spp.) as a feed supplement in pig nutrition contributes to regional resource cycles. Science of The Total Environment, 796, 148988. doi:10.1016/j.scitotenv.2021.148988',
@@ -247,7 +256,13 @@ export const STAR_TREES: StarTree[] = [
       'plant-oregano',
       'plant-catmint',
       'plant-welsh-onion',
-      'plant-echinacea'
+      'plant-echinacea',
+      'plant-creeping-phlox',
+      'plant-sorghum-sudangrass',
+      'plant-salad-burnet',
+      'plant-buckwheat',
+      'plant-phacelia',
+      'plant-garlic-chives'
     ],
     sources: [
       'Layton, B., & Henn, A. (2023). Disease and Insect Control for Homegrown Peaches and Plums. Mississippi State University Extension, Publication P2858. https://extension.msstate.edu/publications/disease-and-insect-control-for-homegrown-peaches-and-plums',
@@ -335,7 +350,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-echinacea',
       'plant-linden',
       'plant-blackcurrant',
-      'plant-red-currant'
+      'plant-red-currant',
+      'plant-ladys-mantle',
+      'plant-chicory',
+      'plant-ribwort-plantain',
+      'plant-garlic-chives'
     ],
     sources: [
       'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
@@ -419,7 +438,14 @@ export const STAR_TREES: StarTree[] = [
       'plant-alder',
       'plant-linden',
       'plant-blackcurrant',
-      'plant-rhubarb'
+      'plant-rhubarb',
+      'plant-ladys-mantle',
+      'plant-chicory',
+      'plant-fodder-radish',
+      'plant-basil',
+      'plant-summer-savory',
+      'plant-cornflower',
+      'plant-catmint'
     ],
     sources: [
       'Ellis, M. A., & Ivey, M. L. (2016). Fire Blight of Apples and Pears. Ohio State University Extension, PLPATH-FRU-22. https://cfaes.osu.edu/fact-sheet/fire-blight-apples-and-pears',
@@ -487,7 +513,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-rosemary',
       'plant-oregano',
       'plant-catmint',
-      'plant-echinacea'
+      'plant-echinacea',
+      'plant-subterranean-clover',
+      'plant-salad-burnet',
+      'plant-buckwheat',
+      'plant-tithonia'
     ],
     sources: [
       'Morton, J. F. (1987). Fig. In Fruits of Warm Climates (pp. 47–50). Julia F. Morton, Miami, FL. https://hort.purdue.edu/newcrop/morton/fig.html',
@@ -707,7 +737,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-chamomile',
       'plant-oregano',
       'plant-welsh-onion',
-      'plant-echinacea'
+      'plant-echinacea',
+      'plant-subterranean-clover',
+      'plant-salad-burnet',
+      'plant-buckwheat',
+      'plant-phacelia',
+      'plant-garlic-chives'
     ],
     sources: [
       'Rodrigo, J., Julian, C., & Herrero, M. (2006). Spring frost damage in buds, flowers and developing fruits in apricot. Acta Horticulturae, 717, 87–88. doi:10.17660/ActaHortic.2006.717.15',
@@ -786,7 +821,13 @@ export const STAR_TREES: StarTree[] = [
       'plant-welsh-onion',
       'plant-echinacea',
       'plant-linden',
-      'plant-red-currant'
+      'plant-red-currant',
+      'plant-creeping-phlox',
+      'plant-chicory',
+      'plant-ribwort-plantain',
+      'plant-phacelia',
+      'plant-fodder-radish',
+      'plant-garlic-chives'
     ],
     sources: [
       'Welk, E., de Rigo, D., & Caudullo, G. (2016). Prunus avium in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Prunus_avium.pdf',
@@ -853,7 +894,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-sweet-cicely',
       'plant-lovage',
       'plant-meadowsweet',
-      'plant-wild-carrot'
+      'plant-wild-carrot',
+      'plant-chicory'
     ],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow quinces. RHS Grow Your Own. https://www.rhs.org.uk/fruit/quince/grow-your-own',
@@ -919,7 +961,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-yarrow',
       'plant-catmint',
       'plant-creeping-jenny',
-      'plant-lovage'
+      'plant-lovage',
+      'plant-chicory',
+      'plant-ribwort-plantain',
+      'plant-salad-burnet',
+      'plant-buckwheat',
+      'plant-phacelia'
     ],
     sources: [
       'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Morus nigra. Agroforestree Database: a tree reference and selection guide, version 4.0. World Agroforestry Centre. https://apps.worldagroforestry.org/treedb/AFTPDFS/Morus_nigra.PDF',
@@ -978,7 +1025,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-sedum',
       'plant-lavender',
       'plant-yarrow',
-      'plant-oregano'
+      'plant-oregano',
+      'plant-creeping-phlox'
     ],
     sources: [
       'Kato, K., Kanayama, Y., Ohkawa, W., & Kanahama, K. (2007). Nitrogen Fixation in Seabuckthorn (Hippophae rhamnoides L.) Root Nodules and Effect of Nitrate on Nitrogenase Activity. Journal of the Japanese Society for Horticultural Science, 76(3), 185–190. doi:10.2503/jjshs.76.185',
@@ -1241,6 +1289,7 @@ export const STAR_TREES: StarTree[] = [
       'plant-nettle',
       'plant-meadowsweet',
       'plant-welsh-onion',
+      'plant-garlic-chives'
     ],
     sources: [
       'USDA Agricultural Research Service (2019). Currants, european black, raw (FDC ID 173963). FoodData Central, SR Legacy. https://fdc.nal.usda.gov/fdc-app.html#/food-details/173963/nutrients',
@@ -1306,7 +1355,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-rosemary',
       'plant-chamomile',
       'plant-oregano',
-      'plant-echinacea', 'plant-sainfoin'],
+      'plant-echinacea', 'plant-sainfoin',
+      'plant-creeping-phlox',
+      'plant-salad-burnet',
+      'plant-phacelia',
+      'plant-common-vetch'
+    ],
     sources: [
       'Smart, D. R., et al. (2006). Grapevine Rooting Patterns: A Comprehensive Analysis and a Review. American Journal of Enology and Viticulture, 57(1), 89–104. doi:10.5344/ajev.2006.57.1.89',
       'Fittipaldi Broussard, M., et al. (2026). The Consociation of Sage and Grapevine Modifies Grape Leaf Metabolism and Reduces Downy Mildew Infection. Agronomy, 16(2), 201. doi:10.3390/agronomy16020201',
@@ -1627,7 +1681,9 @@ export const STAR_TREES: StarTree[] = [
       'plant-rhododendron',
       'plant-alder',
       'plant-sicklepod',
-      'plant-soybean'
+      'plant-soybean',
+      'plant-african-marigold',
+      'plant-chinese-motherwort'
     ],
     sources: [
       'Li, Y., et al. (2019). Comparative transcriptomic analysis reveals gene expression associated with cold adaptation in the tea plant Camellia sinensis. BMC Genomics, 20(1), 624. doi:10.1186/s12864-019-5988-3',
@@ -1695,7 +1751,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-peppermint',
       'plant-rhododendron',
       'plant-nepal-alder',
-      'plant-sicklepod'
+      'plant-sicklepod',
+      'plant-tithonia',
+      'plant-african-marigold',
+      'plant-chinese-motherwort'
     ],
     sources: [
       'NC State Extension (n.d.). Camellia sinensis. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/camellia-sinensis/',
@@ -1831,7 +1890,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-chamomile',
       'plant-oregano',
       'plant-nettle',
-      'plant-meadowsweet'
+      'plant-meadowsweet',
+      'plant-garlic-chives'
     ],
     sources: [
       'Hansen, S., Maughan, T., & Black, B. (2014). How to Grow Red Currants in Your Garden. Utah State University Extension. https://extension.usu.edu/yardandgarden/research/red-currants-in-the-garden.pdf',

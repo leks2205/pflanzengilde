@@ -384,6 +384,10 @@ for (const sensId of jugloneSensitiveIds) {
   if (!plumReport.conflicts.some(c => c.id === 'internal-willow-alder-silver-leaf')) {
     fail('Guild Builder did not flag willow as silver leaf host next to plum');
   }
+  const plantainReport = analyzeGuildAntagonisms(apple, [getPlant('plant-ribwort-plantain')], 'NORTHERN');
+  if (!plantainReport.conflicts.some(c => c.id === 'internal-plantain-rosy-apple-aphid' && c.type === 'INTERNAL_PROXIMITY')) {
+    fail('Guild Builder did not flag ribwort plantain as rosy apple aphid summer host next to apple');
+  }
   const chestnutReport = analyzeGuildAntagonisms(chestnut, [lupine], 'NORTHERN');
   const lupineAlert = chestnutReport.conflicts.find(c => c.id === 'external-lupine-chestnut-ink-disease');
   if (!lupineAlert || lupineAlert.type !== 'EXTERNAL_ALERT') {
