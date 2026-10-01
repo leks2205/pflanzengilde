@@ -21,6 +21,7 @@ import { t } from './i18n/translations';
 import { CheckCircle2, AlertCircle, X } from 'lucide-react';
 import { buildClusterStarInstances } from './core/multiStarLayout';
 import { StarPlantClusterConfig, GardenStarPlantInstance } from './types/garden';
+import { STORAGE_KEY_GARDEN_GRID } from './utils/gardenStorage';
 
 // Legal pages are operator-specific and not in the repository. Drop Impressum.tsx /
 // Datenschutz.tsx into src/legal/ to enable the /impressum and /datenschutz routes.
@@ -46,7 +47,6 @@ const STORAGE_KEY_GUILD = 'permaculture_plant_guild_v1';
 const STORAGE_KEY_LANG = 'permaculture_plant_guild_lang';
 const STORAGE_KEY_SOIL = 'permaculture_plant_guild_soil';
 const STORAGE_KEY_ZONE = 'permaculture_plant_guild_zone';
-const STORAGE_KEY_GARDEN_GRID = 'permaculture_garden_grid_v1';
 
 const isSoilType = (v: unknown): v is SoilType => (SOIL_TYPES as unknown[]).includes(v);
 const isClimateZone = (v: unknown): v is ClimateZone => (CLIMATE_ZONES as unknown[]).includes(v);

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useDeferredValue } from 'react';
+import React, { useState, useMemo, useDeferredValue, useEffect } from 'react';
 import { ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, PlacedPlant, SoilType, StarTree, getLoc } from '../types/guild';
 import { GardenCompanionInstance, StarPlantClusterConfig } from '../types/garden';
 import { autoPlaceGuildPlants, calculateSpatialMetrics, isAlliumPlant, isLegumePlant, isFennelPlant, isWormwoodPlant } from '../core/placementRules';
@@ -6,6 +6,7 @@ import { analyzeGuildSpacing } from '../core/spacingEngine';
 import { computeClusterGardenLayout, getMinTrunkDistanceM, getRecommendedSpacingM } from '../core/multiStarLayout';
 import { GardenSubstitution } from '../core/gardenOptimizer';
 import { GUILD_PLANTS } from '../data/guildPlants';
+import { readSavedAutoResolvePreference, STORAGE_KEY_GARDEN_GRID } from '../utils/gardenStorage';
 import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, Compass, Eye, EyeOff, RefreshCw, ShieldCheck, SunMedium, Shrink, Sparkles, Trees } from 'lucide-react';
 import { t, formatNumber, translateZone, translateLayer, translateRole } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
@@ -86,6 +87,17 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
 
   const selectedPlantIds = useMemo(() => selectedPlants.map(p => p.id), [selectedPlants]);
 
+  // The garden's saved "automatic conflict resolution" preference, so preview and garden agree
+  // (re-read when another tab changes it; this view remounts when coming back from the garden)
+  const [autoResolve, setAutoResolve] = useState<boolean>(() => readSavedAutoResolvePreference());
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === null || e.key === STORAGE_KEY_GARDEN_GRID) setAutoResolve(readSavedAutoResolvePreference());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   // Multi-star mode: the same pipeline as the garden planner (shared companions, garden conflict
   // analysis, automatic substitutions), see computeClusterGardenLayout
   const clusterLayout = useMemo(() => {
@@ -94,9 +106,9 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
       hemisphere,
       zone: selectedZone,
       soil: selectedSoil,
-      autoResolve: true,
+      autoResolve,
     });
-  }, [starTree, renderedConfig, selectedPlantIds, hemisphere, selectedZone, selectedSoil]);
+  }, [starTree, renderedConfig, selectedPlantIds, hemisphere, selectedZone, selectedSoil, autoResolve]);
 
   const metrics = useMemo(() => calculateSpatialMetrics(starTree), [starTree]);
   const placedPlants = useMemo(() => {
@@ -1253,7 +1265,7 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
 
           {([
             [clusterLayout.resolution.substitutions, tr.gardenResolveHeading, tr.gardenResolveIntro],
-            [clusterLayout.resolution.suggestions, tr.gardenResolveSuggestionsHeading, tr.gardenResolveSuggestionsPinned],
+            [clusterLayout.resolution.suggestions, tr.gardenResolveSuggestionsHeading, autoResolve ? tr.gardenResolveSuggestionsPinned : tr.gardenResolveSuggestionsOffPreview],
           ] as const).map(([subs, heading, intro]) => subs.length > 0 && (
             <div key={heading} className="space-y-1.5 pt-2 border-t border-stone-200">
               <div className="font-bold text-stone-700 flex items-center gap-1.5">

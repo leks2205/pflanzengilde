@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree, getLoc } from '../types/guild';
 import { GardenStarPlantInstance, GardenState, ImportedGuildTemplate } from '../types/garden';
 import { STAR_TREES } from '../data/starTrees';
@@ -15,6 +15,8 @@ import { GardenSidebar } from './GardenSidebar';
 import { PlantDetailModal } from './PlantDetailModal';
 import { ShareGardenModal } from './ShareGardenModal';
 import { parseGardenUrl } from '../utils/shareUtils';
+import { STORAGE_KEY_GARDEN_GRID } from '../utils/gardenStorage';
+import { placeClusterInGarden } from '../core/multiStarLayout';
 import { exportGardenCalendarIcs, hashString } from '../core/gardenCalendar';
 import { exportGardenPlanPdf } from '../core/gardenPdfExporter';
 import { Check, AlertOctagon } from 'lucide-react';
@@ -69,7 +71,6 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   onClearPendingTrees,
 }) => {
   const tr = t(language);
-  const STORAGE_KEY_GARDEN_GRID = 'permaculture_garden_grid_v1';
 
   const getSavedData = () => {
     try {
@@ -671,17 +672,30 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     });
   };
 
-  // Trees handed over from the radial planner's cluster view
+  // Trees handed over from the radial planner's cluster view. In a garden that already has stars the
+  // cluster is moved as one block to free space (placeClusterInGarden), so it keeps the preview's
+  // layout and never lands on existing trunks. The ref makes the effect run once per hand-over:
+  // StrictMode runs effects twice before the parent has cleared pendingTreesToPlace.
+  const handledHandoverRef = useRef<GardenStarPlantInstance[] | null>(null);
   useEffect(() => {
-    if (pendingTreesToPlace && pendingTreesToPlace.length > 0) {
-      setStarPlants(prev => [...prev, ...pendingTreesToPlace]);
-      setSelectedTreeId(pendingTreesToPlace[0].instanceId);
-      onClearPendingTrees?.();
-      setToast({
-        type: 'success',
-        message: tr.gardenPagePendingPlaced.replace('{count}', String(pendingTreesToPlace.length))
-      });
-    }
+    if (!pendingTreesToPlace || pendingTreesToPlace.length === 0) return;
+    if (handledHandoverRef.current === pendingTreesToPlace) return;
+    handledHandoverRef.current = pendingTreesToPlace;
+    // Placed against the garden as it is when the hand-over arrives
+    const placement = placeClusterInGarden(starPlants, pendingTreesToPlace);
+    setStarPlants(prev => [...prev, ...placement.starPlants.filter(t => !prev.some(p => p.instanceId === t.instanceId))]);
+    setSelectedTreeId(placement.starPlants[0].instanceId);
+    onClearPendingTrees?.();
+    const firstTree = placement.starPlants[0].starTree;
+    const sameSpecies = placement.starPlants.every(t => t.treeId === firstTree.id);
+    setToast({
+      type: 'success',
+      message: starPlants.length > 0 && sameSpecies
+        ? tr.gardenPagePendingPlacedBeside
+            .replace('{count}', String(placement.starPlants.length))
+            .replace('{name}', getLoc(firstTree.commonName, language))
+        : tr.gardenPagePendingPlaced.replace('{count}', String(placement.starPlants.length))
+    });
   }, [pendingTreesToPlace]);
 
   // Export/reset/share actions are triggered from the top navbar via window events

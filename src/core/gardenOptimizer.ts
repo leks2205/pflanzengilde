@@ -25,6 +25,18 @@ import { getCompanionPestDefenseForTree } from './pestCompanionEngine';
 import { PEST_HOST_CONFLICTS } from './pestHostConflicts';
 import { isCompatibleWithStar, isCompatiblePair } from './compatibility';
 
+/**
+ * Tolerance for distance comparisons and cm rounding. Positions are cm values; comparing with a
+ * tolerance and rounding halves consistently upwards makes the layout depend only on relative
+ * positions, so a cluster moved as a rigid block (by whole cm) gets the same layout.
+ */
+const GEOM_EPS = 1e-9;
+
+/** Rounds to whole cm, halves upwards regardless of float noise (translation-consistent). */
+function roundCm(v: number): number {
+  return Math.round(v * 100 + 1e-6) / 100;
+}
+
 /** Insectary plants that feed parasitoid wasps and hoverflies. */
 function isInsectaryPlant(plant: GuildPlant): boolean {
   return (
@@ -104,13 +116,13 @@ export function calculateLocalLight(
 
   for (const treeInst of starPlants) {
     const dist = Math.hypot(xM - treeInst.xM, yM - treeInst.yM);
-    if (dist <= treeInst.starTree.matureRadiusM) {
+    if (dist <= treeInst.starTree.matureRadiusM + GEOM_EPS) {
       canopyOverlaps++;
     }
 
     // Shadow falls to the pole side: north (negative y) in the northern hemisphere
     const isNorthOfTrunk = hemisphere === 'NORTHERN' ? (yM < treeInst.yM) : (yM > treeInst.yM);
-    if (isNorthOfTrunk && dist <= treeInst.starTree.matureRadiusM * 1.3) {
+    if (isNorthOfTrunk && dist <= treeInst.starTree.matureRadiusM * 1.3 + GEOM_EPS) {
       inNorthernShadow = true;
     }
   }
@@ -167,10 +179,13 @@ export function optimizeGardenCompanions(
     totalUnoptimizedCompanions += companionIds.size;
   }
 
-  const allUniqueCompanionIds = new Set<string>();
+  // Catalogue order across the whole garden, so adding another guild elsewhere does not reorder
+  // (and re-relax) this guild's companions
+  const uniqueIds = new Set<string>();
   for (const set of treeCompanionMap.values()) {
-    for (const id of set) allUniqueCompanionIds.add(id);
+    for (const id of set) uniqueIds.add(id);
   }
+  const allUniqueCompanionIds = [...uniqueIds].sort(byCatalogue);
 
   const placedCompanions: GardenCompanionInstance[] = [];
   const plantsById = new Map(allGuildPlants.map(p => [p.id, p]));
@@ -219,7 +234,7 @@ export function optimizeGardenCompanions(
           ? benefitRadius * 2
           : (treeA.starTree.matureRadiusM + treeB.starTree.matureRadiusM) * 0.95 + benefitRadius;
 
-        if (dist <= maxSharingDist && dist < minPartnerDist) {
+        if (dist <= maxSharingDist + GEOM_EPS && dist < minPartnerDist - GEOM_EPS) {
           minPartnerDist = dist;
           bestPartner = treeB;
         }
@@ -242,7 +257,7 @@ export function optimizeGardenCompanions(
             const dB = Math.hypot(bestPartner.xM - cx, bestPartner.yM - cy);
             const dC = Math.hypot(treeC.xM - cx, treeC.yM - cy);
 
-            if (dA <= benefitRadius && dB <= benefitRadius && dC <= benefitRadius) {
+            if (dA <= benefitRadius + GEOM_EPS && dB <= benefitRadius + GEOM_EPS && dC <= benefitRadius + GEOM_EPS) {
               thirdPartner = treeC;
               break;
             }
@@ -250,8 +265,8 @@ export function optimizeGardenCompanions(
         }
 
         if (thirdPartner) {
-          const cx = Number(((treeA.xM + bestPartner.xM + thirdPartner.xM) / 3).toFixed(2));
-          const cy = Number(((treeA.yM + bestPartner.yM + thirdPartner.yM) / 3).toFixed(2));
+          const cx = roundCm((treeA.xM + bestPartner.xM + thirdPartner.xM) / 3);
+          const cy = roundCm((treeA.yM + bestPartner.yM + thirdPartner.yM) / 3);
           const isPestDef =
             isCompanionPestDefenseForTree(plant, treeA.starTree) ||
             isCompanionPestDefenseForTree(plant, bestPartner.starTree) ||
@@ -283,8 +298,8 @@ export function optimizeGardenCompanions(
           const sunSign = hemisphere === 'NORTHERN' ? (perpY >= 0 ? 1 : -1) : (perpY <= 0 ? 1 : -1);
           const offsetM = 0.35 * sunSign;
 
-          const midX = Number((((treeA.xM + bestPartner.xM) / 2) + perpX * offsetM).toFixed(2));
-          const midY = Number((((treeA.yM + bestPartner.yM) / 2) + perpY * offsetM).toFixed(2));
+          const midX = roundCm(((treeA.xM + bestPartner.xM) / 2) + perpX * offsetM);
+          const midY = roundCm(((treeA.yM + bestPartner.yM) / 2) + perpY * offsetM);
 
           const isPestDef =
             isCompanionPestDefenseForTree(plant, treeA.starTree) ||
@@ -349,20 +364,22 @@ export function optimizeGardenCompanions(
           minSeparation = Math.max(minSeparation, 1.35);
         }
 
-        if (dist < minSeparation) {
+        if (dist < minSeparation - GEOM_EPS) {
           const overlap = minSeparation - dist;
           let angle: number;
-          if (dist > 0.05) {
+          if (dist > 0.05 + GEOM_EPS) {
             angle = Math.atan2(p2.yM - p1.yM, p2.xM - p1.xM);
           } else {
-            angle = ((i * 137.5 + j * 45) * Math.PI) / 180;
+            // Stacked plants: direction from the species pair, not array indices, so other guilds
+            // in the garden do not change it
+            angle = ((hashString(`${p1.plantId}|${p2.plantId}`) % 360) * Math.PI) / 180;
           }
           const pushDist = (overlap + 0.06) / 2;
 
-          p1.xM = Number((p1.xM - pushDist * Math.cos(angle)).toFixed(2));
-          p1.yM = Number((p1.yM - pushDist * Math.sin(angle)).toFixed(2));
-          p2.xM = Number((p2.xM + pushDist * Math.cos(angle)).toFixed(2));
-          p2.yM = Number((p2.yM + pushDist * Math.sin(angle)).toFixed(2));
+          p1.xM = roundCm(p1.xM - pushDist * Math.cos(angle));
+          p1.yM = roundCm(p1.yM - pushDist * Math.sin(angle));
+          p2.xM = roundCm(p2.xM + pushDist * Math.cos(angle));
+          p2.yM = roundCm(p2.yM + pushDist * Math.sin(angle));
         }
       }
     }
@@ -374,13 +391,22 @@ export function optimizeGardenCompanions(
         const dTrunk = Math.hypot(comp.xM - tree.xM, comp.yM - tree.yM);
         const isAlliumNearNTree = tree.starTree.category === 'NITROGEN_FIXING_TREE' && flags[ci].allium;
         const minTrunkDist = isAlliumNearNTree ? 1.95 : 0.4;
-        if (dTrunk < minTrunkDist) {
-          const angle = dTrunk > 0.01 ? Math.atan2(comp.yM - tree.yM, comp.xM - tree.xM) : 0.5;
-          comp.xM = Number((tree.xM + minTrunkDist * Math.cos(angle)).toFixed(2));
-          comp.yM = Number((tree.yM + minTrunkDist * Math.sin(angle)).toFixed(2));
+        if (dTrunk < minTrunkDist - GEOM_EPS) {
+          const angle = dTrunk > 0.01 + GEOM_EPS ? Math.atan2(comp.yM - tree.yM, comp.xM - tree.xM) : 0.5;
+          comp.xM = roundCm(tree.xM + minTrunkDist * Math.cos(angle));
+          comp.yM = roundCm(tree.yM + minTrunkDist * Math.sin(angle));
         }
       }
     }
+  }
+
+  // The per-tree projection above runs tree after tree, so pushing a companion out of one trunk
+  // zone can pull it back into a neighbouring one (e.g. chives between two sea buckthorns), and
+  // rounding to cm can leave it a few mm inside. Settle every trunk zone at once.
+  for (let ci = 0; ci < placedCompanions.length; ci++) {
+    settleTrunkClearance(placedCompanions[ci], starPlants, tree =>
+      tree.starTree.category === 'NITROGEN_FIXING_TREE' && flags[ci].allium ? 1.95 : 0.4
+    );
   }
 
   const companionPlantCount = placedCompanions.length;
@@ -516,6 +542,84 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
+/**
+ * Moves a companion the shortest distance (on the cm grid) so it keeps `minDist(tree)` from every
+ * trunk: candidates are the radial projections onto each violated clearance circle and the
+ * intersections of every pair of nearby circles. Leaves a companion that already complies untouched.
+ */
+function settleTrunkClearance(
+  comp: { xM: number; yM: number },
+  starPlants: GardenStarPlantInstance[],
+  minDist: (tree: GardenStarPlantInstance) => number
+): void {
+  const ok = (x: number, y: number) =>
+    starPlants.every(t => Math.hypot(x - t.xM, y - t.yM) >= minDist(t) - 1e-9);
+  if (ok(comp.xM, comp.yM)) return;
+
+  // Aim 1 cm outside the circle so rounding to cm never lands inside it
+  const circles = starPlants
+    .map(t => ({ x: t.xM, y: t.yM, r: minDist(t) + 0.01 }))
+    .filter(c => Math.hypot(comp.xM - c.x, comp.yM - c.y) < c.r + 4);
+  const candidates: Array<[number, number]> = [];
+  for (const c of circles) {
+    const d = Math.hypot(comp.xM - c.x, comp.yM - c.y);
+    const a = d > 0.01 + GEOM_EPS ? Math.atan2(comp.yM - c.y, comp.xM - c.x) : 0.5;
+    candidates.push([c.x + c.r * Math.cos(a), c.y + c.r * Math.sin(a)]);
+  }
+  for (let i = 0; i < circles.length; i++) {
+    for (let j = i + 1; j < circles.length; j++) {
+      const c1 = circles[i];
+      const c2 = circles[j];
+      const d = Math.hypot(c2.x - c1.x, c2.y - c1.y);
+      if (d < 1e-6 || d > c1.r + c2.r || d < Math.abs(c1.r - c2.r)) continue;
+      const a = (c1.r * c1.r - c2.r * c2.r + d * d) / (2 * d);
+      const h = Math.sqrt(Math.max(0, c1.r * c1.r - a * a));
+      const mx = c1.x + (a * (c2.x - c1.x)) / d;
+      const my = c1.y + (a * (c2.y - c1.y)) / d;
+      candidates.push([mx + (h * (c2.y - c1.y)) / d, my - (h * (c2.x - c1.x)) / d]);
+      candidates.push([mx - (h * (c2.y - c1.y)) / d, my + (h * (c2.x - c1.x)) / d]);
+    }
+  }
+  let best: [number, number] | null = null;
+  let bestD = Infinity;
+  for (const [x, y] of candidates) {
+    const rx = roundCm(x);
+    const ry = roundCm(y);
+    if (!ok(rx, ry)) continue;
+    const d = Math.hypot(rx - comp.xM, ry - comp.yM);
+    if (d < bestD - GEOM_EPS) {
+      bestD = d;
+      best = [rx, ry];
+    }
+  }
+  if (best) {
+    comp.xM = best[0];
+    comp.yM = best[1];
+  }
+}
+
+/**
+ * Distance (m) within which two guilds interact in the optimizer: the largest companion-sharing
+ * distance (insectaries 2 × 4.5 m; others (rA + rB) × 0.95 + benefit radius ≤ 4.5 m). Stars farther
+ * apart do not influence each other's companion placement (outer flank, jitter), so a cluster moved as
+ * a rigid block keeps its layout as long as no other star comes within this range.
+ */
+export function getStarInteractionRangeM(a: StarTree, b: StarTree): number {
+  return Math.max(9, (a.matureRadiusM + b.matureRadiusM) * 0.95 + 4.5);
+}
+
+/** Stars other than `t` within interaction range of it. */
+function interactingNeighbours(
+  t: GardenStarPlantInstance,
+  starPlants: GardenStarPlantInstance[]
+): GardenStarPlantInstance[] {
+  return starPlants.filter(
+    other =>
+      other.instanceId !== t.instanceId &&
+      Math.hypot(other.xM - t.xM, other.yM - t.yM) <= getStarInteractionRangeM(t.starTree, other.starTree) + GEOM_EPS
+  );
+}
+
 /** Places one companion in its preferred zone around a single tree. */
 function placeIndividualCompanion(
   t: GardenStarPlantInstance,
@@ -525,20 +629,21 @@ function placeIndividualCompanion(
   starPlants: GardenStarPlantInstance[],
   hemisphere: Hemisphere
 ): GardenCompanionInstance {
-  // Outer flank: direction pointing away from the other trees
+  // Outer flank: direction pointing away from the neighbouring trees (stars beyond interaction range
+  // do not shape this guild)
   let outerAngleDeg: number | null = null;
-  const otherTrees = starPlants.filter(other => other.instanceId !== t.instanceId);
+  const otherTrees = interactingNeighbours(t, starPlants);
   if (otherTrees.length > 0) {
     let sumDx = 0;
     let sumDy = 0;
     for (const other of otherTrees) {
       const d = Math.hypot(other.xM - t.xM, other.yM - t.yM);
-      if (d > 0.01) {
+      if (d > 0.01 + GEOM_EPS) {
         sumDx += (other.xM - t.xM) / d;
         sumDy += (other.yM - t.yM) / d;
       }
     }
-    if (Math.hypot(sumDx, sumDy) > 0.1) {
+    if (Math.hypot(sumDx, sumDy) > 0.1 + GEOM_EPS) {
       const awayAngleRad = Math.atan2(-sumDy, -sumDx);
       outerAngleDeg = ((awayAngleRad * 180) / Math.PI + 90 + 360) % 360;
     }
@@ -560,9 +665,14 @@ function placeIndividualCompanion(
   let finalAngleDeg: number;
   const baseAngle = getPreferredAngleDeg(plant, hemisphere);
   const sectorSpreadDeg = (plantIdx - (totalComps - 1) / 2) * (360 / Math.max(totalComps, 6));
-  // Keyed by species and position, not instanceId, so a shared link or JSON re-import (new instance
-  // ids) reproduces the same layout and the same conflicts
-  const hashJitter = (hashString(`${plant.id}|${t.treeId}|${t.xM.toFixed(2)}|${t.yM.toFixed(2)}`) % 31) - 15;
+  // Keyed by species and the positions of the neighbouring stars relative to this one (whole cm),
+  // not instanceId or absolute position: a shared link or JSON re-import (new instance ids)
+  // reproduces the same layout and conflicts, and a cluster moved as a rigid block keeps it
+  const neighbourKey = otherTrees
+    .map(o => `${Math.round((o.xM - t.xM) * 100)},${Math.round((o.yM - t.yM) * 100)}`)
+    .sort()
+    .join(';');
+  const hashJitter = (hashString(`${plant.id}|${t.treeId}|n:${neighbourKey}`) % 31) - 15;
 
   if (
     outerAngleDeg !== null &&
@@ -577,8 +687,8 @@ function placeIndividualCompanion(
   }
 
   const rad = ((finalAngleDeg - 90) * Math.PI) / 180;
-  const xM = Number((t.xM + r * Math.cos(rad)).toFixed(2));
-  const yM = Number((t.yM + r * Math.sin(rad)).toFixed(2));
+  const xM = roundCm(t.xM + r * Math.cos(rad));
+  const yM = roundCm(t.yM + r * Math.sin(rad));
 
   return {
     instanceId: `${plant.id}-${t.instanceId}`,
