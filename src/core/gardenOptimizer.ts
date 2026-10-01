@@ -1,7 +1,8 @@
 import { GuildPlant, GuildRole, Hemisphere, StarTree } from '../types/guild';
 import { GardenCompanionInstance, GardenStarPlantInstance, GardenStats } from '../types/garden';
 import { GUILD_PLANTS } from '../data/guildPlants';
-import { isAlliumPlant, isLegumePlant, isFennelPlant, isWormwoodPlant } from './placementRules';
+import { STAR_TREES } from '../data/starTrees';
+import { isAlliumPlant, isLegumePlant, isFennelPlant, isWormwoodPlant, isJugloneSensitiveStar } from './placementRules';
 import { analyzeGardenAntagonisms } from './gardenAntagonist';
 import { getCompanionPestDefenseForTree } from './pestCompanionEngine';
 
@@ -313,9 +314,7 @@ export function optimizeGardenCompanions(
           (isAlliumPlant(p1.plant) && isLegumePlant(p2.plant)) ||
           (isLegumePlant(p1.plant) && isAlliumPlant(p2.plant));
         const isFennelPair = isFennelPlant(p1.plant) || isFennelPlant(p2.plant);
-        const isWormwoodPair =
-          (isWormwoodPlant(p1.plant) && !p2.plant.botanicalName.toLowerCase().startsWith('ribes')) ||
-          (isWormwoodPlant(p2.plant) && !p1.plant.botanicalName.toLowerCase().startsWith('ribes'));
+        const isWormwoodPair = isWormwoodPlant(p1.plant) || isWormwoodPlant(p2.plant);
 
         let minSeparation = Math.max(0.6, (p1.plant.spreadM + p2.plant.spreadM) * 0.4);
         if (isAlliumLegume) {
@@ -403,26 +402,23 @@ export function optimizeGardenCompanions(
   };
 }
 
-/** Guild roles that some star trees fill themselves. */
-export const DUAL_ROLE_STAR_TREE_MAP: Record<string, GuildRole[]> = {
-  'tree-seabuckthorn': ['NITROGEN_FIXER', 'POLLINATOR_MAGNET', 'BIOMASS_PRODUCER'],
-  'tree-seabuckthorn-star': ['NITROGEN_FIXER', 'POLLINATOR_MAGNET', 'BIOMASS_PRODUCER'],
-  'shrub-elderberry': ['POLLINATOR_MAGNET', 'DYNAMIC_ACCUMULATOR', 'PEST_REPELLER'],
-  'shrub-red-currant': ['EDIBLE_UNDERSTORY', 'POLLINATOR_MAGNET', 'LIVING_MULCH'],
-  'shrub-rhododendron': ['POLLINATOR_MAGNET', 'LIVING_MULCH', 'GRASS_BARRIER'],
-  'tree-linden': ['POLLINATOR_MAGNET', 'DYNAMIC_ACCUMULATOR', 'BIOMASS_PRODUCER', 'EDIBLE_UNDERSTORY'],
-  'herb-hemp': ['DYNAMIC_ACCUMULATOR', 'BIOMASS_PRODUCER', 'PEST_REPELLER'],
-  'tree-tea-sinensis': ['EDIBLE_UNDERSTORY', 'DYNAMIC_ACCUMULATOR', 'LIVING_MULCH'],
-  'shrub-blueberry': ['EDIBLE_UNDERSTORY', 'POLLINATOR_MAGNET'],
-  'shrub-blackcurrant': ['EDIBLE_UNDERSTORY', 'POLLINATOR_MAGNET'],
-  'herb-rhubarb': ['EDIBLE_UNDERSTORY', 'BIOMASS_PRODUCER'],
-  'tree-alder': ['NITROGEN_FIXER', 'BIOMASS_PRODUCER'],
-  'plant-willow': ['BIOMASS_PRODUCER', 'DYNAMIC_ACCUMULATOR', 'POLLINATOR_MAGNET'],
-};
+/**
+ * Guild roles that some star plants fill themselves: exactly the evidence-checked roles of the
+ * companion entry for the same species (e.g. Black Alder star = Black Alder companion), so the two
+ * can never drift apart. Stars without a companion twin fill no extra role.
+ */
+export const DUAL_ROLE_STAR_TREE_MAP: Record<string, GuildRole[]> = Object.fromEntries(
+  STAR_TREES.flatMap(tree => {
+    const twin = GUILD_PLANTS.find(
+      p => !p.retired && p.botanicalName.toLowerCase().trim() === tree.botanicalName.toLowerCase().trim()
+    );
+    return twin && twin.roles.length > 0 ? [[tree.id, [...twin.roles]]] : [];
+  })
+);
 
 /** Synthetic GuildPlant for showing a star tree in PlantDetailModal. */
 export function starTreeToGuildPlant(tree: StarTree): GuildPlant {
-  const dualRoles = DUAL_ROLE_STAR_TREE_MAP[tree.id] || ['BIOMASS_PRODUCER'];
+  const dualRoles = DUAL_ROLE_STAR_TREE_MAP[tree.id] || [];
   return {
     id: tree.id,
     commonName: tree.commonName,
@@ -439,7 +435,7 @@ export function starTreeToGuildPlant(tree: StarTree): GuildPlant {
     },
     preferredZone: 'ZONE_3_DRIP',
     preferredSector: 'ANY',
-    jugloneTolerance: tree.jugloneProducer ? 'TOLERANT' : 'NEUTRAL',
+    jugloneTolerance: tree.jugloneProducer ? 'TOLERANT' : isJugloneSensitiveStar(tree) ? 'SENSITIVE' : 'NEUTRAL',
     climateZones: tree.climateZones,
     minDistanceM: 0,
     maxDistanceM: tree.matureRadiusM,

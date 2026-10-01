@@ -30,7 +30,7 @@ export const SeasonalCalendar: React.FC<SeasonalCalendarProps> = ({
   selectedTree,
 }) => {
   const tr = t(language);
-  const roleStatuses = useMemo(() => analyzeSeasonalRoleGaps(selectedPlants), [selectedPlants]);
+  const roleStatuses = useMemo(() => analyzeSeasonalRoleGaps(selectedPlants, selectedTree), [selectedPlants, selectedTree]);
   const redundantReports = useMemo(
     () => analyzePlantRedundancy(selectedPlants, selectedTree),
     [selectedPlants, selectedTree]

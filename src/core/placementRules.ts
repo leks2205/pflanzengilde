@@ -141,6 +141,12 @@ export function isWormwoodPlant(plant: GuildPlant): boolean {
   return id.includes('wormwood') || bot.startsWith('artemisia absinthium');
 }
 
+/**
+ * Companions whose sourced soil notes demand acid soil (cranberry pH 4.0–5.2, lingonberry
+ * 4.3–5.5, wintergreen < 6, tea 4.5–5.5, rhododendron 4.5–6.0, blueberry 4.5–5.5).
+ * Lupine is not listed: it grows mainly on slightly acid sands but is also reported on
+ * neutral soils.
+ */
 export function isStrictAcidophilePlant(plant: GuildPlant): boolean {
   const id = plant.id.toLowerCase();
   return (
@@ -148,23 +154,73 @@ export function isStrictAcidophilePlant(plant: GuildPlant): boolean {
     id.includes('lingonberry') ||
     id.includes('wintergreen') ||
     id.includes('tea-sinensis') ||
-    id.includes('lupine') ||
     id.includes('rhododendron') ||
     id.includes('blueberry')
   );
 }
 
+/**
+ * Companions whose sourced soil notes need neutral to calcareous soil: sage (neutral to
+ * alkaline), alfalfa (pH 6.5–7.0, lime acid soils), sainfoin (calcareous, pH 6.6–8, fails on
+ * acid ground), Christmas rose (carbonate bedrock, base-rich soils). Lavender, rosemary and
+ * hyssop only tolerate lime (sandy or chalky soils) and are not counted.
+ */
 export function isStrictCalcicolePlant(plant: GuildPlant): boolean {
   const id = plant.id.toLowerCase();
   return (
-    id.includes('lavender') ||
-    id.includes('rosemary') ||
-    id.includes('hyssop') ||
     id.includes('sage') ||
     id.includes('alfalfa') ||
     id.includes('sainfoin') ||
     id.includes('hellebore')
   );
+}
+
+/**
+ * Star plants listed as juglone-sensitive in the observation lists the walnut texts cite.
+ * Funt & Martin (1993, Ohio State HYG-1148): apple, European alder (Alnus glutinosa), basswood
+ * (Tilia), rhododendron, blueberry and rhubarb do not grow near black walnut, while peach,
+ * nectarine, cherry, plum (Prunus) and pear were observed growing near it. Purdue HO-193
+ * (Dana & Lerner 1994) lists apple, pear, blueberry, rhubarb, rhododendron, black alder and
+ * basswood as sensitive and cherry and pawpaw as tolerant. Penn State lists Prunus, quince,
+ * wild grape and American hazel as tolerant. Pear stays on the list as a precaution because
+ * the lists disagree; species on no list (tea, fig, mulberry, chestnut …) are not flagged.
+ */
+export const JUGLONE_SENSITIVE_STAR_IDS: ReadonlySet<string> = new Set([
+  'tree-apple',
+  'tree-pear',
+  'tree-alder',
+  'tree-linden',
+  'shrub-blueberry',
+  'shrub-rhododendron',
+  'herb-rhubarb'
+]);
+
+export function isJugloneSensitiveStar(tree: Pick<StarTree, 'id' | 'jugloneProducer'>): boolean {
+  return !tree.jugloneProducer && JUGLONE_SENSITIVE_STAR_IDS.has(tree.id);
+}
+
+/**
+ * Juglone zone around a mature black walnut: on average 15–18 m (50–60 ft) from the trunk,
+ * up to about 24 m (80 ft) (Funt & Martin 1993; Morton Arboretum). The planner uses the upper
+ * end of the average, 18 m, as its precautionary buffer.
+ */
+export const JUGLONE_ROOT_ZONE_M = 18;
+
+/** Star plants whose sourced texts call them calcifuge / strict acid-soil plants. */
+export const STRICT_ACIDOPHILE_STAR_IDS: ReadonlySet<string> = new Set([
+  'shrub-blueberry',     // pH 4.5–5.5
+  'shrub-rhododendron',  // pH 4.5–6.0
+  'tree-tea-sinensis',   // pH 4.5–5.5
+  'tree-tea-assamica',   // pH 4.5–5.5
+  'tree-chestnut'        // pH 3.5–5.5, does not thrive on limestone
+]);
+
+/**
+ * Star plants that cannot use acid soil (SoilType ACIDIC = pH < 6.0 is listed as unsuitable),
+ * e.g. hemp (best at pH 6.0–7.0). Paired with strict acidophiles in the pH conflict check.
+ */
+export function isAcidIntolerantStar(tree: Pick<StarTree, 'unsuitableSoils'>): boolean {
+  return tree.unsuitableSoils.includes('ACIDIC');
 }
 
 export function autoPlaceGuildPlants(
@@ -185,7 +241,7 @@ export function autoPlaceGuildPlants(
   };
 
   selectedPlants.forEach(plant => {
-    // Alliums inhibit Frankia nodules within ~1.8 m of an N-fixing star's root collar
+    // Precaution (no study on Frankia found): keep alliums >= 1.8 m from an N-fixing star's collar
     if (isNFixingStarTree && isAlliumPlant(plant) && (plant.preferredZone === 'ZONE_1_BULB' || plant.preferredZone === 'ZONE_2_MID')) {
       plantsByZone['ZONE_3_DRIP'].push(plant);
     } else if (isFennelPlant(plant) || isWormwoodPlant(plant)) {
@@ -369,14 +425,11 @@ export function autoPlaceGuildPlants(
               const d = calculatePolarDistanceM(p.distanceM, p.angleDeg, candDist, a);
               if (d < minDist) minDist = d;
 
-              // Ribes tolerate wormwood's absinthin
+              // Funke (1943): every test species except wormwood itself was injured within ~1 m
               let reqClear = 0.4;
               if (isFennelPlant(plant) || isFennelPlant(p.plant)) {
                 reqClear = 1.55;
-              } else if (
-                (isWormwoodPlant(plant) && !p.plant.botanicalName.toLowerCase().startsWith('ribes')) ||
-                (isWormwoodPlant(p.plant) && !plant.botanicalName.toLowerCase().startsWith('ribes'))
-              ) {
+              } else if (isWormwoodPlant(plant) || isWormwoodPlant(p.plant)) {
                 reqClear = 1.25;
               }
               const combinedR = (plant.spreadM + p.plant.spreadM) / 2;
@@ -450,7 +503,7 @@ export function autoPlaceGuildPlants(
                 let reqClear = combinedR * (competing ? 0.73 : 0.37);
 
                 if (isFennelPlant(p.plant)) reqClear = Math.max(reqClear, 1.55);
-                if (isWormwoodPlant(p.plant) && !plant.botanicalName.toLowerCase().startsWith('ribes')) {
+                if (isWormwoodPlant(p.plant)) {
                   reqClear = Math.max(reqClear, 1.25);
                 }
 

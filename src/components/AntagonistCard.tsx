@@ -15,6 +15,7 @@ import {
   Info,
   Sparkles
 } from 'lucide-react';
+import { SourceList } from './SourceList';
 
 interface AntagonistCardProps {
   language: Language;
@@ -191,13 +192,13 @@ export const AntagonistCard: React.FC<AntagonistCardProps> = ({
           </button>
 
           {citationsOpen && (
-            <div className="mt-2 p-3 rounded-xl bg-stone-100/90 border border-stone-200 text-[11px] text-stone-700 space-y-1.5 animate-in fade-in">
-              {conflict.scientificCitations.map((cite, cIdx) => (
-                <div key={cIdx} className="flex items-start gap-1.5 font-mono text-[10px]">
-                  <span className="text-forest-700 font-bold shrink-0">[{cIdx + 1}]</span>
-                  <span className="text-stone-700 leading-normal">{cite}</span>
-                </div>
-              ))}
+            <div className="mt-2 p-3 rounded-xl bg-stone-100/90 border border-stone-200 animate-in fade-in">
+              <SourceList
+                sources={conflict.scientificCitations}
+                language={language}
+                title={null}
+                collapseAfter={0}
+              />
             </div>
           )}
         </div>

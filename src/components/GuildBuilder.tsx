@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ActiveGapFilter, ActivePestFilter, ClimateZone, GuildPlant, GuildRole, Language, SoilType, StarTree, getLoc } from '../types/guild';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 import { Search, Filter, Check, Plus, AlertOctagon, Sparkles, Layers, Star, Mountain, Globe, X, ShieldCheck, AlertTriangle, FlaskConical, Sprout } from 'lucide-react';
 import { t, translateRole, translateLayer, translateZone } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
@@ -90,7 +90,7 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
 
   const filteredPlants = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    return GUILD_PLANTS.filter(plant => {
+    return ACTIVE_GUILD_PLANTS.filter(plant => {
       const isJugloneSensitive = selectedTree.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE';
       if (isJugloneSensitive && hideIncompatible) {
         return false;
@@ -246,7 +246,7 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
           : null;
 
         const companionPlants = defense.companionPlantIds
-          .map(id => GUILD_PLANTS.find(p => p.id === id))
+          .map(id => ACTIVE_GUILD_PLANTS.find(p => p.id === id))
           .filter((p): p is GuildPlant => !!p);
 
         return (

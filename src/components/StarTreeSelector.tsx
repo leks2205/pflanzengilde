@@ -8,9 +8,13 @@ import { PhotoCreditBadge, creditAnchorId } from './PhotoCreditBadge';
 import { GoogleImagesButton } from './GoogleImagesButton';
 import { evidenceLabel, resolvePestDefense } from '../core/pestCompanionEngine';
 import { EvidenceTag } from './EvidenceTag';
+import { SourceList } from './SourceList';
 
 type ShadeFilter = 'ALL' | 'FULL_SUN' | 'PARTIAL_SHADE' | 'FULL_SHADE';
 type CategoryFilter = 'ALL' | 'TREES' | 'SHRUBS' | 'VINES_HERBS';
+
+/** The "full shade" filter is only offered when at least one star plant is rated FULL_SHADE. */
+const HAS_FULL_SHADE_TREES = STAR_TREES.some(tree => tree.sunPreference === 'FULL_SHADE');
 
 interface StarTreeSelectorProps {
   language: Language;
@@ -204,18 +208,20 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
             <CloudSun className="w-3.5 h-3.5" />
             {tr.filterShadePartial}
           </button>
-          <button
-            type="button"
-            onClick={() => setShadeFilter('FULL_SHADE')}
-            className={`px-2.5 py-1 rounded-lg font-medium flex items-center gap-1 transition-all ${
-              shadeFilter === 'FULL_SHADE'
-                ? 'bg-indigo-700 text-white shadow-xs'
-                : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
-            }`}
-          >
-            <Cloud className="w-3.5 h-3.5" />
-            {tr.filterShadeFull}
-          </button>
+          {HAS_FULL_SHADE_TREES && (
+            <button
+              type="button"
+              onClick={() => setShadeFilter('FULL_SHADE')}
+              className={`px-2.5 py-1 rounded-lg font-medium flex items-center gap-1 transition-all ${
+                shadeFilter === 'FULL_SHADE'
+                  ? 'bg-indigo-700 text-white shadow-xs'
+                  : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
+              }`}
+            >
+              <Cloud className="w-3.5 h-3.5" />
+              {tr.filterShadeFull}
+            </button>
+          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5 pt-2 lg:pt-0 border-t lg:border-t-0 border-stone-200">
@@ -450,6 +456,7 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
           <p className="text-stone-600 leading-relaxed text-xs">
             {getLoc(selectedTree.description, language)}
           </p>
+          <SourceList key={selectedTree.id} sources={selectedTree.sources} language={language} className="pt-1" />
         </div>
 
         <div className="md:col-span-5 space-y-2 border-t md:border-t-0 md:border-l border-stone-200 pt-3 md:pt-0 md:pl-4 text-xs">

@@ -69,11 +69,11 @@ const PRESETS: Record<'apple' | 'walnut' | 'apricot' | 'minimal', { treeId: stri
     plantIds: [
       'plant-comfrey',
       'plant-elderberry',
-      'plant-sweet-woodruff',
+      'plant-woodruff',
       'plant-red-currant',
       'plant-chives',
       'plant-nettle',
-      'plant-ajuga',
+      'plant-bugleweed',
       'plant-crocus',
     ],
   },

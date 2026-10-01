@@ -15,7 +15,7 @@ import {
   calculatePolarDistanceM,
   calculateSpatialMetrics
 } from './placementRules';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 import { formatNumber } from '../i18n/translations';
 
 export interface AlternativeRolePlant {
@@ -78,7 +78,7 @@ export function suggestAlternativeRolePlants(
 
   const crowdedSpread = crowdedPlant.spreadM;
 
-  GUILD_PLANTS.forEach(candidate => {
+  ACTIVE_GUILD_PLANTS.forEach(candidate => {
     if (candidate.id === crowdedPlant.id || selectedIds.has(candidate.id)) return;
 
     const sharedRoles = candidate.roles.filter(r => crowdedPlant.roles.includes(r));

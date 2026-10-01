@@ -5,7 +5,8 @@ import {
   decodeGardenFromCode,
   buildGardenShareUrl,
   buildGardenEmbedUrl,
-  parseGardenUrl
+  parseGardenUrl,
+  parseGuildUrl
 } from '../src/utils/shareUtils';
 import { STAR_TREES } from '../src/data/starTrees';
 import { GUILD_PLANTS } from '../src/data/guildPlants';
@@ -261,5 +262,29 @@ assert(
   unknownTreeGarden?.starPlants.length === 1 && unknownTreeGarden.starPlants[0].treeId === pearTree.id,
   'Unknown trees are dropped instead of turning into apple trees'
 );
+
+// 7. Retired companions (southernwood, wormwood, sweet flag): their indices stay in GUILD_PLANTS so
+// old codes keep decoding, but the decoders drop them silently instead of failing.
+const retiredPlants = GUILD_PLANTS.filter(p => p.retired);
+assert(
+  JSON.stringify(retiredPlants.map(p => p.id).sort()) === JSON.stringify(['plant-southernwood', 'plant-sweet-flag', 'plant-wormwood']),
+  `Exactly the three owner-retired companions are flagged (got ${retiredPlants.map(p => p.id).join(', ')})`
+);
+const guildWithRetired = decodeGuildFromCode(encodeGuildToCode({ starTree: appleTree, selectedPlants: [comfrey, ...retiredPlants, clover] }));
+assert(
+  guildWithRetired?.treeId === appleTree.id && JSON.stringify(guildWithRetired.plantIds) === JSON.stringify([comfrey.id, clover.id]),
+  `Guild codes containing retired companions decode without them (got ${JSON.stringify(guildWithRetired?.plantIds)})`
+);
+const onlyRetired = decodeGuildFromCode(encodeGuildToCode({ starTree: appleTree, selectedPlants: retiredPlants }));
+assert(onlyRetired?.treeId === appleTree.id && onlyRetired.plantIds.length === 0, 'A guild code with only retired companions still decodes (tree kept, no plants)');
+const gardenWithRetired = decodeGardenFromCode(encodeGardenToCode({
+  starPlants: [{ treeId: appleTree.id, xM: 0, yM: 0, selectedPlantIds: [chives.id, ...retiredPlants.map(p => p.id)] }]
+}));
+assert(
+  JSON.stringify(gardenWithRetired?.starPlants[0]?.selectedPlantIds) === JSON.stringify([chives.id]),
+  `Garden codes containing retired companions decode without them (got ${JSON.stringify(gardenWithRetired?.starPlants[0]?.selectedPlantIds)})`
+);
+const plainUrl = parseGuildUrl('?tree=tree-apple&plants=plant-wormwood,plant-comfrey,plant-sweet-flag', '/');
+assert(JSON.stringify(plainUrl.plantIds) === JSON.stringify([comfrey.id]), `Plain ?plants= links drop retired companions (got ${JSON.stringify(plainUrl.plantIds)})`);
 
 console.log(`garden share: ${passedChecks}/${totalChecks} checks passed`);

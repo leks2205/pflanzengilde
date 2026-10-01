@@ -75,9 +75,10 @@ console.log('\n--- 3. Botanical Antagonisms (Juglone & Allium vs Legume) ---');
 const walnutTree = STAR_TREES.find(t => t.id === 'tree-walnut')!;
 const apricotTree = STAR_TREES.find(t => t.id === 'tree-apricot')!;
 assert(Boolean(walnutTree), 'Walnut tree found');
-assert(Boolean(apricotTree), 'Apricot tree found');
+assert(Boolean(appleTree) && Boolean(apricotTree), 'Apple and apricot trees found');
 
-// Walnut at (0, 0), Apricot at (10, 0) -> distance 10m < 20m Juglone threshold
+// Walnut at (0, 0), Apple at (10, 0) -> distance 10m < 18m juglone buffer (apple: sensitive on
+// Purdue HO-193 and Funt & Martin 1993 lists)
 const walnutInstance: GardenStarPlantInstance = {
   instanceId: 'tree-walnut-1',
   starTree: walnutTree,
@@ -85,6 +86,37 @@ const walnutInstance: GardenStarPlantInstance = {
   yM: 0,
   customRadiusM: walnutTree.matureRadiusM,
 };
+const appleInstanceClose: GardenStarPlantInstance = {
+  instanceId: 'tree-apple-1',
+  starTree: appleTree,
+  xM: 10,
+  yM: 0,
+  customRadiusM: appleTree.matureRadiusM,
+};
+const conflictsClose = analyzeGardenAntagonisms([walnutInstance, appleInstanceClose], []);
+const jugloneConflict = conflictsClose.find(c => c.type === 'JUGLONE');
+assert(Boolean(jugloneConflict), 'Juglone toxicity conflict detected at 10m distance');
+assert(jugloneConflict?.severity === 'CRITICAL', 'Juglone conflict severity is CRITICAL');
+assert(jugloneConflict?.requiredDistanceM === 18, 'Juglone buffer is 18 m (upper end of the 15-18 m average root zone)');
+assert(
+  Boolean(jugloneConflict?.sources?.some(s => s.startsWith('Funt, R. C.')) && jugloneConflict?.sources?.some(s => s.startsWith('Hejl, A. M., Einhellig'))),
+  'Juglone garden conflict carries the guild-level citations (distance: Funt & Martin; respiration: Hejl et al.)'
+);
+assert(
+  conflictsClose.filter(c => c.type !== 'TRUNK_COLLISION').every(c => (c.sources?.length ?? 0) > 0),
+  'Every non-geometric garden conflict carries sources'
+);
+
+// Move Apple to (20, 0) -> distance 20m >= 18m juglone buffer
+const appleInstanceSafe: GardenStarPlantInstance = {
+  ...appleInstanceClose,
+  xM: 20,
+};
+const conflictsSafe = analyzeGardenAntagonisms([walnutInstance, appleInstanceSafe], []);
+const jugloneConflictSafe = conflictsSafe.find(c => c.type === 'JUGLONE');
+assert(!jugloneConflictSafe, 'No Juglone conflict when distance is 20m (>= 18m clearance)');
+
+// Apricot (Prunus) was observed growing near black walnut (Funt & Martin 1993) -> not flagged
 const apricotInstanceClose: GardenStarPlantInstance = {
   instanceId: 'tree-apricot-1',
   starTree: apricotTree,
@@ -92,19 +124,8 @@ const apricotInstanceClose: GardenStarPlantInstance = {
   yM: 0,
   customRadiusM: apricotTree.matureRadiusM,
 };
-const conflictsClose = analyzeGardenAntagonisms([walnutInstance, apricotInstanceClose], []);
-const jugloneConflict = conflictsClose.find(c => c.type === 'JUGLONE');
-assert(Boolean(jugloneConflict), 'Juglone toxicity conflict detected at 10m distance');
-assert(jugloneConflict?.severity === 'CRITICAL', 'Juglone conflict severity is CRITICAL');
-
-// Move Apricot to (25, 0) -> distance 25m >= 20m Juglone threshold
-const apricotInstanceSafe: GardenStarPlantInstance = {
-  ...apricotInstanceClose,
-  xM: 25,
-};
-const conflictsSafe = analyzeGardenAntagonisms([walnutInstance, apricotInstanceSafe], []);
-const jugloneConflictSafe = conflictsSafe.find(c => c.type === 'JUGLONE');
-assert(!jugloneConflictSafe, 'No Juglone conflict when distance is 25m (>= 20m clearance)');
+const conflictsApricot = analyzeGardenAntagonisms([walnutInstance, apricotInstanceClose], []);
+assert(!conflictsApricot.some(c => c.type === 'JUGLONE'), 'Apricot (Prunus, listed juglone-tolerant) is not flagged at 10m');
 
 // 4. CANOPY SHADING & OVERLAP ANALYSIS
 console.log('\n--- 4. Canopy Overlap & Microclimate Shading ---');

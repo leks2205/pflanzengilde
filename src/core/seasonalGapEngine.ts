@@ -1,6 +1,6 @@
 import { GuildPlant, GuildRole, LocalizedString, PhenoSeason, SeasonalGap, StarTree } from '../types/guild';
 import { getCompanionPestDefenseForTree } from './pestCompanionEngine';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 
 export interface PhenoSeasonDef {
   id: PhenoSeason;
@@ -51,8 +51,8 @@ export const PHENO_SEASONS: PhenoSeasonDef[] = [
       de: 'Juli – August'
     },
     description: {
-      en: 'Peak solar energy, fruit sizing, heat stress, moisture conservation critical.',
-      de: 'Maximale Sonneneinstrahlung, Fruchtreife, Hitzestress, Feuchtigkeitsschutz essenziell.'
+      en: 'Strongest sun, fruit swelling, risk of heat and drought stress.',
+      de: 'Stärkste Sonneneinstrahlung, Fruchtwachstum, Gefahr von Hitze- und Trockenstress.'
     }
   },
   {
@@ -81,8 +81,8 @@ export const PHENO_SEASONS: PhenoSeasonDef[] = [
       de: 'November – Februar'
     },
     description: {
-      en: 'Canopy dormant, bare soil vulnerable to erosion, subterranean rodent bark damage.',
-      de: 'Baumkrone ruht, offener Boden frost- und erosionsgefährdet, Wühlmausgefahr an Rinde.'
+      en: 'Canopy dormant; bare soil stays uncovered; voles may gnaw roots and bark.',
+      de: 'Baumkrone ruht; offener Boden bleibt unbedeckt; Wühlmäuse können Wurzeln und Rinde benagen.'
     }
   }
 ];
@@ -106,9 +106,49 @@ const ROLE_DISPLAY_NAMES: Record<GuildRole, LocalizedString> = {
   EDIBLE_UNDERSTORY: { en: 'Edible Understory', de: 'Essbarer Unterwuchs' }
 };
 
-export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[]): RoleSeasonalStatus[] {
+/** Smaller layers first: a gap is usually filled with an understory plant, not another tree. */
+const LAYER_RANK: Record<GuildPlant['layer'], number> = {
+  GROUND_COVER: 0, BULB_ROOT: 0, HERBACEOUS: 1, VINE: 2, SHRUB: 3, SUB_CANOPY: 4, CANOPY: 5
+};
+
+/**
+ * Catalogue plants (retired ones excluded) that fill `role` in `season`, best first: companions
+ * recommended for the star plant, then smaller layers, then plants with more roles. Juglone-sensitive
+ * plants are left out for juglone-producing stars.
+ */
+export function getGapCandidateIds(
+  role: GuildRole,
+  season: PhenoSeason,
+  excludeIds: Set<string> = new Set(),
+  starTree?: StarTree | null,
+  limit = 4
+): string[] {
+  const isRecommended = (p: GuildPlant) =>
+    !!starTree && (starTree.recommendedCompanions.includes(p.id) || p.recommendedForTrees.includes(starTree.id));
+  return ACTIVE_GUILD_PLANTS
+    .map((plant, index) => ({ plant, index }))
+    .filter(({ plant }) =>
+      !excludeIds.has(plant.id) &&
+      !(starTree?.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE') &&
+      plantCoversRoleInSeason(plant, role, season)
+    )
+    .sort((a, b) =>
+      Number(isRecommended(b.plant)) - Number(isRecommended(a.plant)) ||
+      LAYER_RANK[a.plant.layer] - LAYER_RANK[b.plant.layer] ||
+      b.plant.roles.length - a.plant.roles.length ||
+      a.index - b.index
+    )
+    .slice(0, limit)
+    .map(({ plant }) => plant.id);
+}
+
+/**
+ * Seasonal gaps per role. Suggestions are derived from the catalogue data (role + season), and a
+ * gap that no unselected catalogue plant could fill is not reported.
+ */
+export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[], starTree?: StarTree | null): RoleSeasonalStatus[] {
   const selectedIds = new Set(selectedPlants.map(p => p.id));
-  const notSelected = (id: string) => !selectedIds.has(id);
+  const candidatesFor = (role: GuildRole, season: PhenoSeason) => getGapCandidateIds(role, season, selectedIds, starTree);
   const allRoles: GuildRole[] = [
     'POLLINATOR_MAGNET',
     'LIVING_MULCH',
@@ -149,77 +189,77 @@ export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[]): RoleSeaso
         const requiredSeasons: PhenoSeason[] = ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'];
         for (const season of requiredSeasons) {
           if (!seasonCoverage[season].covered) {
+            const candidates = candidatesFor(role, season);
+            if (candidates.length === 0) continue;
             let reason: LocalizedString = { en: '', de: '' };
-            let candidates: string[] = [];
 
             if (season === 'EARLY_SPRING') {
               reason = {
-                en: 'Early Spring Hunger Gap: Emerging queen bumblebees and solitary bees face starvation before main crops bloom, threatening early pollination.',
-                de: 'Vorfrühlings-Hungerlücke: Erwachende Hummelköniginnen und Wildbienen finden vor der Obstbaumblüte keine Nahrung, was die spätere Bestäubung gefährdet.'
+                en: 'Early Spring Gap: No companion flowers before the fruit trees bloom, when queen bumblebees and early solitary bees are already flying.',
+                de: 'Vorfrühlings-Lücke: Keine Begleitblüten vor der Obstbaumblüte, wenn Hummelköniginnen und frühe Wildbienen schon fliegen.'
               };
-              candidates = ['plant-crocus', 'plant-snowdrop', 'plant-dandelion', 'plant-chives'];
             } else if (season === 'LATE_SPRING') {
               reason = {
                 en: 'Late Spring Blossom Gap: Companion flowers needed to sustain pollinators while fruit trees are in bloom.',
                 de: 'Blütenlücke im Spätfrühling: Begleitblüten fehlen, um Bestäuber während der Obstblüte verlässlich im System zu halten.'
               };
-              candidates = ['plant-comfrey', 'plant-white-clover', 'plant-borage', 'plant-chives'];
             } else if (season === 'SUMMER') {
               reason = {
-                en: 'High Summer Nectar Gap: Peak beneficial predator populations (parasitic wasps, hoverflies) need nectar to control pests.',
-                de: 'Hochsommer-Nektarlücke: Nützlingsinsekten (Schlupfwespen, Schwebfliegen) benötigen dringend Nektar zur biologischen Schädlingskontrolle.'
+                en: 'High Summer Nectar Gap: No companion flowers in midsummer. In lab tests, a codling moth parasitoid wasp lived more than twice as long when it could feed on flowers.',
+                de: 'Hochsommer-Nektarlücke: Keine Begleitblüten im Hochsommer. Im Labor lebte eine Schlupfwespe des Apfelwicklers mehr als doppelt so lange, wenn sie an Blüten fressen konnte.'
               };
-              candidates = ['plant-yarrow', 'plant-lavender', 'plant-fennel', 'plant-nasturtium'];
             } else if (season === 'AUTUMN') {
               reason = {
-                en: 'Autumn Storage Gap: Bees require late-season nectar to store honey reserves before winter frost.',
-                de: 'Herbst-Versorgungslücke: Spättracht fehlt, damit Bienen und Schmetterlinge lebenswichtige Winterreserven anlegen können.'
+                en: 'Autumn Gap: No companion flowers late in the season for bees and other flower visitors still active in autumn.',
+                de: 'Herbst-Lücke: Keine späten Begleitblüten für Bienen und andere Blütenbesucher, die im Herbst noch aktiv sind.'
               };
-              candidates = ['plant-sedum', 'plant-aster', 'plant-white-clover'];
             }
 
             gaps.push({
               role,
               season,
               reason,
-              suggestedPlantIds: candidates.filter(notSelected)
+              suggestedPlantIds: candidates
             });
           }
         }
       } else if (role === 'LIVING_MULCH') {
-        if (!seasonCoverage['WINTER'].covered) {
+        const candidates = candidatesFor(role, 'WINTER');
+        if (!seasonCoverage['WINTER'].covered && candidates.length > 0) {
           gaps.push({
             role,
             season: 'WINTER',
             reason: {
-              en: 'Winter Soil Armor Gap: Current ground covers collapse after frost, leaving bare soil vulnerable to winter rain erosion and weed invasion.',
-              de: 'Bodenpanzer-Winterlücke: Das Laub zieht bei Frost ein. Unbedeckter Boden ist winterlicher Nährstoffauswaschung, Verdichtung und Unkrautkeimung ausgesetzt.'
+              en: 'Winter Ground Cover Gap: None of the selected ground covers keeps its leaves in winter, so the soil lies bare until spring.',
+              de: 'Winterlücke bei der Bodendeckung: Keiner der gewählten Bodendecker behält im Winter sein Laub, der Boden liegt bis zum Frühjahr offen.'
             },
-            suggestedPlantIds: ['plant-thyme', 'plant-white-clover', 'plant-woodruff', 'plant-bugleweed'].filter(notSelected)
+            suggestedPlantIds: candidates
           });
         }
       } else if (role === 'GRASS_BARRIER') {
-        if (!seasonCoverage['SUMMER'].covered) {
+        const candidates = candidatesFor(role, 'SUMMER');
+        if (!seasonCoverage['SUMMER'].covered && candidates.length > 0) {
           gaps.push({
             role,
             season: 'SUMMER',
             reason: {
-              en: 'Summer Grass Encroachment Gap: Spring bulbs go dormant by midsummer. Fibrous perennial companions are needed to block summer grass rhizomes.',
-              de: 'Grasbarriere-Sommerlücke: Frühjahrszwiebeln ziehen im Juni ein. Ausdauernde Horste werden benötigt, um kriechende Rasengräser im Sommer aufzuhalten.'
+              en: 'Summer Grass Barrier Gap: None of the selected barrier plants is active in summer, after spring bulbs have died back. That such plantings hold back lawn grass is unproven; mulching the tree basin is the more reliable option.',
+              de: 'Grasbarriere-Sommerlücke: Keine der gewählten Barrierepflanzen ist im Sommer aktiv, wenn Frühjahrszwiebeln eingezogen sind. Dass solche Pflanzungen Rasengras zurückhalten, ist nicht belegt; Mulchen der Baumscheibe ist verlässlicher.'
             },
-            suggestedPlantIds: ['plant-chives', 'plant-bugleweed', 'plant-strawberry'].filter(notSelected)
+            suggestedPlantIds: candidates
           });
         }
       } else if (role === 'PEST_REPELLER') {
-        if (!seasonCoverage['WINTER'].covered) {
+        const candidates = candidatesFor(role, 'WINTER');
+        if (!seasonCoverage['WINTER'].covered && candidates.length > 0) {
           gaps.push({
             role,
             season: 'WINTER',
             reason: {
-              en: 'Winter Rodent Bark Defense Gap: Voles and rabbits gnaw tree bark beneath snow. Persistent aromatic or subterranean barriers are needed.',
-              de: 'Winterliche Nagerschutz-Lücke: Wühlmäuse und Kaninchen benagen die Baumrinde unter der Schneedecke. Wintergrüne Duftpflanzen oder Zwiebelschutzbarrieren fehlen.'
+              en: 'Winter Pest Repeller Gap: None of the selected repeller plants is active in winter. No study was found showing that a companion plant protects tree bark or roots from voles; a wire-mesh root basket and trunk guard are the physical options.',
+              de: 'Winterlücke bei der Schädlingsabwehr: Keine der gewählten Abwehrpflanzen ist im Winter aktiv. Eine Studie, nach der eine Begleitpflanze Rinde oder Wurzeln vor Wühlmäusen schützt, wurde nicht gefunden; Wurzelschutzkorb aus Drahtgeflecht und Stammschutz sind die mechanischen Möglichkeiten.'
             },
-            suggestedPlantIds: ['plant-southernwood', 'plant-garlic', 'plant-daffodil', 'plant-thyme'].filter(notSelected)
+            suggestedPlantIds: candidates
           });
         }
       }
@@ -234,8 +274,11 @@ export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[]): RoleSeaso
   });
 }
 
+/** Suggested plants in suggestion order (retired companions never included). */
 export function getSuggestedPlantsForGap(suggestedIds: string[]): GuildPlant[] {
-  return GUILD_PLANTS.filter(p => suggestedIds.includes(p.id));
+  return suggestedIds
+    .map(id => ACTIVE_GUILD_PLANTS.find(p => p.id === id))
+    .filter((p): p is GuildPlant => !!p);
 }
 
 export function plantCoversRoleInSeason(plant: GuildPlant, role: GuildRole, season: PhenoSeason): boolean {
@@ -321,7 +364,7 @@ export function analyzePlantRedundancy(selectedPlants: GuildPlant[], starTree?: 
     }
 
     if (isFullyRedundant && allCoveringMap.size > 0) {
-      const candidateReplacements = GUILD_PLANTS.filter(candidate => {
+      const candidateReplacements = ACTIVE_GUILD_PLANTS.filter(candidate => {
         if (selectedIds.has(candidate.id)) return false;
         return candidate.roles.some(r => uncoveredRolesInGuild.includes(r));
       }).slice(0, 3);

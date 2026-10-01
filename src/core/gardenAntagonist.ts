@@ -5,9 +5,21 @@ import {
   isFennelPlant,
   isWormwoodPlant,
   isStrictAcidophilePlant,
-  isStrictCalcicolePlant
+  isStrictCalcicolePlant,
+  isJugloneSensitiveStar,
+  isAcidIntolerantStar,
+  STRICT_ACIDOPHILE_STAR_IDS,
+  JUGLONE_ROOT_ZONE_M
 } from './placementRules';
 import { PEST_HOST_CONFLICTS } from './pestHostConflicts';
+import {
+  JUGLONE_MECHANISM_CITATIONS,
+  JUGLONE_DISTANCE_CITATIONS,
+  ALLIUM_LEGUME_CITATIONS,
+  FENNEL_ALLELOPATHY_CITATIONS,
+  WORMWOOD_ALLELOPATHY_CITATIONS,
+  EDAPHIC_PH_CITATIONS
+} from './antagonistEngine';
 import { en } from '../i18n/en';
 import { de } from '../i18n/de';
 import { formatNumber } from '../i18n/translations';
@@ -28,34 +40,8 @@ function locMsg(
   return { de: fillMsg(de[key], deVars), en: fillMsg(en[key], enVars) };
 }
 
-const JUGLONE_SENSITIVE_STAR_IDS = new Set([
-  'tree-apple',
-  'tree-pear',
-  'tree-cherry',
-  'tree-plum',
-  'tree-peach',
-  'tree-apricot',
-  'tree-quince',
-  'tree-hazelnut',
-  'shrub-blueberry',
-  'shrub-rhododendron',
-  'vine-grape',
-  'tree-tea-sinensis',
-  'tree-tea-assamica',
-  'herb-rhubarb'
-]);
-
-const STRICT_ACIDOPHILE_STAR_IDS = new Set([
-  'shrub-blueberry',
-  'shrub-rhododendron',
-  'tree-tea-sinensis',
-  'tree-tea-assamica',
-  'tree-chestnut'
-]);
-
-const STRICT_CALCICOLE_STAR_IDS = new Set([
-  'tree-fig'
-]);
+/** The garden juglone texts cite both the mechanism (respiration) and the root-zone distance. */
+const JUGLONE_CITATIONS: readonly string[] = [...new Set([...JUGLONE_MECHANISM_CITATIONS, ...JUGLONE_DISTANCE_CITATIONS])];
 
 /** All pairwise spatial antagonisms between star trees and companions in the garden. */
 export function analyzeGardenAntagonisms(
@@ -64,7 +50,7 @@ export function analyzeGardenAntagonisms(
 ): GardenConflict[] {
   const conflicts: GardenConflict[] = [];
 
-  // Walnut juglone vs. sensitive trees (20 m) and companions (15 m)
+  // Walnut juglone vs. sensitive trees and companions (18 m, upper end of the 15–18 m average root zone)
   const walnuts = starPlants.filter(t => t.starTree.jugloneProducer);
 
   for (const walnut of walnuts) {
@@ -72,20 +58,9 @@ export function analyzeGardenAntagonisms(
       if (otherTree.instanceId === walnut.instanceId) continue;
 
       const dist = Math.hypot(otherTree.xM - walnut.xM, otherTree.yM - walnut.yM);
-      const bot = otherTree.starTree.botanicalName;
-      const isSensitiveTree =
-        JUGLONE_SENSITIVE_STAR_IDS.has(otherTree.starTree.id) ||
-        bot.includes('Prunus') ||
-        bot.includes('Malus') ||
-        bot.includes('Pyrus') ||
-        bot.includes('Cydonia') ||
-        bot.includes('Vaccinium') ||
-        bot.includes('Rhododendron') ||
-        bot.includes('Vitis') ||
-        bot.includes('Camellia') ||
-        bot.includes('Rheum');
+      const isSensitiveTree = isJugloneSensitiveStar(otherTree.starTree);
 
-      if (isSensitiveTree && dist < 20.0) {
+      if (isSensitiveTree && dist < JUGLONE_ROOT_ZONE_M) {
         conflicts.push({
           id: `juglone-tree-${walnut.instanceId}-${otherTree.instanceId}`,
           severity: 'CRITICAL',
@@ -101,9 +76,10 @@ export function analyzeGardenAntagonisms(
             { botanical: otherTree.starTree.botanicalName, dist: formatNumber(dist, 1, 'en') }
           ),
           distanceM: Number(dist.toFixed(1)),
-          requiredDistanceM: 20.0,
+          requiredDistanceM: JUGLONE_ROOT_ZONE_M,
           plantA: { id: walnut.instanceId, name: walnut.starTree.commonName, xM: walnut.xM, yM: walnut.yM },
-          plantB: { id: otherTree.instanceId, name: otherTree.starTree.commonName, xM: otherTree.xM, yM: otherTree.yM }
+          plantB: { id: otherTree.instanceId, name: otherTree.starTree.commonName, xM: otherTree.xM, yM: otherTree.yM },
+          sources: [...JUGLONE_CITATIONS]
         });
       }
     }
@@ -111,7 +87,7 @@ export function analyzeGardenAntagonisms(
     for (const comp of placedCompanions) {
       if (comp.plant.jugloneTolerance === 'SENSITIVE') {
         const dist = Math.hypot(comp.xM - walnut.xM, comp.yM - walnut.yM);
-        if (dist < 15.0) {
+        if (dist < JUGLONE_ROOT_ZONE_M) {
           conflicts.push({
             id: `juglone-comp-${walnut.instanceId}-${comp.instanceId}`,
             severity: 'CRITICAL',
@@ -127,16 +103,17 @@ export function analyzeGardenAntagonisms(
               { name: comp.plant.commonName.en, botanical: comp.plant.botanicalName, dist: formatNumber(dist, 1, 'en') }
             ),
             distanceM: Number(dist.toFixed(1)),
-            requiredDistanceM: 15.0,
+            requiredDistanceM: JUGLONE_ROOT_ZONE_M,
             plantA: { id: walnut.instanceId, name: walnut.starTree.commonName, xM: walnut.xM, yM: walnut.yM },
-            plantB: { id: comp.instanceId, name: comp.plant.commonName, xM: comp.xM, yM: comp.yM }
+            plantB: { id: comp.instanceId, name: comp.plant.commonName, xM: comp.xM, yM: comp.yM },
+            sources: [...JUGLONE_CITATIONS]
           });
         }
       }
     }
   }
 
-  // Alliums inhibit nodulation of legumes and N-fixing trees (1.8 m)
+  // Precautionary allium spacing to legumes and N-fixing trees (1.8 m; garlic extract reduced legume nodulation in a greenhouse)
   const alliums = placedCompanions.filter(c => isAlliumPlant(c.plant));
   const legumes = placedCompanions.filter(c => isLegumePlant(c.plant));
   const nFixingTrees = starPlants.filter(t => t.starTree.category === 'NITROGEN_FIXING_TREE');
@@ -162,7 +139,8 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.8,
           plantA: { id: allium.instanceId, name: allium.plant.commonName, xM: allium.xM, yM: allium.yM },
-          plantB: { id: legume.instanceId, name: legume.plant.commonName, xM: legume.xM, yM: legume.yM }
+          plantB: { id: legume.instanceId, name: legume.plant.commonName, xM: legume.xM, yM: legume.yM },
+          sources: [...ALLIUM_LEGUME_CITATIONS]
         });
       }
     }
@@ -187,7 +165,8 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.8,
           plantA: { id: allium.instanceId, name: allium.plant.commonName, xM: allium.xM, yM: allium.yM },
-          plantB: { id: nTree.instanceId, name: nTree.starTree.commonName, xM: nTree.xM, yM: nTree.yM }
+          plantB: { id: nTree.instanceId, name: nTree.starTree.commonName, xM: nTree.xM, yM: nTree.yM },
+          sources: [...ALLIUM_LEGUME_CITATIONS]
         });
       }
     }
@@ -218,18 +197,18 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.5,
           plantA: { id: fennel.instanceId, name: fennel.plant.commonName, xM: fennel.xM, yM: fennel.yM },
-          plantB: { id: other.instanceId, name: other.plant.commonName, xM: other.xM, yM: other.yM }
+          plantB: { id: other.instanceId, name: other.plant.commonName, xM: other.xM, yM: other.yM },
+          sources: [...FENNEL_ALLELOPATHY_CITATIONS]
         });
       }
     }
   }
 
-  // Wormwood allelopathy (1.2 m); Ribes tolerate it
+  // Wormwood allelopathy (1.2 m): Funke (1943) found every test species except wormwood itself injured within ~1 m
   const wormwoods = placedCompanions.filter(c => isWormwoodPlant(c.plant));
   for (const wormwood of wormwoods) {
     for (const other of placedCompanions) {
       if (other.instanceId === wormwood.instanceId) continue;
-      if (other.plant.botanicalName.toLowerCase().startsWith('ribes')) continue;
       if (isFennelPlant(other.plant)) continue; // reported by the fennel check
       if (isWormwoodPlant(other.plant) && wormwood.instanceId > other.instanceId) continue;
       const dist = Math.hypot(other.xM - wormwood.xM, other.yM - wormwood.yM);
@@ -251,7 +230,8 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.2,
           plantA: { id: wormwood.instanceId, name: wormwood.plant.commonName, xM: wormwood.xM, yM: wormwood.yM },
-          plantB: { id: other.instanceId, name: other.plant.commonName, xM: other.xM, yM: other.yM }
+          plantB: { id: other.instanceId, name: other.plant.commonName, xM: other.xM, yM: other.yM },
+          sources: [...WORMWOOD_ALLELOPATHY_CITATIONS]
         });
       }
     }
@@ -269,7 +249,7 @@ export function analyzeGardenAntagonisms(
 
   const calcElements: Array<{ id: string; name: { de: string; en: string }; xM: number; yM: number }> = [
     ...starPlants
-      .filter(t => STRICT_CALCICOLE_STAR_IDS.has(t.starTree.id))
+      .filter(t => isAcidIntolerantStar(t.starTree))
       .map(t => ({ id: t.instanceId, name: t.starTree.commonName, xM: t.xM, yM: t.yM })),
     ...placedCompanions
       .filter(c => isStrictCalcicolePlant(c.plant))
@@ -297,7 +277,8 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 2.5,
           plantA: acid,
-          plantB: calc
+          plantB: calc,
+          sources: [...EDAPHIC_PH_CITATIONS]
         });
       }
     }
@@ -333,7 +314,8 @@ export function analyzeGardenAntagonisms(
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: spec.safeDistanceM,
           plantA: { id: star.instanceId, name: star.starTree.commonName, xM: star.xM, yM: star.yM },
-          plantB: host
+          plantB: host,
+          sources: [...spec.scientificCitations]
         });
       }
     }

@@ -31,8 +31,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'The premier permaculture canopy star. Standard or semi-dwarf apple trees benefit from dense bulb rings around the drip line, chives as an edible border (claims that they combat scab are unproven), deep-rooted comfrey for potassium, and umbelliferous insectaries to attract parasitoid wasps.',
-      de: 'Der klassische Kronen-Star der Permakultur. Apfelbäume profitieren von dichten Zwiebelblumenringen an der Traufkante, Schnittlauch als essbarer Einfassung (eine Wirkung gegen Schorf ist unbewiesen), tief wurzelndem Beinwell für Kalium und Doldenblütlern zur Anlockung nützlicher Schlupfwespen.'
+      en: 'The classic permaculture canopy star. Apple guilds typically combine bulb rings around the drip line, chives as an edible border (claims that they combat scab are unproven), comfrey as a mulch plant (its leaves contain about 6.5% potassium in dry matter) and open-flowered insectary plants such as umbellifers: in apple orchards, flower strips have been shown to draw natural enemies such as parasitoid wasps.',
+      de: 'Der klassische Kronen-Star der Permakultur. Apfelgilden kombinieren meist Zwiebelblumenringe an der Traufkante, Schnittlauch als essbare Einfassung (eine Wirkung gegen Schorf ist unbewiesen), Beinwell als Mulchpflanze (seine Blätter enthalten rund 6,5 % Kalium in der Trockenmasse) und offenblütige Nützlingspflanzen wie Doldenblütler: In Apfelanlagen locken Blühstreifen nachweislich Nützlinge wie Schlupfwespen an.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
@@ -41,8 +41,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SILT', 'CLAY'],
     unsuitableSoils: ['CHALKY'],
     soilAdvice: {
-      en: 'Thrives in deep, nutrient-rich loam. In heavy clay, ensure surface drainage and avoid deep planting to prevent collar rot. Shallow chalk induces drought stress.',
-      de: 'Gedeiht optimal in tiefgründigem, nährstoffreichem Lehm. Bei schwerem Ton auf guten Wasserabfluss achten und Stammkragen frei halten. Flachgründiger Kalkboden führt zu Trockenstress.'
+      en: 'Thrives in deep, nutrient-rich loam. Heavy, poorly drained soil and planting with the graft union below ground increase the risk of Phytophthora collar rot. Shallow chalk dries out quickly.',
+      de: 'Gedeiht optimal in tiefgründigem, nährstoffreichem Lehm. Schwerer, schlecht drainierter Boden und zu tiefes Pflanzen (Veredelungsstelle unter der Erde) erhöhen das Risiko von Phytophthora-Kragenfäule. Flachgründiger Kalkboden trocknet schnell aus.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov, optimal für Wurzelbildung) oder zeitiges Frühjahr (Mär–Apr)',
@@ -86,10 +86,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-nettle',
       'plant-cowslip',
       'plant-lungwort',
-      'plant-meadowsweet',
       'plant-welsh-onion',
       'plant-echinacea',
-      'plant-wormwood',
       'plant-alder',
       'plant-linden',
       'plant-blackcurrant',
@@ -97,6 +95,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-rhubarb',
       'plant-sweet-alyssum',
       'plant-wild-carrot'
+    ],
+    sources: [
+      'Oster, M., et al. (2021). Comfrey (Symphytum spp.) as a feed supplement in pig nutrition contributes to regional resource cycles. Science of The Total Environment, 796, 148988. doi:10.1016/j.scitotenv.2021.148988',
+      'Campbell, A. J., Wilby, A., Sutton, P., & Wäckers, F. (2017). Getting More Power from Your Flowers: Multi-Functional Flower Strips Enhance Pollinators and Pest Control Agents in Apple Orchards. Insects, 8(3), 101. doi:10.3390/insects8030101',
+      'Utah State University Extension (n.d.). Phytophthora Crown and Collar Rot. Utah Pests IPM Fact Sheets. https://extension.usu.edu/pests/ipm/notes_ag/fruit-phytophthora.php'
     ]
   },
   {
@@ -123,8 +126,8 @@ export const STAR_TREES: StarTree[] = [
         'Bodenverdichtung', 'Apfelwickler (Cydia pomonella)']
     },
     description: {
-      en: 'A magnificent nut and timber canopy tree that secretes Juglone—a natural allelopathic compound toxic to Solanaceae (tomatoes, nightshades), apples, pears, and brassicas. Designing a walnut guild requires strictly juglone-tolerant species like elderberry, currants, hostas, and sweet woodruff.',
-      de: 'Ein stattlicher Nuss- und Nutzholzbaum, der Juglon absondert – eine allelopathische Substanz, die für Nachtschattengewächse (Tomaten), Äpfel, Birnen und Kohl giftig ist. Eine Walnussgilde erfordert streng juglontolerante Arten wie Holunder, Johannisbeeren und Waldmeister.'
+      en: 'A magnificent nut and timber canopy tree. Its buds, nut husks and roots contain hydrojuglone, which is converted by oxidation into allelopathic juglone; tomatoes and other nightshades (potato, pepper, eggplant), cabbage, apples and pears are listed as sensitive. A walnut guild therefore relies on species listed as juglone-tolerant, such as elderberry, currants, hostas and sweet woodruff.',
+      de: 'Ein stattlicher Nuss- und Nutzholzbaum. Knospen, Fruchtschalen und Wurzeln enthalten Hydrojuglon, das durch Oxidation zum allelopathischen Juglon wird; Tomaten und andere Nachtschattengewächse (Kartoffel, Paprika, Aubergine), Kohl, Äpfel und Birnen gelten als empfindlich. Eine Walnussgilde setzt daher auf Arten, die als juglontolerant gelistet sind, etwa Holunder, Johannisbeeren, Funkien und Waldmeister.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
@@ -133,8 +136,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SILT', 'CLAY'],
     unsuitableSoils: ['SANDY', 'CHALKY'],
     soilAdvice: {
-      en: 'Its massive central taproot demands deep, moist, rich alluvial loam. Shallow chalky or thin sandy soils severely restrict root development.',
-      de: 'Die gewaltige Pfahlwurzel verlangt nach tiefgründigem, feuchtem, humusreichem Ackerlehm. Flachgründige Kalk- oder Dürreböden hemmen das Wachstum drastisch.'
+      en: 'Deep taproot with strong side roots; grows best on deep, moist, well-drained, nearly neutral and fertile soils such as loess and alluvial loams. Shallow, dry chalky or sandy soils are poorly suited.',
+      de: 'Tiefe Pfahlwurzel mit kräftigen Seitenwurzeln; wächst am besten auf tiefgründigen, frischen, gut drainierten, annähernd neutralen und nährstoffreichen Böden wie Löss- und Auelehmen. Flachgründige, trockene Kalk- oder Sandböden sind wenig geeignet.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder frostfreies Frühjahr (Apr–Mai, empfindlich gegen Spätfrost)',
@@ -169,8 +172,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-epimedium',
       'plant-wild-ginger',
       'plant-ostrich-fern',
-      'plant-sweet-flag',
-      'plant-meadowsweet']
+      'plant-meadowsweet'],
+    sources: [
+      'Dana, M. N., & Lerner, B. R. (1994). Black Walnut Toxicity. Purdue University Cooperative Extension Service, HO-193. https://www.extension.purdue.edu/extmedia/ho/ho-193.pdf',
+      'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
+      'Williams, R. D. (1990). Juglans nigra L. – Black Walnut. In Silvics of North America, Vol. 2: Hardwoods. USDA Forest Service, Agriculture Handbook 654. https://research.fs.usda.gov/silvics/black-walnut'
+    ]
   },
   {
     id: 'tree-peach',
@@ -198,8 +205,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'A prolific stone fruit requiring high warmth and solar radiation. Highly susceptible to trunk borers and fungal leaf curl. Aromatic herbs like garlic, tansy, and southernwood are often planted near its root collar, but a protective effect against borers is unproven; horseradish is traditionally added against brown rot.',
-      de: 'Wärmeliebendes Steinobst mit hohem Sonnenbedarf. Anfällig für Stammbohrer und Kräuselkrankheit. Duftende Kräuter wie Knoblauch, Rainfarn und Eberraute werden oft am Wurzelhals gepflanzt, eine Schutzwirkung gegen Stammbohrer ist jedoch unbewiesen; Meerrettich wird traditionell gegen Monilia-Pilze ergänzt.'
+      en: 'A prolific, warmth- and sun-loving stone fruit. Prone to peach leaf curl and, in North America, to the peach tree borer. Aromatic herbs like garlic, tansy, and southernwood are often planted near its root collar, but a protective effect against borers is unproven; horseradish is a traditional companion, though an effect against brown rot is not documented.',
+      de: 'Wärmeliebendes Steinobst mit hohem Sonnenbedarf. Anfällig für die Kräuselkrankheit, in Nordamerika auch für den Pfirsichbaum-Glasflügler (Stammbohrer). Duftende Kräuter wie Knoblauch, Rainfarn und Eberraute werden oft am Wurzelhals gepflanzt, eine Schutzwirkung gegen Stammbohrer ist jedoch unbewiesen; Meerrettich ist ein traditioneller Begleiter, eine Wirkung gegen Monilia ist aber nicht belegt.'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'SUMMER',
@@ -208,8 +215,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['SANDY', 'LOAM', 'SILT'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Requires warm, exceptionally well-drained sandy loam. On heavy clay soils, plant on a 40–50 cm raised mound (berm) to prevent Phytophthora root and collar rot.',
-      de: 'Benötigt warmen, exzellent drainierten Sand- oder Lehmboden. Bei schwerem Ton zwingend auf einen 40–50 cm Hochberm pflanzen, um Wurzelfäule zu vermeiden.'
+      en: 'Requires warm, well-drained sandy loam. On heavy or poorly drained soils, plant on a raised ridge or berm about 30–45 cm high to reduce Phytophthora root and collar rot.',
+      de: 'Benötigt warmen, gut drainierten Sand- oder Lehmboden. Bei schwerem oder schlecht drainiertem Boden auf einen etwa 30–45 cm hohen Damm pflanzen, um Phytophthora-Wurzel- und Kragenfäule vorzubeugen.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Apr nach den stärksten Frösten)',
@@ -223,7 +230,6 @@ export const STAR_TREES: StarTree[] = [
       'plant-garlic',
       'plant-chives',
       'plant-horseradish',
-      'plant-southernwood',
       'plant-comfrey',
       'plant-nasturtium',
       'plant-thyme',
@@ -242,6 +248,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-catmint',
       'plant-welsh-onion',
       'plant-echinacea'
+    ],
+    sources: [
+      'Layton, B., & Henn, A. (2023). Disease and Insect Control for Homegrown Peaches and Plums. Mississippi State University Extension, Publication P2858. https://extension.msstate.edu/publications/disease-and-insect-control-for-homegrown-peaches-and-plums',
+      'Masabni, J. G., Strang, J. G., Hartman, J. R., & Bessin, R. (2007). Growing Peaches in Kentucky. University of Kentucky Cooperative Extension Service, HO-57. https://publications.mgcafe.uky.edu/sites/publications.ca.uky.edu/files/ho57.pdf',
+      'Adaskaveg, J. E., Duncan, R. A., Hasey, J. K., & Day, K. R. (2015). Phytophthora Root and Crown Rot (Peach). UC IPM Pest Management Guidelines, UC ANR Publication 3454. https://ipm.ucanr.edu/agriculture/peach/phytophthora-root-and-crown-rot/'
     ]
   },
   {
@@ -270,18 +281,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Hardy and heavy-bearing stone fruit that thrives with nitrogen-fixing cover crops and beneficial insectaries like yarrow and dill, which support natural enemies of aphids; pest control is field-proven only for diverse flower strips, not single plants.',
-      de: 'Robustes, ertragreiches Steinobst. Gedeiht optimal mit stickstofffixierendem Klee und insektenfördernden Pflanzen wie Schafgarbe und Dill, die Gegenspieler von Blattläusen fördern; eine Schädlingsbekämpfung ist nur für artenreiche Blühstreifen belegt, nicht für Einzelpflanzen.'
+      en: 'Hardy and heavy-bearing stone fruit, often combined with nitrogen-fixing clover and insectary plants like yarrow and dill. In European apple orchards, perennial flower strips between the tree rows increased aphid predators and reduced pests and fruit damage; for single companion plants this has not been shown.',
+      de: 'Robustes, ertragreiches Steinobst, oft kombiniert mit stickstofffixierendem Klee und Nützlingspflanzen wie Schafgarbe und Dill. In europäischen Apfelanlagen förderten mehrjährige Blühstreifen zwischen den Baumreihen Blattlausfeinde und verringerten Schädlinge und Fruchtschäden; für einzelne Begleitpflanzen ist das nicht belegt.'
     },
     bloomSeason: 'LATE_SPRING',
-    harvestSeason: 'LATE_SPRING',
+    harvestSeason: 'SUMMER',
     color: '#7e22ce',
     imageUrl: '/images/plants/tree-plum.webp',
     preferredSoils: ['LOAM', 'CLAY', 'SILT'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Naturally tolerant of heavy clay and damp soil. Avoid thin, dry sandy soils which trigger severe moisture stress and premature fruit drop.',
-      de: 'Von Natur aus sehr tolerant gegenüber schwerem Ton und feuchtem Boden. Reine Sandböden meiden, da sie Trockenstress und vorzeitigen Fruchtabfall auslösen.'
+      en: 'Likes moisture-retentive soil and grows well in heavy clay as long as it drains. Avoid thin, dry sandy soils: water shortage during fruit growth causes fruit drop and small fruit (shown for Japanese plum).',
+      de: 'Mag wasserhaltende Böden und gedeiht auch auf schwerem Ton, sofern dieser gut abfließt. Dünne, trockene Sandböden meiden: Wassermangel während der Fruchtentwicklung führt zu Fruchtfall und kleinen Früchten (belegt für Japanische Pflaume).'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder zeitiges Frühjahr (Mär–Apr)',
@@ -322,10 +333,14 @@ export const STAR_TREES: StarTree[] = [
       'plant-lungwort',
       'plant-welsh-onion',
       'plant-echinacea',
-      'plant-wormwood',
       'plant-linden',
       'plant-blackcurrant',
       'plant-red-currant'
+    ],
+    sources: [
+      'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
+      'University of Wisconsin–Madison CIAS (n.d.). European Plum. Uncommon Fruit. https://uncommonfruit.cias.wisc.edu/european-plum/',
+      'Hamdani, A., Hssaini, L., Bouda, S., Adiba, A., & Razouk, R. (2022). Japanese plums behavior under water stress: impact on yield and biochemical traits. Heliyon, 8(4), e09278. doi:10.1016/j.heliyon.2022.e09278'
     ]
   },
   {
@@ -354,18 +369,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Stately and long-lived upright fruit tree. Highly vulnerable to fire blight if given excessive fast-release nitrogen; benefits from slow, perennial leguminous mulch (white clover) and deep-mining comfrey rather than high-nitrogen manures.',
-      de: 'Langlebiger, aufrechter Obstbaum. Anfällig für Feuerbrand bei zu rascher Stickstoffzufuhr; profitiert von sanftem, ausdauerndem Leguminosenmulch (Weißklee) und tiefwurzelndem Beinwell statt scharfer Düngung.'
+      en: 'Stately and long-lived upright fruit tree. Excessive nitrogen and heavy pruning promote soft, vigorous shoots that are very susceptible to fire blight, so a slow-acting legume living mulch (white clover) and comfrey mulch are preferable to high-nitrogen manures.',
+      de: 'Langlebiger, aufrechter Obstbaum. Zu viel Stickstoff und starker Rückschnitt fördern weiche, mastige Triebe, die sehr anfällig für Feuerbrand sind; ein langsam wirkender Leguminosen-Lebendmulch (Weißklee) und Beinwellmulch sind daher besser als scharfe Stickstoffdüngung.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#84cc16',
     imageUrl: '/images/plants/tree-pear.webp?v=2',
     preferredSoils: ['CLAY', 'LOAM', 'SILT'],
-    unsuitableSoils: ['SANDY', 'CHALKY'],
+    unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Excels in cool, heavy, water-retentive clay soils. On shallow chalky limestone soils, common pear rootstocks suffer lime-induced iron chlorosis.',
-      de: 'Gedeiht prächtig in kühlen, schweren, feuchten Tonböden. Auf kalkhaltigen Steinböden leiden Birnenunterlagen häufig unter Eisenchlorose.'
+      en: 'Grows well in moisture-retentive loam or clay. On calcareous soils, pears on the common dwarfing quince rootstock often develop iron-deficiency chlorosis; a vigorous pear rootstock (e.g. Pyrus betulifolia) stayed green there.',
+      de: 'Wächst gut auf wasserhaltendem Lehm- oder Tonboden. Auf kalkhaltigen Böden zeigen Birnen auf der üblichen schwachwüchsigen Quittenunterlage oft Eisenmangel-Chlorose; eine starkwüchsige Birnenunterlage (z. B. Pyrus betulifolia) blieb dort grün.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
@@ -405,6 +420,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-linden',
       'plant-blackcurrant',
       'plant-rhubarb'
+    ],
+    sources: [
+      'Ellis, M. A., & Ivey, M. L. (2016). Fire Blight of Apples and Pears. Ohio State University Extension, PLPATH-FRU-22. https://cfaes.osu.edu/fact-sheet/fire-blight-apples-and-pears',
+      'Zhao, Y., et al. (2023). Bicarbonate rather than high pH in growth medium induced Fe-deficiency chlorosis in dwarfing rootstock quince A (Cydonia oblonga Mill.) but did not impair Fe nutrition of vigorous rootstock Pyrus betulifolia. Frontiers in Plant Science, 14, 1237327. doi:10.3389/fpls.2023.1237327'
     ]
   },
   {
@@ -433,8 +452,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Thrives against southern walls or warm microclimates. Wide shallow fibrous root system that loves companion herbs like rosemary, thyme, and marigolds (which suppress root-knot nematodes as a dense pre-plant cover crop, but not proven as companions under trees).',
-      de: 'Gedeiht hervorragend an Südwänden und in warmen Mikroklimata. Flachstreichendes Wurzelwerk, das mediterrane Begleiter wie Rosmarin, Thymian und Studentenblumen schätzt (Tagetes wirkt als dichte Vorkultur gegen Wurzelgallennematoden, als Unterpflanzung von Bäumen ist das unbewiesen).'
+      en: 'Needs a warm, sunny, sheltered spot, ideally against a south- or south-west-facing wall; in cold areas protect the young fruitlets over winter. Shallow, wide-spreading root system (sometimes covering 15 m), often combined with rosemary, thyme and marigolds. Figs are prone to root-knot nematodes; a marigold cover crop before planting can suppress nematodes, though results vary, and an effect as an under-tree companion is unproven.',
+      de: 'Braucht einen warmen, sonnigen, geschützten Platz, am besten an einer Süd- oder Südwestwand; in kalten Lagen die jungen Fruchtansätze über Winter schützen. Flaches, weit ausgreifendes Wurzelwerk (teils über 15 m), oft kombiniert mit Rosmarin, Thymian und Studentenblumen. Feigen sind anfällig für Wurzelgallenälchen; eine Tagetes-Vorkultur vor der Pflanzung kann Nematoden unterdrücken, die Wirkung schwankt jedoch, und als Unterpflanzung von Bäumen ist sie unbewiesen.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'SUMMER',
@@ -443,8 +462,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['CHALKY', 'SANDY', 'LOAM'],
     unsuitableSoils: ['CLAY', 'ACIDIC'],
     soilAdvice: {
-      en: 'Calciphile Mediterranean species. Flourishes in alkaline, stony, free-draining limestone soils. Waterlogged, saturated heavy clay rots roots rapidly.',
-      de: 'Kalkliebende mediterrane Art. Liebt alkalische, steinige, gut durchlässige Kalkböden. Absolut empfindlich gegen nasse, kalte Tonböden (Wurzelfäule).'
+      en: 'Mediterranean species that copes well with limy soil but needs free-draining ground. Waterlogged heavy clay is unsuitable.',
+      de: 'Mediterrane Art, die kalkhaltigen Boden gut verträgt, aber gut durchlässigen Untergrund braucht. Staunasser, schwerer Tonboden ist ungeeignet.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Mai) an warmem, geschütztem Standort',
@@ -469,6 +488,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-oregano',
       'plant-catmint',
       'plant-echinacea'
+    ],
+    sources: [
+      'Morton, J. F. (1987). Fig. In Fruits of Warm Climates (pp. 47–50). Julia F. Morton, Miami, FL. https://hort.purdue.edu/newcrop/morton/fig.html',
+      'Royal Horticultural Society (n.d.). How to grow figs. RHS Grow Your Own. https://www.rhs.org.uk/fruit/figs/grow-your-own',
+      'Hooks, C. R. R., Wang, K.-H., Ploeg, A., & McSorley, R. (2010). Using marigold (Tagetes spp.) as a cover crop to protect crops from plant-parasitic nematodes. Applied Soil Ecology, 46(3), 307–320. doi:10.1016/j.apsoil.2010.09.005'
     ]
   },
   {
@@ -495,8 +519,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'A multi-stemmed woodland edge nut producer that produces early winter/spring catkins, serving as a critical first pollen source for waking bees. Perfect central tree for smaller semi-shaded guilds.',
-      de: 'Mehrstämmiges Waldrandgehölz mit sehr frühen Kätzchenblüten im Vorfrühling – eine überlebenswichtige erste Pollenquelle für erwachende Bienen. Ideal für halbschattige Pflanzengilden.'
+      en: 'A multi-stemmed woodland edge nut producer. Its wind-pollinated catkins open in early spring before the leaves, and honeybees collect the pollen, making it an early pollen source. Well suited as the central tree of smaller semi-shaded guilds.',
+      de: 'Mehrstämmiges Waldrandgehölz mit Nussertrag. Die windbestäubten Kätzchen blühen im zeitigen Frühjahr vor dem Laubaustrieb, und Honigbienen sammeln ihren Pollen – eine frühe Pollenquelle. Gut geeignet als Mittelpunkt kleinerer, halbschattiger Pflanzengilden.'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'AUTUMN',
@@ -505,8 +529,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SILT', 'CLAY', 'ACIDIC'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Prefers moist, organic-rich, slightly acidic to neutral woodland loam. Avoid drought-prone sands, which limit nut filling and cause scorch.',
-      de: 'Bevorzugt feuchten, humusreichen, schwach sauren bis neutralen Waldlehm. Dürreempfindliche Sandböden meiden, da sie den Nussansatz beeinträchtigen.'
+      en: 'Grows best on fertile, nutrient-rich, slightly acidic to neutral soils, though it can also thrive on dry calcareous soils. Severe summer water stress leads to more blank nuts and smaller kernels, so drought-prone sands are a poor choice.',
+      de: 'Wächst am besten auf fruchtbaren, nährstoffreichen, schwach sauren bis neutralen Böden, kann aber auch auf trockenen Kalkböden gedeihen. Starker Wassermangel im Sommer führt zu mehr tauben Nüssen und kleineren Kernen, daher sind dürregefährdete Sandböden ungünstig.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Dez) oder Vorfrühling (Feb–Apr)',
@@ -538,6 +562,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-wild-ginger',
       'plant-ostrich-fern',
       'plant-blackcurrant'
+    ],
+    sources: [
+      'Hicks, D. (2022). Biological Flora of Britain and Ireland: Corylus avellana. Journal of Ecology, 110(12), 3053–3089. doi:10.1111/1365-2745.14008',
+      'Enescu, C. M., Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Corylus avellana in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Corylus_avellana.pdf',
+      'Moine, A., et al. (2024). Grafting with non-suckering rootstock increases drought tolerance in Corylus avellana L. through physiological and biochemical adjustments. Physiologia Plantarum, 176(6), e70003. doi:10.1111/ppl.70003'
     ]
   },
   {
@@ -564,8 +593,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Majestic staple-crop nut tree producing carbohydrate-rich nuts. Deep taproot system that supports extensive understory guilds of blueberries (in acidic soil), comfrey, and nitrogen-fixing shrubs like goumi and sea buckthorn.',
-      de: 'Majestätischer Nuss- und Brotbaum mit stärkereichen Früchten. Tiefes Wurzelsystem, das einen ausgedehnten Unterwuchs aus Heidelbeeren (im sauren Boden), Beinwell und stickstoffbindenden Sträuchern wie Goumi und Sanddorn hervorragend toleriert.'
+      en: 'Majestic traditional staple-food tree; on a dry-matter basis its nuts are 75–91% carbohydrates, mainly starch. Deep-rooting (a strong taproot when young, later a deep heart-root system), often underplanted with blueberries (in acidic soil), comfrey, and nitrogen-fixing shrubs like goumi and sea buckthorn.',
+      de: 'Majestätischer traditioneller Brotbaum; die Früchte bestehen in der Trockenmasse zu 75–91 % aus Kohlenhydraten, vor allem Stärke. Tiefwurzler (in der Jugend kräftige Pfahlwurzel, später tiefes Herzwurzelsystem), oft unterpflanzt mit Heidelbeeren (im sauren Boden), Beinwell und stickstoffbindenden Sträuchern wie Goumi und Sanddorn.'
     },
     bloomSeason: 'SUMMER',
     harvestSeason: 'AUTUMN',
@@ -574,8 +603,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['ACIDIC', 'SANDY', 'LOAM'],
     unsuitableSoils: ['CHALKY', 'CLAY'],
     soilAdvice: {
-      en: 'Strict calcifuge (acidophile, pH 4.5–6.0). Highly intolerant of chalk/limestone, which causes fatal iron chlorosis. Also dislikes compacted, waterlogged clay.',
-      de: 'Streng kalkfliehend (säureliebend, pH 4,5–6,0). Verträgt keinerlei Kalkböden (tödliche Eisenchlorose). Meidet zudem verdichteten, nassen Ton.'
+      en: 'Calcifuge: grows best on well-drained, well-aerated acidic soils (roughly pH 3.5–5.5) and does not thrive on limestone. Avoid heavy clay and waterlogged soils, where roots suffer and Phytophthora (ink disease) is common.',
+      de: 'Kalkmeidend: wächst optimal auf durchlässigen, gut durchlüfteten, sauren Böden (etwa pH 3,5–5,5) und gedeiht nicht auf Kalkstein. Schwere Tone und staunasse Böden meiden, dort leiden die Wurzeln und Phytophthora (Tintenkrankheit) tritt häufig auf.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder zeitiges Frühjahr (Mär–Apr)',
@@ -602,6 +631,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-cowslip',
       'plant-rhododendron',
       'plant-blueberry'
+    ],
+    sources: [
+      'Conedera, M., Tinner, W., Krebs, P., de Rigo, D., & Caudullo, G. (2016). Castanea sativa in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Castanea_sativa.pdf',
+      'Santos, M. J., Pinto, T., & Vilela, A. (2022). Sweet Chestnut (Castanea sativa Mill.) Nutritional and Phenolic Composition Interactions with Chestnut Flavor Physiology. Foods, 11(24), 4052. doi:10.3390/foods11244052',
+      'Aas, G. (2018). Die Esskastanie (Castanea sativa): Verwandtschaft, Morphologie und Ökologie. In Beiträge zur Edelkastanie, LWF Wissen 81. Bayerische Landesanstalt für Wald und Forstwirtschaft. https://www.lwf.bayern.de/mam/cms04/service/dateien/w81_beitraege_edelkastanie.pdf',
+      'Segatz, E. (2018). Biodiversität und waldbauliche Behandlung von Edelkastanienwäldern. In Beiträge zur Edelkastanie, LWF Wissen 81. Bayerische Landesanstalt für Wald und Forstwirtschaft. https://www.lwf.bayern.de/mam/cms04/service/dateien/w81_beitraege_edelkastanie.pdf'
     ]
   },
   {
@@ -632,8 +667,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Sun- and heat-loving stone fruit that blooms exceptionally early in spring. Highly vulnerable to late spring frost and Monilinia blossom blight. Benefits tremendously from early spring pollinator attractors (crocus, dandelion) to ensure fruit set before other flowers open, and traditional allies like horseradish and garlic (an antifungal effect of garlic as a companion is unproven).',
-      de: 'Wärmeliebendes Steinobst mit besonders früher Blüte im Vorfrühling. Anfällig für Spätfröste und Monilia-Spitzendürre. Profitiert enorm von extrem frühen Bestäuberpflanzen (Krokus, Löwenzahn) für den Fruchtansatz sowie traditionellen Begleitern wie Meerrettich und Knoblauch am Wurzelhals (eine pilzhemmende Wirkung von Knoblauch als Begleitpflanze ist unbewiesen).'
+      en: 'Sun- and heat-loving stone fruit that blooms early, so buds, flowers and young fruit are often hit by spring frosts. Very susceptible to Monilinia blossom blight. Often combined with early-flowering plants (crocus, dandelion) that attract pollinators, and with traditional companions like horseradish and garlic (an antifungal effect of garlic as a companion is unproven).',
+      de: 'Wärmeliebendes Steinobst mit früher Blüte, daher werden Knospen, Blüten und junge Früchte häufig von Spätfrösten geschädigt. Sehr anfällig für Monilia-Spitzendürre. Oft kombiniert mit früh blühenden Bestäuberpflanzen (Krokus, Löwenzahn) und traditionellen Begleitern wie Meerrettich und Knoblauch am Wurzelhals (eine pilzhemmende Wirkung von Knoblauch als Begleitpflanze ist unbewiesen).'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'SUMMER',
@@ -642,8 +677,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['SANDY', 'LOAM', 'CHALKY'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Demands warm, rapid-draining sandy or gravelly loam. On heavy clay, must be mounded onto a 50 cm raised berm with coarse sand amendments to prevent Phytophthora collar rot.',
-      de: 'Benötigt warmen, schnell abtrocknenden sandigen oder kiesigen Lehm. Bei schwerem Ton zwingend auf einen 50 cm Hochberm mit Sandzusatz pflanzen (Schutz vor Kragenfäule).'
+      en: 'Needs warm, well-drained sandy or gravelly loam. Saturated soil for 24 hours or more favors Phytophthora infections, so on heavy or wet soils plant on a slight mound or berm that drains water away from the crown.',
+      de: 'Benötigt warmen, gut drainierten sandigen oder kiesigen Lehm. Wassergesättigter Boden über 24 Stunden oder länger begünstigt Phytophthora-Infektionen; auf schweren oder nassen Böden daher auf einen flachen Hügel oder Damm pflanzen, damit das Wasser vom Wurzelhals abläuft.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Apr, nach den stärksten Frösten) oder milder Herbst',
@@ -658,7 +693,6 @@ export const STAR_TREES: StarTree[] = [
       'plant-garlic',
       'plant-chives',
       'plant-comfrey',
-      'plant-southernwood',
       'plant-thyme',
       'plant-crocus',
       'plant-sage',
@@ -674,6 +708,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-oregano',
       'plant-welsh-onion',
       'plant-echinacea'
+    ],
+    sources: [
+      'Rodrigo, J., Julian, C., & Herrero, M. (2006). Spring frost damage in buds, flowers and developing fruits in apricot. Acta Horticulturae, 717, 87–88. doi:10.17660/ActaHortic.2006.717.15',
+      'Ziems, A. D. (2009). Brown Rot on Apricot and Other Stone Fruits (G1965). University of Nebraska–Lincoln Extension. https://extensionpubs.unl.edu/publication/g1965/na/pdf/view',
+      'Adaskaveg, J. E., et al. (2014). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Apricot, UC ANR Publication 3433. https://ipm.ucanr.edu/agriculture/apricot/phytophthora-root-and-crown-rot/'
     ]
   },
   {
@@ -686,7 +725,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus avium',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.5,
-    rootHabit: 'DEEP_TAP',
+    rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
     vulnerabilities: {
@@ -704,8 +743,8 @@ export const STAR_TREES: StarTree[] = [
         'Wühlmausschäden an Wurzeln', 'Kirschessigfliege (Drosophila suzukii)']
     },
     description: {
-      en: 'A vigorous stone fruit canopy star prized for delicious cherries. Deep taproot with wide surface feeder network. Highly vulnerable to cherry fruit fly and bacterial canker; often paired with garlic/chives, tansy, and daffodils, though protection against fruit flies or voles by these companions is unproven.',
-      de: 'Wuchsfreudiger Steinobst-Kronenbaum für Süßkirschen. Tiefes Wurzelwerk mit weitreichenden Feinwurzeln. Anfällig für Kirschfruchtfliege und Bakterienbrand; wird oft mit Knoblauch/Schnittlauch, Rainfarn und Narzissen kombiniert, ein Schutz vor Fruchtfliegen oder Wühlmäusen durch diese Begleiter ist jedoch unbewiesen.'
+      en: 'A vigorous stone fruit canopy star prized for delicious cherries. Rather shallow, heart-shaped root system with far-reaching lateral roots in the topsoil. Vulnerable to cherry fruit fly and bacterial canker; often paired with garlic/chives, tansy, and daffodils, though protection against fruit flies or voles by these companions is unproven.',
+      de: 'Wuchsfreudiger Steinobst-Kronenbaum für Süßkirschen. Eher flaches Herzwurzelsystem mit weit reichenden Seitenwurzeln im Oberboden. Anfällig für Kirschfruchtfliege und Bakterienbrand; wird oft mit Knoblauch/Schnittlauch, Rainfarn und Narzissen kombiniert, ein Schutz vor Fruchtfliegen oder Wühlmäusen durch diese Begleiter ist jedoch unbewiesen.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'SUMMER',
@@ -714,8 +753,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SILT', 'SANDY'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Demands deep, warm, well-aerated sandy or silty loam. Wet, heavy clay suffocates roots and triggers fatal bacterial canker and gummosis.',
-      de: 'Verlangt tiefgründigen, warmen, gut durchlüfteten sandigen oder lehmigen Boden. Nasse Tonböden führen zu Sauerstoffmangel und begünstigen Bakterienbrand und Gummifluss.'
+      en: 'Favors deep, fertile, well-drained soils with a good water supply. Does not tolerate heavy clay, waterlogged or poorly drained sites, where saturated soil favors Phytophthora root and crown rot.',
+      de: 'Bevorzugt tiefgründige, fruchtbare, gut drainierte Böden mit guter Wasserversorgung. Verträgt keine schweren Tone, Staunässe oder schlecht drainierten Standorte, wo wassergesättigter Boden Phytophthora-Wurzel- und Kragenfäule begünstigt.'
     },
     plantingTime: {
       de: 'Spätherbst (Okt–Dez) oder Vorfrühling (Feb–Apr)',
@@ -748,6 +787,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-echinacea',
       'plant-linden',
       'plant-red-currant'
+    ],
+    sources: [
+      'Welk, E., de Rigo, D., & Caudullo, G. (2016). Prunus avium in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Prunus_avium.pdf',
+      'Adaskaveg, J. E., & Caprile, J. L. (2015). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Cherry, UC ANR Publication 3440. https://ipm.ucanr.edu/agriculture/cherry/phytophthora-root-and-crown-rot/'
     ]
   },
   {
@@ -762,7 +805,7 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 2.2,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Fire Blight (Erwinia amylovora)',
@@ -778,8 +821,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Fragrant, ancient pome fruit tolerant of semi-shaded locations and damp soils. Shallow rooting system that thrives with non-competing allium borders, chives (a protective effect against Diplocarpon leaf blight is unproven), and deep-mining comfrey.',
-      de: 'Aromatisch duftendes Kernobst, das Halbschatten und feuchtere Böden schätzt. Flaches Wurzelsystem, das hervorragend mit konkurrenzschwachen Allium-Einfassungen, Schnittlauch (eine Schutzwirkung gegen Blattbräune ist unbewiesen) und tiefbohrendem Beinwell harmoniert.'
+      en: 'Fragrant, ancient pome fruit. Fruits best in a warm, sunny, sheltered spot (its spring flowers are frost-sensitive); it succeeds in semi-shade but fruits less well there. Shallow, plate-like root system, often combined with non-competing allium borders, chives and comfrey. Susceptible to quince leaf blight (Diplocarpon mespili), especially in wet summers (a protective effect of chives is unproven), and to fire blight.',
+      de: 'Aromatisch duftendes, uraltes Kernobst. Trägt am besten an einem warmen, sonnigen, geschützten Platz (die Frühjahrsblüten sind frostempfindlich); im Halbschatten wächst sie, fruchtet dort aber schwächer. Flaches, tellerförmiges Wurzelsystem, oft kombiniert mit konkurrenzschwachen Allium-Einfassungen, Schnittlauch und Beinwell. Anfällig für Blattbräune (Diplocarpon mespili), besonders in nassen Sommern (eine Schutzwirkung von Schnittlauch ist unbewiesen), sowie für Feuerbrand.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
@@ -788,8 +831,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'CLAY', 'SILT'],
     unsuitableSoils: ['CHALKY'],
     soilAdvice: {
-      en: 'Prefers moist, fertile, moisture-retentive loam or clay. Shallow chalk or high alkaline limestone soils induce severe iron chlorosis.',
-      de: 'Bevorzugt feuchten, humosen, nährstoffreichen Lehm- oder Tonboden. Flachgründiger Kalkboden führt schnell zu starker Eisenchlorose.'
+      en: 'Tolerates a range of soils but prefers deep, fertile, moisture-retentive ones; dislikes very dry or waterlogged soil. Susceptible to iron-deficiency chlorosis on calcareous soils.',
+      de: 'Verträgt verschiedene Böden, bevorzugt aber tiefgründige, fruchtbare, wasserhaltende; sehr trockener oder staunasser Boden wird nicht vertragen. Auf kalkhaltigen Böden anfällig für Eisenmangel-Chlorose.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder zeitiges Frühjahr (Mär–Apr)',
@@ -809,10 +852,15 @@ export const STAR_TREES: StarTree[] = [
       'plant-lemon-balm',
       'plant-sweet-cicely',
       'plant-lovage',
-      'plant-sweet-flag',
       'plant-meadowsweet',
-      'plant-wormwood',
       'plant-wild-carrot'
+    ],
+    sources: [
+      'Royal Horticultural Society (n.d.). How to grow quinces. RHS Grow Your Own. https://www.rhs.org.uk/fruit/quince/grow-your-own',
+      'Plants For A Future (n.d.). Cydonia oblonga – Quince. PFAF Plant Database. https://pfaf.org/user/plant.aspx?latinname=Cydonia+oblonga',
+      'Royal Horticultural Society (n.d.). Quince leaf blight. RHS. https://www.rhs.org.uk/disease/quince-leaf-blight',
+      'Şahin, M., Mısırlı, A., & Özaktan, H. (2020). Determination of fire blight (Erwinia amylovora) susceptibility in Turkey\'s Cydonia oblonga Mill. germplasm. European Journal of Plant Pathology, 157(2), 227–237. doi:10.1007/s10658-020-01971-5',
+      'Zhao, Y., et al. (2023). Bicarbonate rather than high pH in growth medium induced Fe-deficiency chlorosis in dwarfing rootstock quince A (Cydonia oblonga Mill.) but did not impair Fe nutrition of vigorous rootstock Pyrus betulifolia. Frontiers in Plant Science, 14, 1237327. doi:10.3389/fpls.2023.1237327'
     ]
   },
   {
@@ -825,7 +873,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Morus nigra',
     category: 'FRUIT_TREE',
     matureRadiusM: 4.2,
-    rootHabit: 'DEEP_TAP',
+    rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
     vulnerabilities: {
@@ -841,8 +889,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Stately, incredibly long-lived canopy star bearing intensely sweet, antioxidant-rich berries over several weeks. Deep taproot unlocks minerals from the subsoil. Pairs well with nitrogen-fixing clovers and dynamic accumulator ground covers.',
-      de: 'Langlebiger, stattlicher Kronen-Star mit zuckersüßen, hocharomatischen Beerenfrüchten über viele Wochen. Seine tiefe Pfahlwurzel erschließt Mineralien aus tiefen Erdschichten. Perfekt kombinierbar mit stickstofffixierendem Klee und Beinwell.'
+      en: 'Stately, long-lived canopy star that can bear fruit for hundreds of years. Its dark berries are rich in anthocyanins (mainly cyanidin-3-O-glucoside) with antioxidant activity. Pairs well with nitrogen-fixing clovers and dynamic accumulator ground covers.',
+      de: 'Stattlicher, langlebiger Kronen-Star, der über Jahrhunderte fruchten kann. Die dunklen Beeren sind reich an Anthocyanen (vor allem Cyanidin-3-O-glucosid) mit antioxidativer Wirkung. Gut kombinierbar mit stickstofffixierendem Klee und Beinwell.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'SUMMER',
@@ -851,8 +899,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SANDY', 'CHALKY'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Flourishes in warm, deep, well-draining soils; exceptionally drought-tolerant once established. Saturated, poorly aerated clay causes root rot.',
-      de: 'Gedeiht auf tiefen, warmen, durchlässigen Böden; nach dem Anwachsen ausgesprochen trockenheitsresistent. Staunasser, kalter Tonboden führt zu Wurzelfäule.'
+      en: 'Likes warm, well-drained soil, preferably a deep loam; avoid waterlogged clay. Somewhat drought-resistant, but water in dry spells: if the roots become too dry, the fruit drops before it is fully ripe.',
+      de: 'Mag warmen, durchlässigen Boden, am liebsten tiefgründigen Lehm; staunassen Ton meiden. Recht trockenheitsresistent, bei Trockenheit aber wässern: Werden die Wurzeln zu trocken, fallen die Früchte vor der vollen Reife ab.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Mai) oder milder Herbst (Okt)',
@@ -872,6 +920,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-catmint',
       'plant-creeping-jenny',
       'plant-lovage'
+    ],
+    sources: [
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Morus nigra. Agroforestree Database: a tree reference and selection guide, version 4.0. World Agroforestry Centre. https://apps.worldagroforestry.org/treedb/AFTPDFS/Morus_nigra.PDF',
+      'Chen, H., et al. (2016). Anti-Inflammatory and Antinociceptive Properties of Flavonoids from the Fruits of Black Mulberry (Morus nigra L.). PLOS ONE, 11(4), e0153080. doi:10.1371/journal.pone.0153080'
     ]
   },
   {
@@ -900,18 +952,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Actinorhizal pioneer tree fixing massive atmospheric nitrogen via Frankia symbiosis. Invaluable for poor soils and sun-drenched microclimates. Abundant medicinal berries packed with Vitamin C and omega fatty acids. Demands full unfiltered sun.',
-      de: 'Actinorhizales Pioniergehölz, das über Frankia-Symbiose enorme Mengen Luftstickstoff im Boden bindet. Ideal zur Bodenverbesserung auf sonnigen Standorten. Üppige Vitamin-C- und Omega-Fettsäuren-Heilbeeren. Benötigt zwingend volle Sonne.'
+      en: 'Actinorhizal pioneer tree that fixes atmospheric nitrogen in root nodules with Frankia bacteria; used for soil improvement, wind and sand control. Its berries are rich in vitamin C (reported from about 53 to 896 mg per 100 g) and contain palmitoleic (omega-7), linoleic (omega-6) and alpha-linolenic (omega-3) acids. Needs full sun and cannot grow in shade.',
+      de: 'Actinorhizales Pioniergehölz, das in Wurzelknöllchen mit Frankia-Bakterien Luftstickstoff bindet; genutzt zur Bodenverbesserung sowie gegen Wind- und Sanderosion. Die Beeren sind reich an Vitamin C (berichtet: etwa 53 bis 896 mg pro 100 g) und enthalten Palmitolein- (Omega-7), Linol- (Omega-6) und alpha-Linolensäure (Omega-3). Braucht volle Sonne und wächst nicht im Schatten.'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#ea580c',
     imageUrl: '/images/plants/tree-seabuckthorn-star.webp',
-    preferredSoils: ['SANDY', 'CHALKY', 'LOAM'],
+    preferredSoils: ['SANDY', 'LOAM'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Pioneer of sandy, gravelly, calcareous soils. Intolerant of standing water or dense, suffocating clay.',
-      de: 'Pionierart auf sandigen, kiesigen, kalkreichen Böden. Extrem empfindlich gegenüber Staunässe und verdichtetem Ton.'
+      en: 'Pioneer of open, disturbed sites such as coastal dunes and riverside scrub; does well in very sandy soil and tolerates drought.',
+      de: 'Pionierart offener, gestörter Standorte wie Küstendünen und Ufergebüsche; gedeiht gut auf sehr sandigen Böden und verträgt Trockenheit.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Mai) oder Herbst (Okt–Nov)',
@@ -927,6 +979,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-lavender',
       'plant-yarrow',
       'plant-oregano'
+    ],
+    sources: [
+      'Kato, K., Kanayama, Y., Ohkawa, W., & Kanahama, K. (2007). Nitrogen Fixation in Seabuckthorn (Hippophae rhamnoides L.) Root Nodules and Effect of Nitrate on Nitrogenase Activity. Journal of the Japanese Society for Horticultural Science, 76(3), 185–190. doi:10.2503/jjshs.76.185',
+      'Wang, Z., et al. (2022). Phytochemistry, health benefits, and food applications of sea buckthorn (Hippophae rhamnoides L.): A comprehensive review. Frontiers in Nutrition, 9, 1036295. doi:10.3389/fnut.2022.1036295',
+      'Fahs, N., et al. (2026). Ecological niches and biogeography of nitrogen-fixing plants in Europe. Plant Biology, 28(5), 1349–1360. doi:10.1111/plb.70230',
+      'Plants For A Future (n.d.). Hippophae rhamnoides – Sea Buckthorn. PFAF Plant Database. https://pfaf.org/user/plant.aspx?latinname=Hippophae+rhamnoides'
     ]
   },
   {
@@ -941,7 +999,7 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 3.8,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Alder Leaf Beetle (Agelastica alni)',
@@ -955,18 +1013,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Premier native nitrogen-fixing canopy star for moist, heavy, or riparian guilds. Enriches surrounding soil with high-nitrogen leaf drop and root nodule exudates. Tolerates partial shade and periodic waterlogging.',
-      de: 'Hervorragender einheimischer stickstofffixierender Leitbaum für feuchte, schwere Böden oder Uferbereiche. Reichert den Boden durch stickstoffreichen Laubfall und Knöllchenbakterien an. Sehr schattentolerant und nässefest.'
+      en: 'Native nitrogen-fixing canopy star for moist, heavy, or riparian guilds. Fixes nitrogen with Frankia bacteria in root nodules (alders: from several up to about 320 kg N/ha per year) and keeps its leaves nitrogen-rich until leaf fall, building a nitrogen-rich litter layer. A light-demanding pioneer that does not tolerate being overtopped, but survives flooding better than most other forest trees.',
+      de: 'Einheimischer stickstofffixierender Leitbaum für feuchte, schwere Böden oder Uferbereiche. Bindet mit Frankia-Bakterien in Wurzelknöllchen Luftstickstoff (Erlen: von einigen bis etwa 320 kg N/ha und Jahr) und behält bis zum Laubfall stickstoffreiche Blätter, die eine stickstoffreiche Streuschicht bilden. Lichtbedürftige Pionierbaumart, die keine Überschirmung verträgt, Überflutung aber besser übersteht als die meisten anderen Waldbäume.'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#15803d',
     imageUrl: '/images/plants/tree-alder.webp',
-    preferredSoils: ['CLAY', 'SILT', 'LOAM', 'ACIDIC'],
-    unsuitableSoils: ['SANDY', 'CHALKY'],
+    preferredSoils: ['CLAY', 'SILT', 'LOAM'],
+    unsuitableSoils: ['CHALKY'],
     soilAdvice: {
-      en: 'Adapted to saturated, heavy clay, silty floodplains, and peaty acidic ground. Will suffer and desiccate in dry, porous sandy soils.',
-      de: 'Perfekt angepasst an nasse Tonböden, Schluff und saure Moorböden. Geht auf trockenen, durchlässigen Sand- und Kalkböden ein.'
+      en: 'Thrives in low-lying, damp, marshy and riverside soils, including heavy clay and silt. Grows even on coarse sand or gravel if moisture is ample, but fails on dry sites and grows poorly on calcareous soils.',
+      de: 'Gedeiht auf tiefliegenden, feuchten, sumpfigen Böden und an Ufern, auch auf schwerem Ton und Schluff. Wächst bei ausreichender Feuchte sogar auf grobem Sand oder Kies, versagt aber auf trockenen Standorten und kümmert auf Kalkböden.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
@@ -987,12 +1045,16 @@ export const STAR_TREES: StarTree[] = [
       'plant-nettle',
       'plant-wild-ginger',
       'plant-ostrich-fern',
-      'plant-sweet-flag',
       'plant-meadowsweet',
       'plant-rhododendron',
       'plant-blackcurrant',
       'plant-red-currant',
       'plant-rhubarb'
+    ],
+    sources: [
+      'Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Alnus glutinosa in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_glutinosa.pdf',
+      'Claessens, H., et al. (2010). A review of the characteristics of black alder (Alnus glutinosa (L.) Gaertn.) and their implications for silvicultural practices. Forestry, 83(2), 163–175. doi:10.1093/forestry/cpp038',
+      'Tobita, H., et al. (2015). Responses of symbiotic N2 fixation in Alnus species to the projected elevated CO2 environment. Trees, 30(2), 523–537. doi:10.1007/s00468-015-1297-x'
     ]
   },
   {
@@ -1007,32 +1069,32 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 2.5,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Young Leaf Sunburn (UV sensitivity)',
-        'Pollination Deficits (Blowfly pollinated)',
+        'Pollination Deficits (Fly and Beetle Pollinated)',
         'Taproot Disturbance'
       ],
       de: [
         'Sonnenbrand an Jungblättern (UV-Sensibilität)',
-        'Bestäubungsdefizite (Aasfliegen-Bestäubung)',
+        'Bestäubungsdefizite (Fliegen- und Käferbestäubung)',
         'Wurzelstörung beim Umpflanzen'
       ]
     },
     description: {
-      en: 'Temperate understory star producing large tropical-custard fruits (mango/banana flavor). Young trees require partial shade to avoid UV sunburn. Rich in annonaceous acetogenins which naturally repel chewing insect pests.',
-      de: 'Halbschattenliebender Unterholz-Star mit großen, tropisch schmeckenden Früchten (Mango-Bananen-Aroma). Junge Bäume benötigen zwingend Halbschatten gegen UV-Sonnenbrand. Enthält insektizide Acetogenine, die Schädlinge abwehren.'
+      en: 'Shade-tolerant temperate fruit tree with large, custard-like fruits of tropical flavor. Seedlings are extremely sensitive to full sunlight and need shade for the first year or two, while established trees fruit best in open exposure. Contains annonaceous acetogenins with pesticidal activity; in its native range it has few serious pests (the main one is the pawpaw peduncle borer). Pollinated by flies and beetles, which are unreliable, so fruit set is often low.',
+      de: 'Schattenverträglicher Obstbaum gemäßigter Breiten mit großen, cremigen Früchten von tropischem Aroma. Sämlinge sind extrem empfindlich gegen volle Sonne und brauchen im ersten, oft auch im zweiten Jahr Schatten; ältere Bäume tragen in offener Lage am besten. Enthält Annonaceen-Acetogenine mit pestizider Wirkung; im Heimatgebiet gibt es wenige ernste Schädlinge (Hauptschädling ist der Papau-Blütenstielbohrer). Bestäubt von Fliegen und Käfern, die unzuverlässig sind, daher ist der Fruchtansatz oft gering.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#65a30d',
     imageUrl: '/images/plants/tree-pawpaw.webp',
     preferredSoils: ['LOAM', 'SILT', 'CLAY'],
-    unsuitableSoils: ['SANDY', 'CHALKY'],
+    unsuitableSoils: ['CHALKY'],
     soilAdvice: {
-      en: 'Demands deep, fertile, moisture-retentive, humus-rich alluvial loam. Dislikes dry, thin sandy soils.',
-      de: 'Verlangt tiefgründigen, humusreichen, feuchten Auenlehm. Flachgründige, trockene Sandböden werden nicht vertragen.'
+      en: 'Needs deep, fertile, well-drained, slightly acid soil (pH 5.5–7); good drainage is essential. Native to stream banks, ravine slopes and floodplains. Dry, thin sandy soils are unsuitable.',
+      de: 'Braucht tiefgründigen, fruchtbaren, gut drainierten, leicht sauren Boden (pH 5,5–7); gute Drainage ist entscheidend. Heimisch an Bachufern, Schluchthängen und in Auen. Trockene, flachgründige Sandböden sind ungeeignet.'
     },
     plantingTime: {
       de: 'Frühjahr (Apr–Mai nach Frostgefahr)',
@@ -1051,6 +1113,11 @@ export const STAR_TREES: StarTree[] = [
       'plant-epimedium',
       'plant-wild-ginger',
       'plant-ostrich-fern'
+    ],
+    sources: [
+      'Jones, S. C., Peterson, R. N., Turner, T., Pomper, K. W., & Layne, D. R. (n.d.). Pawpaw Planting Guide. Kentucky State University Cooperative Extension Program. https://www.kysu.edu/academics/college-ahnr/school-of-anr/pawpaw/pawpaw-planting-guide.php',
+      'Sullivan, J. (1993). Asimina triloba. Fire Effects Information System. USDA Forest Service, Rocky Mountain Research Station. https://www.fs.usda.gov/database/feis/plants/tree/asitri/all.html',
+      'McLaughlin, J. L. (2008). Paw Paw and Cancer: Annonaceous Acetogenins from Discovery to Commercial Products. Journal of Natural Products, 71(7), 1311–1321. doi:10.1021/np800191t'
     ]
   },
   {
@@ -1065,34 +1132,34 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 1.1,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
-        'Iron Chlorosis at pH > 5.2',
+        'Iron Chlorosis at pH > 5.0',
         'Spotted Wing Drosophila (Drosophila suzukii)',
         'Mummy Berry (Monilinia vaccinii-corymbosi)',
         'Shallow Drought Desiccation'
       ],
       de: [
-        'Eisenchlorose bei pH > 5,2',
+        'Eisenchlorose bei pH > 5,0',
         'Kirschessigfliege (Drosophila suzukii)',
         'Monilia-Fruchtfäule (Mummy Berry)',
         'Trockenstress durch Flachwurzeln'
       ]
     },
     description: {
-      en: 'Acid-loving keystone berry shrub. Lacks root hairs and depends on symbiotic ericoid mycorrhizae. Thrives in partial shade and acid soils alongside cranberries, lupines, and conifer mulch. Never pair with lime or alkaline alliums.',
-      de: 'Säureliebender Beerenstrauch-Star. Besitzt keine Wurzelhaare und ist auf ericoide Mykorrhizapilze angewiesen. Liebt Halbschatten und saure Waldböden (pH 4,0–5,0) zusammen mit Moosbeeren (Cranberries), Lupinen und Rindenmulch.'
+      en: 'Acid-loving keystone berry shrub. Its shallow, fibrous roots lack root hairs, and it partners with ericoid mycorrhizal fungi for nutrient uptake. Tolerates partial shade, but yield and fruit quality decline with increasing shade. Grows in acid soil alongside cranberries, lupines and conifer mulch; never lime.',
+      de: 'Säureliebender Beerenstrauch-Star. Das flache, faserige Wurzelwerk hat keine Wurzelhaare und nutzt ericoide Mykorrhizapilze zur Nährstoffaufnahme. Verträgt Halbschatten, Ertrag und Fruchtqualität sinken aber mit zunehmender Beschattung. Wächst in saurem Boden zusammen mit Moosbeeren (Cranberries), Lupinen und Nadelmulch; niemals kalken.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'SUMMER',
     color: '#2563eb',
     imageUrl: '/images/plants/shrub-blueberry.webp?v=2',
     preferredSoils: ['ACIDIC', 'SANDY'],
-    unsuitableSoils: ['CHALKY', 'CLAY', 'LOAM'],
+    unsuitableSoils: ['CHALKY', 'CLAY'],
     soilAdvice: {
-      en: 'Strict acidophile (pH 4.2–5.2). Requires high organic matter, peat or pine needle mulch, and consistent moisture. Chalky or high-pH soils are lethal.',
-      de: 'Streng sauer liebend (pH 4,2–5,2). Benötigt humusreichen Moorbeet- oder Nadelwaldboden und gleichmäßige Feuchte. Kalkhaltige Böden führen rasch zum Eingehen.'
+      en: 'Strict acid-lover: soil pH 4.5–5.5 (optimum about 4.5); above pH 5.0, poor growth and leaf chlorosis can be expected. Grows best in soil high in organic matter with even moisture; with few root hairs and roots rarely deeper than 30–45 cm, it is prone to drought injury.',
+      de: 'Streng säureliebend: Boden-pH 4,5–5,5 (Optimum etwa 4,5); über pH 5,0 ist mit Kümmerwuchs und Blattchlorose zu rechnen. Wächst am besten in humusreichem, gleichmäßig feuchtem Boden; mit wenigen Wurzelhaaren und Wurzeln meist nicht tiefer als 30–45 cm ist sie trockenheitsempfindlich.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder Frühjahr (Mär–Mai) in saurem Substrat',
@@ -1110,6 +1177,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-wintergreen',
       'plant-lingonberry',
       'plant-rhododendron'
+    ],
+    sources: [
+      'Fernandez, G., Cline, B., Spayd, S., & Burrack, H. (2022). Chapter 14: Small Fruits. Extension Gardener Handbook. NC State Extension. https://content.ces.ncsu.edu/extension-gardener-handbook/14-small-fruits',
+      'Sadowsky, J. J., Hanson, E. J., & Schilder, A. M. C. (2012). Root Colonization by Ericoid Mycorrhizae and Dark Septate Endophytes in Organic and Conventional Blueberry Fields in Michigan. International Journal of Fruit Science, 12(1–3), 169–187. doi:10.1080/15538362.2011.619346',
+      'Oregon State University Extension Service (2025). Growing blueberries in your home garden (EC 1304). https://extension.oregonstate.edu/catalog/ec-1304-growing-blueberries-your-home-garden',
+      'Traunfeld, J. (2024). Growing Blueberries in a Home Garden. University of Maryland Extension. https://extension.umd.edu/resource/growing-blueberries-home-garden'
     ]
   },
   {
@@ -1124,7 +1197,7 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 1.0,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Blackcurrant Gall Mite (Cecidophyopsis ribis)',
@@ -1138,18 +1211,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'High-yielding, shade-tolerant understory shrub packed with vitamin C. Flourishes in partial shade where stone fruits fail. Often paired with alliums and aromatic southernwood, though claims that they deter gall mites or clearwing moths are unproven.',
-      de: 'Ertragreicher, schattentoleranter Beeren-Star mit hohem Vitamin-C-Gehalt. Gedeiht prächtig im Halbschatten. Wird oft mit Allium und duftender Eberraute kombiniert, eine Wirkung gegen Gallmilbe oder Glasflügler ist jedoch unbewiesen.'
+      en: 'High-yielding understory shrub, very rich in vitamin C (about 180 mg per 100 g of fruit, versus about 40 mg in red currants). Fruits best in full sun but still does well in light shade. Often paired with alliums and aromatic southernwood, though claims that they deter gall mites or clearwing moths are unproven.',
+      de: 'Ertragreicher Unterwuchs-Beerenstrauch, sehr reich an Vitamin C (rund 180 mg pro 100 g Frucht, gegenüber etwa 40 mg bei Roten Johannisbeeren). Trägt in voller Sonne am besten, gedeiht aber auch im lichten Schatten. Wird oft mit Allium und duftender Eberraute kombiniert, eine Wirkung gegen Gallmilbe oder Glasflügler ist jedoch unbewiesen.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'SUMMER',
     color: '#312e81',
     imageUrl: '/images/plants/shrub-blackcurrant.webp',
     preferredSoils: ['LOAM', 'CLAY', 'SILT'],
-    unsuitableSoils: ['SANDY'],
+    unsuitableSoils: [],
     soilAdvice: {
-      en: 'Loves cool, moist, rich clay or fertile loam. Dries out easily in porous sandy soils, leading to mildew outbreaks.',
-      de: 'Liebt kühlen, feuchten, nährstoffreichen Ton- und Lehmboden. Trockene Sandböden meiden (führt zu Mehltau und Beerenabwurf).'
+      en: 'Prefers well-drained but moisture-retentive, fertile loam or clay, though it copes with most other soil conditions. Porous sandy soils dry out quickly.',
+      de: 'Bevorzugt gut durchlässigen, aber wasserhaltenden, nährstoffreichen Lehm- oder Tonboden, kommt aber mit den meisten anderen Böden zurecht. Durchlässige Sandböden trocknen schnell aus.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder zeitiges Frühjahr (Mär–Apr)',
@@ -1163,13 +1236,15 @@ export const STAR_TREES: StarTree[] = [
       'plant-chives',
       'plant-garlic',
       'plant-borage',
-      'plant-southernwood',
       'plant-comfrey',
       'plant-white-clover',
       'plant-nettle',
       'plant-meadowsweet',
       'plant-welsh-onion',
-      'plant-wormwood'
+    ],
+    sources: [
+      'USDA Agricultural Research Service (2019). Currants, european black, raw (FDC ID 173963). FoodData Central, SR Legacy. https://fdc.nal.usda.gov/fdc-app.html#/food-details/173963/nutrients',
+      'Royal Horticultural Society (n.d.). Blackcurrants: Grow Your Own. RHS. https://www.rhs.org.uk/fruit/blackcurrants/grow-your-own'
     ]
   },
   {
@@ -1182,7 +1257,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Vitis vinifera',
     category: 'VINE',
     matureRadiusM: 1.8,
-    rootHabit: 'DEEP_TAP',
+    rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
     vulnerabilities: {
@@ -1198,18 +1273,18 @@ export const STAR_TREES: StarTree[] = [
         'Grauschimmel (Botrytis)', 'Bekreuzter Traubenwickler (Lobesia botrana)']
     },
     description: {
-      en: 'The quintessential sun-loving perennial vine. Deep taproot anchors the guild while climbing trellises or arbor structures. Sage companion planting may help (its volatile monoterpenes primed defenses against downy mildew in closed-box and extract tests, not yet in the field), as may living mulch groundcovers (white clover) sustaining predatory mites and blocking soil oospore splash.',
-      de: 'Klassische sonnenhungrige Kletter-Leitpflanze. Die bis zu 6 m tiefen Wurzeln erschließen Unterbodenressourcen. Möglicher Nutzen durch Salbei-Begleitpflanzung (flüchtige Monoterpene induzierten in Box- und Extraktversuchen Abwehr gegen Falschen Mehltau, im Freiland noch unbelegt) sowie durch Weißklee als Bodendecker gegen Sporenspritzwasser und zur Raubmilbenförderung.'
+      en: 'The quintessential sun-loving perennial vine for trellises and arbors. Single roots can reach 6 m or deeper, although most roots stay in the top metre. Sage may help: in sealed-box trials its volatiles reduced grapevine susceptibility to downy mildew, and sprayed sage extract gave full to partial control in field trials; a benefit from simply planting sage nearby is unproven. Inter-row ground cover (e.g. a grass–sainfoin–white clover mix) cuts rain splash from the soil and delayed downy mildew, and spontaneous vegetation supports predatory mites.',
+      de: 'Klassische sonnenhungrige Kletter-Leitpflanze für Spaliere und Lauben. Einzelne Wurzeln reichen 6 m und tiefer, die meisten liegen aber im obersten Meter. Salbei kann helfen: In geschlossenen Boxversuchen senkten seine Duftstoffe die Anfälligkeit der Rebe für Falschen Mehltau, und gespritzter Salbeiextrakt wirkte in Freilandversuchen gut bis teilweise; ein Nutzen durch bloße Nachbarpflanzung ist unbelegt. Eine Begrünung der Fahrgasse (z. B. Gras-Esparsette-Weißklee-Mischung) vermindert Spritzwasser vom Boden und verzögerte den Falschen Mehltau, Spontanvegetation fördert Raubmilben.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#4c1d95',
     imageUrl: '/images/plants/vine-grape.webp?v=2',
-    preferredSoils: ['CHALKY', 'SANDY', 'LOAM'],
+    preferredSoils: ['SANDY', 'LOAM'],
     unsuitableSoils: ['CLAY'],
     soilAdvice: {
-      en: 'Thrives in warm, rocky, calcareous, free-draining hillsides. Wet, waterlogged clay rots roots and drastically increases fungal mildew pressure.',
-      de: 'Liebt warme, steinige, kalkhaltige, tief durchlässige Böden. Kalter, nasser Tonboden hemmt die Wurzeln und fördert Pilzerkrankungen.'
+      en: 'Grows on many soil types but needs good drainage. European grapes cope with moderately alkaline (limy) soils, though above pH 8 nutrient problems can occur. Heavy, poorly drained clay is not suitable.',
+      de: 'Wächst auf vielen Bodenarten, braucht aber gute Drainage. Europäerreben vertragen mäßig kalkhaltige Böden, über pH 8 können jedoch Nährstoffprobleme auftreten. Schwerer, schlecht drainierter Ton ist ungeeignet.'
     },
     plantingTime: {
       de: 'Frühjahr (Apr–Mai nach Frösten) oder milder Herbst',
@@ -1231,11 +1306,19 @@ export const STAR_TREES: StarTree[] = [
       'plant-rosemary',
       'plant-chamomile',
       'plant-oregano',
-      'plant-echinacea', 'plant-sainfoin']
+      'plant-echinacea', 'plant-sainfoin'],
+    sources: [
+      'Smart, D. R., et al. (2006). Grapevine Rooting Patterns: A Comprehensive Analysis and a Review. American Journal of Enology and Viticulture, 57(1), 89–104. doi:10.5344/ajev.2006.57.1.89',
+      'Fittipaldi Broussard, M., et al. (2026). The Consociation of Sage and Grapevine Modifies Grape Leaf Metabolism and Reduces Downy Mildew Infection. Agronomy, 16(2), 201. doi:10.3390/agronomy16020201',
+      'Dagostin, S., et al. (2010). Salvia officinalis Extract Can Protect Grapevine Against Plasmopara viticola. Plant Disease, 94(5), 575–580. doi:10.1094/PDIS-94-5-0575',
+      'Hasanaliyeva, G., et al. (2024). Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management. Frontiers in Plant Science, 15, 1498848. doi:10.3389/fpls.2024.1498848',
+      'Möth, S., et al. (2021). Unexpected Effects of Local Management and Landscape Composition on Predatory Mites and Their Food Resources in Vineyards. Insects, 12(2), 180. doi:10.3390/insects12020180',
+      'Strik, B. (2011). Growing table grapes (EC 1639). Oregon State University Extension Service. https://extension.oregonstate.edu/sites/extd8/files/catalog/auto/EC1639.pdf'
+    ]
   },
   {
     id: 'vine-kiwi',
-    climateZones: ['TEMPERATE','SUBTROPICAL'],
+    climateZones: ['BOREAL','TEMPERATE','SUBTROPICAL'],
     commonName: {
       en: 'Hardy Kiwi / Kiwiberry',
       de: 'Scharfzahniger Strahlengriffel / Kiwibeere'
@@ -1245,22 +1328,22 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 2.0,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
-    sunPreference: 'PARTIAL_SUN',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Late Spring Shoot Frost',
-        'Feline Root Scratching (Actinidine attractant)',
+        'Cat Damage to Foliage and Roots (Catnip-like Scent)',
         'Drought Stress'
       ],
       de: [
         'Spätfrost an Austrieben',
-        'Katzenverbiss an Wurzeln (durch Actinidin)',
+        'Katzenschäden an Laub und Wurzeln (katzenminzeartiger Duft)',
         'Trockenheitsempfindlichkeit'
       ]
     },
     description: {
-      en: 'Vigorous, exceptionally cold-hardy (-30°C) fruiting liana producing smooth-skinned mini kiwis eaten whole. Thrives climbing pergolas in partial shade. Requires moist, cool soil around roots, protected by ground-covering sweet woodruff and living mulch.',
-      de: 'Extrem frostharte (-30 °C), wuchsfreudige Schlingpflanze mit stachellosen, mundgerechten Minikiwis. Gedeiht hervorragend an Rankgerüsten im Halbschatten. Schätzt feuchte, kühle Bodenbedeckung durch Waldmeister und Klee.'
+      en: 'Vigorous climbing vine for pergolas, producing smooth-skinned mini kiwis that are eaten whole. Fully dormant vines are cold-hardy to roughly -23 to -32 °C, but young spring shoots are damaged by brief frosts around -1 °C. Needs regular summer watering without standing water; a ground cover such as sweet woodruff or a living mulch helps keep the root zone moist.',
+      de: 'Wuchsfreudige Kletterpflanze für Pergolen mit glattschaligen Minikiwis, die ganz gegessen werden. Voll ruhende Ranken sind bis etwa -23 bis -32 °C winterhart, junge Austriebe werden im Frühjahr aber schon durch kurzen Frost um -1 °C geschädigt. Braucht im Sommer regelmäßige Bewässerung ohne Staunässe; eine Bodendecke aus Waldmeister oder Lebendmulch hilft, den Wurzelraum feucht zu halten.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
@@ -1269,8 +1352,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'SILT', 'ACIDIC'],
     unsuitableSoils: ['CHALKY'],
     soilAdvice: {
-      en: 'Needs rich, humus-packed, slightly acidic to neutral loam with constant moisture. Alkaline chalk soils cause chlorosis.',
-      de: 'Benötigt humusreichen, lockeren, leicht sauren bis neutralen Lehm mit kontinuierlicher Feuchtigkeit. Auf Kalkböden chloroseanfällig.'
+      en: 'Needs well-drained, slightly acidic sandy loam or clay loam (pH 5.6–6.5) and is sensitive to poor drainage during the growing season. Alkaline chalk soils lie outside its preferred pH range.',
+      de: 'Benötigt gut drainierten, leicht sauren sandigen oder tonigen Lehm (pH 5,6–6,5) und ist in der Wachstumszeit empfindlich gegen schlechten Wasserabzug. Alkalische Kalkböden liegen außerhalb des bevorzugten pH-Bereichs.'
     },
     plantingTime: {
       de: 'Frühjahr (Apr–Mai) an sonnigem, geschütztem Gerüst',
@@ -1288,6 +1371,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-yarrow',
       'plant-creeping-jenny',
       'plant-rhododendron'
+    ],
+    sources: [
+      'Strik, B., Dixon, E., Detweiler, A. J., & Sanchez, N. (2021). Growing kiwifruit in your home garden (EM 9322). Oregon State University Extension Service. https://extension.oregonstate.edu/catalog/em-9322-growing-kiwifruit-your-home-garden',
+      'NC State Extension (n.d.). Actinidia arguta (Hardy Kiwi). North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/actinidia-arguta/'
     ]
   },
   {
@@ -1302,7 +1389,7 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 0.9,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
-    sunPreference: 'FULL_SHADE',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Phytophthora Crown Rot',
@@ -1316,8 +1403,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Heavy-yielding perennial megaphorb with huge umbrella leaves functioning as natural weed suppression. Outstanding performer in full shade or cool woodland corners. Deep fleshy root system thrives with allium companions (claims that they deter curculio and fungal rot are unproven) and potassium-pumping comfrey.',
-      de: 'Extrem langlebige Großstaude mit riesigen Blättern, die den Boden vollkommen beschatten und Unkraut unterdrücken. Hervorragend für schattige Gartenbereiche geeignet. Profitiert von Allium-Begleitern (ein Schutz vor Fäule und Rüsselkäfern ist unbewiesen) und kaliumreichem Beinwellmulch.'
+      en: 'Productive perennial with huge leaves that shade the ground beneath them. Grows best in an open, sunny site but also copes with light shade. Often combined with allium companions (claims that they deter curculio and fungal rot are unproven) and comfrey mulch.',
+      de: 'Ertragreiche Großstaude mit riesigen Blättern, die den Boden darunter beschatten. Wächst am besten an einem offenen, sonnigen Standort, kommt aber auch mit lichtem Schatten zurecht. Wird oft mit Allium-Begleitern (ein Schutz vor Fäule und Rüsselkäfern ist unbewiesen) und Beinwellmulch kombiniert.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'EARLY_SPRING',
@@ -1326,16 +1413,16 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'CLAY', 'SILT'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Heavy feeder demanding deep, fertile, water-retentive clay or loam enriched with heavy compost. Thin dry sand causes premature dormancy.',
-      de: 'Starkzehrer, der tiefgründigen, feuchten, nährstoffreichen Lehm- oder Tonboden benötigt. Auf trockenen Sandböden verkümmert er rasch.'
+      en: 'Grows best in fertile, moisture-retentive but well-drained soil with good organic matter content; mulch with well-rotted organic matter every spring. Plant in well-drained soil to prevent Phytophthora crown rot.',
+      de: 'Wächst am besten in nährstoffreichem, frischem, aber durchlässigem Boden mit gutem Humusgehalt; jedes Frühjahr mit gut verrottetem organischem Material mulchen. In durchlässigen Boden pflanzen, um Phytophthora-Kronenfäule vorzubeugen.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Apr) oder Herbst (Okt–Nov) als Wurzelstock',
       en: 'Spring (Mar–Apr) or autumn (Oct–Nov) via crown'
     },
     harvestTime: {
-      de: 'Frühling bis Johannistag (Apr–24. Jun)',
-      en: 'Spring to St. John’s Day (Apr–Jun 24)'
+      de: 'Frühling bis Ende Juni/Anfang Juli (Apr–Anfang Jul; traditionell bis Johannistag, 24. Jun)',
+      en: 'Spring to late June/early July (Apr–early Jul; traditionally until St. John’s Day, Jun 24)'
     },
     recommendedCompanions: [
       'plant-garlic',
@@ -1344,7 +1431,10 @@ export const STAR_TREES: StarTree[] = [
       'plant-borage',
       'plant-woodruff',
       'plant-lovage',
-      'plant-sweet-flag'
+    ],
+    sources: [
+      'Royal Horticultural Society (n.d.). How to grow rhubarb. RHS Grow Your Own. https://www.rhs.org.uk/vegetables/rhubarb/grow-your-own',
+      'Lyon, E., & Young, C. E. (2021). Growing Rhubarb in the Home Garden (HYG-1631). Ohio State University Extension. https://cfaes.osu.edu/fact-sheet/growing-rhubarb-home-garden'
     ]
   },
   {
@@ -1359,7 +1449,7 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 1.8,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
-    sunPreference: 'FULL_SHADE',
+    sunPreference: 'FULL_SUN',
     vulnerabilities: {
       en: [
         'Elderberry Aphid (Aphis sambuci)',
@@ -1371,8 +1461,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Resilient, highly shade-tolerant native keystone shrub producing aromatic flowers and medicinal dark berries. Juglone-tolerant; acts as a nursery for hoverflies and ladybugs. Thrives in dense forest shade or edge guilds.',
-      de: 'Extrem robuster, voll schattentoleranter einheimischer Leitstrauch mit heilsamen Blüten und Vitamin-Beeren. Juglonverträglich; dient als Nützlingswiege für Schwebfliegen und Marienkäfer. Gedeiht selbst im tiefen Baumschatten.'
+      en: 'Resilient native keystone shrub with aromatic flowers and dark berries. It persists even in deep woodland shade, but there it becomes weak, spindly and few-flowered with low fruit set, so it crops best in sun or at woodland edges. The related American elder (S. canadensis) is listed as juglone-tolerant. Spring colonies of the elder aphid feed hoverfly larvae, although this aphid is toxic prey that the seven-spot ladybird avoids.',
+      de: 'Robuster einheimischer Leitstrauch mit duftenden Blüten und dunklen Beeren. Er hält sich selbst im tiefen Waldschatten, wird dort aber schwach, sparrig und blütenarm mit geringem Fruchtansatz; am besten trägt er in der Sonne oder am Waldrand. Der verwandte Kanadische Holunder (S. canadensis) gilt als juglontolerant. Frühjahrskolonien der Holunderblattlaus ernähren Schwebfliegenlarven, für den Siebenpunkt-Marienkäfer ist diese Blattlaus aber giftige Beute, die er meidet.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
@@ -1381,8 +1471,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'CLAY', 'SILT', 'ACIDIC'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Remarkably adaptable to damp, nutrient-rich clay, silt, and woodland soils. Tolerates temporary flooding and compaction.',
-      de: 'Überaus anpassungsfähig an feuchte, nährstoffreiche Ton-, Lehm- und Waldböden. Verträgt auch zeitweilige Nässe und Bodenverdichtung.'
+      en: 'Nitrogen-loving: establishes mostly on bare or disturbed, well-drained soil enriched with phosphate and nitrogen from decomposing organic matter (e.g. near dung or compost heaps). Adapts to clay, silt and woodland soils.',
+      de: 'Stickstoffliebend: siedelt sich vor allem auf offenem oder gestörtem, durchlässigem Boden an, der durch zersetzte organische Substanz mit Phosphat und Stickstoff angereichert ist (z. B. an Mist- oder Komposthaufen). Passt sich Ton-, Lehm- und Waldböden an.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder Frühjahr (Mär–Apr)',
@@ -1402,12 +1492,17 @@ export const STAR_TREES: StarTree[] = [
       'plant-creeping-jenny',
       'plant-nettle',
       'plant-ostrich-fern',
-      'plant-sweet-flag'
+    ],
+    sources: [
+      'Forbes, R. S. (n.d.). Sambucus nigra L. Fermanagh species accounts. Botanical Society of Britain & Ireland. https://bsbi.org/in-your-area/local-botany/co-fermanagh/fermanagh-species-accounts/sambucus-nigra-l',
+      'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
+      'Nedvěd, O., & Salvucci, S. (2008). Ladybird Coccinella septempunctata (Coleoptera: Coccinellidae) prefers toxic prey in laboratory choice experiment. European Journal of Entomology, 105(3), 431–436. doi:10.14411/eje.2008.055',
+      'InfluentialPoints (n.d.). Aphis sambuci (Elder aphid). http://influentialpoints.com/Gallery/Aphis_sambuci_elder_aphid.htm'
     ]
   },
   {
     id: 'tree-ginkgo',
-    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    climateZones: ['BOREAL', 'TEMPERATE', 'SUBTROPICAL'],
     commonName: {
       en: 'Ginkgo / Maidenhair Tree',
       de: 'Ginkgobaum / Fächerblattbaum'
@@ -1431,18 +1526,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'An ancient living fossil and resilient nut/medicinal anchor tree. Deep central taproot and non-invasive lateral rooting make it an outstanding canopy partner for understory herbs and shrubs. Prized for autumn golden foliage, edible roasted seeds (Bai Guo), and total immunity to urban pollution and common tree diseases.',
-      de: 'Uraltes lebendes Fossil und robuster Nuss-/Heilbaum-Anker. Die tiefe Pfahlwurzel und nicht-invasive Feinwurzeln machen ihn zum idealen Kronenpartner für Kräuter und Beerensträucher. Berühmt für seine goldene Herbstfärbung, essbare geröstete Samen (Bai Guo) und absolute Resistenz gegen Schädlinge und Stadtklima.'
+      en: 'An ancient "living fossil" that survived the Ice Ages only in China, and a resilient nut and medicinal anchor tree. Usually deep-rooted and wind-firm, a good canopy partner for understory herbs and shrubs. Prized for brilliant yellow autumn foliage and its seed kernels, a traditional cooked food in China and Japan (do not eat raw or in large quantities: they contain the toxin 4-methoxypyridoxine). Very tolerant of urban soils and air pollution, and free of serious pests and diseases.',
+      de: 'Uraltes „lebendes Fossil“, das die Eiszeiten nur in China überdauert hat, und robuster Nuss- und Heilbaum-Anker. Meist tief wurzelnd und sturmfest, ein guter Kronenpartner für Kräuter und Beerensträucher. Geschätzt für seine leuchtend gelbe Herbstfärbung und die Samenkerne, ein traditionelles gegartes Lebensmittel in China und Japan (nicht roh oder in großen Mengen essen: sie enthalten das Gift 4-Methoxypyridoxin). Sehr tolerant gegenüber Stadtböden und Luftverschmutzung und frei von ernsthaften Schädlingen und Krankheiten.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'AUTUMN',
     color: '#eab308',
     imageUrl: '/images/plants/tree-ginkgo.webp',
     preferredSoils: ['LOAM', 'SANDY', 'SILT'],
-    unsuitableSoils: ['CLAY'],
+    unsuitableSoils: [],
     soilAdvice: {
-      en: 'Requires deep, well-draining loam or sandy loam. Avoid stagnant, oxygen-poor waterlogging. Exceptionally tolerant of urban soils, air pollution, and variable pH (5.5–8.0).',
-      de: 'Benötigt tiefgründigen, gut drainierten Lehm- oder Sandboden. Dauerhafte Staunässe vermeiden. Extrem widerstandsfähig gegen Stadtklima, Abgase, Trockenheit und pH-Werte von 5,5 bis 8,0.'
+      en: 'Prefers deep, sandy, moist but well-drained soil in full sun; avoid poorly drained sites. Drought-resistant and very pH-adaptable (acid to alkaline), and tolerates air pollution and soil salt.',
+      de: 'Bevorzugt tiefgründigen, sandigen, frischen, aber gut drainierten Boden in voller Sonne; schlecht drainierte Standorte meiden. Trockenheitsresistent und sehr pH-tolerant (sauer bis alkalisch), verträgt Luftverschmutzung und Bodensalz.'
     },
     plantingTime: {
       de: 'Frühjahr (Mär–Mai) oder Herbst (Okt–Nov)',
@@ -1465,11 +1560,15 @@ export const STAR_TREES: StarTree[] = [
       'plant-epimedium',
       'plant-wild-ginger',
       'plant-rhododendron'
+    ],
+    sources: [
+      'Moore, L. M., & Walker Wilson, J. D. (2006). Ginkgo, Ginkgo species. USDA NRCS Plant Guide. https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_ginkg.pdf',
+      'Gilman, E. F., et al. (2018). Ginkgo biloba: Ginkgo (ST273). UF/IFAS Extension. https://ask.ifas.ufl.edu/publication/ST273'
     ]
   },
   {
     id: 'tree-tea-sinensis',
-    climateZones: ["TEMPERATE","SUBTROPICAL","BOREAL"],
+    climateZones: ["TEMPERATE","SUBTROPICAL"],
     commonName: {
       en: 'Chinese Tea Bush',
       de: 'Chinesischer Teestrauch'
@@ -1487,14 +1586,14 @@ export const STAR_TREES: StarTree[] = [
         "Tea Blister Blight (Exobasidium vexans)",
         "Desiccating Winter Winds", "Tea Green Leafhopper (Empoasca onukii)", "Tea Geometrid (Ectropis obliqua)"],
       de: [
-        "Kalkchlorose bei hohem pH-Wert (> 6,5)",
+        "Kalkchlorose bei hohem pH-Wert",
         "Rote Spinnmilbe (Oligonychus coffeae)",
         "Tee-Blasenrost (Exobasidium vexans)",
         "Austrocknende Winter- und Ostwinde", "Grüne Teezikade (Empoasca onukii)", "Teespanner (Ectropis obliqua)"]
     },
     description: {
-      en: 'A compact, remarkably cold-hardy evergreen shrub (hardy down to -15°C) evolved in the misty montane forest understories of SW China. Its small, coriaceous leaves (4–10 cm) balance tea polyphenols (15–22% catechins), caffeine (2.5–4.0%), and high root-synthesized L-theanine (1.5–3.5%, umami & Hui Gan sweetness), making it the premier cultivar group for all 6 major tea types: Green, White, Yellow, Oolong, small-leaf Black, and Dark tea.',
-      de: 'Ein kompakter, bemerkenswert frostharter immergrüner Unterwuchs-Strauch (winterhart bis -15°C) aus den Bergnebelwäldern Südwestchinas. Seine kleinen, ledrigen Blätter (4–10 cm) vereinen Polyphenole (15–22 % Catechine), Koffein (2,5–4,0 %) und einen hohen Gehalt an wurzelsynthetisiertem L-Theanin (1,5–3,5 %, Umami & Hui-Gan-Süße) – die ideale Varietät für alle 6 großen Teesorten: Grün-, Weiß-, Gelb-, Oolong-, feinen Schwarz- und Dunkeltee (Hei Cha).'
+      en: 'A compact evergreen shrub and the most cold-tolerant form of tea, clearly more cold-resistant than Assam tea. Its leaves are small (about 5–8 cm, versus about 8–13 cm in Assam tea). In a survey of 596 Chinese tea accessions, leaves contained 14–48% polyphenols, 8–26% catechins, 1–6.5% free amino acids (including theanine) and 1.2–5.9% caffeine in dry weight. Its leaves are used for green, white, yellow, oolong, black and dark teas.',
+      de: 'Ein kompakter immergrüner Strauch und die kältetoleranteste Form des Teestrauchs, deutlich kälteresistenter als Assam-Tee. Die Blätter sind klein (etwa 5–8 cm, gegenüber etwa 8–13 cm beim Assam-Tee). In einer Untersuchung von 596 chinesischen Teeherkünften enthielten die Blätter 14–48 % Polyphenole, 8–26 % Catechine, 1–6,5 % freie Aminosäuren (darunter Theanin) und 1,2–5,9 % Koffein in der Trockenmasse. Die Blätter werden zu Grün-, Weiß-, Gelb-, Oolong-, Schwarz- und Dunkeltee verarbeitet.'
     },
     bloomSeason: 'AUTUMN',
     harvestSeason: 'LATE_SPRING',
@@ -1503,8 +1602,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ["ACIDIC","LOAM","SILT"],
     unsuitableSoils: ["CHALKY","CLAY"],
     soilAdvice: {
-      en: 'Obligate calcifuge demanding acidic, well-drained forest loam (pH 4.5–5.8) and 30–50% dappled canopy shade (which suppresses bitter EGCG catechins and preserves L-theanine umami). Roots preferentially assimilate ammonium (NH4+) via the GS-GOGAT pathway and extrude H+ protons via plasma-membrane H+-ATPase; pair with organic N-fixers (Alder) and K/Ca/Mg dynamic accumulators (Comfrey) while avoiding synthetic urea or chalk.',
-      de: 'Obligater Kalkflüchter: benötigt zwingend sauren, gut dränierenden Waldboden (pH 4,5–5,8) sowie 30–50 % lichten Halbschatten (hemmt bittere EGCG-Catechine und bewahrt das L-Theanin-Umami). Die Wurzeln bevorzugen Ammonium (NH4+) über den GS-GOGAT-Weg zur L-Theanin-Synthese und säuern die Rhizosphäre aktiv über H+-ATPase an; ideal mit Erlen-Laubmulch, Nadelstreu und Beinwell-Kalium kombinieren, Kalk und Staunässe strikt meiden.'
+      en: 'Calcifuge: needs acid, well-drained soil, with an optimum pH of 4.5–5.5. Light shade raises amino acids such as theanine and lowers catechins, giving a milder, more umami tea. Tea roots take up ammonium (NH4+) much faster than nitrate, indicating a preference for ammonium; pair with N-fixers (alder) and comfrey mulch, and avoid lime and waterlogging.',
+      de: 'Kalkflüchter: braucht sauren, gut drainierten Boden, optimal pH 4,5–5,5. Lichter Schatten erhöht Aminosäuren wie Theanin und senkt die Catechine, was milderen, umami-reicheren Tee ergibt. Teewurzeln nehmen Ammonium (NH4+) deutlich schneller auf als Nitrat, ein Hinweis auf eine Ammonium-Vorliebe; mit Stickstoffsammlern (Erle) und Beinwellmulch kombinieren, Kalk und Staunässe meiden.'
     },
     plantingTime: {
       de: 'Frühjahr nach den Spätfrösten (Apr–Mai) oder milder Frühherbst (Sep–Okt) an windgeschütztem Ost-/Halbschatten-Standort',
@@ -1529,6 +1628,14 @@ export const STAR_TREES: StarTree[] = [
       'plant-alder',
       'plant-sicklepod',
       'plant-soybean'
+    ],
+    sources: [
+      'Li, Y., et al. (2019). Comparative transcriptomic analysis reveals gene expression associated with cold adaptation in the tea plant Camellia sinensis. BMC Genomics, 20(1), 624. doi:10.1186/s12864-019-5988-3',
+      'NC State Extension (n.d.). Camellia sinensis. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/camellia-sinensis/',
+      'Chen, L., & Zhou, Z.-X. (2005). Variations of main quality components of tea genetic resources [Camellia sinensis (L.) O. Kuntze] preserved in the China National Germplasm Tea Repository. Plant Foods for Human Nutrition, 60(1), 31–35. doi:10.1007/s11130-005-2540-1',
+      'Niu, X., et al. (2025). Multi-omics analysis reveals the regulatory mechanism of shading on quality-related metabolites in Camellia sinensis cv. Lifeng. Food Chemistry: Molecular Sciences, 11, 100314. doi:10.1016/j.fochms.2025.100314',
+      'Ruan, L., et al. (2016). Characteristics of NH4+ and NO3- fluxes in tea (Camellia sinensis) roots measured by scanning ion-selective electrode technique. Scientific Reports, 6, 38370. doi:10.1038/srep38370',
+      'Yan, P., et al. (2020). Soil acidification in Chinese tea plantations. Science of The Total Environment, 715, 136963. doi:10.1016/j.scitotenv.2020.136963'
     ]
   },
   {
@@ -1543,22 +1650,22 @@ export const STAR_TREES: StarTree[] = [
     matureRadiusM: 2,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
-    sunPreference: 'FULL_SUN',
+    sunPreference: 'PARTIAL_SUN',
     vulnerabilities: {
       en: [
-        "Frost Sensitivity (Damaged below -3°C)",
+        "Frost Sensitivity",
         "Tea Mosquito Bug (Helopeltis theivora)",
         "Red Rust (Cephaleuros virescens)",
         "Drought Stress under Low Humidity", "Tea Green Leafhopper (Empoasca onukii)", "Tea Geometrid (Ectropis obliqua)"],
       de: [
-        "Frostempfindlichkeit (Frostschäden unter -3°C)",
+        "Frostempfindlichkeit",
         "Teewanze (Helopeltis theivora)",
         "Roter Algenrost (Cephaleuros virescens)",
         "Trockenstress bei niedriger Luftfeuchtigkeit", "Grüne Teezikade (Empoasca onukii)", "Teespanner (Ectropis obliqua)"]
     },
     description: {
-      en: 'A vigorous, broad-leafed evergreen sub-canopy tree (8–18 m wild height; pruned to a 0.9 m plucking table or 3 m Qiaomu arbor) native to Assam, Yunnan, and SE Asia. Its large, thin, bullate leaves (15–30 cm) pack 25–35% polyphenols (gallated catechins), 3.5–5.0% caffeine, and 2.0–2.5x higher Polyphenol Oxidase (PPO) activity than var. sinensis—making it the world\'s benchmark for malty Assam & Dianhong Black Tea (rich in theaflavins/thearubigins), Yunnan Moonlight White, and Raw (Sheng) & Ripe (Shou) Pu-erh Dark Tea.',
-      de: 'Ein wuchskräftiger, großblättriger immergrüner Baum (wild 8–18 m; in Kultur als 0,9 m Pflücktisch oder 3 m Qiaomu-Halbstamm) aus den feuchtwarmen Monsunwäldern von Assam, Yunnan und Südostasien. Seine großen, dünnen Blätter (15–30 cm) enthalten 25–35 % Polyphenole (gallierte Catechine), 3,5–5,0 % Koffein und eine 2,0–2,5-fach höhere Polyphenoloxidase-Aktivität (PPO) als var. sinensis – die Referenzvarietät für malzigen Assam- & Dianhong-Schwarztee (reich an Theaflavinen/Thearubiginen), Yunnan Moonlight White sowie rohen (Sheng) und gereiften (Shou) Pu-erh-Tee.'
+      en: 'A vigorous, large-leaved evergreen that grows from a shrub into a large tree if left unpruned; in cultivation it is kept low by plucking. Native to warm evergreen broad-leaved forests of Assam, Yunnan and Southeast Asia. Its leaves (about 8–13 cm) are larger than those of China tea, and it is less cold-tolerant. Southern Chinese tea resources, with Yunnan at the top, have the highest polyphenol contents; Assam tea is the basis of Assam and Dianhong black teas and of Pu-erh.',
+      de: 'Ein wuchskräftiges, großblättriges Immergrün, das ungeschnitten vom Strauch zum großen Baum heranwächst; in Kultur wird es durch das Pflücken niedrig gehalten. Heimisch in warmen immergrünen Laubwäldern von Assam, Yunnan und Südostasien. Die Blätter (etwa 8–13 cm) sind größer als beim China-Tee, die Pflanze ist weniger kältetolerant. Südchinesische Teeherkünfte, allen voran aus Yunnan, haben die höchsten Polyphenolgehalte; Assam-Tee ist die Grundlage von Assam- und Dianhong-Schwarztee sowie von Pu-Erh.'
     },
     bloomSeason: 'AUTUMN',
     harvestSeason: 'SUMMER',
@@ -1567,8 +1674,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ["ACIDIC","LOAM","SILT"],
     unsuitableSoils: ["CHALKY","CLAY"],
     soilAdvice: {
-      en: 'Thrives in deep (> 1.5 m), humus-rich acidic subtropical/tropical forest soils (pH 4.5–5.5) with high atmospheric humidity (>= 70–80% RH) and 25–35% high-canopy leguminous/actinorhizal shade. Intolerant of frost below -3°C, free lime, or stagnant waterlogging.',
-      de: 'Gedeiht in tiefgründigem (> 1,5 m), saurem, humusreichem Urwaldboden (pH 4,5–5,5) bei hoher Luftfeuchtigkeit (>= 70–80 % rF) und 25–35 % hohem Kronenschatten. Unverträglich gegen Frost unter -3°C (in Mitteleuropa Kalthaus-/Wintergartenkultur), Kalk und stauende Nässe.'
+      en: 'Needs deep, humus-rich, acid soil with an optimum pH of 4.5–5.5, light shade from taller (often nitrogen-fixing) shade trees, and a frost-free climate. Avoid lime and waterlogging.',
+      de: 'Braucht tiefgründigen, humusreichen, sauren Boden mit optimalem pH 4,5–5,5, lichten Schatten durch höhere (oft stickstoffbindende) Schattenbäume und ein frostfreies Klima (in Mitteleuropa Kalthaus-/Wintergartenkultur). Kalk und Staunässe meiden.'
     },
     plantingTime: {
       de: 'Warmes Frühjahr (Apr–Jun) oder Beginn der Monsun-/Regenzeit (frostfrei >= 18°C)',
@@ -1589,6 +1696,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-rhododendron',
       'plant-nepal-alder',
       'plant-sicklepod'
+    ],
+    sources: [
+      'NC State Extension (n.d.). Camellia sinensis. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/camellia-sinensis/',
+      'Li, Y., et al. (2019). Comparative transcriptomic analysis reveals gene expression associated with cold adaptation in the tea plant Camellia sinensis. BMC Genomics, 20(1), 624. doi:10.1186/s12864-019-5988-3',
+      'Chen, L., & Zhou, Z.-X. (2005). Variations of main quality components of tea genetic resources [Camellia sinensis (L.) O. Kuntze] preserved in the China National Germplasm Tea Repository. Plant Foods for Human Nutrition, 60(1), 31–35. doi:10.1007/s11130-005-2540-1',
+      'Yan, P., et al. (2020). Soil acidification in Chinese tea plantations. Science of The Total Environment, 715, 136963. doi:10.1016/j.scitotenv.2020.136963'
     ]
   },
   {
@@ -1619,18 +1732,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Fast-growing multifunctional annual pioneer crop and ancient economic herb. Generates abundant protein- and omega-rich seeds, aromatic terpenes, and massive lignocellulosic biomass. Its vigorous taproot penetrates 1.5–2.5 m deep, fracturing compacted subsoils and cycling subsoil minerals. Its dense canopy suppresses over 95% of invasive weed rhizomes. Understory companions supply nitrogen fixation, floral biocontrol for aphids, and antifungal ground cover.',
-      de: 'Schnellwüchsige, multifunktionale Großkultur und uralte Nutzpflanze. Liefert hochwertige protein- und omega-3-reiche Hanfsamen, aromatische Terpene und enorme Mengen lignocellulosereicher Biomasse. Die kräftige Pfahlwurzel dringt 1,5–2,5 m tief ein, bricht verdichtete Unterböden auf und mobilisiert Nährstoffe. Das dichte Kronendach unterdrückt über 95 % aller Wurzelunkräuter. Begleitpflanzen liefern Stickstoff, Nützlingsförderung gegen Blattläuse und pilzhemmenden Bodenschutz.'
+      en: 'Fast-growing multifunctional annual crop and ancient economic plant, yielding fiber biomass and seeds with about 20–25% protein and an oil rich in omega-6 (linoleic) and omega-3 (alpha-linolenic) fatty acids. In loose soil its roots reach 1.3–2 m deep, but hemp is sensitive to soil compaction. Once established at high density, its fast-closing canopy suppresses many weeds, though perennial rhizomatous weeds remain hard to control. Understory companions add nitrogen fixation, insectary flowers and ground cover.',
+      de: 'Schnellwüchsige, multifunktionale einjährige Kultur und uralte Nutzpflanze; liefert Faserbiomasse und Samen mit etwa 20–25 % Eiweiß und einem Öl reich an Omega-6- (Linolsäure) und Omega-3-Fettsäuren (Alpha-Linolensäure). In lockerem Boden reichen die Wurzeln 1,3–2 m tief, Hanf ist jedoch empfindlich gegen Bodenverdichtung. Bei dichter Saat unterdrückt das schnell schließende Blätterdach nach der Etablierung viele Unkräuter, ausdauernde Wurzelunkräuter bleiben aber schwer zu bekämpfen. Begleitpflanzen liefern Stickstoff, Nützlingsblüten und Bodenbedeckung.'
     },
     bloomSeason: 'SUMMER',
     harvestSeason: 'AUTUMN',
     color: '#15803d',
     imageUrl: '/images/plants/herb-hemp.webp',
-    preferredSoils: ['LOAM', 'SILT', 'SANDY', 'CHALKY'],
+    preferredSoils: ['LOAM', 'SILT', 'SANDY'],
     unsuitableSoils: ['CLAY', 'ACIDIC'],
     soilAdvice: {
-      en: 'Requires deep, loose, moisture-retentive loam or silt with balanced drainage (pH 6.0–7.5). Avoid heavy anaerobic waterlogged clay which causes seedling rot and taproot distortion, and strongly acidic ground (pH < 5.8).',
-      de: 'Benötigt tiefgründigen, gut belüfteten und humosen Lehm- oder Lössboden (pH 6,0–7,5). Meidet staunasse, kalte Tonböden (führt zu Keimlingsfäule) sowie stark saure Standorte (pH < 5,8).'
+      en: 'Best adapted to deep, loose, well-drained loam or silt with a pH between 6.0 and 7.0. Does not grow well on wet soils or those with a heavy clay content, and is sensitive to crusting and compaction.',
+      de: 'Am besten geeignet sind tiefgründige, lockere, gut drainierte Lehm- oder Lössböden mit einem pH zwischen 6,0 und 7,0. Wächst schlecht auf nassen oder schweren Tonböden und ist empfindlich gegen Verschlämmung und Verdichtung.'
     },
     plantingTime: {
       de: 'Ende April bis Mitte Mai (nach den letzten Nachtfrösten, Keimtemperatur ≥ 10 °C)',
@@ -1649,6 +1762,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-borage',
       'plant-hemp',
       'plant-alfalfa'
+    ],
+    sources: [
+      'Amaducci, S., Zatta, A., Raffanini, M., & Venturi, G. (2008). Characterisation of hemp (Cannabis sativa L.) roots under different growing conditions. Plant and Soil, 313(1–2), 227–235. doi:10.1007/s11104-008-9695-0',
+      'Collins, A., Graybill, J. S., Roth, G. W., Harper, J. K., Manzo, H. E., & Kime, L. (2023). Industrial Hemp Production. Penn State Extension. https://extension.psu.edu/industrial-hemp-production',
+      'Kaur, N., et al. (2025). Herbicide use and weed management strategies in hemp cultivation. Journal of Cannabis Research, 7(1), 27. doi:10.1186/s42238-025-00280-0',
+      'Farinon, B., et al. (2020). The Seed of Industrial Hemp (Cannabis sativa L.): Nutritional Quality and Potential Functionality for Human Health and Nutrition. Nutrients, 12(7), 1935. doi:10.3390/nu12071935'
     ]
   },
   {
@@ -1679,18 +1798,18 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Classic, heavy-cropping woodland edge berry shrub bearing translucent ruby-red racemes rich in vitamin C, pectin, and organic acids. Exceptionally shade- and juglone-tolerant. Because its dense fibrous roots feed in the top 15–30 cm of soil, it thrives when paired with living mulch (white clover, sweet woodruff), potassium-accumulating comfrey, and aromatic allium/artemisia companions (claims that their scent deters clearwing borers and blister aphids are unproven).',
-      de: 'Klassischer, reich tragender Waldrand-Beerenstrauch mit leuchtend rubinroten, Vitamin-C- und pektinreichen Rispen. Extrem schatten- und juglonverträglich. Da das dichte Feinwurzelsystem in den obersten 15–30 cm wächst, profitiert der Strauch massiv von kühlendem Lebendmulch (Weißklee, Waldmeister), kaliumreichem Beinwell-Mulch sowie duftenden Allium- und Eberrauten-Begleitern (eine Wirkung gegen Glasflügler und Johannisbeerblasenläuse ist unbewiesen).'
+      en: 'Classic, heavy-cropping woodland edge berry shrub bearing translucent ruby-red racemes rich in vitamin C (about 46–68 mg per 100 g). Unlike most fruit crops it tolerates partial shade, and currants are listed as juglone-tolerant. Its shallow, fibrous roots pair well with living mulch (white clover, sweet woodruff), comfrey mulch, and aromatic allium/artemisia companions (claims that their scent deters clearwing borers and blister aphids are unproven).',
+      de: 'Klassischer, reich tragender Waldrand-Beerenstrauch mit leuchtend rubinroten Rispen, reich an Vitamin C (etwa 46–68 mg pro 100 g). Anders als die meisten Obstarten verträgt er Halbschatten, und Johannisbeeren gelten als juglontolerant. Das flache Faserwurzelwerk passt gut zu Lebendmulch (Weißklee, Waldmeister), Beinwellmulch sowie duftenden Allium- und Eberrauten-Begleitern (eine Wirkung gegen Glasflügler und Johannisbeerblasenläuse ist unbewiesen).'
     },
     bloomSeason: 'EARLY_SPRING',
     harvestSeason: 'SUMMER',
     color: '#dc2626',
     imageUrl: '/images/plants/shrub-red-currant.webp',
-    preferredSoils: ['LOAM', 'CLAY', 'SILT', 'ACIDIC'],
+    preferredSoils: ['LOAM', 'CLAY', 'SILT'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Requires cool, consistently moist, humus-rich loam or clay (pH 5.5–7.0). Shallow surface feeder: never cultivate or hoe around the root zone; maintain an 8–10 cm organic mulch layer. Dry sandy soils cause summer leaf scorch and berry drop.',
-      de: 'Benötigt kühlen, gleichmäßig feuchten, humosen Lehm- oder Tonboden (pH 5,5–7,0). Als Flachwurzler niemals im Wurzelbereich hacken, sondern ganzjährig 8–10 cm hoch mulchen. Trockene Sandböden führen zu Sonnenbrand und vorzeitigem Beerenabwurf.'
+      en: 'Prefers a cool, moist site and humus-rich loam or clay; the ideal pH is about 6.5, but currants adapt to a wide range including alkaline soils. The shallow, fibrous roots are easily damaged, so do not cultivate near the plants; keep a 5–8 cm mulch layer and renew it yearly. Dry sandy soils are a poor choice.',
+      de: 'Bevorzugt einen kühlen, feuchten Standort und humosen Lehm- oder Tonboden; optimal ist ein pH um 6,5, Johannisbeeren passen sich aber einer großen Spanne bis in den alkalischen Bereich an. Die flachen Faserwurzeln werden leicht verletzt, daher nicht im Wurzelbereich hacken; eine 5–8 cm dicke Mulchschicht halten und jährlich erneuern. Trockene Sandböden sind ungünstig.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
@@ -1705,8 +1824,6 @@ export const STAR_TREES: StarTree[] = [
       'plant-chives',
       'plant-garlic',
       'plant-welsh-onion',
-      'plant-southernwood',
-      'plant-wormwood',
       'plant-yarrow',
       'plant-white-clover',
       'plant-woodruff',
@@ -1715,6 +1832,12 @@ export const STAR_TREES: StarTree[] = [
       'plant-oregano',
       'plant-nettle',
       'plant-meadowsweet'
+    ],
+    sources: [
+      'Hansen, S., Maughan, T., & Black, B. (2014). How to Grow Red Currants in Your Garden. Utah State University Extension. https://extension.usu.edu/yardandgarden/research/red-currants-in-the-garden.pdf',
+      'Cornell University Department of Horticulture (n.d.). Gooseberries and Currants, Ribes spp. Cornell Fruit Resources. http://www.hort.cornell.edu/fruit/mfruit/gooseberries.html',
+      'Miladinović, B., et al. (2024). Vitamin C content and antioxidant activity of red currant (Ribes rubrum L.) juices. Lekovite Sirovine, 44(1), e013. doi:10.61652/leksir2444013M',
+      'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants'
     ]
   },
   {
@@ -1727,7 +1850,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Tilia cordata',
     category: 'NUT_TREE',
     matureRadiusM: 4.5,
-    rootHabit: 'DEEP_TAP',
+    rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
     vulnerabilities: {
@@ -1745,8 +1868,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Premier European agroforestry keystone tree and soil-regenerating nurse species. Its tender spring leaves are prized as a mild, mucilage-rich perennial tree salad, while its fragrant mid-summer blossoms provide a world-class nectar bridge for honeybees and wild pollinators as well as medicinal linden tea. Its deep heart-root system mines subsoil calcium and magnesium, shedding fast-decomposing leaf litter that builds fertile, earthworm-rich mull humus. Responds exceptionally well to coppicing and pollarding (Chop & Drop).',
-      de: 'Herausragender europäischer Permakultur-Leitbaum und bodenverbessernder Ammenbaum. Seine zarten, milden Frühjahrsblätter liefern erstklassigen mehrjährigen „Baum-Salat“, während die duftenden Hochsommerblüten als erstklassige Bienenweide die Trachtlücke schließen und heilsamen Lindenblütentee liefern. Das tiefreichende Herzwurzelsystem pumpt Calcium und Magnesium aus dem Unterboden; das leicht zersetzliche Laub bildet milden, regenwurmreichen Mull-Humus. Ideal auch für Schneitelung und Niederwald-Schnitt (Chop & Drop).'
+      en: 'European agroforestry keystone tree and soil-improving species. Its young leaves are edible raw, mild and somewhat mucilaginous, while its fragrant June–July flowers are a valuable nectar and pollen source for bees and are used for linden tea. In a 14-species common-garden study, lime had the most calcium-rich leaf litter, with fast forest-floor turnover, the highest forest-floor pH and more earthworms. Has a deep heart-root system and resprouts vigorously after coppicing or pollarding (Chop & Drop).',
+      de: 'Europäischer Agroforst-Leitbaum und bodenverbessernde Baumart. Die jungen Blätter sind roh essbar, mild und etwas schleimig; die duftenden Blüten (Juni–Juli) sind eine wertvolle Nektar- und Pollenquelle für Bienen und liefern Lindenblütentee. In einem Vergleich von 14 Baumarten hatte die Linde die calciumreichste Laubstreu, einen schnellen Streuumsatz, den höchsten pH-Wert der Humusauflage und mehr Regenwürmer. Bildet ein tiefes Herzwurzelsystem und treibt nach Schneitelung oder Auf-den-Stock-Setzen kräftig wieder aus (Chop & Drop).'
     },
     bloomSeason: 'SUMMER',
     harvestSeason: 'SUMMER',
@@ -1755,8 +1878,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['LOAM', 'CLAY', 'SILT', 'CHALKY'],
     unsuitableSoils: ['SANDY'],
     soilAdvice: {
-      en: 'Thrives in deep, fresh to moist loam, silt, clay, or calcareous soils (pH 5.5–8.0). Actively buffers acidic topsoils via calcium-rich leaf litter. Avoid bone-dry, nutrient-poor sandy sites where summer drought triggers spider mite outbreaks.',
-      de: 'Gedeiht optimal auf tiefgründigen, frischen bis feuchten Lehm-, Löss-, Ton- oder Kalkböden (pH 5,5–8,0). Puffert saure Oberböden aktiv durch sein calciumreiches Falllaub ab. Extrem trockene, nährstoffarme Sandböden meiden (fördert Spinnmilbenbefall).'
+      en: 'Grows on soils from pH 4 to 8, best on neutral to basic ones; its deep heart roots also open up heavy clay. Its calcium-rich litter is associated with higher topsoil pH. Avoid very dry, poor sandy sites; drought stress generally favors spider mites.',
+      de: 'Wächst auf Böden von pH 4 bis 8, am besten auf neutralen bis basischen; die tiefen Herzwurzeln erschließen auch schwere Tonböden. Ihr calciumreiches Laub geht mit einem höheren pH-Wert des Oberbodens einher. Sehr trockene, arme Sandböden meiden; Trockenstress begünstigt allgemein Spinnmilben.'
     },
     plantingTime: {
       de: 'Herbst (Okt–Nov) oder zeitiges Frühjahr (Mär–Apr)',
@@ -1783,6 +1906,13 @@ export const STAR_TREES: StarTree[] = [
       'plant-nettle',
       'plant-blackcurrant',
       'plant-rhubarb'
+    ],
+    sources: [
+      'Reich, P. B., et al. (2005). Linking litter calcium, earthworms and soil properties: a common garden test with 14 tree species. Ecology Letters, 8(8), 811–818. doi:10.1111/j.1461-0248.2005.00779.x',
+      'De Jaegere, T., Hein, S., & Claessens, H. (2016). A Review of the Characteristics of Small-Leaved Lime (Tilia cordata Mill.) and Their Implications for Silviculture in a Changing Climate. Forests, 7(3), 56. doi:10.3390/f7030056',
+      'Eaton, E., Caudullo, G., & de Rigo, D. (2016). Tilia cordata, Tilia platyphyllos and other limes in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Tilia_spp.pdf',
+      'Fern, K. (n.d.). Tilia cordata. Useful Temperate Plants Database. https://temperate.theferns.info/plant/Tilia+cordata',
+      'Cranshaw, W. S., & Sclar, D. C. (2014). Spider Mites. Colorado State University Extension, Fact Sheet 5.507. https://extension.colostate.edu/topic-areas/insects/spider-mites-5-507/'
     ]
   },
   {
@@ -1815,8 +1945,8 @@ export const STAR_TREES: StarTree[] = [
       ]
     },
     description: {
-      en: 'Evergreen acidophilic woodland keystone shrub (hardy to -30°C) famed for spectacular late-spring flower trusses that nourish specialist long-tongued queen bumblebees (Bombus hortorum, B. pascuorum). Lacks root hairs entirely, relying on intracellular ericoid mycorrhizal fungi (Pezoloma ericae, Oidiodendron maius) that secrete extracellular proteases and phosphatases to unlock organic N and P in low-pH humus—forming a shared mycorrhizal network with Highbush Blueberry, Lingonberry, Cranberry, and Wintergreen. Foliage and nectar contain diterpenoid grayanotoxins (strictly non-edible to humans and livestock).',
-      de: 'Immergrüner, extrem winterharter (-30 °C) Moorbeet-Leitstrauch mit prächtigen Blütenständen im Spätfrühling, die langrüsselige Hummelköniginnen (Bombus hortorum, B. pascuorum) ernähren. Besitzt keinerlei Wurzelhaare, sondern feinste Haarwurzeln in Symbiose mit ericoiden Mykorrhizapilzen (Pezoloma ericae, Oidiodendron maius), die organischen Stickstoff und Phosphor im sauren Waldboden erschließen und ein gemeinsames Mykorrhiza-Netzwerk mit Kulturheidelbeere, Preiselbeere, Cranberry und Scheinbeere bilden. Blätter und Nektar enthalten Diterpen-Grayanotoxine (für Menschen und Haustiere giftig).'
+      en: 'Evergreen acid-loving woodland keystone shrub, very winter-hardy (USDA zone 4, about -30 °C), with spectacular late-spring flower trusses visited by bumblebees. Its fine hair roots never form root hairs; instead it relies on ericoid mycorrhizal fungi (e.g. Oidiodendron maius, Hyaloscypha/Pezoloma ericae) that release enzymes such as proteases and phosphatases, making organic N and P available in acidic humus. It shares this mycorrhizal type with blueberry, lingonberry, cranberry and wintergreen. Leaves, flowers and nectar contain diterpene grayanotoxins and are poisonous to people and livestock.',
+      de: 'Immergrüner, säureliebender Waldrand-Leitstrauch, sehr winterhart (USDA-Zone 4, etwa -30 °C), mit prächtigen Blütenständen im Spätfrühling, die von Hummeln besucht werden. Die feinen Haarwurzeln bilden keine Wurzelhaare; stattdessen nutzt er ericoide Mykorrhizapilze (z. B. Oidiodendron maius, Hyaloscypha/Pezoloma ericae), die Enzyme wie Proteasen und Phosphatasen abgeben und so organischen Stickstoff und Phosphor im sauren Humus verfügbar machen. Diesen Mykorrhizatyp teilt er mit Kulturheidelbeere, Preiselbeere, Cranberry und Scheinbeere. Blätter, Blüten und Nektar enthalten Diterpen-Grayanotoxine und sind für Menschen und Weidetiere giftig.'
     },
     bloomSeason: 'LATE_SPRING',
     harvestSeason: 'LATE_SPRING',
@@ -1825,8 +1955,8 @@ export const STAR_TREES: StarTree[] = [
     preferredSoils: ['ACIDIC', 'LOAM', 'SILT'],
     unsuitableSoils: ['CHALKY', 'CLAY'],
     soilAdvice: {
-      en: 'Obligate calcifuge demanding cool, humus-rich, well-aerated acidic soil (pH 4.2–5.5) with 30–60% dappled woodland shade. Shallow fibrous hair-root ball (top 15–40 cm) must never be cultivated; maintain an 8–10 cm pine bark or leaf-mould mulch layer. Highly sensitive to Black Walnut juglone and stagnant clay waterlogging.',
-      de: 'Obligater Kalkflüchter für kühle, humose, luftige und saure Waldböden (pH 4,2–5,5) im lichten Halbschatten. Den flachen Haarwurzelballen (oberste 15–40 cm) niemals behacken, sondern ganzjährig 8–10 cm dick mit Kiefernrinde, Nadelstreu oder Laubkompost mulchen. Stark juglonempfindlich (Walnuss-Abstand ≥ 20 m) und empfindlich gegen Staunässe.'
+      en: 'Calcifuge needing cool, humus-rich, well-aerated acidic soil (pH about 4.5–6.0) in dappled woodland shade. Shallow-rooted, so never cultivate the root zone; keep a 5–8 cm layer of compost, pine bark or pine straw. Juglone-sensitive: plant outside the walnut root zone (on average 15–18 m from the trunk of a large tree). Avoid stagnant waterlogging.',
+      de: 'Kalkflüchter für kühle, humose, luftige und saure Böden (pH etwa 4,5–6,0) im lichten Halbschatten. Flachwurzler, daher den Wurzelbereich nie behacken; eine 5–8 cm dicke Schicht aus Kompost, Kiefernrinde oder Nadelstreu halten. Juglonempfindlich: außerhalb des Walnuss-Wurzelbereichs pflanzen (im Mittel 15–18 m vom Stamm eines großen Baums). Staunässe meiden.'
     },
     plantingTime: {
       de: 'Frühjahr (Apr–Mai) oder Frühherbst (Sep–Okt) flach in saures Substrat',
@@ -1852,6 +1982,15 @@ export const STAR_TREES: StarTree[] = [
       'plant-tea-sinensis',
       'plant-alder',
       'plant-blueberry'
+    ],
+    sources: [
+      'NC State Extension (n.d.). Rhododendron catawbiense (Catawba Rhododendron). North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/rhododendron-catawbiense/',
+      'Wei, X., et al. (2022). Ericoid mycorrhizal fungi as biostimulants for improving propagation and production of ericaceous plants. Frontiers in Plant Science, 13, 1027390. doi:10.3389/fpls.2022.1027390',
+      'Vohník, M. (2020). Ericoid mycorrhizal symbiosis: theoretical background and methods for its comprehensive investigation. Mycorrhiza, 30(6), 671–695. doi:10.1007/s00572-020-00989-1',
+      'Jansen, S. A., et al. (2012). Grayanotoxin Poisoning: \'Mad Honey Disease\' and Beyond. Cardiovascular Toxicology, 12(3), 208–215. doi:10.1007/s12012-012-9162-2',
+      'Egan, P. A., Stevenson, P. C., & Stout, J. C. (2022). Pollinator selection against toxic nectar as a key facilitator of a plant invasion. Philosophical Transactions of the Royal Society B, 377(1853), 20210168. doi:10.1098/rstb.2021.0168',
+      'Polomski, R. F., Bir, R. E., & Beasley, J. (2016). Rododendros (HGIC 1073S). Clemson Cooperative Extension, Home & Garden Information Center. https://hgic.clemson.edu/factsheet/rhododendron/',
+      'The Morton Arboretum (n.d.). Black walnut toxicity. https://mortonarb.org/plant-and-protect/tree-plant-care/plant-care-resources/black-walnut-toxicity/'
     ]
   }
 ];

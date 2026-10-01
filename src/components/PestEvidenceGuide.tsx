@@ -22,41 +22,38 @@ interface NonPlantMeasure {
 const NON_PLANT_MEASURES: NonPlantMeasure[] = [
   {
     pest: { en: 'Blueberry mummy berry', de: 'Monilia-Fruchtfäule der Heidelbeere' },
-    measure: { en: 'At least 5 cm of sawdust mulch in spring suppresses the fungus fruiting bodies; a thin leaf layer does not.', de: 'Mindestens 5 cm Sägemehl-Mulch im Frühjahr unterdrückt die Fruchtkörper des Pilzes; eine dünne Laubschicht nicht.' },
-    citation: { label: 'Florence et al. 2017, Plant Dis.', doi: '10.1094/PDIS-01-16-0087-RE' }
+    measure: { en: 'A 5 cm layer of Douglas-fir sawdust mulch suppressed the fungus fruiting bodies in spring better than bare ground; 2.5 cm of blueberry leaves did not.', de: 'Eine 5 cm dicke Schicht Douglasien-Sägemehl unterdrückte die Fruchtkörper des Pilzes im Frühjahr besser als offener Boden; 2,5 cm Heidelbeerlaub nicht.' },
+    citation: { label: 'Florence & Pscheidt 2017, Plant Dis. 101:807–814', doi: '10.1094/PDIS-01-16-0087-RE' }
   },
   {
     pest: { en: 'Cherry fruit fly', de: 'Kirschfruchtfliege' },
-    measure: { en: 'Ground nets under the tree stop emerging flies: −91 % infestation.', de: 'Bodennetze unter dem Baum halten schlüpfende Fliegen zurück: −91 % Befall.' },
-    citation: { label: 'Daniel & Baker 2013, Insects 4:168', doi: '10.3390/insects4010168' }
+    measure: { en: 'Nets covering the soil under the trees held back emerging flies: fruit infestation −91 % (2 orchards, 2 years).', de: 'Netze über dem Boden unter den Bäumen hielten schlüpfende Fliegen zurück: Fruchtbefall −91 % (2 Anlagen, 2 Jahre).' },
+    citation: { label: 'Daniel & Baker 2013, Insects 4:168–176', doi: '10.3390/insects4010168' }
   },
   {
     pest: { en: 'Sea buckthorn fruit fly', de: 'Sanddornfruchtfliege' },
-    measure: { en: 'Black PE ground cover cut infestation from 62–75 % to 16–22 %.', de: 'Schwarze PE-Bodenabdeckung senkte den Befall von 62–75 % auf 16–22 %.' },
-    citation: { label: 'Zhou et al. 2026, Insects 17:613 (2-year field study)', doi: '10.3390/insects17060613' }
+    measure: { en: 'Black PE ground cover around the trunks cut fruit infestation from 62–75 % (control) to 16–22 %.', de: 'Schwarze PE-Bodenabdeckung um die Stämme senkte den Fruchtbefall von 62–75 % (Kontrolle) auf 16–22 %.' },
+    citation: { label: 'Zhou, Sattar & Jiao 2026, Insects 17:613 (2-year field study)', doi: '10.3390/insects17060613' }
   },
   {
-    pest: { en: 'Apple scab, currant leaf spot, quince leaf blight', de: 'Apfelschorf, Blattfallkrankheit, Quitten-Blattbräune' },
-    measure: { en: 'Remove, shred or mow fallen leaves in autumn – the fungi overwinter in the leaf litter.', de: 'Falllaub im Herbst entfernen, häckseln oder mulchen – die Pilze überwintern im Laub.' }
+    pest: { en: 'Apple scab', de: 'Apfelschorf' },
+    measure: { en: 'The fungus overwinters on fallen leaves. Shredding all of the leaf litter with a flail mower in November or April cut the scab risk by 80–90 %.', de: 'Der Pilz überwintert im Falllaub. Wurde das gesamte Laub im November oder April mit dem Schlegelmulcher gehäckselt, sank das Schorfrisiko um 80–90 %.' },
+    citation: { label: 'Sutton, MacHardy & Lord 2000, Plant Dis. 84:1319–1326', doi: '10.1094/PDIS.2000.84.12.1319' }
   },
   {
     pest: { en: 'Woolly apple aphid', de: 'Blutlaus' },
-    measure: { en: 'Earwig releases and shelters (pots with wood wool) gave cumulative control over the years.', de: 'Ohrwurm-Freilassungen und -Unterschlüpfe (Töpfe mit Holzwolle) wirkten über die Jahre zunehmend.' },
+    measure: { en: 'Releasing 30 earwigs per tree in corrugated-cardboard shelters, repeated every year, shortened colonies from the second year on.', de: 'Das jährlich wiederholte Freilassen von 30 Ohrwürmern pro Baum in Wellpappe-Unterschlüpfen verkürzte die Kolonien ab dem zweiten Jahr.' },
     citation: { label: 'Alins et al. 2023, Insects 14:890', doi: '10.3390/insects14110890' }
   },
   {
     pest: { en: 'Spotted wing drosophila (blueberry)', de: 'Kirschessigfliege (Heidelbeere)' },
-    measure: { en: 'Woven weed mat under the bushes blocks pupation in the soil; harvest promptly and completely.', de: 'Gewebte Unkrautfolie unter den Sträuchern verhindert die Verpuppung im Boden; zügig und vollständig ernten.' },
-    citation: { label: 'Rendon et al. 2020, Pest Manag. Sci.', doi: '10.1002/ps.5512' }
+    measure: { en: 'Woven weed mat under the bushes stopped larvae from reaching the soil to pupate (greenhouse test); in the field, results varied by site.', de: 'Gewebte Unkrautfolie unter den Sträuchern hinderte Larven daran, sich im Boden zu verpuppen (Gewächshausversuch); im Feld schwankten die Ergebnisse je nach Standort.' },
+    citation: { label: 'Rendon et al. 2020, Pest Manag. Sci. 76:55–66', doi: '10.1002/ps.5512' }
   },
   {
     pest: { en: 'Nut weevil', de: 'Haselnussbohrer' },
-    measure: { en: 'Entomopathogenic nematodes against overwintering larvae: 32–88 % reduction.', de: 'Nützliche Nematoden gegen überwinternde Larven: 32–88 % Reduktion.' },
-    citation: { label: 'Batalla-Carrera et al. 2013, Span. J. Agric. Res.', doi: '10.5424/sjar/2013114-4210' }
-  },
-  {
-    pest: { en: 'Voles', de: 'Wühlmäuse' },
-    measure: { en: 'Plant young trees in a wire root basket.', de: 'Jungbäume in einem Wurzelschutzkorb aus Draht pflanzen.' }
+    measure: { en: 'Entomopathogenic nematodes applied to the soil reduced the weevil population by 32–88 %.', de: 'In den Boden ausgebrachte Nützliche Nematoden senkten die Rüsslerpopulation um 32–88 %.' },
+    citation: { label: 'Batalla-Carrera, Morton & García-del-Pino 2013, Span. J. Agric. Res. 11:1112–1119', doi: '10.5424/sjar/2013114-4210' }
   }
 ];
 

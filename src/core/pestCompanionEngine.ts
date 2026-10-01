@@ -64,12 +64,20 @@ const growsInZone = (plantId: string, zone?: ClimateZone): boolean =>
   !zone || !!PLANT_ZONES.get(plantId)?.includes(zone);
 
 const CAHENZLI_2019: EvidenceCitation = {
-  label: 'Cahenzli et al. 2019, Agric. Ecosyst. Environ. 278:43–53 (23 orchard blocks, 7 countries)',
+  label: 'Cahenzli et al. 2019, Agric. Ecosyst. Environ. 278:43–53 (organic apple orchards in 7 European countries)',
   doi: '10.1016/j.agee.2019.03.011'
+};
+const JACOBSEN_2022: EvidenceCitation = {
+  label: 'Jacobsen, Sørensen & Sigsgaard 2022, Crop Prot. 156:105962 (same strip design; species chosen for easily reached nectar and pollen)',
+  doi: '10.1016/j.cropro.2022.105962'
 };
 const HASANALIYEVA_2024: EvidenceCitation = {
   label: 'Hasanaliyeva et al. 2024, Front. Plant Sci. 15:1498848 (2 organic vineyards, 2 years)',
   doi: '10.3389/fpls.2024.1498848'
+};
+const SUTTON_2000: EvidenceCitation = {
+  label: 'Sutton, MacHardy & Lord 2000, Plant Dis. 84:1319–1326 (leaf-litter shredding)',
+  doi: '10.1094/PDIS.2000.84.12.1319'
 };
 
 export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
@@ -85,25 +93,26 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     evidence: 'field-proven',
     citations: [
       CAHENZLI_2019,
+      JACOBSEN_2022,
       { label: 'Mátray & Herz 2022, Biol. Control 171:104950 (lab: Ascogaster on flower diets)', doi: '10.1016/j.biocontrol.2022.104950' }
     ],
     companionPlantIds: ['plant-yarrow', 'plant-bugleweed', 'plant-wild-carrot'],
     scientificMechanism: {
-      en: 'Species-rich perennial native flower strips sown in the orchard alleys were tested in 23 organic apple orchard blocks across 7 European countries. With flower strips, codling moth numbers fell more and fruit damage rose less than in control alleys. The flowers feed natural enemies such as the codling moth parasitoid Ascogaster quadridentata. The effect works for the mix as a whole and is modest: the authors stress it is not a stand-alone control, so combine it with other measures.',
-      de: 'Artenreiche, mehrjährige Blühstreifen aus heimischen Wildblumen in den Fahrgassen wurden in 23 Bio-Apfelanlagen in 7 europäischen Ländern getestet. Mit Blühstreifen sank die Zahl der Apfelwickler stärker und die Fruchtschäden stiegen weniger als in Kontrollgassen. Die Blüten ernähren Nützlinge wie die Wickler-Schlupfwespe Ascogaster quadridentata. Die Wirkung gilt für die Mischung als Ganzes und ist moderat: Laut den Autoren ersetzt sie keine anderen Maßnahmen, sondern ergänzt sie.'
+      en: 'Perennial flower strips of native wild flowers, sown in the alleys of organic apple orchards, were tested in 7 European countries over two years. In the flower-strip plots there were more natural enemies on the trees, codling moth numbers fell more than in control plots, and fruit damage was lower. In the lab, flowers of wild carrot and other umbellifers more than doubled the lifespan of the codling moth parasitoid Ascogaster quadridentata. The effect was shown for the flower mix as a whole, not for single species, so combine it with other measures.',
+      de: 'Mehrjährige Blühstreifen aus heimischen Wildblumen in den Fahrgassen von Bio-Apfelanlagen wurden in 7 europäischen Ländern über zwei Jahre getestet. In den Blühstreifen-Parzellen saßen mehr Nützlinge auf den Bäumen, die Zahl der Apfelwickler sank stärker als in den Kontrollparzellen, und die Fruchtschäden waren geringer. Im Labor verlängerten Blüten der Wilden Möhre und anderer Doldenblütler die Lebensdauer der Wickler-Schlupfwespe Ascogaster quadridentata auf mehr als das Doppelte. Die Wirkung ist für die Blühmischung als Ganzes belegt, nicht für einzelne Arten – daher mit anderen Maßnahmen kombinieren.'
     },
     companionRoles: {
       'plant-yarrow': {
-        en: 'Core species of the tested flower-strip mix. Its flat flower heads offer easy-to-reach nectar and pollen for parasitoid wasps and predators through the summer.',
-        de: 'Kernart der getesteten Blühstreifen-Mischung. Ihre flachen Blütenstände bieten Schlupfwespen und Räubern den ganzen Sommer leicht erreichbaren Nektar und Pollen.'
+        en: 'Native perennial with flat flower heads and easily reached nectar and pollen – the kind of plant the tested strips were built from. The effect is proven for the mix, not for yarrow alone.',
+        de: 'Heimische Staude mit flachen Blütenständen und leicht erreichbarem Nektar und Pollen – die Art von Pflanze, aus der die getesteten Streifen bestanden. Belegt ist die Wirkung für die Mischung, nicht für Schafgarbe allein.'
       },
       'plant-bugleweed': {
-        en: 'Part of the tested flower-strip mix. Flowers early in spring, feeding natural enemies before the first codling moth generation.',
-        de: 'Teil der getesteten Blühstreifen-Mischung. Blüht früh im Frühjahr und ernährt Nützlinge schon vor der ersten Wicklergeneration.'
+        en: 'Low native perennial that flowers in spring and adds early flowers to a perennial strip. The effect is proven for the mix, not for bugleweed alone.',
+        de: 'Niedrige heimische Staude, die im Frühjahr blüht und einem Dauer-Blühstreifen frühe Blüten hinzufügt. Belegt ist die Wirkung für die Mischung, nicht für Günsel allein.'
       },
       'plant-wild-carrot': {
-        en: 'Part of the tested flower-strip mix. In the lab, wild carrot flowers more than doubled the survival of the codling moth parasitoid Ascogaster quadridentata.',
-        de: 'Teil der getesteten Blühstreifen-Mischung. Im Labor verdoppelten Möhrenblüten die Lebensdauer der Wickler-Schlupfwespe Ascogaster quadridentata mehr als.'
+        en: 'Native umbellifer for perennial strips. In the lab, wild carrot flowers more than doubled the lifespan of the codling moth parasitoid Ascogaster quadridentata.',
+        de: 'Heimischer Doldenblütler für Dauer-Blühstreifen. Im Labor verlängerten Möhrenblüten die Lebensdauer der Wickler-Schlupfwespe Ascogaster quadridentata auf mehr als das Doppelte.'
       }
     }
   },
@@ -124,13 +133,13 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     ],
     companionPlantIds: ['plant-sweet-alyssum'],
     scientificMechanism: {
-      en: 'In two field experiments, apple trees next to sweet alyssum had significantly fewer woolly apple aphids within a week, and the difference lasted several weeks. Spiders and predatory bugs increased, and marking showed them moving from the alyssum into the trees. Caution: in a 6-year Hungarian trial, mixed flowering alleys increased woolly aphid, so the evidence is specific to alyssum and still contested.',
-      de: 'In zwei Feldexperimenten hatten Apfelbäume neben Duftsteinrich schon nach einer Woche deutlich weniger Blutläuse, und der Unterschied hielt mehrere Wochen an. Spinnen und Raubwanzen nahmen zu, und Markierungen zeigten, dass sie vom Duftsteinrich in die Bäume wanderten. Vorsicht: In einem 6-jährigen ungarischen Versuch erhöhten gemischte Blühgassen den Blutlausbefall; der Beleg gilt also speziell für Duftsteinrich und ist noch umstritten.'
+      en: 'In two field experiments in Washington State, apple trees next to flowering sweet alyssum had significantly fewer woolly apple aphids after one week, and the difference lasted several weeks. Generalist predators – spiders and predatory bugs – increased near the alyssum, and immunomarking showed natural enemies moving from the alyssum into the orchard. Caution: in a 6-year orchard trial, sown flowering alleys increased woolly aphid, so the evidence is specific to alyssum and still contested.',
+      de: 'In zwei Feldexperimenten im US-Bundesstaat Washington hatten Apfelbäume neben blühendem Duftsteinrich schon nach einer Woche deutlich weniger Blutläuse, und der Unterschied hielt mehrere Wochen an. Generalistische Räuber – Spinnen und Raubwanzen – nahmen am Duftsteinrich zu, und Markierungen zeigten, dass Nützlinge vom Duftsteinrich in die Anlage wanderten. Vorsicht: In einem 6-jährigen Obstanlagen-Versuch erhöhten eingesäte Blühgassen den Blutlausbefall; der Beleg gilt also speziell für Duftsteinrich und ist noch umstritten.'
     },
     companionRoles: {
       'plant-sweet-alyssum': {
-        en: 'Its long-flowering, open blossoms feed spiders, predatory bugs and parasitoids, which moved from the alyssum into the apple trees and reduced woolly aphid colonies.',
-        de: 'Die lange blühenden, offenen Blüten ernähren Spinnen, Raubwanzen und Schlupfwespen, die vom Duftsteinrich in die Apfelbäume wanderten und die Blutlauskolonien verringerten.'
+        en: 'Its flowers attracted natural enemies; spiders and predatory bugs increased nearby and moved into the apple trees, where woolly aphid densities fell.',
+        de: 'Seine Blüten lockten Nützlinge an; Spinnen und Raubwanzen nahmen in der Nähe zu und wanderten in die Apfelbäume, wo die Blutlausdichte sank.'
       }
     }
   },
@@ -146,17 +155,17 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     starTreeIds: ['tree-peach'],
     evidence: 'scientific',
     citations: [
-      { label: 'Bussi et al. 2016, Crop Prot. 88:37–44 (4-year field trial, INRAE)', doi: '10.1016/j.cropro.2016.05.010' }
+      { label: 'Bussi et al. 2016, Crop Prot. 88:37–44 (4-year field trial, Rhône Valley, France)', doi: '10.1016/j.cropro.2016.05.010' }
     ],
     companionPlantIds: ['plant-white-clover'],
     scientificMechanism: {
-      en: 'In a 4-year INRAE field trial, peaches with a white clover cover in the tree row had less brown rot on the fruit than peaches on herbicide-bare soil. The clover takes up soil water after heavy rain, so fewer micro-cracks form in the fruit skin, which is where the fungus gets in. The effect was strongest together with reduced irrigation. It concerns fruit rot, not blossom blight; still remove mummified fruit.',
-      de: 'In einem 4-jährigen INRAE-Feldversuch hatten Pfirsiche mit Weißklee-Unterwuchs im Baumstreifen weniger Monilia-Fruchtfäule als Pfirsiche auf mit Herbizid freigehaltenem Boden. Der Klee nimmt nach Starkregen Bodenwasser auf, sodass sich weniger Mikrorisse in der Fruchthaut bilden – dort dringt der Pilz ein. Am stärksten war die Wirkung zusammen mit reduzierter Bewässerung. Sie betrifft die Fruchtfäule, nicht die Blütenmonilia; Fruchtmumien trotzdem entfernen.'
+      en: 'In a 4-year field trial in France (2010–2013), peaches with a white clover cover in the tree row had less brown rot on the fruit than peaches on herbicide-bare soil. After heavy rain the clover limited soil water; the authors suggest this evens out fruit growth and so probably reduces micro-cracks in the fruit skin, a known entry point for the fungus. The lowest brown rot was found when the clover cover was combined with reduced irrigation late in fruit development. The trial measured fruit rot, not blossom blight; still remove mummified fruit.',
+      de: 'In einem 4-jährigen Feldversuch in Frankreich (2010–2013) hatten Pfirsiche mit Weißklee-Unterwuchs im Baumstreifen weniger Monilia-Fruchtfäule als Pfirsiche auf mit Herbizid freigehaltenem Boden. Nach Starkregen begrenzte der Klee das Bodenwasser; laut den Autoren gleicht das das Fruchtwachstum aus und verringert so wahrscheinlich Mikrorisse in der Fruchthaut, eine bekannte Eintrittspforte des Pilzes. Am wenigsten Fruchtfäule gab es, wenn der Klee mit reduzierter Bewässerung in der späten Fruchtentwicklung kombiniert wurde. Gemessen wurde die Fruchtfäule, nicht die Blütenmonilia; Fruchtmumien trotzdem entfernen.'
     },
     companionRoles: {
       'plant-white-clover': {
-        en: 'As a living cover in the tree row it competes for soil water after rain, reducing the fruit cracking that lets brown rot in.',
-        de: 'Als lebende Bodendecke im Baumstreifen konkurriert er nach Regen um Bodenwasser und verringert so die Fruchtrisse, über die Monilia eindringt.'
+        en: 'As a living cover in the tree row it limited soil water after heavy rain, which probably reduces the fruit cracking that lets brown rot in.',
+        de: 'Als lebende Bodendecke im Baumstreifen begrenzte er nach Starkregen das Bodenwasser, was wahrscheinlich die Fruchtrisse verringert, über die Monilia eindringt.'
       }
     }
   },
@@ -174,17 +183,17 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     citations: [HASANALIYEVA_2024],
     companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
     scientificMechanism: {
-      en: 'A permanent living ground cover under the vines (tested: perennial ryegrass 48 %, sainfoin 43 %, white clover 9 %) cut the rain-splash droplets escaping the soil by 75–95 %. In two organic vineyards over two years it delayed downy mildew epidemics by 2–4 weeks and reduced disease by up to over 90 % in unsprayed plots. The effect comes from the dense cover layer as a whole, not from one species.',
-      de: 'Eine dauerhafte lebende Begrünung unter den Reben (getestet: Deutsches Weidelgras 48 %, Esparsette 43 %, Weißklee 9 %) verringerte die aus dem Boden spritzenden Regentropfen um 75–95 %. In zwei Bio-Weinbergen über zwei Jahre verzögerte sie Falschen Mehltau um 2–4 Wochen und senkte den Befall in unbehandelten Parzellen um bis zu über 90 %. Die Wirkung kommt von der dichten Pflanzendecke als Ganzes, nicht von einer einzelnen Art.'
+      en: 'In two organic vineyards over two years, an autumn-sown cover crop in the inter-rows (seed mix: perennial ryegrass 48 %, sainfoin 43 %, white clover 9 %) delayed the onset of downy mildew by about 3 weeks in unsprayed plots and reduced its seasonal severity by 12.5 %; in sprayed plots it gave no extra effect. In small-scale tests, a cover-crop canopy cut the rain-splash droplets escaping from the soil by 75–95 %, so fewer spores are splashed up from the ground. The cover was chopped and worked into the soil just before grape flowering. The effect comes from the dense cover as a whole, not from one species.',
+      de: 'In zwei Bio-Weinbergen über zwei Jahre verzögerte eine im Herbst gesäte Begrünung der Fahrgassen (Saatmischung: Deutsches Weidelgras 48 %, Esparsette 43 %, Weißklee 9 %) den Beginn des Falschen Mehltaus in unbehandelten Parzellen um etwa 3 Wochen und senkte seine Stärke über die Saison um 12,5 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. In Kleinversuchen verringerte eine Begrünungsdecke die aus dem Boden spritzenden Regentropfen um 75–95 %, sodass weniger Sporen vom Boden hochgespritzt werden. Die Begrünung wurde kurz vor der Rebblüte gemulcht und eingearbeitet. Die Wirkung kommt von der dichten Pflanzendecke als Ganzes, nicht von einer einzelnen Art.'
     },
     companionRoles: {
       'plant-white-clover': {
-        en: 'Low part of the tested cover mix. Keeps the soil covered all year so rain cannot splash overwintering spores up onto the leaves.',
-        de: 'Niedriger Teil der getesteten Begrünungsmischung. Hält den Boden ganzjährig bedeckt, sodass Regen keine überwinternden Sporen auf die Blätter spritzt.'
+        en: 'Small part (9 % of the seed) of the tested autumn-sown cover mix, which covered the inter-row soil through winter and spring so that rain splashed fewer spores up from the ground.',
+        de: 'Kleiner Teil (9 % des Saatguts) der getesteten Herbst-Begrünung, die den Boden der Fahrgasse über Winter und Frühjahr bedeckte, sodass Regen weniger Sporen vom Boden hochspritzte.'
       },
       'plant-sainfoin': {
-        en: 'Main legume of the tested cover mix (43 %). Its dense foliage intercepts rain splash from the soil surface.',
-        de: 'Hauptleguminose der getesteten Begrünungsmischung (43 %). Ihr dichtes Laub fängt Spritzwasser von der Bodenoberfläche ab.'
+        en: 'Main legume of the tested cover mix (43 % of the seed); its foliage helps form the dense canopy that intercepts rain splash from the soil.',
+        de: 'Hauptleguminose der getesteten Begrünungsmischung (43 % des Saatguts); ihr Laub bildet mit die dichte Decke, die Spritzwasser vom Boden abfängt.'
       }
     }
   },
@@ -202,17 +211,17 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     citations: [HASANALIYEVA_2024],
     companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
     scientificMechanism: {
-      en: 'In the same vineyard trial, the permanent ground cover also delayed powdery mildew epidemics and reduced severity by up to over 90 % in unsprayed plots. Results varied by site and year, and infected bark remains the main source of the fungus, so keep up normal hygiene.',
-      de: 'Im selben Weinbergversuch verzögerte die dauerhafte Begrünung auch den Echten Mehltau und senkte den Befall in unbehandelten Parzellen um bis zu über 90 %. Die Ergebnisse schwankten je nach Standort und Jahr, und befallene Rinde bleibt die Hauptquelle des Pilzes – normale Hygiene also beibehalten.'
+      en: 'In the same vineyard trial, the autumn-sown cover crop delayed the onset of powdery mildew by about 30 days and reduced its seasonal severity by 84 % in unsprayed plots; in sprayed plots it gave no extra effect. Results varied with site and year. The authors note that fungal fruiting bodies on the vine bark are considered the main spring source of the fungus, so keep up normal hygiene.',
+      de: 'Im selben Weinbergversuch verzögerte die Herbst-Begrünung den Beginn des Echten Mehltaus in unbehandelten Parzellen um etwa 30 Tage und senkte seine Stärke über die Saison um 84 %; in gespritzten Parzellen brachte sie keinen zusätzlichen Effekt. Die Ergebnisse schwankten je nach Standort und Jahr. Laut den Autoren gelten Fruchtkörper des Pilzes an der Rebrinde als wichtigste Infektionsquelle im Frühjahr – normale Hygiene also beibehalten.'
     },
     companionRoles: {
       'plant-white-clover': {
-        en: 'Low part of the tested cover mix that keeps the soil permanently covered.',
-        de: 'Niedriger Teil der getesteten Begrünungsmischung, der den Boden dauerhaft bedeckt.'
+        en: 'Small part (9 % of the seed) of the tested autumn-sown cover mix that covered the inter-row soil through winter and spring.',
+        de: 'Kleiner Teil (9 % des Saatguts) der getesteten Herbst-Begrünung, die den Boden der Fahrgasse über Winter und Frühjahr bedeckte.'
       },
       'plant-sainfoin': {
-        en: 'Main legume of the tested cover mix; its dense stand makes up much of the protective cover layer.',
-        de: 'Hauptleguminose der getesteten Begrünungsmischung; ihr dichter Bestand bildet einen Großteil der schützenden Pflanzendecke.'
+        en: 'Main legume of the tested cover mix (43 % of the seed); its foliage helps form the dense cover layer.',
+        de: 'Hauptleguminose der getesteten Begrünungsmischung (43 % des Saatguts); ihr Laub bildet mit die dichte Pflanzendecke.'
       }
     }
   },
@@ -228,23 +237,23 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     starTreeIds: ['vine-grape'],
     evidence: 'scientific',
     citations: [
-      { label: 'Tortosa et al. 2025, Ecol. Appl. 35:e70045 (38 vineyards)', doi: '10.1002/eap.70045' },
-      { label: 'Carlos et al. 2022, Bull. Entomol. Res. 112:697–706 (parasitism survey 2002–2015)', doi: '10.1017/S0007485322000116' },
-      { label: 'Reiff et al. 2021, Insects 12:220 (pupal predation)', doi: '10.3390/insects12030220' }
+      { label: 'Tortosa et al. 2025, Ecol. Appl. 35:e70045 (38 vineyards, SW France)', doi: '10.1002/eap.70045' },
+      { label: 'Carlos et al. 2022, Bull. Entomol. Res. 112:697–706 (parasitism survey 2002–2015, Douro)', doi: '10.1017/S0007485322000116' },
+      { label: 'Reiff et al. 2021, Insects 12:220 (pupal predation, Austrian vineyards)', doi: '10.3390/insects12030220' }
     ],
     companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
     scientificMechanism: {
-      en: 'Across 38 vineyards, berry damage by the grapevine moth fell as the share of ground vegetation between the rows rose. Vineyards with ground cover also had more parasitised caterpillars, and ground vegetation raised predation of the pupae. The evidence is correlational: it supports keeping the inter-row permanently green, not any single species. Sown Phacelia or buckwheat alone did not raise parasitism.',
-      de: 'In 38 Weinbergen sanken die Beerenschäden durch den Traubenwickler, je größer der Anteil an Bodenvegetation zwischen den Reihen war. Weinberge mit Begrünung hatten auch mehr parasitierte Raupen, und Bodenvegetation erhöhte den Fraß an den Puppen. Der Beleg ist korrelativ: Er spricht für eine dauerhaft grüne Fahrgasse, nicht für eine einzelne Art. Gesäte Phacelia oder Buchweizen allein erhöhten die Parasitierung nicht.'
+      en: 'Across 38 vineyards in south-western France, summer berry damage by the grapevine moth decreased with a higher share of ground vegetation cover in the vineyard. In a 14-year survey in Portugal, parasitism of the caterpillars was higher in vineyards with ground cover. In Austrian vineyards, pupal predation was about 10 % higher with species-rich than with species-poor cover crops. The evidence is correlational: it supports keeping the inter-row green, not any single species.',
+      de: 'In 38 Weinbergen in Südwestfrankreich nahmen die Sommerschäden des Traubenwicklers an den Beeren mit höherem Anteil an Bodenvegetation ab. In einer 14-jährigen Erhebung in Portugal waren in begrünten Weinbergen mehr Raupen parasitiert. In österreichischen Weinbergen war der Fraß an den Puppen bei artenreicher Begrünung um etwa 10 % höher als bei artenarmer. Der Beleg ist korrelativ: Er spricht für eine grüne Fahrgasse, nicht für eine einzelne Art.'
     },
     companionRoles: {
       'plant-white-clover': {
-        en: 'Keeps the inter-row permanently green, providing shelter for the ground predators that eat grapevine moth pupae.',
-        de: 'Hält die Fahrgasse dauerhaft grün und bietet Bodenräubern Unterschlupf, die Traubenwickler-Puppen fressen.'
+        en: 'Helps keep the inter-row green; more ground vegetation went along with less berry damage and more parasitism.',
+        de: 'Hilft, die Fahrgasse grün zu halten; mehr Bodenvegetation ging mit weniger Beerenschäden und mehr Parasitierung einher.'
       },
       'plant-sainfoin': {
-        en: 'Perennial flowering part of the permanent sward that supports parasitoids and ground predators.',
-        de: 'Mehrjähriger, blühender Teil der Dauerbegrünung, der Schlupfwespen und Bodenräuber fördert.'
+        en: 'Perennial flowering part of a species-rich inter-row cover; species-rich covers went along with higher pupal predation.',
+        de: 'Mehrjähriger, blühender Teil einer artenreichen Fahrgassenbegrünung; artenreiche Begrünung ging mit mehr Fraß an den Puppen einher.'
       }
     }
   },
@@ -260,18 +269,18 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     starTreeIds: ['tree-tea-sinensis', 'tree-tea-assamica'],
     evidence: 'field-proven',
     citations: [
-      { label: 'Zhang Z. et al. 2014, Phytoparasitica 42:595–607 (field intercrop)', doi: '10.1007/s12600-014-0400-y' },
-      { label: 'Zhang Z.-Q. et al. 2017, J. Pest Sci. 90:227–237 (field, 2 seasons, 4 plants compared)', doi: '10.1007/s10340-016-0783-2' }
+      { label: 'Zhang Z. et al. 2014, Phytoparasitica 42:595–607 (field intercrop, southern China; pest reported as Empoasca vitis)', doi: '10.1007/s12600-014-0400-y' },
+      { label: 'Zhang Z. et al. 2017, J. Pest Sci. 90:227–237 (field, 2014–2015, northern China, 4 plants compared)', doi: '10.1007/s10340-016-0783-2' }
     ],
     companionPlantIds: ['plant-sicklepod'],
     scientificMechanism: {
-      en: 'Two independent field studies in Chinese tea gardens found markedly fewer tea green leafhoppers where tea was intercropped with sicklepod (Senna tora), plus more natural enemies such as spiders. Sicklepod volatiles repel the leafhopper in choice tests. Sicklepod is a warm-season annual, so this only works on subtropical or very warm sites.',
-      de: 'Zwei unabhängige Feldstudien in chinesischen Teegärten fanden deutlich weniger Grüne Teezikaden, wo Tee mit Sichelhülse (Senna tora) im Mischanbau stand, dazu mehr Nützlinge wie Spinnen. Duftstoffe der Sichelhülse wehren die Zikade in Wahlversuchen ab. Die Sichelhülse ist eine wärmeliebende Einjährige; das funktioniert daher nur an subtropischen oder sehr warmen Standorten.'
+      en: 'Two field studies by different research groups, in southern and northern Chinese tea plantations, found markedly fewer tea green leafhoppers where tea was intercropped with sicklepod (Senna tora, syn. Cassia tora), plus more natural enemies such as spiders, ladybirds and lacewings. Sicklepod volatiles repelled the leafhopper in behavioural tests. Sicklepod is a warm-season annual, so this only works on subtropical or very warm sites.',
+      de: 'Zwei Feldstudien verschiedener Forschungsgruppen in süd- und nordchinesischen Teegärten fanden deutlich weniger Grüne Teezikaden, wo Tee mit Sichelhülse (Senna tora, syn. Cassia tora) im Mischanbau stand, dazu mehr Nützlinge wie Spinnen, Marienkäfer und Florfliegen. Duftstoffe der Sichelhülse wehrten die Zikade in Verhaltensversuchen ab. Die Sichelhülse ist eine wärmeliebende Einjährige; das funktioniert daher nur an subtropischen oder sehr warmen Standorten.'
     },
     companionRoles: {
       'plant-sicklepod': {
-        en: 'Its volatiles repel the leafhopper, and the intercrop harbours spiders and other predators that move into the tea rows.',
-        de: 'Ihre Duftstoffe wehren die Zikade ab, und der Mischanbau beherbergt Spinnen und andere Räuber, die in die Teereihen wandern.'
+        en: 'Its volatiles repelled the leafhopper, and tea intercropped with it carried more spiders, ladybirds and lacewings.',
+        de: 'Ihre Duftstoffe wehrten die Zikade ab, und Tee im Mischanbau mit ihr trug mehr Spinnen, Marienkäfer und Florfliegen.'
       }
     }
   },
@@ -288,43 +297,18 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     evidence: 'scientific',
     citations: [
       { label: 'Zhang Z. et al. 2013, J. Chem. Ecol. 39:1284–1296 (volatiles + field intercrop)', doi: '10.1007/s10886-013-0344-6' },
-      { label: 'Zhang Z. et al. 2015, Pest Manag. Sci. 71:96–104 (lab: repellent compounds)', doi: '10.1002/ps.3771' }
+      { label: 'Zhang Z. et al. 2015, Pest Manag. Sci. 71:96–104 (lab: repellent compounds)', doi: '10.1002/ps.3771' },
+      { label: 'Hajiboland 2017, Folia Hortic. 29:199–220 (tea soil pH 4.5–5.6)', doi: '10.1515/fhort-2017-0019' }
     ],
     companionPlantIds: ['plant-rosemary'],
     scientificMechanism: {
-      en: 'Rosemary volatiles repel the tea geometrid moth, and a field intercrop of tea with rosemary suppressed geometrid infestations. Caution: rosemary prefers neutral to alkaline, dry soil, while tea needs pH 4.5–5.8. Plant rosemary in a raised, limed edge strip rather than in the acidic tea bed; the builder flags the pH conflict when they share a root zone.',
-      de: 'Duftstoffe des Rosmarins wehren den Teespanner ab, und ein Mischanbau von Tee mit Rosmarin unterdrückte den Befall im Feld. Vorsicht: Rosmarin bevorzugt neutralen bis kalkhaltigen, trockenen Boden, Tee braucht pH 4,5–5,8. Rosmarin daher in einem erhöhten, gekalkten Randstreifen statt im sauren Teebeet pflanzen; der Planer meldet den pH-Konflikt, wenn beide denselben Wurzelraum teilen.'
+      en: 'Rosemary volatiles repel the tea geometrid moth in lab tests, and a field intercrop of tea with rosemary suppressed geometrid infestations. Caution: tea needs acid soil (pH about 4.5–5.6), and the planner treats rosemary as a plant of less acid soils. Plant rosemary in a raised edge strip rather than in the acid tea bed; the builder flags the pH conflict when they share a root zone.',
+      de: 'Duftstoffe des Rosmarins wehren den Teespanner im Laborversuch ab, und ein Mischanbau von Tee mit Rosmarin unterdrückte den Befall im Feld. Vorsicht: Tee braucht sauren Boden (pH etwa 4,5–5,6), und der Planer führt Rosmarin als Pflanze weniger saurer Böden. Rosmarin daher in einem erhöhten Randstreifen statt im sauren Teebeet pflanzen; der Planer meldet den pH-Konflikt, wenn beide denselben Wurzelraum teilen.'
     },
     companionRoles: {
       'plant-rosemary': {
-        en: 'Releases volatiles that repel egg-laying tea geometrid moths; best planted in a separate limed edge strip.',
-        de: 'Gibt Duftstoffe ab, die eiablegende Teespanner abwehren; am besten in einem separaten, gekalkten Randstreifen pflanzen.'
-      }
-    }
-  },
-
-  // 9. Tea Blister Blight (Exobasidium vexans) – soybean intercrop
-  {
-    id: 'rule-tea-blister-blight',
-    ruleTitle: {
-      en: 'Tea Blister Blight (Exobasidium vexans)',
-      de: 'Tee-Blasenrost (Exobasidium vexans)'
-    },
-    keywords: ['exobasidium', 'blister blight', 'blasenrost'],
-    starTreeIds: ['tree-tea-sinensis'],
-    evidence: 'scientific',
-    citations: [
-      { label: 'Shao et al. 2026, Ind. Crops Prod. 251:124159 (single study)', doi: '10.1016/j.indcrop.2026.124159' }
-    ],
-    companionPlantIds: ['plant-soybean'],
-    scientificMechanism: {
-      en: 'A tea–soybean intercrop lowered the blister blight disease index by about 79 % and anthracnose by about 67 % compared with tea alone, and raised tea yield. Leaves in the intercrop carried more Pseudomonas bacteria, which are linked to disease suppression. This is a single study, so treat it as a promising lead to confirm.',
-      de: 'Ein Tee-Soja-Mischanbau senkte den Befallsindex des Blasenrosts um etwa 79 % und Anthraknose um etwa 67 % gegenüber reinem Tee und steigerte den Teeertrag. Die Blätter im Mischanbau trugen mehr Pseudomonas-Bakterien, die mit Krankheitsunterdrückung in Verbindung stehen. Es ist eine Einzelstudie und sollte noch bestätigt werden.'
-    },
-    companionRoles: {
-      'plant-soybean': {
-        en: 'Intercropped between tea rows, it shifted the tea leaf microbiome towards disease-suppressing Pseudomonas and reduced blister blight.',
-        de: 'Zwischen den Teereihen angebaut, verschob sie das Blatt-Mikrobiom des Tees hin zu krankheitsunterdrückenden Pseudomonas und verringerte den Blasenrost.'
+        en: 'Releases volatiles that repelled adult tea geometrid moths; best planted in a separate raised edge strip.',
+        de: 'Gibt Duftstoffe ab, die erwachsene Teespanner abwehrten; am besten in einem separaten, erhöhten Randstreifen pflanzen.'
       }
     }
   }
@@ -341,8 +325,8 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Tansy, wormwood, fennel', de: 'Rainfarn, Wermut, Fenchel' },
     evidence: 'promising',
     note: {
-      en: 'Tansy and wormwood extracts deter young codling moth caterpillars from entering fruit in the lab, but nobody has shown that growing the plants protects trees. Fennel only fits by analogy with other umbellifers in lab tests.',
-      de: 'Extrakte aus Rainfarn und Wermut halten junge Apfelwickler-Raupen im Labor vom Einbohren ab, aber niemand hat gezeigt, dass die lebenden Pflanzen Bäume schützen. Fenchel passt nur in Analogie zu anderen Doldenblütlern aus Laborversuchen.'
+      en: 'Extracts or oils of tansy and of tree wormwood (Artemisia arborescens) deterred newly hatched codling moth caterpillars from entering apples by over 95 % in tests, but nobody has shown that growing the plants protects trees. Fennel only fits by analogy: flowers of other umbellifers (wild carrot, coriander, parsnip) fed the codling moth parasitoid Ascogaster in the lab.',
+      de: 'Extrakte oder Öle aus Rainfarn und Strauch-Wermut (Artemisia arborescens) hielten frisch geschlüpfte Apfelwickler-Raupen in Versuchen zu über 95 % vom Einbohren in Äpfel ab, aber niemand hat gezeigt, dass die lebenden Pflanzen Bäume schützen. Fenchel passt nur in Analogie: Blüten anderer Doldenblütler (Wilde Möhre, Koriander, Pastinake) ernährten im Labor die Wickler-Schlupfwespe Ascogaster.'
     },
     citations: [
       { label: 'Pszczolkowski 2023, Agriculture 13:311 (review of extract studies)', doi: '10.3390/agriculture13020311' },
@@ -355,10 +339,10 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Lavender, southernwood, French marigold', de: 'Lavendel, Eberraute, Studentenblume' },
     evidence: 'folklore',
     note: {
-      en: 'No study of any kind found for lavender or southernwood. In a factorial field trial, French marigold under apple did not reduce codling moth or fruit damage and even lowered natural enemies.',
-      de: 'Für Lavendel und Eberraute wurde keinerlei Studie gefunden. In einem Feldversuch senkte Studentenblume unter Apfel weder Apfelwickler noch Fruchtschäden und verringerte sogar die Nützlinge.'
+      en: 'No study of any kind found for lavender or southernwood. In a factorial field trial, French marigold under apple did not reduce codling moth or fruit damage and had a general negative effect on arthropods, including natural enemies.',
+      de: 'Für Lavendel und Eberraute wurde keinerlei Studie gefunden. In einem Feldversuch senkte Studentenblume unter Apfel weder Apfelwickler noch Fruchtschäden und wirkte sich allgemein negativ auf Gliederfüßer aus, auch auf Nützlinge.'
     },
-    citations: [{ label: 'Laffon et al. 2022, Insects 13:908', doi: '10.3390/insects13100908' }]
+    citations: [{ label: 'Laffon et al. 2022, Insects 13:908 (factorial field trial)', doi: '10.3390/insects13100908' }]
   },
   {
     id: 'note-codling-moth-walnut',
@@ -377,10 +361,13 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Chives, garlic, willow, meadowsweet', de: 'Schnittlauch, Knoblauch, Weide, Mädesüß' },
     evidence: 'folklore',
     note: {
-      en: 'No evidence that living plants reduce scab – not even for garlic extract in orchards. What does work is removing or breaking down fallen leaves, where the fungus overwinters. Cover-crop mulch raised earthworm numbers, which speeds up leaf breakdown (scab itself was not measured).',
-      de: 'Kein Beleg, dass lebende Pflanzen Schorf verringern – nicht einmal für Knoblauchextrakt im Obstbau. Was hilft, ist das Entfernen oder schnelle Zersetzen des Falllaubs, in dem der Pilz überwintert. Mulch aus Begrünungsschnitt erhöhte die Zahl der Regenwürmer, die das Laub schneller abbauen (Schorf selbst wurde nicht gemessen).'
+      en: 'No study found showing that these living plants reduce scab. What does work is dealing with the fallen leaves in which the fungus overwinters: in north-eastern US orchards, shredding all of the leaf litter in November or April cut the scab risk by 80–90 %. In a UK orchard, mulch from cover-crop cuttings raised earthworm numbers and sped up leaf-litter breakdown (scab itself was not measured).',
+      de: 'Keine Studie gefunden, die zeigt, dass diese lebenden Pflanzen Schorf verringern. Was hilft, ist der Umgang mit dem Falllaub, in dem der Pilz überwintert: Wurde in Anlagen im Nordosten der USA das gesamte Laub im November oder April gehäckselt, sank das Schorfrisiko um 80–90 %. In einer britischen Anlage erhöhte Mulch aus Begrünungsschnitt die Zahl der Regenwürmer und beschleunigte den Laubabbau (Schorf selbst wurde nicht gemessen).'
     },
-    citations: [{ label: 'Webber et al. 2022, Appl. Soil Ecol. 178:104569', doi: '10.1016/j.apsoil.2022.104569' }]
+    citations: [
+      SUTTON_2000,
+      { label: 'Webber et al. 2022, Appl. Soil Ecol. 178:104569', doi: '10.1016/j.apsoil.2022.104569' }
+    ]
   },
   {
     id: 'note-woolly-aphid-nasturtium',
@@ -388,12 +375,12 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Nasturtium', de: 'Kapuzinerkresse' },
     evidence: 'folklore',
     note: {
-      en: 'No study found. Mixed flowering alleys even increased woolly aphid in a 6-year trial. Earwigs are proven woolly aphid predators: hang pots stuffed with wood wool or cardboard in the trees.',
-      de: 'Keine Studie gefunden. Gemischte Blühgassen erhöhten den Blutlausbefall in einem 6-jährigen Versuch sogar. Ohrwürmer fressen Blutläuse nachweislich: Mit Holzwolle oder Pappe gefüllte Töpfe in die Bäume hängen.'
+      en: 'No study found. Sown flowering alleys even increased woolly aphid in a 6-year trial. Earwigs do help: in two organic orchards, releasing 30 earwigs per tree in corrugated-cardboard shelters shortened woolly aphid colonies from the second year on.',
+      de: 'Keine Studie gefunden. Eingesäte Blühgassen erhöhten den Blutlausbefall in einem 6-jährigen Versuch sogar. Ohrwürmer helfen: In zwei Bio-Anlagen verkürzte das Freilassen von 30 Ohrwürmern pro Baum in Wellpappe-Unterschlüpfen die Blutlauskolonien ab dem zweiten Jahr.'
     },
     citations: [
       { label: 'Markó et al. 2013, Biocontrol Sci. Technol. 23:126–145', doi: '10.1080/09583157.2012.743972' },
-      { label: 'Alins et al. 2023, Insects 14:890 (earwig releases)', doi: '10.3390/insects14110890' }
+      { label: 'Alins et al. 2023, Insects 14:890 (earwig releases, 2017–2020)', doi: '10.3390/insects14110890' }
     ]
   },
   {
@@ -402,23 +389,23 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Yarrow, fennel, stinging nettle, catmint', de: 'Schafgarbe, Fenchel, Brennnessel, Katzenminze' },
     evidence: 'promising',
     note: {
-      en: 'Mixed perennial flower margins reduced rosy apple aphid damage in apple (trees with damaged fruit fell from 80 % to 48 %), but no single plant has been tested on its own. Nettle feeds early aphid enemies, and fennel aphids fed ladybirds in cotton, but aphids on the crop were not measured. Catmint only has lab data for its pure compound.',
-      de: 'Gemischte mehrjährige Blühsäume verringerten Schäden durch die Mehlige Apfelblattlaus (Bäume mit geschädigten Früchten sanken von 80 % auf 48 %), aber keine Einzelpflanze wurde allein getestet. Brennnesseln ernähren frühe Blattlausfeinde, und Fenchel-Blattläuse ernährten Marienkäfer in Baumwolle, doch die Blattläuse an der Kultur wurden nicht gemessen. Für Katzenminze gibt es nur Labordaten zum Reinstoff.'
+      en: 'Mixed perennial flower margins reduced rosy apple aphid damage in apple orchards (trees with damaged fruit fell from 80 % to 48 %), but no single plant has been tested on its own. Nettle aphids on stinging nettle supported aphid enemies (lacewing larvae, a parasitoid wasp) in a lab study. In a fennel–cotton intercrop, fennel aphids were associated with ladybirds, but no reduction of cotton aphids was shown. No trial was found testing living catmint as an aphid companion.',
+      de: 'Gemischte mehrjährige Blühsäume verringerten Schäden durch die Mehlige Apfelblattlaus in Apfelanlagen (Bäume mit geschädigten Früchten sanken von 80 % auf 48 %), aber keine Einzelpflanze wurde allein getestet. Brennnessel-Blattläuse ernährten in einer Laborstudie Blattlausfeinde (Florfliegenlarven, eine Schlupfwespe). In einem Fenchel-Baumwoll-Mischanbau traten Fenchel-Blattläuse gemeinsam mit Marienkäfern auf, eine Abnahme der Baumwoll-Blattläuse wurde aber nicht gezeigt. Ein Versuch mit lebender Katzenminze als Begleitpflanze gegen Blattläuse wurde nicht gefunden.'
     },
     citations: [
       { label: 'Howard et al. 2024, J. Appl. Ecol. 61:821–835', doi: '10.1111/1365-2664.14598' },
-      { label: 'Baverstock et al. 2011, BioControl 56:215–223', doi: '10.1007/s10526-010-9330-x' },
+      { label: 'Baverstock et al. 2011, BioControl 56:215–223 (lab)', doi: '10.1007/s10526-010-9330-x' },
       { label: 'Fernandes et al. 2015, PLoS ONE 10:e0131449', doi: '10.1371/journal.pone.0131449' }
     ]
   },
   {
     id: 'note-pear-psylla',
     pest: { en: 'Pear psylla', de: 'Birnenblattsauger' },
-    companions: { en: 'Stinging nettle (promising); yarrow, fennel (no effect)', de: 'Brennnessel (vielversprechend); Schafgarbe, Fenchel (ohne Wirkung)' },
+    companions: { en: 'Stinging nettle (promising); yarrow, fennel (no trial found)', de: 'Brennnessel (vielversprechend); Schafgarbe, Fenchel (kein Versuch gefunden)' },
     evidence: 'promising',
     note: {
-      en: 'Nettle patches are a known spring reservoir of the predatory bug Anthocoris nemoralis, and released Anthocoris cut psylla by 31–40 % in orchards – but no trial has measured whether nettle patches reduce psylla. An undersown flower mix raised anthocorids without reducing psylla significantly.',
-      de: 'Brennnesselbestände sind ein bekanntes Frühjahrsreservoir der Raubwanze Anthocoris nemoralis, und freigelassene Anthocoris senkten den Blattsauger in Anlagen um 31–40 % – ob Brennnesseln den Blattsauger verringern, hat aber kein Versuch gemessen. Eine Blühmischung als Untersaat erhöhte die Raubwanzen, ohne den Blattsauger deutlich zu senken.'
+      en: 'A French survey found hawthorn and nettle around orchards to be a reservoir of the main pear psylla enemies, such as the predatory bug Anthocoris nemoralis, and releases of A. nemoralis nymphs cut psylla by 31–40 % in orchards – but no trial has measured whether nettle patches reduce psylla. In a UK trial, cornflower and corn chamomile attracted many anthocorid bugs, but undersowing pear trees with a flower mix did not significantly reduce psyllids. No trial was found for yarrow or fennel.',
+      de: 'Eine französische Erhebung fand Weißdorn und Brennnesseln rund um Anlagen als Reservoir der wichtigsten Blattsauger-Feinde wie der Raubwanze Anthocoris nemoralis, und freigelassene A.-nemoralis-Larven senkten den Blattsauger in Anlagen um 31–40 % – ob Brennnesseln den Blattsauger verringern, hat aber kein Versuch gemessen. In einem britischen Versuch lockten Kornblume und Acker-Hundskamille viele Blumenwanzen an, eine Blühmischung als Untersaat unter Birnen senkte den Blattsauger aber nicht deutlich. Für Schafgarbe oder Fenchel wurde kein Versuch gefunden.'
     },
     citations: [
       { label: 'Hérard 1986, Agronomie 6:1–34', doi: '10.1051/agro:19860101' },
@@ -432,8 +419,8 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Chives, garlic, Welsh onion', de: 'Schnittlauch, Knoblauch, Winterheckenzwiebel' },
     evidence: 'folklore',
     note: {
-      en: 'Only gardening-site claims, no trial. The peach tree borer (Synanthedon exitiosa) is a North American pest. Against the currant clearwing only pheromone mating disruption is documented; cut out and burn infested shoots.',
-      de: 'Nur Behauptungen auf Gartenseiten, kein Versuch. Der Pfirsichbaumbohrer (Synanthedon exitiosa) ist ein nordamerikanischer Schädling. Gegen den Johannisbeer-Glasflügler ist nur die Pheromon-Verwirrung belegt; befallene Triebe herausschneiden und verbrennen.'
+      en: 'Only gardening-site claims, no trial found. The peach tree borer (Synanthedon exitiosa) is a North American pest. Cut out and remove shoots infested by the currant clearwing.',
+      de: 'Nur Behauptungen auf Gartenseiten, kein Versuch gefunden. Der Pfirsichbaumbohrer (Synanthedon exitiosa) ist ein nordamerikanischer Schädling. Vom Johannisbeer-Glasflügler befallene Triebe herausschneiden und entfernen.'
     },
     citations: []
   },
@@ -443,12 +430,12 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Daffodil (promising); hyacinth, hellebore (folklore)', de: 'Narzisse (vielversprechend); Hyazinthe, Christrose (Volksweisheit)' },
     evidence: 'promising',
     note: {
-      en: 'In feeding trials with captive voles, daffodil bulbs were resisted – so the bulbs themselves survive. Whether they protect neighbouring tree roots has never been tested. Nothing was found for hellebore. A wire root basket is the proven protection.',
-      de: 'In Fütterungsversuchen mit Wühlmäusen wurden Narzissenzwiebeln gemieden – die Zwiebeln selbst überleben also. Ob sie benachbarte Baumwurzeln schützen, wurde nie getestet. Für die Christrose fand sich nichts. Ein Wurzelschutzkorb aus Draht ist der belegte Schutz.'
+      en: 'In feeding trials with captive prairie voles, daffodil bulbs and daffodil leaves were avoided – so the bulbs themselves tend to survive. Hyacinth bulbs, dried and mixed into food, were readily eaten. Whether daffodils protect neighbouring tree roots has never been tested, and nothing was found for hellebore. A wire-mesh root basket physically shields the roots instead.',
+      de: 'In Fütterungsversuchen mit Präriewühlmäusen wurden Narzissenzwiebeln und -blätter gemieden – die Zwiebeln selbst überleben also eher. Getrocknete, ins Futter gemischte Hyazinthenzwiebeln wurden dagegen bereitwillig gefressen. Ob Narzissen benachbarte Baumwurzeln schützen, wurde nie getestet, und für die Christrose fand sich nichts. Ein Wurzelschutzkorb aus Drahtgeflecht schirmt die Wurzeln stattdessen mechanisch ab.'
     },
     citations: [
-      { label: 'Curtis et al. 2009, HortTechnology 19:499–503', doi: '10.21273/HORTTECH.19.3.499' },
-      { label: 'Curtis et al. 2002, Crop Prot. 21:299–306', doi: '10.1016/S0261-2194(01)00101-6' }
+      { label: 'Curtis et al. 2009, HortTechnology 19:499–503 (feeding trials, 30 bulb varieties)', doi: '10.21273/HORTTECH.19.3.499' },
+      { label: 'Curtis et al. 2002, Crop Prot. 21:299–306 (feeding trials, leaves of 10 species)', doi: '10.1016/S0261-2194(01)00101-6' }
     ]
   },
   {
@@ -457,10 +444,10 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Daffodil, chives, hosta', de: 'Narzisse, Schnittlauch, Funkie' },
     evidence: 'folklore',
     note: {
-      en: 'Grass competition with young trees is well documented, but that a bulb or herb ring suppresses grass has only been claimed in permaculture literature, never measured. Mulch the tree basin instead.',
-      de: 'Dass Gras mit jungen Bäumen konkurriert, ist gut belegt; dass ein Zwiebel- oder Kräuterring Gras unterdrückt, wird aber nur in der Permakultur-Literatur behauptet, nie gemessen. Stattdessen die Baumscheibe mulchen.'
+      en: 'Grass competition with young trees is documented: in a 6-year apple trial, trees in mowed sod grew less and yielded less than trees in herbicide strips or straw mulch. That a bulb or herb ring suppresses grass is only claimed in permaculture literature; no measurement was found. Mulch the tree basin instead, but watch for voles: in that trial they were a serious problem under straw mulch.',
+      de: 'Dass Gras mit jungen Bäumen konkurriert, ist belegt: In einem 6-jährigen Apfelversuch wuchsen Bäume in gemähtem Rasen schwächer und trugen weniger als Bäume mit Herbizidstreifen oder Strohmulch. Dass ein Zwiebel- oder Kräuterring Gras unterdrückt, wird nur in der Permakultur-Literatur behauptet; eine Messung wurde nicht gefunden. Stattdessen die Baumscheibe mulchen, aber auf Wühlmäuse achten: In jenem Versuch waren sie unter Strohmulch ein ernstes Problem.'
     },
-    citations: []
+    citations: [{ label: 'Merwin & Stiles 1994, J. Am. Soc. Hortic. Sci. 119:209–215 (6-year groundcover trial)', doi: '10.21273/JASHS.119.2.209' }]
   },
   {
     id: 'note-nematodes',
@@ -468,8 +455,8 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Marigold (promising); hemp (contradicted)', de: 'Studentenblume (vielversprechend); Hanf (widerlegt)' },
     evidence: 'promising',
     note: {
-      en: 'Marigold works as a dense pre-plant or rotation cover crop in annual crops, not as a scattered companion under trees. Hemp is actually a good host of root-knot nematodes; only hemp extracts are nematicidal.',
-      de: 'Studentenblumen wirken als dichte Vor- oder Zwischenfrucht in einjährigen Kulturen, nicht als vereinzelte Begleiter unter Bäumen. Hanf ist sogar ein guter Wirt für Wurzelgallenälchen; nur Hanfextrakte wirken nematizid.'
+      en: 'Marigold\'s nematode suppression has been studied mainly as a cover crop, intercrop or soil amendment in annual crops, with variable results depending on how it was used; no trial was found with marigold as a companion under trees. All hemp cultivars tested in greenhouse trials were good hosts of root-knot nematodes.',
+      de: 'Die nematodenhemmende Wirkung von Studentenblumen wurde vor allem als Zwischenfrucht, Mischkultur oder Bodenzusatz in einjährigen Kulturen untersucht, mit je nach Anwendung schwankenden Ergebnissen; ein Versuch mit Studentenblumen als Begleiter unter Bäumen wurde nicht gefunden. Alle in Gewächshausversuchen getesteten Hanfsorten waren gute Wirte für Wurzelgallenälchen.'
     },
     citations: [
       { label: 'Hooks et al. 2010, Appl. Soil Ecol. 46:307–320', doi: '10.1016/j.apsoil.2010.09.005' },
@@ -482,12 +469,12 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'White clover, yarrow', de: 'Weißklee, Schafgarbe' },
     evidence: 'promising',
     note: {
-      en: 'Vineyard ground covers raise predatory mites on the vines, but spider mites were not measured, and nothing exists for tea or linden. White clover is itself a spider mite host; in citrus, a grass cover controlled mites better than broadleaf cover. For linden, releasing predatory mites is the proven tool.',
-      de: 'Weinbergbegrünungen erhöhen die Raubmilben an den Reben, Spinnmilben wurden aber nicht gemessen, und für Tee oder Linde gibt es nichts. Weißklee ist selbst ein Spinnmilbenwirt; in Zitrus kontrollierte eine Grasbegrünung Milben besser als breitblättrige Begrünung. Bei Linden ist das Freilassen von Raubmilben das belegte Mittel.'
+      en: 'In a 6-year apple trial, sown flowering alleys raised predatory mites (mainly in spring and autumn), while spider mites stayed low in all plots; no study was found for grape, tea or linden. In clementine orchards, a sown grass cover (tall fescue) kept two-spotted spider mites below the action threshold more often than a spontaneous wild cover.',
+      de: 'In einem 6-jährigen Apfelversuch erhöhten eingesäte Blühgassen die Raubmilben (vor allem im Frühjahr und Herbst), während Spinnmilben in allen Parzellen selten blieben; für Rebe, Tee oder Linde wurde keine Studie gefunden. In Clementinen-Anlagen hielt eine eingesäte Grasdecke (Rohrschwingel) die Gemeine Spinnmilbe öfter unter der Schadschwelle als eine spontane Wildkrautdecke.'
     },
     citations: [
       { label: 'Aguilar-Fenollosa et al. 2011, Crop Prot. 30:1328–1333', doi: '10.1016/j.cropro.2011.05.011' },
-      { label: 'Markó et al. 2012, Biocontrol Sci. Technol. (flowering alleys, apple mites)', doi: '10.1080/09583157.2011.642337' }
+      { label: 'Markó et al. 2012, Biocontrol Sci. Technol. 22:39–60 (flowering alleys, apple mites)', doi: '10.1080/09583157.2011.642337' }
     ]
   },
   {
@@ -496,19 +483,19 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Sage', de: 'Salbei' },
     evidence: 'promising',
     note: {
-      en: 'Grape leaves kept with sage in an airtight box for 24–48 h were less susceptible afterwards, and sage extracts work as sprays. No vineyard trial with living sage exists yet.',
-      de: 'Rebblätter, die 24–48 Stunden mit Salbei in einer luftdichten Box standen, waren danach weniger anfällig, und Salbeiextrakte wirken als Spritzmittel. Einen Weinbergversuch mit lebendem Salbei gibt es noch nicht.'
+      en: 'Grapevines kept with sage plants in an airtight box for 24 or 48 h were less susceptible to downy mildew afterwards. No vineyard trial with living sage was found.',
+      de: 'Reben, die 24 oder 48 Stunden mit Salbeipflanzen in einer luftdichten Box standen, waren danach weniger anfällig für Falschen Mehltau. Ein Weinbergversuch mit lebendem Salbei wurde nicht gefunden.'
     },
     citations: [{ label: 'Fittipaldi Broussard et al. 2026, Agronomy 16:201', doi: '10.3390/agronomy16020201' }]
   },
   {
     id: 'note-grey-mould',
     pest: { en: 'Grey mould (Botrytis)', de: 'Grauschimmel (Botrytis)' },
-    companions: { en: 'Oregano (promising); chamomile, garlic, chives (folklore)', de: 'Oregano (vielversprechend); Kamille, Knoblauch, Schnittlauch (Volksweisheit)' },
-    evidence: 'promising',
+    companions: { en: 'Oregano, chamomile, garlic, chives', de: 'Oregano, Kamille, Knoblauch, Schnittlauch' },
+    evidence: 'folklore',
     note: {
-      en: 'Oregano essential oil inhibits Botrytis in the lab and as a treatment, but living oregano plants have not been tested. Nothing was found for chamomile, garlic or chives. Airflow, thinning and removing infected material are what help.',
-      de: 'Oreganoöl hemmt Botrytis im Labor und als Behandlung, lebende Oreganopflanzen wurden aber nicht getestet. Für Kamille, Knoblauch oder Schnittlauch fand sich nichts. Was hilft: Luftzirkulation, Auslichten und Entfernen befallener Teile.'
+      en: 'No trial was found in which living oregano, chamomile, garlic or chives reduced grey mould on a neighbouring crop. Rely on airflow, thinning and removing infected material.',
+      de: 'Es wurde kein Versuch gefunden, in dem lebender Oregano, Kamille, Knoblauch oder Schnittlauch Grauschimmel an einer Nachbarkultur verringerte. Auf Luftzirkulation, Auslichten und Entfernen befallener Teile setzen.'
     },
     citations: []
   },
@@ -518,8 +505,8 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Layered planting (tree canopy + shrubs + groundcover)', de: 'Mehrschichtige Pflanzung (Baumkrone + Sträucher + Bodendecker)' },
     evidence: 'promising',
     note: {
-      en: 'For the related azalea lace bug, structurally complex, layered gardens had far fewer lace bugs because spiders and other predators were more common. This has not been tested for the rhododendron lace bug. Sunny sites favour lace bugs.',
-      de: 'Bei der verwandten Azaleen-Netzwanze hatten strukturreiche, mehrschichtige Gärten weit weniger Netzwanzen, weil Spinnen und andere Räuber häufiger waren. Für die Rhododendron-Netzwanze ist das nicht getestet. Sonnige Standorte begünstigen Netzwanzen.'
+      en: 'For the related azalea lace bug, structurally complex urban landscapes had far fewer lace bugs than simple ones, mainly because generalist predators such as spiders were more abundant. This has not been tested for the rhododendron lace bug.',
+      de: 'Bei der verwandten Azaleen-Netzwanze hatten strukturreiche städtische Pflanzungen weit weniger Netzwanzen als einfache, vor allem weil generalistische Räuber wie Spinnen häufiger waren. Für die Rhododendron-Netzwanze ist das nicht getestet.'
     },
     citations: [{ label: 'Shrewsbury & Raupp 2006, Ecol. Appl. 16:262–272', doi: '10.1890/04-1347' }]
   },
@@ -529,12 +516,13 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Peppermint', de: 'Pfefferminze' },
     evidence: 'promising',
     note: {
-      en: 'Results conflict: one intercropping study reported benefits, while peppermint interplanted in strawberries did not reduce the fly. Keep elder away from cherries and blueberries – it is a major wild host. Fine insect netting and prompt harvesting work.',
-      de: 'Die Ergebnisse widersprechen sich: Eine Mischanbau-Studie berichtete Vorteile, während Pfefferminze zwischen Erdbeeren die Fliege nicht verringerte. Holunder von Kirschen und Heidelbeeren fernhalten – er ist ein wichtiger Wildwirt. Feine Insektennetze und zügiges Ernten wirken.'
+      en: 'Results conflict: in one single-season trial, fewer flies emerged from fruit baits in peppermint than in ryegrass/clover intercrops (at low fly levels), while peppermint interplanted in strawberries did not reduce infestation – it was lowest without peppermint. Keep elder away from cherries and blueberries: it is a major wild host in Europe.',
+      de: 'Die Ergebnisse widersprechen sich: In einem einjährigen Versuch schlüpften aus Fruchtködern in Pfefferminz-Zwischenreihen weniger Fliegen als bei Weidelgras/Klee (bei geringem Befall), während Pfefferminze zwischen Erdbeeren den Befall nicht senkte – er war ohne Pfefferminze am niedrigsten. Holunder von Kirschen und Heidelbeeren fernhalten: Er ist in Europa ein wichtiger Wildwirt.'
     },
     citations: [
       { label: 'Gowton et al. 2021, Front. Sustain. Food Syst. 5:700842', doi: '10.3389/fsufs.2021.700842' },
-      { label: 'Renkema et al. 2020, Can. Entomol. 152', doi: '10.4039/tce.2020.34' }
+      { label: 'Renkema et al. 2020, Can. Entomol. 152:575–586', doi: '10.4039/tce.2020.34' },
+      { label: 'Kenis et al. 2016, J. Pest Sci. 89:735–748 (wild hosts in Europe)', doi: '10.1007/s10340-016-0755-6' }
     ]
   },
   {
@@ -543,8 +531,8 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Chinese mint (Mentha haplocalyx)', de: 'Chinesische Minze (Mentha haplocalyx)' },
     evidence: 'promising',
     note: {
-      en: 'Volatiles of Mentha haplocalyx repel the moth and lowered apple fruit infestation; the field design is not yet confirmed, and it is a different mint from peppermint.',
-      de: 'Duftstoffe von Mentha haplocalyx wehren den Falter ab und senkten den Befall von Apfelfrüchten; das Versuchsdesign im Feld ist noch nicht bestätigt, und es ist eine andere Minze als die Pfefferminze.'
+      en: 'In a single study, volatiles of Mentha haplocalyx repelled the moth and the mint lowered apple fruit infestation in the field from 33 % to about 10 %. It has not yet been confirmed by other studies, and it is a different mint from peppermint.',
+      de: 'In einer Einzelstudie wehrten Duftstoffe von Mentha haplocalyx den Falter ab, und die Minze senkte den Befall von Apfelfrüchten im Feld von 33 % auf etwa 10 %. Bestätigt durch weitere Studien ist das noch nicht, und es ist eine andere Minze als die Pfefferminze.'
     },
     citations: [{ label: 'Zhang Y. et al. 2026, Crop Prot. 199:107430', doi: '10.1016/j.cropro.2025.107430' }]
   },
@@ -554,10 +542,10 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Fennel', de: 'Fenchel' },
     evidence: 'promising',
     note: {
-      en: 'Fennel root terpenes reduced Phytophthora capsici in pepper fields – a different host and pathogen, and fennel is allelopathic. Drainage and planting crowns slightly raised are what protect rhubarb.',
-      de: 'Terpene aus Fenchelwurzeln senkten Phytophthora capsici in Paprikafeldern – ein anderer Wirt und Erreger, und Fenchel ist allelopathisch. Rhabarber schützen Drainage und leicht erhöht gesetzte Wurzelstöcke.'
+      en: 'In a greenhouse experiment, intercropping with fennel suppressed Phytophthora capsici blight of pepper, and terpenes from fennel roots interfered with the pathogen – a different host and pathogen, not tested on rhubarb. Rely on standard measures such as good drainage.',
+      de: 'In einem Gewächshausversuch unterdrückte Fenchel als Mischkultur die Phytophthora-capsici-Fäule an Paprika, und Terpene aus Fenchelwurzeln störten den Erreger – ein anderer Wirt und Erreger, an Rhabarber nicht getestet. Auf übliche Maßnahmen wie gute Drainage setzen.'
     },
-    citations: [{ label: 'Yang et al. 2022, Front. Plant Sci. 13:890534', doi: '10.3389/fpls.2022.890534' }]
+    citations: [{ label: 'Yang et al. 2022, Front. Plant Sci. 13:890534 (greenhouse, pepper)', doi: '10.3389/fpls.2022.890534' }]
   },
   {
     id: 'note-walnut-anthracnose',
@@ -565,10 +553,21 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Autumn olive', de: 'Schmalblättrige Ölweide' },
     evidence: 'promising',
     note: {
-      en: 'Nitrogen fertiliser lowered anthracnose on black walnut; that a nitrogen-fixing companion does the same is only extension advice. Collect fallen leaves and thin for airflow.',
-      de: 'Stickstoffdüngung senkte die Anthraknose an Schwarznuss; dass ein stickstoffbindender Begleiter dasselbe bewirkt, ist nur Beratungsempfehlung. Falllaub einsammeln und für Luftzirkulation auslichten.'
+      en: 'Applying nitrogen fertiliser was reported to control anthracnose on black walnut; that a nitrogen-fixing companion does the same has not been tested.',
+      de: 'Stickstoffdüngung wurde als Mittel gegen Anthraknose an Schwarznuss beschrieben; dass ein stickstoffbindender Begleiter dasselbe bewirkt, wurde nicht getestet.'
     },
     citations: [{ label: 'Neely 1981, Plant Dis. 65:580', doi: '10.1094/PD-65-580' }]
+  },
+  {
+    id: 'note-tea-blister-blight',
+    pest: { en: 'Tea blister blight (Exobasidium vexans)', de: 'Teeblasenkrankheit (Exobasidium vexans)' },
+    companions: { en: 'Soybean', de: 'Sojabohne' },
+    evidence: 'promising',
+    note: {
+      en: 'In a single study, a tea–soybean intercrop markedly reduced major foliar diseases of tea – especially anthracnose – and raised yield, together with more Pseudomonas bacteria on the leaves. Effect sizes for blister blight could not be checked in the accessible summary, so this is not shown as a defense badge until confirmed.',
+      de: 'In einer Einzelstudie senkte ein Tee-Soja-Mischanbau wichtige Blattkrankheiten des Tees deutlich – vor allem Anthraknose – und steigerte den Ertrag, begleitet von mehr Pseudomonas-Bakterien auf den Blättern. Werte speziell zur Teeblasenkrankheit ließen sich in der zugänglichen Zusammenfassung nicht prüfen; daher bis zur Bestätigung kein Abwehr-Badge.'
+    },
+    citations: [{ label: 'Shao et al. 2026, Ind. Crops Prod. 251:124159 (single study)', doi: '10.1016/j.indcrop.2026.124159' }]
   }
 ];
 

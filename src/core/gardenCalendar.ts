@@ -1,7 +1,7 @@
 import { getLoc } from '../types/guild';
 import { GardenState } from '../types/garden';
 import { t } from '../i18n/translations';
-import { CHOP_INSTRUCTIONS_MAP, CHOP_PLANT_ANCHORS, IcsEvent, foldIcsLine, escapeIcsText } from './calendarExporter';
+import { BLOOM_STAGE_CHOP_DATES, CHOP_INSTRUCTIONS_MAP, CHOP_PLANT_ANCHORS, IcsEvent, foldIcsLine, escapeIcsText } from './calendarExporter';
 
 export interface GardenCalendarExportOptions {
   garden: GardenState;
@@ -126,6 +126,8 @@ export function buildGardenIcsContent(options: GardenCalendarExportOptions): str
     if (chopInfo && plant.seasonalActivity.chopAndDropSeasons.length > 0) {
       const northern = hemisphere === 'NORTHERN';
       const chopMonths = [...new Set(plant.seasonalActivity.chopAndDropSeasons.map(s => {
+        const bloomStage = BLOOM_STAGE_CHOP_DATES[plant.id]?.[s];
+        if (bloomStage) return northern ? bloomStage.month : ((bloomStage.month + 5) % 12) + 1;
         switch (s) {
           case 'WINTER': return northern ? 2 : 8;
           case 'EARLY_SPRING': return northern ? 3 : 9;

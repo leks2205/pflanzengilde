@@ -8,8 +8,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Stickstoff-Fixierer'
     },
     description: {
-      en: 'Symbiotic root bacteria fix atmospheric nitrogen, feeding surrounding plants naturally.',
-      de: 'Symbiotische Knöllchenbakterien binden Luftstickstoff und düngen umstehende Pflanzen auf natürliche Weise.'
+      en: 'Root-nodule bacteria fix atmospheric nitrogen in the plant; neighbours benefit mainly when its leaves, roots or cuttings decompose.',
+      de: 'Knöllchenbakterien binden Luftstickstoff in der Pflanze; Nachbarn profitieren vor allem, wenn ihr Laub, ihre Wurzeln oder ihr Schnittgut verrotten.'
     }
   },
   {
@@ -19,8 +19,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Dynamischer Akkumulator'
     },
     description: {
-      en: 'Deep taproots mine subsoil minerals (K, Ca, Mg) and cycle them to topsoil via mulch.',
-      de: 'Tiefe Pfahlwurzeln erschließen Mineralstoffe (K, Ca, Mg) aus dem Unterboden und bringen sie als Mulch an die Oberfläche.'
+      en: 'Plants with a documented deep taproot or nutrient-rich leaves or litter, used as mulch. The permaculture idea that they pump subsoil minerals up to neighbouring plants is popular but little tested.',
+      de: 'Pflanzen mit belegter tiefer Pfahlwurzel oder nährstoffreichem Laub bzw. Streu, das als Mulch dient. Die Permakultur-Idee, dass sie Mineralstoffe aus dem Unterboden für Nachbarpflanzen nach oben holen, ist verbreitet, aber kaum geprüft.'
     }
   },
   {
@@ -30,8 +30,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Bestäuber- & Nützlingsmagnet'
     },
     description: {
-      en: 'Nectary flowers attract bees for pollination and predatory wasps/hoverflies for pest control.',
-      de: 'Nektarblüten sichern die Bestäubung durch Bienen und locken Schwebfliegen und Schlupfwespen zur Schädlingsabwehr an.'
+      en: 'Flowers documented to be visited by bees or by natural enemies such as hoverflies and parasitoid wasps. Fewer orchard pests have been shown for diverse flower strips, not for single species.',
+      de: 'Blüten, für die Besuche von Bienen oder Nützlingen wie Schwebfliegen und Schlupfwespen belegt sind. Weniger Schädlinge im Obstbau sind für artenreiche Blühstreifen belegt, nicht für einzelne Arten.'
     }
   },
   {
@@ -41,8 +41,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Schädlingsabwehr & Verwirrpflanze'
     },
     description: {
-      en: 'Volatile aromatic oils mask tree scents from moths and borers, or deter gnawing rodents.',
-      de: 'Ätherische Öle überdecken den Baumgeruch vor Schadwicklern und Bohrern oder halten Wühlmäuse fern.'
+      en: 'Only plants that reduced a specific pest of a specific crop in field trials (e.g. rosemary against the tea geometrid). The effect does not carry over to other pests or trees; the popular claim that aromatic herbs in general repel pests is unproven. See the pest evidence guide.',
+      de: 'Nur Pflanzen, die in Feldversuchen einen bestimmten Schädling einer bestimmten Kultur verringert haben (z. B. Rosmarin gegen den Tee-Spanner). Die Wirkung lässt sich nicht auf andere Schädlinge oder Bäume übertragen; die verbreitete Annahme, Duftkräuter wehrten Schädlinge allgemein ab, ist nicht belegt. Siehe den Schädlings-Faktencheck.'
     }
   },
   {
@@ -52,8 +52,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Lebendiger Mulch / Bodendecker'
     },
     description: {
-      en: 'Dense weed-suppressing carpet that protects soil moisture, biology, and prevents erosion.',
-      de: 'Dichter Teppich, der Unkraut unterdrückt, die Bodenfeuchtigkeit bewahrt und vor Erosion schützt.'
+      en: 'Low, dense plants that keep the soil covered. How much they suppress weeds has rarely been measured for single species.',
+      de: 'Niedrige, dichte Pflanzen, die den Boden bedeckt halten. Wie stark sie Unkraut unterdrücken, ist für einzelne Arten kaum gemessen.'
     }
   },
   {
@@ -63,8 +63,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Grasbarriere / Zwiebelring'
     },
     description: {
-      en: 'Dense root barrier around the trunk or drip line preventing invasive lawn grass encroachment.',
-      de: 'Dichte Wurzelbarriere um den Stamm oder die Traufkante, die das Einwachsen von Rasengräsern blockiert.'
+      en: 'Dense stands shown in field trials to suppress weeds (e.g. hemp against annual weeds). That bulb or allium rings around a trunk hold back lawn grass is unproven; mulching the tree basin is more reliable.',
+      de: 'Dichte Bestände, die in Feldversuchen Unkraut unterdrückt haben (z. B. Hanf gegen einjährige Unkräuter). Dass Zwiebel- oder Lauchringe um den Stamm Rasengras zurückhalten, ist nicht belegt; Mulchen der Baumscheibe ist verlässlicher.'
     }
   },
   {
@@ -74,8 +74,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Natürlicher Pilzhemmer'
     },
     description: {
-      en: 'Sulfur and mustard oils in foliage/roots suppress fungal spores (apple scab, brown rot).',
-      de: 'Schwefel- und Senföle in Wurzeln und Laub unterdrücken Schadpilze (Apfelschorf, Monilia-Fruchtfäule).'
+      en: 'Plants whose cultivation suppressed a fungal disease in experiments (e.g. Welsh onion against Fusarium wilt of cucumber in the soil). Lab effects of extracts and oils do not show that a living companion protects a tree, and no study was found showing that companions reduce apple scab.',
+      de: 'Pflanzen, deren Anbau in Versuchen eine Pilzkrankheit unterdrückt hat (z. B. Winterheckenzwiebel gegen Fusarium-Welke der Gurke im Boden). Laborwirkungen von Extrakten und Ölen zeigen nicht, dass ein lebender Begleiter einen Baum schützt, und eine Studie, nach der Begleiter Apfelschorf verringern, wurde nicht gefunden.'
     }
   },
   {
@@ -85,8 +85,8 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Biomasse / Chop & Drop Mulch'
     },
     description: {
-      en: 'Fast vegetative growth harvested multiple times per year for on-site fertility mulch.',
-      de: 'Wuchsfreudige Pflanzenmasse, die mehrmals jährlich für nährstoffreichen Flächenmulch geschnitten wird.'
+      en: 'Vigorous plants that are cut, coppiced or lopped for mulch on site, or whose litter or crop residues are laid as mulch.',
+      de: 'Wuchsfreudige Pflanzen, die für Mulch vor Ort geschnitten, auf den Stock gesetzt oder geschneitelt werden, oder deren Laub bzw. Ernterückstände als Mulch dienen.'
     }
   },
   {
@@ -96,7 +96,7 @@ export const ALL_ROLES: { role: GuildRole; displayName: LocalizedString; descrip
       de: 'Essbarer Unterwuchs & Ertrag'
     },
     description: {
-      en: 'Productive secondary crops (berries, herbs, greens) maximizing vertical space yields.',
+      en: 'Secondary crops (berries, herbs, greens) that make productive use of the space under the canopy.',
       de: 'Ertragreiche Begleiter (Beeren, Kräuter, Wildgemüse), die den Raum unter der Baumkrone produktiv nutzen.'
     }
   }

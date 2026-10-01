@@ -3,6 +3,7 @@ import { Language, getLoc } from '../types/guild';
 import { GardenConflict, GardenShadePocket, GardenStarPlantInstance, GardenStats } from '../types/garden';
 import { AlertOctagon, AlertTriangle, CheckCircle2, CloudRain, ShieldCheck, Sparkles, Sun } from 'lucide-react';
 import { t, formatNumber } from '../i18n/translations';
+import { SourceList } from './SourceList';
 
 interface GardenWarningsBoxProps {
   language: Language;
@@ -102,6 +103,7 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
                   <p className="text-[11px] leading-relaxed text-stone-700">
                     {getLoc(c.description, language)}
                   </p>
+                  <SourceList sources={c.sources} language={language} />
                 </div>
               );
             })}

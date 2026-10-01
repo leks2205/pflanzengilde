@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ClimateZone, Hemisphere, Language } from '../types/guild';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 import { STAR_TREES } from '../data/starTrees';
 import { t } from '../i18n/translations';
 import { X, Globe, Check, Sun, Snowflake, Flame, CloudSun, Compass, MapPin } from 'lucide-react';
@@ -17,7 +17,7 @@ import {
 const PLANT_COUNTS = Object.fromEntries(
   (['BOREAL', 'TEMPERATE', 'SUBTROPICAL', 'TROPICAL'] as ClimateZone[]).map(zone => {
     const starCount = STAR_TREES.filter(tree => tree.climateZones.includes(zone)).length;
-    const companionCount = GUILD_PLANTS.filter(p => p.climateZones.includes(zone)).length;
+    const companionCount = ACTIVE_GUILD_PLANTS.filter(p => p.climateZones.includes(zone)).length;
     return [zone, { starCount, companionCount, total: starCount + companionCount }];
   })
 ) as Record<ClimateZone, { starCount: number; companionCount: number; total: number }>;

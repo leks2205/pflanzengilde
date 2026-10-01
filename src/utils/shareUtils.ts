@@ -1,7 +1,7 @@
 import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree } from '../types/guild';
 import { GardenStarPlantInstance } from '../types/garden';
 import { STAR_TREES } from '../data/starTrees';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { GUILD_PLANTS, isRetiredPlantId } from '../data/guildPlants';
 
 export const SOIL_TYPES: SoilType[] = ['LOAM', 'CLAY', 'SANDY', 'CHALKY', 'ACIDIC', 'SILT'];
 export const CLIMATE_ZONES: ClimateZone[] = ['BOREAL', 'TEMPERATE', 'SUBTROPICAL', 'TROPICAL'];
@@ -85,6 +85,7 @@ function buildPlantMask(plantIds: Iterable<string>): Uint8Array {
   return mask.subarray(0, len);
 }
 
+/** Plant ids from a bitmask; retired companions in old links are dropped silently. */
 function readPlantMask(bytes: Uint8Array, start: number, end: number): string[] {
   const ids: string[] = [];
   for (let b = start; b < end; b++) {
@@ -92,7 +93,8 @@ function readPlantMask(bytes: Uint8Array, start: number, end: number): string[] 
     for (let bit = 0; bit < 8; bit++) {
       if ((val & (1 << bit)) !== 0) {
         const plantIdx = (b - start) * 8 + bit;
-        if (plantIdx < GUILD_PLANTS.length) ids.push(GUILD_PLANTS[plantIdx].id);
+        const plant = GUILD_PLANTS[plantIdx];
+        if (plant && !plant.retired) ids.push(plant.id);
       }
     }
   }
@@ -261,6 +263,7 @@ export function parseGuildUrl(searchString: string, pathname: string = '/'): Par
   } else {
     plantIds = params.getAll('plant').map(id => id.trim()).filter(Boolean);
   }
+  plantIds = plantIds.filter(id => !isRetiredPlantId(id));
 
   const soilRaw = params.get('soil')?.toUpperCase();
   let soil: SoilType | null = null;

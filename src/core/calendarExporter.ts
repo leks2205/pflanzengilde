@@ -52,7 +52,6 @@ export const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-nasturtium': 'chop-plant-nasturtium',
   'plant-sweet-potato': 'chop-plant-sweet-potato',
   'plant-tansy': 'chop-plant-tansy',
-  'plant-southernwood': 'chop-plant-southernwood',
   'plant-chives': 'chop-plant-chives',
   'plant-tea-sinensis': 'chop-plant-tea-sinensis',
   'plant-hyssop': 'chop-plant-hyssop',
@@ -72,26 +71,76 @@ interface ChopInstruction {
   howMuch: { de: string; en: string };
   whereToSpread: { de: string; en: string };
   nutrientBenefit: { de: string; en: string };
+  /** Citations backing the factual statements above (traceability only, not displayed in calendar events). */
+  sources?: string[];
 }
+
+const SRC_OSTER_2021 = 'Oster, M., et al. (2021). Comfrey (Symphytum spp.) as a feed supplement in pig nutrition contributes to regional resource cycles. Science of The Total Environment, 796, 148988. doi:10.1016/j.scitotenv.2021.148988';
+const SRC_THILAKARATHNA_2016 = 'Thilakarathna, M. S., et al. (2016). Belowground nitrogen transfer from legumes to non-legumes under managed herbaceous cropping systems. A review. Agronomy for Sustainable Development, 36(4), 58. doi:10.1007/s13593-016-0396-4';
+const SRC_DAHLIN_2020 = 'Dahlin, P., & Hallmann, J. (2020). New Insights on the Role of Allyl Isothiocyanate in Controlling the Root Knot Nematode Meloidogyne hapla. Plants, 9(5), 603. doi:10.3390/plants9050603';
+const SRC_ALDER_ATLAS = 'Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Alnus glutinosa in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_glutinosa.pdf';
+const SRC_BEER_1987 = 'Beer, J. (1987). Advantages, disadvantages and desirable characteristics of shade trees for coffee, cacao and tea. Agroforestry Systems, 5(1), 3–13. doi:10.1007/BF00046410';
+const SRC_MIRSKY_2016 = 'Mirsky, S., Ackroyd, V., Gaskin, J., & Hendrick, R. (2016). Nitrogen Release from Cover Crops. SARE Southern. https://southern.sare.org/resources/nitrogen-release-from-cover-crops/';
+
+// Sources for the generic care texts in the calendar (i18n keys calendar*Text / calendarChopDefault*).
+const SRC_RHS_PLANTING = 'Royal Horticultural Society (n.d.). Trees and shrubs: planting guide. RHS. https://www.rhs.org.uk/plants/types/trees/planting-trees-shrubs';
+const SRC_CLEMENTS_2019 = 'Clements, J. (2019, August 22). Will an apple tree grow differently if I plant the graft union high above the soil or close to the ground? Apples (extension.org). https://apples.extension.org/will-an-apple-tree-grow-differently-if-i-plant-the-graft-union-high-above-the-soil-or-close-to-the-ground/';
+const SRC_CHALKER_SCOTT_2015 = 'Chalker-Scott, L. (2015). Using Arborist Wood Chips as Landscape Mulch. Washington State University Extension Fact Sheet FS160E. https://pubs.extension.wsu.edu/product/using-arborist-wood-chips-as-a-landscape-mulch-home-garden-series/';
+const SRC_NJUE_2018 = 'Njue, G. (2018, updated December 18). Pruning Fruit Trees. SDSU Extension. https://extension.sdstate.edu/pruning-fruit-trees';
+const SRC_ILLINOIS_PRUNING_CUTS = 'University of Illinois Extension (n.d.). Making Pruning Cuts. Fruit Trees for Home Gardens. https://extension.illinois.edu/fruit-trees/making-pruning-cuts';
+const SRC_ISU_APPLES = 'Iowa State University Extension and Outreach (2025). How to Harvest and Store Apples. Yard and Garden. https://yardandgarden.extension.iastate.edu/how-to/how-harvest-and-store-apples';
+const SRC_CAPRILE_VOSSEN_2011 = 'Caprile, J. L., & Vossen, P. M. (2011). Pest Notes: Codling Moth. UC ANR Publication 7412. UC Statewide IPM Program. https://ipm.ucanr.edu/PMG/PESTNOTES/pn7412.html';
+const SRC_PSU_VOLES = 'Penn State Extension (2024, updated January 5). Orchard Wildlife: Integrated Management of Voles in Orchards. https://extension.psu.edu/orchard-wildlife-integrated-management-of-voles-in-orchards';
+const SRC_KUHNS_2011 = 'Kuhns, M. (2011). Sunscald Injury or Southwest Winter Injury on Deciduous Trees. Utah Forest Facts 021, USU Extension Forestry. https://extension.usu.edu/forestry/publications/utah-forest-facts/021-sunscald-injury-or-southwest-winter-injury-on-deciduous-trees';
+const SRC_NAEVE_HAYNES_HERBS = 'Naeve, L., & Haynes, C. (n.d., reviewed 2026). Growing, Harvesting, and Drying Herbs. Iowa State University Extension and Outreach. https://yardandgarden.extension.iastate.edu/how-to/growing-harvesting-and-drying-herbs';
+
+/**
+ * Traceability only (calendar events show no citations): which source backs the factual
+ * statement in each generic calendar care text, keyed by i18n key.
+ */
+export const CALENDAR_TEXT_SOURCES: Record<string, string[]> = {
+  calendarTreePlantHoleText: [SRC_RHS_PLANTING],
+  calendarTreePlantDepthText: [SRC_RHS_PLANTING, SRC_CLEMENTS_2019],
+  calendarTreeTrunkCollarText: [SRC_RHS_PLANTING],
+  calendarPruneLightText: [SRC_NJUE_2018],
+  calendarPruneDeadwoodText: [SRC_NJUE_2018, SRC_ILLINOIS_PRUNING_CUTS],
+  calendarPruneSproutsText: [SRC_NJUE_2018],
+  calendarPruneWoodText: [SRC_CHALKER_SCOTT_2015],
+  calendarTreeHarvestTiltText: [SRC_ISU_APPLES],
+  calendarTreeHarvestWindfallText: [SRC_CAPRILE_VOSSEN_2011],
+  calendarTreeHarvestStorageText: [SRC_ISU_APPLES],
+  calendarCollarClearText: [SRC_CHALKER_SCOTT_2015, SRC_PSU_VOLES],
+  calendarCollarBarkText: [SRC_PSU_VOLES],
+  calendarCollarFrostText: [SRC_KUHNS_2011],
+  calendarChopDefaultHowToCut: [SRC_MIRSKY_2016],
+  calendarChopDefaultWhereToSpread: [SRC_RHS_PLANTING],
+  calendarChopDefaultNutrientBenefit: [SRC_CHALKER_SCOTT_2015],
+  calendarPlantHarvestTimingText: [SRC_NAEVE_HAYNES_HERBS],
+  calendarPlantHarvestQuantityText: [SRC_NAEVE_HAYNES_HERBS],
+};
 
 export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
   'plant-comfrey': {
     howToCut: {
-      de: 'Schneiden, sobald sich die ersten Blütenknospen zeigen (vor dem Aufblühen), da dann die Nährstoffdichte im Blatt maximal ist. Mit scharfer Sichel oder Heckenschere.',
-      en: 'Cut just as flower buds begin to emerge (before opening) when foliage nutrient concentration peaks. Use a sharp sickle or hedge shears.'
+      de: 'Vor der Blüte schneiden, sobald sich die ersten Blütenknospen zeigen; regelmäßiges Schneiden verhindert die Blüte. Mit scharfer Sichel oder Heckenschere.',
+      en: 'Cut before flowering, as the first flower buds appear; regular cutting prevents flowering. Use a sharp sickle or hedge shears.'
     },
     howMuch: {
-      de: 'Alle großen Außenblätter auf 5 cm über dem Wurzelstock kappen. WICHTIG: Die inneren Herzblätter unberührt lassen, damit die Pflanze sofort wieder austreiben kann.',
-      en: 'Cut all large outer leaves down to 5 cm above root crown. CRITICAL: Leave inner heart leaves intact to power rapid regrowth within 2–3 weeks.'
+      de: 'Alle großen Außenblätter auf 5 cm über dem Wurzelstock kappen; die inneren Herzblätter stehen lassen. Etwa alle 6 Wochen ist ein neuer Schnitt möglich (4–5 Schnitte pro Saison).',
+      en: 'Cut all large outer leaves down to 5 cm above the root crown, leaving the inner heart leaves. A new cut is possible about every 6 weeks (4–5 cuts per season).'
     },
     whereToSpread: {
       de: 'Gleichmäßig als 5–10 cm dicke Mulchschicht in Zone 2 und 3 unter der Traufkante auslegen. Mindestens 15–20 cm Abstand zum Stammkragen (Zone 0) einhalten!',
       en: 'Spread evenly as a 5–10 cm mulch layer in Zone 2 and Zone 3 under the drip line. Keep 15–20 cm away from trunk collar (Zone 0)!'
     },
     nutrientBenefit: {
-      de: 'Kalium-Bombe (5,3% K in der Trockenmasse), Calcium und Magnesium aus bis zu 3 m Tiefe. Fördert Fruchtansatz und Zellwandstabilität.',
-      en: 'High potassium (5.3% K in dry matter), calcium, and magnesium mined from up to 3 m depth. Boosts fruit set and cellular strength.'
-    }
+      de: 'Sehr kaliumreiche Blätter (in einer Analyse rund 6,5 % K in der Trockenmasse), dazu Calcium; das Wurzelsystem reicht etwa 1 m tief.',
+      en: 'Very potassium-rich leaves (about 6.5% K in dry matter in one analysis), plus calcium; the root system reaches about 1 m deep.'
+    },
+    sources: [
+      SRC_OSTER_2021,
+      'Garden Organic (n.d.). Growing comfrey. Garden Organic, All about comfrey. https://www.gardenorganic.org.uk/expert-advice/all-about-comfrey/growing-comfrey'
+    ]
   },
   'plant-white-clover': {
     howToCut: {
@@ -103,13 +152,14 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Cut top 50–70% of aboveground foliage down to 4–6 cm height. Never scalp ground-level stolons.'
     },
     whereToSpread: {
-      de: 'Schnittgut direkt an Ort und Stelle liegen lassen oder in Zone 2 an die Feinwurzeln der Bäume rechen. Wiederholter Schnitt lässt Weißklee einen Teil seiner Wurzeln und Wurzelknöllchen abstoßen, die anschließend nachwachsen; bei ihrer Zersetzung wird ihr Stickstoff für Nachbarpflanzen verfügbar – in Klee-Gras-Beständen geschätzt 3–102 kg N/ha und Jahr.',
-      en: 'Leave clippings in situ on the ground or rake into Zone 2 around tree feeder roots. Repeated cutting makes white clover shed part of its roots and root nodules, which then regrow; as they decompose, their nitrogen becomes available to neighboring plants – an estimated 3–102 kg N/ha per year in clover–grass swards.'
+      de: 'Schnittgut direkt an Ort und Stelle liegen lassen oder in Zone 2 an die Feinwurzeln der Bäume rechen. Der Schnitt lässt Wurzeln und Wurzelknöllchen teilweise absterben; bei ihrer Zersetzung wird ihr Stickstoff für Nachbarpflanzen verfügbar – Schätzungen für Leguminosen-Gras-Bestände reichen von 3 bis 102 kg N/ha und Jahr.',
+      en: 'Leave clippings in situ on the ground or rake into Zone 2 around tree feeder roots. Cutting makes part of the roots and root nodules die back; as they decompose, their nitrogen becomes available to neighboring plants – estimates for legume–grass pastures range from 3 to 102 kg N/ha per year.'
     },
     nutrientBenefit: {
-      de: 'Biologischer Reinstickstoff durch Rhizobien-Knöllchenbakterien. Schnelle Zersetzung innerhalb von 2–3 Wochen.',
-      en: 'Biological pure nitrogen via Rhizobia root nodule symbiosis. Rapid microbial decomposition within 2–3 weeks.'
-    }
+      de: 'Stickstoff aus der Rhizobien-Symbiose der Wurzelknöllchen. Feine Wurzeln mit engem C:N-Verhältnis und wenig Lignin werden rasch umgesetzt.',
+      en: 'Nitrogen from the Rhizobia root nodule symbiosis. Fine roots with a low C:N ratio and little lignin turn over quickly.'
+    },
+    sources: [SRC_THILAKARATHNA_2016]
   },
   'plant-willow': {
     howToCut: {
@@ -117,17 +167,21 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Coppice in late winter (February/March) during dormancy before sap rises, or tip tender summer shoots in July.'
     },
     howMuch: {
-      de: 'Alle einjährigen Weidenruten auf 10–15 cm über dem Weidenstock zurückschneiden. Ein gesunder Stock treibt jedes Jahr 10–25 neue Ruten.',
-      en: 'Coppice all 1-year rods down to 10–15 cm above the stool. Stools produce 10–25 fresh straight rods every year.'
+      de: 'Alle einjährigen Weidenruten auf 10–15 cm über dem Weidenstock zurückschneiden. Ein auf den Stock gesetzter Weidenstock treibt mehrere neue Ruten (oft 8–10, je nach Sorte).',
+      en: 'Coppice all 1-year rods down to 10–15 cm above the stool. A coppiced stool resprouts with several new rods (often 8–10, depending on variety).'
     },
     whereToSpread: {
-      de: 'Ruten in 5–10 cm kurze Stücke schneiden oder häckseln (Bois Raméal Fragmenté / BRF). In Zone 3 und 4 verteilen für dauerhaften Humusaufbau.',
-      en: 'Chop twigs into 5–10 cm pieces or shred into Ramial Chipped Wood (RCW / BRF). Spread in Zone 3 and 4 to promote mycorrhizal fungi.'
+      de: 'Ruten in 5–10 cm kurze Stücke schneiden oder häckseln (Zweighäcksel, Bois Raméal Fragmenté / BRF). In Zone 3 und 4 verteilen.',
+      en: 'Chop twigs into 5–10 cm pieces or shred into ramial chipped wood (RCW / BRF). Spread in Zone 3 and 4.'
     },
     nutrientBenefit: {
-      de: 'Pilzdominierter Dauerhumus, Salicylsäure (natürlicher Wurzelförderer und Phytohormon) und nachhaltiger Erosionsschutz.',
-      en: 'Fungal-dominated permanent humus, salicylic acid (natural rooting hormone and defense primer), and long-term soil structure.'
-    }
+      de: 'Holzige organische Substanz für langfristigen Humus- und Strukturaufbau; Zweighäcksel förderte in einem Feldversuch vor allem die Bodenbakterien, weniger deutlich die Pilze.',
+      en: 'Woody organic matter for long-term humus and soil structure; in a field trial, ramial chipped wood mainly boosted soil bacteria, with a less marked effect on fungi.'
+    },
+    sources: [
+      'Caslin, B., Finnan, J., Johnston, C., McCracken, A., & Walsh, L. (Eds.) (2015). Short Rotation Coppice Willow: Best Practice Guidelines. Teagasc & AFBI. https://teagasc.ie/wp-content/uploads/2025/05/Short_Rotation_Coppice_Best_Practice_Guidelines.pdf',
+      'Taurines, S., Séguin, A., & Guittonny, M. (2025). Promoting soil microbial community development in early primary succession on waste rock by mulching with ramial chipped wood, in a boreal context. Applied Soil Ecology, 207, 105958. doi:10.1016/j.apsoil.2025.105958'
+    ]
   },
   'plant-goumi': {
     howToCut: {
@@ -139,13 +193,16 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Prune back 25–35% of vigorous annual green shoots and crossing interior branches to maintain open light penetration.'
     },
     whereToSpread: {
-      de: 'Triebe zerkleinern und in Zone 2 und 3 unter nährstoffhungrige Obstbäume (Apfel, Pflaume, Pfirsich) streuen. Zersetzt sich in 4–6 Wochen.',
-      en: 'Chop leaves and tender twigs and spread in Zone 2–3 around demanding fruit trees (apples, plums, peaches). Decomposes in 4–6 weeks.'
+      de: 'Triebe zerkleinern und in Zone 2 und 3 unter nährstoffhungrige Obstbäume (Apfel, Pflaume, Pfirsich) streuen.',
+      en: 'Chop leaves and tender twigs and spread in Zone 2–3 around demanding fruit trees (apples, plums, peaches).'
     },
     nutrientBenefit: {
-      de: 'Frankia-Aktinorrhiza-Stickstoffdünger direkt am Gehölz. Versorgt flachwurzelnde Obstbäume während des Fruchtwachstums.',
-      en: 'Actinorhizal Frankia nitrogen-rich woody mulch. Directly nourishes shallow fruit tree roots during active fruit swelling.'
-    }
+      de: 'Stickstoff fixierender Strauch (Elaeagnus, Frankia-Aktinorrhiza); das Schnittgut liefert stickstoffreichen Mulch.',
+      en: 'Nitrogen-fixing shrub (Elaeagnus, actinorhizal Frankia symbiosis); its prunings make a nitrogen-rich mulch.'
+    },
+    sources: [
+      'Huss-Danell, K. (1997). Actinorhizal symbioses and their N2 fixation. New Phytologist, 136(3), 375–405. doi:10.1046/j.1469-8137.1997.00755.x'
+    ]
   },
   'plant-yarrow': {
     howToCut: {
@@ -157,12 +214,12 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Cut spent flower stems and tall foliage down to 5 cm above ground, preserving basal ground-hugging rosette.'
     },
     whereToSpread: {
-      de: 'Fein verteilt in Zone 2 ausstreuen. Reich an Schwefel und Kupfer; stärkt die mikrobielle Widerstandskraft im Boden.',
-      en: 'Spread finely across Zone 2. Rich in sulfur, potassium, and copper, enhancing fungal soil disease resistance.'
+      de: 'Fein verteilt in Zone 2 ausstreuen.',
+      en: 'Spread finely across Zone 2.'
     },
     nutrientBenefit: {
-      de: 'Kupfer, Schwefel und aromatische Ätheröle wirken als natürliches Boden-Antiseptikum gegen Schadpilze.',
-      en: 'Copper, sulfur, and aromatic essential oils act as a mild soil bio-protectant against harmful fungal spores.'
+      de: 'Weicher Kräutermulch, der seine Mineralstoffe beim Verrotten an den Boden zurückgibt.',
+      en: 'A soft herb mulch that returns its minerals to the soil as it decomposes.'
     }
   },
   'plant-horseradish': {
@@ -175,13 +232,17 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Harvest up to 40% of outer leaf crown. The central growing heart must remain untouched.'
     },
     whereToSpread: {
-      de: 'Blätter grob zerkleinern und unter die Baumkrone (Zone 1 und 2) legen. Beim Verrotten werden flüchtige Senföle frei.',
-      en: 'Chop leaves coarsely and mulch beneath tree canopy (Zone 1–2). As leaves decompose, glucosinolates release antimicrobial gases.'
+      de: 'Blätter grob zerkleinern und unter die Baumkrone (Zone 1 und 2) legen.',
+      en: 'Chop leaves coarsely and mulch beneath tree canopy (Zone 1–2).'
     },
     nutrientBenefit: {
-      de: 'Biofumigation durch Allylsenföle (AITC): Hemmt bodenbürtige Schorfpilzsporen und hemmt Wühlmausgänge.',
-      en: 'Natural biofumigation via allyl isothiocyanates: Suppresses overwintering fungal scab spores and deters voles.'
-    }
+      de: 'Meerrettich enthält das Glucosinolat Sinigrin, das beim Zerkleinern scharfes Allylsenföl (AITC) freisetzt. Eine Wirkung des Blattmulchs auf Schorfpilze oder Wühlmäuse ist nicht belegt; selbst eingearbeitete Biofumigation wirkt uneinheitlich.',
+      en: 'Horseradish contains the glucosinolate sinigrin, which releases pungent allyl isothiocyanate (AITC) when the tissue is crushed. An effect of leaf mulch on scab fungi or voles is not established; even incorporated biofumigation gives inconsistent results.'
+    },
+    sources: [
+      'Alibrahem, W., et al. (2025). Health Benefits, Applications, and Analytical Methods of Freshly Produced Allyl Isothiocyanate. Foods, 14(4), 579. doi:10.3390/foods14040579',
+      SRC_DAHLIN_2020
+    ]
   },
   'plant-borage': {
     howToCut: {
@@ -193,18 +254,21 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Prune back to 10–15 cm in summer; cut flush to ground level after first autumn frosts.'
     },
     whereToSpread: {
-      de: 'Als zersetzungsfreudigen, weichen Biomasseteppich in Zone 2 verteilen. Trocknet schnell an und nährt Regenwürmer.',
-      en: 'Spread as tender, fast-decomposing biomass blanket in Zone 2. Feeds earthworms and disintegrates rapidly.'
+      de: 'Als weichen Biomasseteppich in Zone 2 verteilen.',
+      en: 'Spread as a tender biomass blanket in Zone 2.'
     },
     nutrientBenefit: {
-      de: 'Hohe Kalium- und Kieselsäurekonzentration. Perfekter Nährstoffschub vor dem Einwintern.',
-      en: 'High potassium and soluble silica content. Perfect soil conditioning pulse before winter dormancy.'
-    }
+      de: 'Kaliumreiche, weiche Biomasse – Kalium ist der wichtigste Mineralstoff im Borretsch.',
+      en: 'Potassium-rich, soft biomass – potassium is the main mineral element in borage.'
+    },
+    sources: [
+      'Medrano, A., Masoud, T. A., & Martinez, M. C. (1992). Mineral and proximate composition of borage. Journal of Food Composition and Analysis, 5(4), 313–318. doi:10.1016/0889-1575(92)90064-Q'
+    ]
   },
   'plant-lupine': {
     howToCut: {
-      de: 'Direkt zur Vollblüte schneiden, bevor Hülsen ansetzen, um den maximalen Stickstoff im Grünland festzuhalten.',
-      en: 'Chop down right at peak flowering, before seed pods develop, capturing maximum fixed nitrogen in green tissue.'
+      de: 'Zur Vollblüte schneiden, bevor Hülsen ansetzen – dann enthält die Pflanze am meisten Stickstoff.',
+      en: 'Cut at mid-bloom, before seed pods develop, when the plant holds the most nitrogen.'
     },
     howMuch: {
       de: 'Ganze Stängel auf 5–10 cm über dem Wurzelansatz kappen.',
@@ -215,9 +279,13 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Lay around heavy-feeding woody perennials in Zone 2 and 3.'
     },
     nutrientBenefit: {
-      de: 'Sehr hohes Stickstoff-Biomasse-Verhältnis; bricht dichte Böden auf.',
-      en: 'Extremely high nitrogen-to-biomass ratio; deep roots fracture compacted subsoil.'
-    }
+      de: 'Stickstoffreiche Leguminosen-Biomasse; Lupinen-Keimwurzeln durchdringen sehr festen Boden besser als die meisten Kulturen.',
+      en: 'Nitrogen-rich legume biomass; lupin seedling roots penetrate very strong soil better than most crops.'
+    },
+    sources: [
+      SRC_MIRSKY_2016,
+      'Materechera, S. A., Dexter, A. R., & Alston, A. M. (1991). Penetration of very strong soils by seedling roots of different plant species. Plant and Soil, 135(1), 31–41. doi:10.1007/BF00014776'
+    ]
   },
   'plant-sage': {
     howToCut: {
@@ -229,13 +297,17 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Trim back leafy green shoots by one third. Never cut back into old, bare, leafless woody branches!'
     },
     whereToSpread: {
-      de: 'Schnittgut um Rebstöcke oder Obstbäume in Zone 2 streuen. Flüchtige Terpene aktivieren pflanzliche Abwehrkräfte.',
-      en: 'Spread prunings around grapevines or fruit trees in Zone 2. Emits airborne monoterpenes priming tree defense.'
+      de: 'Schnittgut um Rebstöcke oder Obstbäume in Zone 2 streuen.',
+      en: 'Spread prunings around grapevines or fruit trees in Zone 2.'
     },
     nutrientBenefit: {
-      de: 'Kampfer, 1,8-Cineol und Thujon stimulieren die Stilben-Synthese benachbarter Pflanzen gegen Pilzinfektionen.',
-      en: 'Camphor, 1,8-cineole, and thujone prime grapevine defense metabolites (stilbenes) against downy mildew.'
-    }
+      de: 'Salbei enthält viel Thujon, 1,8-Cineol und Campher. In einem geschlossenen Boxversuch waren Rebblätter, die den Duftstoffen lebender Salbeipflanzen ausgesetzt waren, weniger anfällig für Falschen Mehltau; für Schnittgut als Mulch ist das nicht geprüft.',
+      en: 'Sage is rich in thujone, 1,8-cineole and camphor. In a sealed-box trial, grape leaves exposed to volatiles of living sage plants were less susceptible to downy mildew; this has not been tested for prunings used as mulch.'
+    },
+    sources: [
+      'Craft, J., Satyal, P., & Setzer, W. (2017). The Chemotaxonomy of Common Sage (Salvia officinalis) Based on the Volatile Constituents. Medicines, 4(3), 47. doi:10.3390/medicines4030047',
+      'Fittipaldi Broussard, M., et al. (2026). The Consociation of Sage and Grapevine Modifies Grape Leaf Metabolism and Reduces Downy Mildew Infection. Agronomy, 16(2), 201. doi:10.3390/agronomy16020201'
+    ]
   },
   'plant-chives': {
     howToCut: {
@@ -243,35 +315,42 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Cut regularly from April to October a handbreadth above the ground using sharp shears.'
     },
     howMuch: {
-      de: 'Auf 2–3 cm über dem Boden kappen. Treibt innerhalb von 10–14 Tagen frisch nach.',
-      en: 'Cut down to 2–3 cm above ground level. Regrows fresh tender hollow stems within 10–14 days.'
+      de: 'Auf 2–3 cm über dem Boden kappen; treibt danach rasch wieder aus.',
+      en: 'Cut down to 2–3 cm above ground level; regrows quickly afterwards.'
     },
     whereToSpread: {
-      de: 'Direkt im Zwiebelring (Zone 1) rund um den Baumstamm verteilen. Schwefelhaltige Dämpfe steigen in die Krone auf.',
-      en: 'Spread directly within Zone 1 bulb ring around trunk base. Sulfur compounds volatilize upward toward lower foliage.'
+      de: 'Direkt im Zwiebelring (Zone 1) rund um den Baumstamm verteilen.',
+      en: 'Spread directly within the Zone 1 bulb ring around the trunk base.'
     },
     nutrientBenefit: {
-      de: 'Natürlicher Schwefeldünger; hemmt Apfelschorfsporen (Venturia inaequalis) und beugt Echtem Mehltau vor.',
-      en: 'Natural organic sulfur; volatile allicin inhibits apple scab (Venturia inaequalis) and powdery mildew.'
-    }
+      de: 'Schwefelreiche Blätter mit zwiebeltypischen Aromavorstufen (vor allem Isoalliin; anders als Knoblauch kein Alliin, also auch kein Allicin). Eine Schutzwirkung gegen Apfelschorf oder Mehltau ist nicht belegt.',
+      en: 'Sulfur-rich leaves with onion-type flavor precursors (mainly isoalliin; unlike garlic no alliin, hence no allicin). A protective effect against apple scab or powdery mildew is not proven.'
+    },
+    sources: [
+      'Yamazaki, Y., Iwasaki, K., Mikami, M., & Yagihashi, A. (2010). Distribution of Eleven Flavor Precursors, S-Alk(en)yl-L-Cysteine Derivatives, in Seven Allium Vegetables. Food Science and Technology Research, 17(1), 55–62. doi:10.3136/fstr.17.55'
+    ]
   },
   'plant-nasturtium': {
     howToCut: {
-      de: 'Laufend Blätter und Ranken stutzen; nach dem ersten Herbstfrost die erfrorene Masse komplett als Gründüngung einharken.',
-      en: 'Lightly trim running vines in summer; after first autumn frost, rake entire collapsed frost-killed mass into soil.'
+      de: 'Laufend Blätter und Ranken stutzen; nach dem ersten Herbstfrost die erfrorene Masse als Bodendecke liegen lassen.',
+      en: 'Lightly trim running vines in summer; after the first autumn frost, leave the collapsed frost-killed mass as ground cover.'
     },
     howMuch: {
       de: 'Im Sommer bis zu 30 % der Ausläufer; im Spätherbst 100 % der Biomasse nutzen.',
       en: 'In summer up to 30% of runners; in late autumn 100% of frost-killed aboveground biomass.'
     },
     whereToSpread: {
-      de: 'Als Bodendecke in Zone 1 und 2 liegen lassen. Zersetzt sich über den Winter vollständig zu nährstoffreichem Humus.',
-      en: 'Leave as soil armor blanket across Zone 1 and 2. Decomposes completely over winter into rich bio-humus.'
+      de: 'Als Bodendecke in Zone 1 und 2 liegen lassen.',
+      en: 'Leave as a soil-covering blanket across Zone 1 and 2.'
     },
     nutrientBenefit: {
-      de: 'Glucosinolate wirken nematizid und unterdrücken Bodenschädlinge; nährt das edaphische Bodenleben.',
-      en: 'Glucosinolates suppress root-knot nematodes and pathogenic larvae while feeding beneficial detritivores.'
-    }
+      de: 'Enthält in allen Pflanzenteilen Benzylglucosinolat, das zu Benzylsenföl (BITC) abgebaut wird; eine Wirkung des Mulchs gegen Nematoden ist nicht belegt. Nährt beim Verrotten das Bodenleben.',
+      en: 'All plant parts contain benzyl glucosinolate, which breaks down into benzyl isothiocyanate (BITC); an effect of the mulch against nematodes is not shown. Feeds soil life as it decomposes.'
+    },
+    sources: [
+      'Pintão, A. M., Santos, T., & Nogueira, F. (2024). Antimalarial Activity of Aqueous Extracts of Nasturtium (Tropaeolum majus L.) and Benzyl Isothiocyanate. Molecules, 29(10), 2316. doi:10.3390/molecules29102316',
+      SRC_DAHLIN_2020
+    ]
   },
   'plant-hemp': {
     howToCut: {
@@ -279,16 +358,16 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'In mid-summer (July) top vegetative shoots; in late autumn after seed maturity cut down flush with sickle or loppers.'
     },
     howMuch: {
-      de: 'Im Sommer obere 30–40 % einkürzen. Im Spätherbst auf 5–10 cm über dem Boden kappen, Pfahlwurzeln zur Unterboden-Lockerung im Boden belassen.',
-      en: 'In summer trim top 30–40%. In late autumn cut down to 5–10 cm above ground; leave taproots in soil to create subsoil drainage channels.'
+      de: 'Im Sommer obere 30–40 % einkürzen. Im Spätherbst auf 5–10 cm über dem Boden kappen und die Wurzeln im Boden belassen.',
+      en: 'In summer trim top 30–40%. In late autumn cut down to 5–10 cm above ground and leave the roots in the soil.'
     },
     whereToSpread: {
-      de: 'Stängel in 10–20 cm Stücke schneiden und in Zone 2 und 3 unter der Traufkante als langlebige Kohlenstoff-Mulchdecke verteilen.',
-      en: 'Chop fibrous stalks into 10–20 cm segments and spread across Zone 2 and 3 as a durable, weed-suppressing carbon mulch.'
+      de: 'Stängel in 10–20 cm Stücke schneiden und in Zone 2 und 3 unter der Traufkante als Mulchdecke verteilen.',
+      en: 'Chop fibrous stalks into 10–20 cm segments and spread across Zone 2 and 3 as a mulch layer.'
     },
     nutrientBenefit: {
-      de: 'Hoher Kohlenstoff- und Siliziumgehalt (C:N 35–45:1); fördert nützliche Mykorrhizapilze und hemmt Unkrautkeimung.',
-      en: 'High carbon and soluble silica content (C:N 35–45:1); promotes fungal mycorrhizae and suppresses annual weed germination.'
+      de: 'Kohlenstoffreiche, faserige Stängel ergeben einen langsam verrottenden Mulch, der den Boden beschattet.',
+      en: 'High-carbon, fibrous stalks make a slow-decomposing mulch that shades the soil surface.'
     }
   },
   'plant-alder': {
@@ -305,9 +384,13 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Chip branches (< 7 cm) into ramial chipped wood (BRF); lay summer leaves 5–10 cm deep in Zone 3 and 4, keeping 30 cm from the trunk.'
     },
     nutrientBenefit: {
-      de: 'Stickstoffreiches, leicht saures Laub aus Frankia-Fixierung (je nach Standort 40–300 kg N/ha und Jahr).',
-      en: 'N-rich, mildly acidic leaf litter from Frankia fixation (40–300 kg N/ha/yr depending on site).'
-    }
+      de: 'Stickstoffreiches Laub aus der Frankia-Symbiose. Die Fixierleistung schwankt stark je nach Standort (Erlen: von einigen bis etwa 320 kg N/ha und Jahr).',
+      en: 'Nitrogen-rich leaf litter from the Frankia symbiosis. Fixation varies strongly with site (alders: from several up to about 320 kg N/ha per year).'
+    },
+    sources: [
+      SRC_ALDER_ATLAS,
+      'Tobita, H., et al. (2015). Responses of symbiotic N2 fixation in Alnus species to the projected elevated CO2 environment. Trees, 30(2), 523–537. doi:10.1007/s00468-015-1297-x'
+    ]
   },
   'plant-linden': {
     howToCut: {
@@ -319,13 +402,17 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Remove all rods back to the pollard head at 1.8–2.5 m (or 15–20 cm above the coppice stool).'
     },
     whereToSpread: {
-      de: 'Laub und dünne Zweige 5–10 cm dick in Zone 3 und 4 von Obstbäumen verteilen – nicht unter Tee, Heidelbeere oder Rhododendron (pH-Anstieg).',
-      en: 'Spread leaves and thin twigs 5–10 cm deep in Zone 3 and 4 of fruit trees—not under tea, blueberry or rhododendron (raises pH).'
+      de: 'Laub und dünne Zweige 5–10 cm dick in Zone 3 und 4 von Obstbäumen verteilen – nicht unter Säureliebhabern wie Tee, Heidelbeere oder Rhododendron.',
+      en: 'Spread leaves and thin twigs 5–10 cm deep in Zone 3 and 4 of fruit trees—not under acid-loving plants such as tea, blueberry or rhododendron.'
     },
     nutrientBenefit: {
-      de: 'Calcium- und magnesiumreiches, schnell zersetzliches Laub; fördert Regenwürmer und Mull-Humus.',
-      en: 'Calcium- and magnesium-rich, fast-decomposing litter that boosts earthworms and mull humus.'
-    }
+      de: 'Calciumreiches, schnell umgesetztes Laub; unter Linden fanden sich mehr tiefgrabende Regenwürmer und ein höherer pH-Wert der Humusauflage als unter den meisten anderen Baumarten.',
+      en: 'Calcium-rich, fast-turnover litter; under lime trees, studies found more burrowing earthworms and a higher forest-floor pH than under most other tree species.'
+    },
+    sources: [
+      'Reich, P. B., et al. (2005). Linking litter calcium, earthworms and soil properties: a common garden test with 14 tree species. Ecology Letters, 8(8), 811–818. doi:10.1111/j.1461-0248.2005.00779.x',
+      'Schelfhout, S., et al. (2017). Tree Species Identity Shapes Earthworm Communities. Forests, 8(3), 85. doi:10.3390/f8030085'
+    ]
   },
   'plant-nepal-alder': {
     howToCut: {
@@ -333,53 +420,61 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Lop side branches in the cool dry season (Dec–Feb); keep the main stem as the shade canopy.'
     },
     howMuch: {
-      de: 'So viel Seitenäste entfernen, dass über dem Tee etwa 25–35 % Kronenschatten verbleiben.',
-      en: 'Remove enough side branches to keep roughly 25–35% canopy shade over the tea.'
+      de: 'So viele Seitenäste entfernen, dass über dem Tee lichter Filterschatten bleibt.',
+      en: 'Remove enough side branches to keep light, filtered shade over the tea.'
     },
     whereToSpread: {
       de: 'Laub und Feinreisig zwischen den Teereihen (Zone 3 und 4) als Mulch auslegen.',
       en: 'Lay leaves and fine twigs between the tea rows (Zone 3 and 4) as mulch.'
     },
     nutrientBenefit: {
-      de: 'Stickstoffreiches Laub aus der Frankia-Symbiose; steigert die mikrobielle Bodenbiomasse.',
-      en: 'N-rich litter from the Frankia symbiosis; increases soil microbial biomass.'
-    }
+      de: 'Stickstoff fixierender (Frankia) Schattenbaum. In Teegärten mit Nepal-Erle war die Biomasse der Bodenpilze um 41 % und der Bodenbakterien um 10 % höher, der Teeertrag um 52–72 %.',
+      en: 'Nitrogen-fixing (Frankia) shade tree. In tea plantations with Nepal alder, soil fungal biomass was 41% and bacterial biomass 10% higher, and tea yield 52–72% higher.'
+    },
+    sources: [
+      'Mortimer, P. E., Gui, H., Xu, J., Zhang, C., Barrios, E., & Hyde, K. D. (2015). Alder trees enhance crop productivity and soil microbial biomass in tea plantations. Applied Soil Ecology, 96, 25–32. doi:10.1016/j.apsoil.2015.05.012',
+      SRC_BEER_1987
+    ]
   },
   'plant-albizia': {
     howToCut: {
-      de: 'In der kühlen Trockenzeit (Dez–Feb) schneiteln; Bäume auf ca. 7 m wachsen lassen und auf ca. 4 m zurückschneiden.',
-      en: 'Lop in the cool dry season (Dec–Feb); let trees reach about 7 m, then cut back to about 4 m.'
+      de: 'In der kühlen Trockenzeit (Dez–Feb) schneiteln und die Krone so niedrig halten, dass sie den Tee nur licht überschirmt.',
+      en: 'Lop in the cool dry season (Dec–Feb), keeping the crown low enough to cast only light shade over the tea.'
     },
     howMuch: {
-      de: 'Kronenschatten über dem Tee auf lichten Filterschatten auslichten (ca. 25–35 %).',
-      en: 'Thin the crown to light, filtered shade over the tea (about 25–35%).'
+      de: 'Kronenschatten über dem Tee auf lichten Filterschatten auslichten.',
+      en: 'Thin the crown to light, filtered shade over the tea.'
     },
     whereToSpread: {
       de: 'Fiederblätter, Zweige und Hülsen zwischen den Teereihen (Zone 3 und 4) liegen lassen.',
       en: 'Leave leaflets, twigs and pods between the tea rows (Zone 3 and 4).'
     },
     nutrientBenefit: {
-      de: 'Stickstoffreiches Leguminosenlaub (Rhizobium-Symbiose) als organische Substanz für den Teeboden.',
-      en: 'N-rich legume litter (Rhizobium symbiosis) adding organic matter to the tea soil.'
-    }
+      de: 'Leguminosen-Schattenbaum, dessen Laub dem Teeboden organische Substanz zuführt.',
+      en: 'Leguminous shade tree whose litter adds organic matter to the tea soil.'
+    },
+    sources: [SRC_BEER_1987]
   },
   'plant-rhubarb': {
     howToCut: {
-      de: 'Nach Ernteende (24. Juni) die großen Blätter am Stielansatz abschneiden; Blütenstängel sofort entfernen.',
-      en: 'After the harvest ends (June 24) cut the large leaves at the stalk base; remove flower stalks immediately.'
+      de: 'Nach Ernteende (traditionell Johannistag, 24. Juni; spätestens Anfang Juli) die großen Blätter am Stielansatz abschneiden; Blütenstängel sofort entfernen.',
+      en: 'After the harvest ends (traditionally St John\'s Day, June 24; at the latest early July) cut the large leaves at the stalk base; remove flower stalks immediately.'
     },
     howMuch: {
-      de: 'Höchstens die Hälfte der Blätter nehmen, damit der Wurzelstock Reserven für das nächste Jahr aufbaut.',
-      en: 'Take no more than half of the leaves so the crown can rebuild reserves for next year.'
+      de: 'Höchstens etwa ein Drittel der Blätter nehmen, damit genug Laub die Pflanze im Wachstum hält.',
+      en: 'Take no more than about a third of the leaves so enough foliage keeps the plant in active growth.'
     },
     whereToSpread: {
       de: 'Blattspreiten flach als Unkrautsperre in Zone 3 auslegen; Abstand zum Stamm 30 cm.',
       en: 'Lay leaf blades flat as a weed barrier in Zone 3, 30 cm away from the trunk.'
     },
     nutrientBenefit: {
-      de: 'Große, schnell zersetzliche Blattmasse beschattet den Boden und hält Feuchtigkeit.',
-      en: 'Large, fast-decomposing leaf mass shades the soil and conserves moisture.'
-    }
+      de: 'Große Blattmasse beschattet den Boden und hält Feuchtigkeit.',
+      en: 'Large leaf mass shades the soil and conserves moisture.'
+    },
+    sources: [
+      'Royal Horticultural Society (n.d.). How to grow rhubarb. RHS Grow Your Own. https://www.rhs.org.uk/vegetables/rhubarb/grow-your-own'
+    ]
   }
 };
 
@@ -389,12 +484,17 @@ type ChoreType = 'PLANTING' | 'CHOP_AND_DROP' | 'HARVEST' | 'CANOPY_PRUNING' | '
 function resolveSeasonDate(
   season: PhenoSeason,
   choreType: ChoreType,
-  hemisphere: Hemisphere = 'NORTHERN'
+  hemisphere: Hemisphere = 'NORTHERN',
+  override?: { month: number; day: number }
 ): { month: number; day: number } {
   let month = 4;
   let day = 15;
 
-  switch (season) {
+  switch (override ? 'OVERRIDE' : season) {
+    case 'OVERRIDE':
+      month = override!.month; day = override!.day;
+      break;
+
     case 'EARLY_SPRING':
       if (choreType === 'CANOPY_PRUNING') { month = 3; day = 1; }
       else if (choreType === 'PLANTING') { month = 4; day = 5; }
@@ -453,10 +553,11 @@ function getNextOccurringDate(
   season: PhenoSeason,
   choreType: ChoreType,
   minDate: Date,
-  hemisphere: Hemisphere = 'NORTHERN'
+  hemisphere: Hemisphere = 'NORTHERN',
+  override?: { month: number; day: number }
 ): { dateObj: Date; dateStr: string; nextDayStr: string } {
   const minTimestamp = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate()).getTime();
-  const { month, day } = resolveSeasonDate(season, choreType, hemisphere);
+  const { month, day } = resolveSeasonDate(season, choreType, hemisphere, override);
   let year = minDate.getFullYear();
   if (new Date(year, month - 1, day).getTime() < minTimestamp) year += 1;
 
@@ -468,6 +569,17 @@ function getNextOccurringDate(
 }
 
 export const CHOP_INSTRUCTIONS_MAP = DEDICATED_CHOP_INSTRUCTIONS;
+
+/**
+ * Legumes cut at a bloom stage rather than at the generic late-spring date (25 May):
+ * lupine at mid-bloom (SARE: "terminate the legume at mid-bloom when the cover crop contains
+ * the most nitrogen"; Lupinus perennis blooms May–July) and sainfoin mown around full bloom.
+ * Northern-hemisphere dates; resolveSeasonDate shifts them for the southern hemisphere.
+ */
+export const BLOOM_STAGE_CHOP_DATES: Record<string, Partial<Record<PhenoSeason, { month: number; day: number }>>> = {
+  'plant-lupine': { LATE_SPRING: { month: 6, day: 15 } },
+  'plant-sainfoin': { LATE_SPRING: { month: 6, day: 15 } }
+};
 
 /** TEXT value escaping per RFC 5545 §3.3.11. */
 export function escapeIcsText(str: string): string {
@@ -866,7 +978,7 @@ export function generateGuildCalendarIcs(options: CalendarExportOptions): string
     imageUrl: treeImgUrl,
     metaPills: [
       { label: `🌳 ${treeCommonName}`, bg: '#f0fdf4', color: '#166534', border: '#bbf7d0' },
-      { label: `📍 Zone 0 (0–30 cm)`, bg: '#fff1f2', color: '#be123c', border: '#fecdd3' },
+      { label: `📍 Zone 0`, bg: '#fff1f2', color: '#be123c', border: '#fecdd3' },
       { label: tr.calendarPillWinterDefense, bg: '#eff6ff', color: '#1e40af', border: '#bfdbfe' }
     ],
     instructionHeading: tr.calendarCollarHeading,
@@ -978,7 +1090,7 @@ export function generateGuildCalendarIcs(options: CalendarExportOptions): string
     const chopSeasons = plant.seasonalActivity.chopAndDropSeasons;
     if (chopSeasons && chopSeasons.length > 0) {
       chopSeasons.forEach((season, sIdx) => {
-        const chopTiming = getNextOccurringDate(season, 'CHOP_AND_DROP', plantFirstPlantingDate, hemisphere);
+        const chopTiming = getNextOccurringDate(season, 'CHOP_AND_DROP', plantFirstPlantingDate, hemisphere, BLOOM_STAGE_CHOP_DATES[plant.id]?.[season]);
         const cStart = chopTiming.dateStr;
         const cEnd = chopTiming.nextDayStr;
 

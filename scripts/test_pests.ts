@@ -1,12 +1,20 @@
 import { STAR_TREES } from '../src/data/starTrees';
-import { GUILD_PLANTS } from '../src/data/guildPlants';
+import { ACTIVE_GUILD_PLANTS, GUILD_PLANTS } from '../src/data/guildPlants';
 import {
   PEST_DEFENSE_RULES,
   PEST_RESEARCH_NOTES,
   resolvePestDefense,
   getCompanionPestDefenseForTree
 } from '../src/core/pestCompanionEngine';
-import { analyzePlantRedundancy } from '../src/core/seasonalGapEngine';
+import {
+  analyzePlantRedundancy,
+  analyzeSeasonalRoleGaps,
+  getGapCandidateIds,
+  plantCoversRoleInSeason,
+  PHENO_SEASONS
+} from '../src/core/seasonalGapEngine';
+import { DUAL_ROLE_STAR_TREE_MAP } from '../src/core/gardenOptimizer';
+import { ALL_ROLES } from '../src/core/roleCoverageEngine';
 
 let failures = 0;
 const fail = (msg: string) => {
@@ -78,7 +86,9 @@ const EXPECTED: Record<string, string[]> = {
   'tree-quince': ['rule-codling-moth-flower-strip'],
   'tree-peach': ['rule-peach-brown-rot'],
   'vine-grape': ['rule-grape-downy-mildew', 'rule-grape-powdery-mildew', 'rule-lobesia-botrana'],
-  'tree-tea-sinensis': ['rule-tea-blister-blight', 'rule-tea-green-leafhopper', 'rule-tea-geometrid'],
+  // Blister blight (soybean intercrop) moved to research notes: the only source's accessible
+  // abstract does not name blister blight, so the badge claim could not be verified.
+  'tree-tea-sinensis': ['rule-tea-green-leafhopper', 'rule-tea-geometrid'],
   'tree-tea-assamica': ['rule-tea-green-leafhopper', 'rule-tea-geometrid']
 };
 for (const tree of STAR_TREES) {
@@ -174,6 +184,51 @@ const appleGuild = apple.recommendedCompanions.map(id => GUILD_PLANTS.find(p => 
 const flaggedWithoutStar = analyzePlantRedundancy(appleGuild).map(r => r.plant.id);
 const flaggedWithStar = analyzePlantRedundancy(appleGuild, apple).map(r => r.plant.id);
 console.log(`Apple default guild redundancy: ${flaggedWithoutStar.length} flagged without star context, ${flaggedWithStar.length} with it.`);
+
+// 9. Retired companions and engine consistency
+for (const p of GUILD_PLANTS.filter(x => x.retired)) {
+  if (p.recommendedForTrees.length > 0) fail(`retired ${p.id} still recommends star plants`);
+  for (const t of STAR_TREES) if (t.recommendedCompanions.includes(p.id)) fail(`${t.id} still recommends retired ${p.id}`);
+  for (const r of PEST_DEFENSE_RULES) if (r.companionPlantIds.includes(p.id)) fail(`${r.id} lists retired ${p.id}`);
+}
+for (const p of ACTIVE_GUILD_PLANTS) if (p.roles.length === 0) fail(`${p.id} has no guild role left`);
+// Gap suggestions come from the data: every suggested plant is active and fills that role in that season.
+for (const { role } of ALL_ROLES) {
+  for (const { id: season } of PHENO_SEASONS) {
+    for (const id of getGapCandidateIds(role, season)) {
+      const plant = GUILD_PLANTS.find(p => p.id === id);
+      if (!plant || plant.retired || !plantCoversRoleInSeason(plant, role, season)) {
+        fail(`gap candidate ${id} does not fill ${role} in ${season}`);
+      }
+    }
+  }
+}
+for (const star of STAR_TREES) {
+  for (const size of [1, 3, 6]) {
+    const guild = star.recommendedCompanions.slice(0, size).map(id => GUILD_PLANTS.find(p => p.id === id)!).filter(Boolean);
+    for (const status of analyzeSeasonalRoleGaps(guild, star)) {
+      for (const gap of status.gaps) {
+        if (gap.suggestedPlantIds.length === 0) fail(`${star.id}: ${gap.role}/${gap.season} gap reported without any possible filler`);
+        for (const id of gap.suggestedPlantIds) {
+          const plant = GUILD_PLANTS.find(p => p.id === id);
+          if (!plant || plant.retired || !plantCoversRoleInSeason(plant, gap.role, gap.season) || guild.some(g => g.id === id)) {
+            fail(`${star.id}: gap suggestion ${id} invalid for ${gap.role}/${gap.season}`);
+          }
+          if (star.jugloneProducer && plant?.jugloneTolerance === 'SENSITIVE') fail(`${star.id}: juglone-sensitive gap suggestion ${id}`);
+        }
+      }
+    }
+  }
+}
+// A star plant's own roles equal the evidence-checked roles of its companion entry (same species).
+for (const star of STAR_TREES) {
+  const twin = ACTIVE_GUILD_PLANTS.find(p => p.botanicalName === star.botanicalName);
+  const dual = DUAL_ROLE_STAR_TREE_MAP[star.id] || [];
+  if (JSON.stringify(dual) !== JSON.stringify(twin ? twin.roles : [])) {
+    fail(`${star.id}: star roles [${dual}] differ from companion ${twin?.id} [${twin?.roles}]`);
+  }
+}
+for (const id of Object.keys(DUAL_ROLE_STAR_TREE_MAP)) if (!starIds.has(id)) fail(`dual-role entry for unknown star ${id}`);
 
 const badgeCount = STAR_TREES.reduce(
   (n, t) => n + t.vulnerabilities.en.filter(p => resolvePestDefense(p, t.id).combatable).length,

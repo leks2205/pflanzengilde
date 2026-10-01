@@ -3,7 +3,7 @@ import { Camera } from 'lucide-react';
 import { Language, getLoc } from '../types/guild';
 import { t } from '../i18n/translations';
 import { STAR_TREES } from '../data/starTrees';
-import { GUILD_PLANTS } from '../data/guildPlants';
+import { ACTIVE_GUILD_PLANTS, GUILD_PLANTS } from '../data/guildPlants';
 import { IMAGE_CREDITS, ImageCredit, getImageCredit } from '../data/imageCredits';
 import { creditAnchorId, soilCreditAnchorId } from './PhotoCreditBadge';
 
@@ -130,7 +130,9 @@ export const PhotoCredits: React.FC<PhotoCreditsProps> = ({ language }) => {
       .sort(byName);
 
   const starRows = plantRows(STAR_TREES);
-  const companionRows = plantRows(GUILD_PLANTS);
+  const companionRows = plantRows(ACTIVE_GUILD_PLANTS);
+  // Retired companions are no longer offered, but older saved guilds may still show their photos.
+  const retiredRows = plantRows(GUILD_PLANTS.filter(p => p.retired));
   const soilRows: CreditRow[] = Object.entries(SOIL_LABELS).flatMap(([path, label]) => {
     const credit = IMAGE_CREDITS[path];
     if (!credit) return [];
@@ -138,9 +140,9 @@ export const PhotoCredits: React.FC<PhotoCreditsProps> = ({ language }) => {
     return [{ key: path, anchor: soilCreditAnchorId(soilIdFromPath(path)), name: String(tr[label]), credit }];
   });
   // Credited files no longer referenced by the catalog still get listed rather than silently dropped.
-  const otherRows: CreditRow[] = Object.entries(IMAGE_CREDITS)
+  const otherRows: CreditRow[] = [...retiredRows, ...Object.entries(IMAGE_CREDITS)
     .filter(([path]) => !seen.has(path))
-    .map(([path, credit]) => ({ key: path, anchor: `credit-file-${fileAnchorPart(path)}`, name: path.split('/').pop() ?? path, credit }));
+    .map(([path, credit]) => ({ key: path, anchor: `credit-file-${fileAnchorPart(path)}`, name: path.split('/').pop() ?? path, credit }))];
 
   return (
     <div className="flex-1 w-full bg-stone-50 text-stone-900 font-sans py-4 sm:py-6">

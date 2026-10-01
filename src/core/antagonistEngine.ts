@@ -15,10 +15,51 @@ import {
   isFennelPlant,
   isWormwoodPlant,
   isStrictAcidophilePlant,
-  isStrictCalcicolePlant
+  isStrictCalcicolePlant,
+  isJugloneSensitiveStar,
+  isAcidIntolerantStar,
+  STRICT_ACIDOPHILE_STAR_IDS,
+  JUGLONE_ROOT_ZONE_M
 } from './placementRules';
 import { PEST_HOST_CONFLICTS } from './pestHostConflicts';
 import { formatNumber } from '../i18n/translations';
+
+/* Shared, verified citations; also attached to the matching garden-level conflicts (gardenAntagonist.ts). */
+/** Juglone mechanism (internal walnut conflict). */
+export const JUGLONE_MECHANISM_CITATIONS: readonly string[] = [
+  'Dana, M. N., & Lerner, B. R. (rev. 1994). Black Walnut Toxicity. Purdue University Cooperative Extension Service, HO-193. https://www.extension.purdue.edu/extmedia/HO/HO-193.pdf',
+  'Hejl, A. M., Einhellig, F. A., & Rasmussen, J. A. (1993). Effects of juglone on growth, photosynthesis, and respiration. Journal of Chemical Ecology, 19(3), 559–568. doi:10.1007/BF00994325',
+  'Hejl, A. M., & Koster, K. L. (2004). Juglone disrupts root plasma membrane H+-ATPase activity and impairs water uptake, root respiration, and growth in soybean (Glycine max) and corn (Zea mays). Journal of Chemical Ecology, 30(2), 453–471. doi:10.1023/B:JOEC.0000017988.20530.d5'
+];
+/** Juglone root-zone distance (external walnut alert). */
+export const JUGLONE_DISTANCE_CITATIONS: readonly string[] = [
+  'Funt, R. C., & Martin, J. (1993). Black Walnut Toxicity to Plants, Humans and Horses. Ohio State University Extension Fact Sheet HYG-1148-93.',
+  'Dana, M. N., & Lerner, B. R. (rev. 1994). Black Walnut Toxicity. Purdue University Cooperative Extension Service, HO-193. https://www.extension.purdue.edu/extmedia/HO/HO-193.pdf',
+  'Hejl, A. M., & Koster, K. L. (2004). Juglone disrupts root plasma membrane H+-ATPase activity and impairs water uptake, root respiration, and growth in soybean (Glycine max) and corn (Zea mays). Journal of Chemical Ecology, 30(2), 453–471. doi:10.1023/B:JOEC.0000017988.20530.d5'
+];
+/** Allium extract vs. legume nodulation (precautionary spacing). */
+export const ALLIUM_LEGUME_CITATIONS: readonly string[] = [
+  'Adeleke, M. T. V. (2016). Effect of Allium sativum (garlic) extract on the growth and nodulation of cowpea (Vigna unguiculata) and groundnut (Arachis hypogea). African Journal of Agricultural Research, 11(43), 4304–4312. doi:10.5897/AJAR2016.11208'
+];
+/** Fennel extract/oil allelopathy (lab). */
+export const FENNEL_ALLELOPATHY_CITATIONS: readonly string[] = [
+  'Nourimand, M., Mohsenzadeh, S., Teixeira da Silva, J. A., & Saharkhiz, M. J. (2011). Allelopathic potential of fennel (Foeniculum vulgare Mill.). Medicinal and Aromatic Plant Science and Biotechnology, 5(1), 54–57. http://globalsciencebooks.info/Online/GSBOnline/images/2011/MAPSB_5(1)/MAPSB_5(1)54-57o.pdf',
+  'Gharibvandi, A., Karimmojeni, H., Ehsanzadeh, P., Rahimmalek, M., & Mastinu, A. (2022). Weed management by allelopathic activity of Foeniculum vulgare essential oil. Plant Biosystems, 156(6), 1298–1306. doi:10.1080/11263504.2022.2036848'
+];
+/** Wormwood (absinthin) allelopathy field trials. */
+export const WORMWOOD_ALLELOPATHY_CITATIONS: readonly string[] = [
+  'Bode, H. R. (1940). Über die Blattausscheidungen des Wermuts und ihre Wirkung auf andere Pflanzen. Planta, 30(4), 567–589. doi:10.1007/BF01917042',
+  'Funke, G. L. (1943). The influence of Artemisia absinthium on neighbouring plants. Blumea, 5(2), 281–293. https://repository.naturalis.nl/pub/526079'
+];
+/** Acidophile vs. calcicole root-zone pH needs. */
+export const EDAPHIC_PH_CITATIONS: readonly string[] = [
+  'White, P. J., & Broadley, M. R. (2003). Calcium in plants. Annals of Botany, 92(4), 487–511. doi:10.1093/aob/mcg164',
+  'Hajiboland, R. (2017). Environmental and nutritional requirements for tea cultivation. Folia Horticulturae, 29(2), 199–220. doi:10.1515/fhort-2017-0019',
+  'Munns, D. N. (1965). Soil acidity and growth of a legume. I. Interactions of lime with nitrogen and phosphate on growth of Medicago sativa L. and Trifolium subterraneum L. Australian Journal of Agricultural Research, 16(5), 733–741. doi:10.1071/AR9650733',
+  'Munns, D. N. (1965). Soil acidity and growth of a legume. III. Interaction of lime and phosphate on growth of Medicago sativa L. in relation to aluminium toxicity and phosphate fixation. Australian Journal of Agricultural Research, 16(5), 757–766. doi:10.1071/AR9650757'
+];
+/** Fennel root-exudate terpenes (only cited where the mechanism text mentions them). */
+export const FENNEL_RHIZOSPHERE_TERPENES_CITATION = 'Yang, Y., et al. (2022). Antimicrobial terpenes suppressed the infection process of Phytophthora in fennel-pepper intercropping system. Frontiers in Plant Science, 13, 890534. doi:10.3389/fpls.2022.890534';
 
 export type AntagonistSeverity = 'CRITICAL' | 'WARNING' | 'INFO';
 export type AntagonistType = 'INTERNAL_PROXIMITY' | 'EXTERNAL_ALERT' | 'RESOLVED_HARMONY';
@@ -111,26 +152,6 @@ function placedAt(p: PlacedPlant, roleOrFamily: string): AffectedPlantLocation {
 const distBetween = (a: PlacedPlant, b: PlacedPlant): number =>
   calculatePolarDistanceM(a.distanceM, a.angleDeg, b.distanceM, b.angleDeg);
 
-// Juglone-intolerant star plants (Rosaceae, Ericaceae, Vitaceae, Theaceae, Polygonaceae, Corylus)
-const JUGLONE_SENSITIVE_TREES = new Set([
-  'tree-apple',
-  'tree-pear',
-  'tree-cherry',
-  'tree-plum',
-  'tree-peach',
-  'tree-apricot',
-  'tree-almond',
-  'tree-medlar',
-  'tree-quince',
-  'tree-hazelnut',
-  'shrub-blueberry',
-  'shrub-rhododendron',
-  'vine-grape',
-  'tree-tea-sinensis',
-  'tree-tea-assamica',
-  'herb-rhubarb'
-]);
-
 /**
  * Allelopathic and phytopathological antagonisms of a guild: proximity conflicts inside the
  * guild layout plus siting alerts for antagonists outside it. The third argument may be a
@@ -155,12 +176,11 @@ export function analyzeGuildAntagonisms(
   // Walnut juglone
   const sensitivePlants: AffectedPlantLocation[] = [];
 
-  const treeIsSensitive =
-    !starTree.jugloneProducer &&
-    (JUGLONE_SENSITIVE_TREES.has(starTree.id) || starTree.category === 'FRUIT_TREE');
+  // Only stars named on the cited observation lists (see JUGLONE_SENSITIVE_STAR_IDS)
+  const treeIsSensitive = isJugloneSensitiveStar(starTree);
   if (treeIsSensitive) {
     sensitivePlants.push(
-      starAt(starTree, 'Rosaceae / Star Tree', { de: 'Zentrum (Stamm, 0,0 m)', en: 'Center (Trunk, 0.0 m)' })
+      starAt(starTree, 'Juglone-Sensitive Star Plant',{ de: 'Zentrum (Stamm, 0,0 m)', en: 'Center (Trunk, 0.0 m)' })
     );
   }
 
@@ -197,18 +217,14 @@ export function analyzeGuildAntagonisms(
           en: 'Critical Juglone Exposure: Sensitive Plants in Walnut Rhizosphere'
         },
         mechanism: {
-          de: 'Walnussbäume scheiden über Blätter, Rinde, Nusschalen und Feinwurzeln Hydrojuglon aus, das im Boden zu hochtoxischem Juglon (5-Hydroxy-1,4-naphthochinon) oxidiert. Juglon hemmt spezifisch die mitochondriale Elektronentransportkette (Komplexe I und III) und entkoppelt die oxidative Phosphorylierung (ATP-Synthese). Bei empfindlichen Arten führt dies zu Wurzelbräunung, vaskulärem Xylemkollaps, permanenter Welke und Wurzelfäule.',
-          en: 'Walnut trees release hydrojuglone via foliage, bark, nut hulls, and fibrous roots, which oxidizes in the rhizosphere into toxic juglone (5-hydroxy-1,4-naphthoquinone). Juglone directly inhibits the mitochondrial electron transport chain (Complexes I and III) and uncouples oxidative phosphorylation (ATP synthesis). In sensitive species, this induces root apex browning, irreversible xylem vascular collapse, chlorosis, and root necrosis.'
+          de: 'Walnussbäume, vor allem die Schwarznuss, enthalten Juglon (5-Hydroxy-1,4-naphthochinon), am meisten in Knospen, Nussschalen und Wurzeln. Juglon hemmt die Atmung: In Versuchen störte es die Funktion von Mitochondrien und Chloroplasten, hemmte die H+-ATPase der Wurzel-Plasmamembran und verringerte Wasseraufnahme, Wurzelatmung und Wachstum. Empfindliche Pflanzen zeigen im Wurzelraum Vergilbung, Welke und können absterben.',
+          en: 'Walnut trees, above all black walnut, contain juglone (5-hydroxy-1,4-naphthoquinone), most of it in buds, nut hulls and roots. Juglone inhibits respiration: in experiments it disturbed mitochondrial and chloroplast function, inhibited the root plasma-membrane H+-ATPase and reduced water uptake, root respiration and growth. Sensitive plants in the root zone show yellowing and wilting and may die.'
         },
-        scientificCitations: [
-          'Hejl, A. M., & Koster, K. L. (1993). The allelochemical juglone inhibits ATP synthesis in plant mitochondria. Journal of Chemical Ecology, 19(5), 959–968.',
-          'Jose, S., & Gillespie, A. R. (1998). Allelopathy in black walnut (Juglans nigra L.) alley cropping: I. Spatio-temporal variation in soil juglone. Journal of Chemical Ecology, 24(3), 417–433.',
-          'Dana, M. N., & Lerner, B. R. (2001). Black Walnut Toxicity. Purdue University Extension, HO-193-W.'
-        ],
-        safeDistanceM: Math.round(starTree.matureRadiusM * 2.5),
+        scientificCitations: [...JUGLONE_MECHANISM_CITATIONS],
+        safeDistanceM: JUGLONE_ROOT_ZONE_M,
         spatialAdvice: {
-          de: `Unmittelbarer toxischer Kontakt! Die markierten empfindlichen Pflanzen befinden sich direkt im Wurzelraum des Walnussbaums (0,3 bis ${formatNumber(starTree.matureRadiusM + 1.5, 1, 'de')} m). Sie müssen aus der Gilde entfernt und durch juglon-tolerante Arten (z. B. Echte Hyazinthe, Beinwell, Waldmeister, Rote Johannisbeere) ersetzt werden.`,
-          en: `Direct toxic rhizosphere contact! The highlighted sensitive plants are placed within the active root zone of the walnut tree (0.3 to ${formatNumber(starTree.matureRadiusM + 1.5, 1, 'en')} m). They must be removed from this guild and replaced with juglone-tolerant allies (e.g. Common Hyacinth, Comfrey, Sweet Woodruff, Red Currant).`
+          de: `Die markierten juglon-empfindlichen Pflanzen stehen höchstens ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'de')} m vom Stamm entfernt – die ganze Gilde liegt im Wurzelraum des Walnussbaums, der bei einem ausgewachsenen Baum im Mittel 15–18 m (bis etwa 24 m) weit reicht. Aus der Gilde entfernen und durch Arten ersetzen, die in Beobachtungslisten als juglon-tolerant geführt werden (z. B. Hyazinthe, Waldmeister, Günsel), oder vorsorglich mindestens ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'de')} m vom Stamm entfernt pflanzen.`,
+          en: `The highlighted juglone-sensitive plants sit at most ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'en')} m from the trunk – the whole guild lies inside the walnut root zone, which averages 15–18 m (up to about 24 m) around a mature tree. Remove them from this guild and replace them with species that observation lists rate as juglone-tolerant (e.g. hyacinth, sweet woodruff, bugleweed), or, as a precaution, plant them at least ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'en')} m from the trunk.`
         },
         affectedPlants: sensitiveCompanions
       });
@@ -232,18 +248,14 @@ export function analyzeGuildAntagonisms(
         en: 'External Antagonist: Walnut Buffer Distance & Landscape Siting'
       },
       mechanism: {
-        de: 'Walnussbäume (Juglandaceae) sondern das Allelochemikal Hydrojuglon ab, das bei Kontakt mit Luftsauerstoff und Bodenmikroben zu Juglon (5-Hydroxy-1,4-naphthochinon) oxidiert. Juglon blockiert die H+-ATPase und stört die Zellatmung empfindlicher Rosengewächse (Kern- und Steinobst) sowie krautiger Arten. Die Toxinzone erstreckt sich durch Wurzelausläufer 15 bis 20 m (und bis zu 24 m) weit über den Kronentraufbereich hinaus.',
-        en: 'Walnut trees (Juglandaceae) exude the allelochemical hydrojuglone, which oxidizes in soil air into juglone (5-hydroxy-1,4-naphthoquinone). Juglone inhibits plasma membrane H+-ATPase and mitochondrial respiration in sensitive Rosaceae (apples, pears, stone fruits) and herbaceous allies. The rhizosphere toxic zone extends 15 to 20 meters (and up to 24 meters) beyond the walnut trunk via far-reaching feeder roots.'
+        de: 'Walnussbäume enthalten Juglon (5-Hydroxy-1,4-naphthochinon), am meisten in Knospen, Nussschalen und Wurzeln. Juglon hemmt in Versuchen die Wurzelatmung und die H+-ATPase der Wurzel-Plasmamembran. Laut US-Beratungsblättern reicht die Giftzone einer ausgewachsenen Schwarznuss im Mittel 15–18 m (50–60 ft) vom Stamm, bis etwa 24 m (80 ft), und wächst mit dem Baum. Apfel, Heidelbeere, Rhododendron, Rhabarber, Schwarzerle und Linde werden dort als empfindlich geführt; Kirsche, Pflaume und Pfirsich wurden dagegen nahe Schwarznüssen wachsend beobachtet, und für die Birne widersprechen sich die Listen. Persische Walnuss (Juglans regia) auf eigener Unterlage scheint kaum toxisch zu wirken.',
+        en: 'Walnut trees contain juglone (5-hydroxy-1,4-naphthoquinone), most of it in buds, nut hulls and roots. In experiments juglone inhibits root respiration and the root plasma-membrane H+-ATPase. According to US extension fact sheets, the toxic zone of a mature black walnut averages 15–18 m (50–60 ft) from the trunk, up to about 24 m (80 ft), and grows with the tree. Apple, blueberry, rhododendron, rhubarb, black alder and linden (basswood) are listed there as sensitive, whereas cherry, plum and peach were observed growing near black walnut, and for pear the lists disagree. Persian walnut (Juglans regia) on its own rootstock does not appear to be toxic.'
       },
-      scientificCitations: [
-        'Dana, M. N., & Lerner, B. R. (2001). Black Walnut Toxicity. Purdue University Extension, HO-193-W.',
-        'Hejl, A. M., & Koster, K. L. (1993). The allelochemical juglone inhibits ATP synthesis in plant mitochondria. Journal of Chemical Ecology, 19(5), 959–968.',
-        'Jose, S., & Gillespie, A. R. (1998). Allelopathy in black walnut alley cropping. Journal of Chemical Ecology, 24(3), 417–433.'
-      ],
-      safeDistanceM: 20,
+      scientificCitations: [...JUGLONE_DISTANCE_CITATIONS],
+      safeDistanceM: JUGLONE_ROOT_ZONE_M,
       spatialAdvice: {
-        de: `Empfohlener Mindestabstand für neue Walnuss-Pflanzungen: ≥ 20,0 m Sicherheitsabstand zur äußersten Grenze dieser Gilde (${formatNumber(maxDist + 20, 1, 'de')} m vom Stammzentrum). Empfindliche Pflanzen erstrecken sich in Richtung ${sectorList('de')} bis ${formatNumber(maxDist, 1, 'de')} m. Pflanze Walnussbäume niemals hangaufwärts dieser Gilde, da ausgewaschenes Hydrojuglon mit dem Hangwasser in den Wurzelbereich dieser Gilde transportiert wird. Walnussbäume stets hangabwärts oder mit ausreichendem Grünstreifen positionieren.`,
-        en: `Recommended minimum buffer for any new walnut planting: ≥ 20.0 m beyond the outer perimeter of this guild (${formatNumber(maxDist + 20, 1, 'en')} m from the central trunk). Sensitive species extend towards ${sectorList('en')} up to ${formatNumber(maxDist, 1, 'en')} m. Never plant a walnut tree uphill or up-gradient from this guild, as water-soluble hydrojuglone leaches with subsurface runoff into the root zone. Position walnuts downslope or with a safe 20 m grass buffer.`
+        de: `Vorsorglicher Mindestabstand für neue Walnuss-Pflanzungen: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'de')} m zur äußersten Grenze dieser Gilde (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'de')} m vom Stammzentrum) – das obere Ende der beobachteten mittleren Giftzone von 15–18 m (bei sehr großen Bäumen bis etwa 24 m). Empfindliche Pflanzen erstrecken sich in Richtung ${sectorList('de')} bis ${formatNumber(maxDist, 1, 'de')} m. Walnusslaub, -schalen und -häcksel nicht als Mulch in dieser Gilde verwenden.`,
+        en: `Precautionary minimum buffer for any new walnut planting: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'en')} m beyond the outer perimeter of this guild (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'en')} m from the central trunk) – the upper end of the observed average toxic zone of 15–18 m (up to about 24 m for very large trees). Sensitive species extend towards ${sectorList('en')} up to ${formatNumber(maxDist, 1, 'en')} m. Do not use walnut leaves, hulls or chips as mulch in this guild.`
       },
       affectedPlants: sensitivePlants
     });
@@ -280,21 +292,18 @@ export function analyzeGuildAntagonisms(
         antagonistName: { de: 'Allium-Lauchgewächse (Schnittlauch / Bärlauch / Knoblauch)', en: 'Allium Species (Chives / Wild Garlic / Garlic)' },
         antagonistBotanical: 'Allium spp.',
         title: {
-          de: 'Nachbarschaftskonflikt: Allium hemmt Knöllchenbakterien (Rhizobien)',
-          en: 'Proximity Conflict: Allium Exudates Inhibit Symbiotic Rhizobia'
+          de: 'Vorsorge-Abstand: Lauchgewächse neben Leguminosen',
+          en: 'Precautionary Spacing: Alliums Next to Legumes'
         },
         mechanism: {
-          de: 'Lauchgewächse (Allium) emittieren schwefelorganische flüchtige Substanzen (Allicin, Diallyldisulfid) und phenolische Wurzelexudate mit stark bakterizider Wirkung. Wissenschaftliche Studien belegen, dass diese Substanzen bei Pflanzabständen von unter 1,8 m die Knöllchenbildung (Nodulation) und die symbiontische N2-Fixierung durch Rhizobium- und Frankia-Bakterien an Leguminosen signifikant hemmen.',
-          en: 'Allium species release volatile organosulfur compounds (allicin, diallyl disulfide) and phenolic root exudates with broad-spectrum antimicrobial activity. Peer-reviewed research demonstrates that at distances below 1.8 m, these exudates suppress nodulation and nitrogenase enzyme activity of symbiotic Rhizobium and Frankia bacteria on legume roots.'
+          de: 'In einem Gewächshausversuch verringerte Knoblauchextrakt, der in den Boden gegeben wurde, die Knöllchenbildung und das Wachstum von Augenbohne und Erdnuss, umso stärker, je höher die Konzentration war. Eine Messung, ob lebende Lauchgewächse benachbarte Leguminosen im Beet so beeinträchtigen, wurde nicht gefunden. Die 1,8 m sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+          en: 'In a greenhouse study, garlic extract added to the soil reduced nodulation and growth of cowpea and groundnut, more so at higher concentrations. No measurement was found of whether living alliums affect neighbouring legumes in a bed in this way. The 1.8 m is a precautionary planning value, not a measured threshold.'
         },
-        scientificCitations: [
-          'Adeleke, M. T. V. (2016). Effect of Allium sativum (garlic) extract on the growth and nodulation of cowpea and groundnut. African Journal of Agricultural Research, 11(48), 4945–4951.',
-          'An, M., et al. (1998). Allelopathy in crops: Allium species. Australian Journal of Agricultural Research, 49(8), 1269–1274.'
-        ],
+        scientificCitations: [...ALLIUM_LEGUME_CITATIONS],
         safeDistanceM: 1.8,
         spatialAdvice: {
-          de: `Aktueller Abstand beträgt nur ${formatNumber(minPairDist, 2, 'de')} m. Trenne Allium und Leguminosen räumlich in unterschiedliche Himmelsrichtungen (z. B. Schnittlauch im sonnigen Südbereich bei ${affectedPair[0].angleDeg}°, Leguminosen im Ostsektor), um mindestens 1,8 m Pufferzone einzuhalten.`,
-          en: `Current measured distance is only ${formatNumber(minPairDist, 2, 'en')} m. Separate Allium and Legumes into distinct cardinal sectors (e.g. chives in southern sun sector at ${affectedPair[0].angleDeg}°, legumes in the eastern morning sector) to maintain a buffer of at least 1.8 m.`
+          de: `Aktueller Abstand beträgt nur ${formatNumber(minPairDist, 2, 'de')} m. Lauchgewächse und Leguminosen vorsorglich in unterschiedliche Sektoren setzen (z. B. Schnittlauch im Südbereich bei ${affectedPair[0].angleDeg}°, Leguminosen im Ostsektor), mit mindestens 1,8 m Abstand.`,
+          en: `Current measured distance is only ${formatNumber(minPairDist, 2, 'en')} m. As a precaution, place alliums and legumes in different sectors (e.g. chives in the southern sector at ${affectedPair[0].angleDeg}°, legumes in the eastern sector), at least 1.8 m apart.`
         },
         affectedPlants: affectedPair
       });
@@ -310,13 +319,10 @@ export function analyzeGuildAntagonisms(
           en: 'Harmoniously Spaced: Allium & Legumes Optimally Separated'
         },
         mechanism: {
-          de: 'Lauchgewächse (Allium) und Leguminosen wurden im interaktiven Pflanzplan automatisch in gegenüberliegenden Sektoren platziert. Durch den Pufferabstand von mindestens 1,8 m können sich die Knöllchenbakterien (Rhizobien) der Leguminosen ungestört entwickeln, während Allium den Baum vor Schorf und Pilzkrankheiten schützt.',
-          en: 'Allium species and legumes were automatically arranged in opposing sectors in the radial plan. With a safe buffer distance of at least 1.8 m, symbiotic root nodule bacteria (Rhizobia) develop without inhibition while Allium protects the tree against scab and fungal blights.'
+          de: 'Lauchgewächse (Allium) und Leguminosen wurden im Pflanzplan automatisch in getrennten Sektoren mit mindestens 1,8 m Abstand platziert. Das ist eine Vorsichtsmaßnahme: Im Gewächshaus verringerte Knoblauchextrakt im Boden die Knöllchenbildung von Leguminosen; eine Messung an lebenden Pflanzen im Beet wurde nicht gefunden.',
+          en: 'Alliums and legumes were automatically placed in separate sectors of the plan, at least 1.8 m apart. This is a precaution: in a greenhouse study, garlic extract in the soil reduced legume nodulation; no measurement for living plants in a bed was found.'
         },
-        scientificCitations: [
-          'Adeleke, M. T. V. (2016). Effect of Allium sativum (garlic) extract on the growth and nodulation of cowpea and groundnut. African Journal of Agricultural Research, 11(48), 4945–4951.',
-          'An, M., et al. (1998). Allelopathy in crops: Allium species. Australian Journal of Agricultural Research, 49(8), 1269–1274.'
-        ],
+        scientificCitations: [...ALLIUM_LEGUME_CITATIONS],
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Erfolgreich gelöst: Gemessener Mindestabstand beträgt ${formatNumber(minPairDist, 2, 'de')} m (≥ 1,8 m Pufferzone). Allium (${getLoc(closestAllium.plant.commonName, 'de')}) steht bei ${closestAllium.angleDeg}°, Leguminose (${getLoc(closestLegume.plant.commonName, 'de')}) bei ${closestLegume.angleDeg}°.`,
@@ -340,17 +346,18 @@ export function analyzeGuildAntagonisms(
         en: 'Risk of Pear Trellis Rust (Gymnosporangium sabinae)'
       },
       mechanism: {
-        de: 'Der Birnengitterrost ist ein wirtswechselnder Rostpilz (heterözisch). Er überwintert in Zweiggallen an Wacholderarten (Winterwirt) und bildet im Frühjahr bei Regen gallertartige Sporenlager (Telien). Die freigesetzten Basidiosporen infizieren Birnenblätter (Sommerwirt) über Distanzen von mehreren hundert Metern, was zu orangefarbenen Blattgallen, vorzeitigem Laubfall und drastischem Ertragsausfall führt.',
-        en: 'Pear trellis rust is an obligate heteroecious rust fungus that alternates between junipers (winter host) and pear trees (summer host). In rainy spring weather, gelatinous telial spore horns on junipers discharge airborne basidiospores that infect young pear foliage across hundreds of meters, causing orange leaf pustules, premature defoliation, and fruit stunting.'
+        de: 'Der Birnengitterrost ist ein wirtswechselnder Rostpilz: Er bildet Teliosporen und Basidiosporen auf Wacholder (normalerweise Juniperus sabina, J. virginiana, J. chinensis) und Spermatien und Aeciosporen auf der Birne. Birnen werden durch Basidiosporen infiziert, deren Freisetzung vor allem von Regen (mindestens 10 mm) bei Temperaturen von mindestens 10 °C abhängt.',
+        en: 'Pear trellis rust is a host-alternating rust fungus: it produces teliospores and basidiospores on juniper (normally Juniperus sabina, J. virginiana, J. chinensis) and spermatia and aeciospores on pear. Pears are infected by basidiospores, whose release depends mainly on rain (at least 10 mm) at temperatures of at least 10 °C.'
       },
       scientificCitations: [
-        'Hilber, U. W., et al. (2000). Epidemiology and control of Gymnosporangium sabinae in Switzerland. Journal of Plant Pathology, 82(2), 101–108.',
-        'Weber, R. W. S., & Webster, J. (2001). Teaching techniques for mycology: Gymnosporangium sabinae (pear rust). Mycologist, 15(3), 108–110.'
+        'Lāce, B., Kārkliņa, K., & Deņisova, I. (2022). Gymnosporangium sabinae development cycle—Peculiarities and influencing factors. Journal of Phytopathology, 170(10), 675–682. doi:10.1111/jph.13131',
+        'Lāce, B. (2017). Gymnosporangium species – an important issue of plant protection. Proceedings of the Latvian Academy of Sciences, Section B, 71(3), 95–102. doi:10.1515/prolas-2017-0017',
+        'Ormrod, D. J., O\'Reilly, H. J., van der Kamp, B. J., & Borno, C. (1984). Epidemiology, cultivar susceptibility, and chemical control of Gymnosporangium fuscum in British Columbia. Canadian Journal of Plant Pathology, 6(1), 63–70. doi:10.1080/07060668409501592 (distance data as summarised by Lāce 2017)'
       ],
       safeDistanceM: 300,
       spatialAdvice: {
-        de: 'Wacholder-Abstand: Befallshäufigkeit sinkt ab 150 m signifikant, ab 300–500 m ist das Infektionsrisiko minimal. Keine Zierwacholder (insb. Juniperus sabina) im Umkreis von 300 m um den Birnbaum pflanzen. Der heimische Gemeine Wacholder (Juniperus communis) ist weitgehend resistent.',
-        en: 'Juniper buffer: Infection severity drops dramatically beyond 150 m and is minimal beyond 300–500 m. Do not plant ornamental junipers (especially Juniperus sabina) within 300 m of the pear tree. Wild common juniper (Juniperus communis) is generally resistant.'
+        de: 'Wacholder-Abstand: In einer Studie (zitiert bei Lāce 2017) waren bei 30 m Abstand zum Wacholder 100 % der Birnenblätter befallen, bei 150 m 50 % und bei 300 m gab es keine Symptome; vereinzelt wurden aber Infektionen über viel größere Distanzen berichtet. Keine Zierwacholder (insb. Juniperus sabina) im Umkreis von 300 m um den Birnbaum pflanzen.',
+        en: 'Juniper buffer: in one study (cited by Lāce 2017), 100 % of pear leaves were infected at 30 m from the juniper, 50 % at 150 m, and there were no symptoms at 300 m; occasional infections over much larger distances have, however, been reported. Do not plant ornamental junipers (especially Juniperus sabina) within 300 m of the pear tree.'
       },
       affectedPlants: [starAt(starTree, 'Pome Fruit / Primary Host')]
     });
@@ -380,16 +387,16 @@ export function analyzeGuildAntagonisms(
         en: 'White Pine Blister Rust Alternate Host (Cronartium ribicola)'
       },
       mechanism: {
-        de: 'Der Blasenrost wechselt zyklisch zwischen Johannis-/Stachelbeeren (Ribes, Zwischenwirt) und 5-nadeligen Kiefern (Hauptwirt). Auf Ribes entstehen im Spätsommer empfindliche Basidiosporen, die Kiefernnadeln infizieren und dort tödliche Rindennekrosen und Stammgallen auslösen.',
-        en: 'White pine blister rust is a macrocyclic rust that alternates between Ribes (currants/gooseberries, telial host) and 5-needle white pines (aecial host). In late summer, delicate basidiospores on Ribes leaves disperse in moist air to infect white pine needles, causing girdling cankers and tree death in young pines.'
+        de: 'Der Blasenrost wechselt zwischen Johannis-/Stachelbeeren (Ribes, Telienwirt) und 5-nadeligen Kiefern (Aecienwirt). Die auf Ribes-Blättern gebildeten, empfindlichen Basidiosporen infizieren nahe Kiefern (über Meter bis wenige Kilometer). An den Kiefern entstehen Rindenkrebse; umfasst ein Krebs den Stamm, sterben junge Bäume rasch ab.',
+        en: 'White pine blister rust alternates between Ribes (currants/gooseberries, telial host) and 5-needle white pines (aecial host). The delicate basidiospores formed on Ribes leaves infect nearby pines (over metres to a few kilometres). On the pines they cause cankers; once a canker girdles the stem, young trees die rapidly.'
       },
       scientificCitations: [
-        'Geils, B. W., Hummer, K. E., & Hunt, R. S. (2010). White pines, Ribes, and blister rust: A review and synthesis. Forest Pathology, 40(3–4), 147–185.'
+        'Geils, B. W., Hummer, K. E., & Hunt, R. S. (2010). White pines, Ribes, and blister rust: A review and synthesis. Forest Pathology, 40(3–4), 147–185. doi:10.1111/j.1439-0329.2010.00654.x'
       ],
       safeDistanceM: 300,
       spatialAdvice: {
-        de: 'Pufferabstand: Halte zwischen kultivierten Johannisbeeren und wertvollen 5-nadeligen Kiefern (Pinus strobus) mindestens 300 m Abstand ein, um die Infektionskette zu unterbrechen.',
-        en: 'Buffer distance: Maintain at least 300 m separation between cultivated Ribes bushes and valuable 5-needle white pines (Pinus strobus) to break the basidiospore transmission cycle.'
+        de: 'Pufferabstand: Zwischen kultivierten Johannisbeeren und wertvollen 5-nadeligen Kiefern (Pinus strobus) Abstand halten; früher wurden Ribes in festgelegten Abständen um Kiefernbestände entfernt. Die 300 m sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+        en: 'Buffer distance: keep cultivated Ribes away from valuable 5-needle white pines (Pinus strobus); historically, Ribes were removed to set distances around pine stands. The 300 m is a precautionary planning value, not a measured limit.'
       },
       affectedPlants: affectedRibesList
     });
@@ -409,17 +416,18 @@ export function analyzeGuildAntagonisms(
         en: 'Soil Health: Verticillium Wilt Risk from Nightshade Crops'
       },
       mechanism: {
-        de: 'Nachtschattengewächse (Solanaceae) sind primäre Wirte und Multiplikatoren des bodenbürtigen Gefäßpilzes Verticillium dahliae. Der Pilz bildet extrem langlebige Dauerkörper (Mikrosklerotien), die über 10 bis 14 Jahre im Boden lebensfähig bleiben. Er dringt über Feinwurzeln in Obstbäume ein und verstopft die Wasserleitbahnen (Tracheen), was zu einseitiger Welke (Verticillium-Welke) und Aststerben führt.',
-        en: 'Nightshade crops (Solanaceae) are primary reservoir hosts for the persistent soil-borne vascular pathogen Verticillium dahliae. The fungus generates durable resting structures (microsclerotia) that persist in soil for 10 to 14 years. It invades fruit tree root tips and colonizes xylem water vessels, causing unilateral vascular wilting and branch dieback.'
+        de: 'Kartoffel und Tomate gehören zu den wichtigen Wirten des bodenbürtigen Welkepilzes Verticillium dahliae, der über 200 Pflanzenarten befallen kann, darunter Obst- und Landschaftsgehölze. Seine Dauerkörper (Mikrosklerotien) können ohne Wirt bis zu 14 Jahre im Boden überdauern. Der Pilz verursacht Gefäßwelke.',
+        en: 'Potato and tomato are among the important hosts of the soil-borne wilt fungus Verticillium dahliae, which can infect more than 200 plant species, including fruit and landscape trees. Its resting structures (microsclerotia) can survive in soil for up to 14 years without a host. The fungus causes vascular wilt.'
       },
       scientificCitations: [
-        'Pegg, G. F., & Brady, B. L. (2002). Verticillium Wilts. CABI Publishing.',
+        'Klosterman, S. J., Atallah, Z. K., Vallad, G. E., & Subbarao, K. V. (2009). Diversity, pathogenicity, and management of Verticillium species. Annual Review of Phytopathology, 47, 39–62. doi:10.1146/annurev-phyto-080508-081748',
+        'Pegg, G. F., & Brady, B. L. (2002). Verticillium Wilts. Wallingford: CABI Publishing. doi:10.1079/9780851995298.0000',
         'Wilhelm, S. (1955). Longevity of the Verticillium wilt fungus in the laboratory and field. Phytopathology, 45, 180–181.'
       ],
-      safeDistanceM: 6.0,
+      safeDistanceM: Number((starTree.matureRadiusM + 2.0).toFixed(1)),
       spatialAdvice: {
-        de: `Niemals Kartoffeln oder Tomaten innerhalb der Baumscheibe oder des Kronentraufbereichs (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'de')} m) anbauen. Reserviere diesen Wurzelbereich für Allium, Beinwell und mehrjährige Kräuter.`,
-        en: `Never cultivate potatoes, tomatoes, or eggplants within the tree basin or canopy drip line (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'en')} m). Reserve this zone for alliums, deep-rooted comfrey, and perennial living mulch.`
+        de: `Vorsorglich keine Kartoffeln oder Tomaten innerhalb der Baumscheibe oder des Kronentraufbereichs (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'de')} m) anbauen; dieser Abstand ist ein Planungswert, keine gemessene Grenze.`,
+        en: `As a precaution, do not grow potatoes, tomatoes or eggplants within the tree basin or canopy drip line (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'en')} m); this distance is a planning value, not a measured limit.`
       },
       affectedPlants: [starAt(starTree, 'Susceptible Vascular Host')]
     });
@@ -436,21 +444,18 @@ export function analyzeGuildAntagonisms(
         antagonistName: { de: 'Allium-Lauchgewächse am Stammkragen eines N-Fixierer-Baums', en: 'Allium Species Near Nitrogen-Fixing Tree Collar' },
         antagonistBotanical: `Allium spp. vs. ${starTree.botanicalName}`,
         title: {
-          de: `Bakterizide Wurzelhemmung: Allium hemmt Frankia-Knöllchen von ${starTree.commonName.de}`,
-          en: `Bactericidal Inhibition: Allium Suppresses Frankia Nodules of ${starTree.commonName.en}`
+          de: `Vorsorge-Abstand: Lauchgewächse am Stamm von ${starTree.commonName.de}`,
+          en: `Precautionary Spacing: Alliums at the Trunk of ${starTree.commonName.en}`
         },
         mechanism: {
-          de: 'Lauchgewächse (Allium) geben über ihre Wurzeln Allicin und Thiosulfinate ab. Stehen sie näher als 1,8 m am Wurzelhals eines stickstofffixierenden Leitbaums (Schwarzerle, Sanddorn), hemmen diese bakteriziden Exudate die aktinorhizale Frankia-Symbiose und reduzieren die Stickstofffixierung.',
-          en: 'Allium bulbs exude bactericidal allicin and thiosulfinates into the topsoil. When planted closer than 1.8 m to the root collar of an actinorhizal nitrogen-fixing star tree (Black Alder, Sea Buckthorn), these organosulfurs inhibit Frankia root nodulation and nitrogenase activity.'
+          de: 'Im Gewächshaus verringerte Knoblauchextrakt im Boden die Knöllchenbildung von Leguminosen (Rhizobien-Symbiose). Eine Studie dazu, ob Lauchgewächse die Frankia-Knöllchen stickstoffbindender Bäume wie Erle oder Sanddorn beeinträchtigen, wurde nicht gefunden. Der Planer überträgt den Vorsorge-Abstand von 1,8 m daher auch auf diese Bäume.',
+          en: 'In a greenhouse study, garlic extract in the soil reduced nodulation of legumes (rhizobia symbiosis). No study was found on whether alliums affect the Frankia nodules of nitrogen-fixing trees such as alder or sea buckthorn. The planner therefore applies the same precautionary 1.8 m spacing to these trees.'
         },
-        scientificCitations: [
-          'Adeleke, M. T. V. (2016). Effect of Allium sativum extract on growth and nodulation. African Journal of Agricultural Research, 11(48), 4945–4951.',
-          'An, M., et al. (1998). Allelopathy in crops: Allium species. Australian Journal of Agricultural Research, 49(8), 1269–1274.'
-        ],
+        scientificCitations: [...ALLIUM_LEGUME_CITATIONS],
         safeDistanceM: 1.8,
         spatialAdvice: {
-          de: `Halte Lauchgewächse mindestens 1,8 m vom Stammzentrum von ${starTree.commonName.de} entfernt (in die äußere Traufzone versetzen).`,
-          en: `Keep Allium companions at least 1.8 m away from the trunk center of ${starTree.commonName.en} (place in the outer drip zone).`
+          de: `Lauchgewächse vorsorglich mindestens 1,8 m vom Stammzentrum von ${starTree.commonName.de} entfernt pflanzen (in die äußere Traufzone versetzen).`,
+          en: `As a precaution, keep alliums at least 1.8 m away from the trunk center of ${starTree.commonName.en} (place them in the outer drip zone).`
         },
         affectedPlants: [
           starAt(starTree, 'Actinorhizal Nitrogen-Fixing Tree'),
@@ -470,13 +475,10 @@ export function analyzeGuildAntagonisms(
           en: `Harmoniously Spaced: Allium Placed in Safe Drip Zone of ${starTree.commonName.en}`
         },
         mechanism: {
-          de: `Da ${starTree.commonName.de} über aktinorhizale Frankia-Knöllchen am Wurzelhals Luftstickstoff bindet, wurden Lauchgewächse (Allium) automatisch aus der inneren Zwiebelzone in die äußere Traufzone (≥ 1,8 m vom Stamm) verschoben.`,
-          en: `Because ${starTree.commonName.en} fixes atmospheric nitrogen via actinorhizal Frankia root nodules near the trunk collar, Allium companions were automatically shifted from the inner bulb ring to the outer drip zone (≥ 1.8 m from the trunk).`
+          de: `Da ${starTree.commonName.de} mit Frankia-Knöllchen Luftstickstoff bindet, wurden Lauchgewächse (Allium) vorsorglich in die äußere Traufzone (≥ 1,8 m vom Stamm) verschoben. Eine Studie zur Hemmung von Frankia durch Lauch wurde nicht gefunden; der Abstand folgt einem Gewächshausbefund mit Knoblauchextrakt an Leguminosen.`,
+          en: `Because ${starTree.commonName.en} fixes atmospheric nitrogen with Frankia root nodules, alliums were moved to the outer drip zone (≥ 1.8 m from the trunk) as a precaution. No study on inhibition of Frankia by alliums was found; the spacing follows a greenhouse finding with garlic extract on legumes.`
         },
-        scientificCitations: [
-          'Adeleke, M. T. V. (2016). Effect of Allium sativum extract on growth and nodulation. African Journal of Agricultural Research, 11(48), 4945–4951.',
-          'An, M., et al. (1998). Allelopathy in crops: Allium species. Australian Journal of Agricultural Research, 49(8), 1269–1274.'
-        ],
+        scientificCitations: [...ALLIUM_LEGUME_CITATIONS],
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Erfolgreich gelöst: Gemessener Abstand zum Stammzentrum beträgt ${formatNumber(closestTreeAllium.distanceM, 2, 'de')} m (≥ 1,8 m Pufferzone).`,
@@ -505,20 +507,18 @@ export function analyzeGuildAntagonisms(
         antagonistName: { de: 'Fenchel (Foeniculum vulgare)', en: 'Fennel (Foeniculum vulgare)' },
         antagonistBotanical: 'Foeniculum vulgare',
         title: {
-          de: 'Allelopathie: Fenchel-Wurzelexudate hemmen benachbarte Begleitpflanzen',
-          en: 'Allelopathy: Fennel Exudates Inhibit Neighbouring Companion Plants'
+          de: 'Allelopathie-Vorsorge: Fenchel neben Begleitpflanzen',
+          en: 'Allelopathy Precaution: Fennel Next to Companion Plants'
         },
         mechanism: {
-          de: 'Fenchelwurzeln scheiden bioaktive Monoterpene und Phenylpropanoide (insbesondere trans-Anethol, Fenchon, Estragol) sowie Scopoletin in den Boden ab. Bei Abständen unter 1,5 m hemmen diese Stoffe die mitotische Zellteilung im Wurzelapikalmeristem und unterdrücken das Wachstum benachbarter krautiger Pflanzen und Leguminosen.',
-          en: 'Fennel roots exude bioactive monoterpenes and phenylpropanoids (notably trans-anethole, fenchone, estragole) and coumarins into the rhizosphere. At distances below 1.5 m, these allelochemicals disrupt mitotic cell division in the root apical meristem and stunt adjacent herbaceous species and legumes.'
+          de: 'Im Laborversuch hemmten Extrakte aus Fenchelsamen und Fenchel-Öl die Keimung und das Keimlingswachstum von Testpflanzen. In Wurzelausscheidungen und Wurzelraum-Boden von Fenchel wurden Terpene wie Anethol, Estragol und D-Limonen nachgewiesen. Eine Messung, ob lebender Fenchel Nachbarpflanzen im Beet hemmt und über welche Entfernung, wurde nicht gefunden; die 1,5 m sind ein vorsorglicher Planungswert.',
+          en: 'In lab tests, fennel seed extract and fennel essential oil inhibited germination and seedling growth of test plants. Terpenes such as anethole, estragole and D-limonene were found in fennel root exudates and rhizosphere soil. No measurement was found of whether living fennel inhibits neighbouring plants in a bed, or over what distance; the 1.5 m is a precautionary planning value.'
         },
-        scientificCitations: [
-          'Al-Charchafchi, F. M. R., et al. (2007). Allelopathic effects of Foeniculum vulgare on germination and radicle growth of crops. Allelopathy Journal, 20(2), 341–352.'
-        ],
+        scientificCitations: [...FENNEL_ALLELOPATHY_CITATIONS, FENNEL_RHIZOSPHERE_TERPENES_CITATION],
         safeDistanceM: 1.5,
         spatialAdvice: {
-          de: `Fenchel steht aktuell nur ${formatNumber(minFennelDist, 2, 'de')} m von benachbarten Begleitern entfernt. Positioniere Fenchel isoliert am äußersten Gildenrand (≥ 1,5 m Abstand zu allen anderen Begleitpflanzen).`,
-          en: `Fennel is currently sited only ${formatNumber(minFennelDist, 2, 'en')} m from neighbouring companions. Position fennel isolated at the outer guild boundary with at least 1.5 m separation from other companion plants.`
+          de: `Fenchel steht aktuell nur ${formatNumber(minFennelDist, 2, 'de')} m von benachbarten Begleitern entfernt. Fenchel vorsorglich am äußeren Gildenrand platzieren, mit mindestens 1,5 m Abstand zu anderen Begleitpflanzen.`,
+          en: `Fennel is currently sited only ${formatNumber(minFennelDist, 2, 'en')} m from neighbouring companions. As a precaution, place fennel at the outer guild boundary, at least 1.5 m from other companion plants.`
         },
         affectedPlants: [
           placedAt(fennel, 'Apiaceae Allelopath'),
@@ -548,16 +548,14 @@ export function analyzeGuildAntagonisms(
         antagonistName: { de: 'Bronzefenchel (Automatisch am Außenrand entzerrt)', en: 'Bronze Fennel (Optimally Isolated on Perimeter)' },
         antagonistBotanical: 'Foeniculum vulgare',
         title: {
-          de: 'Harmonisch entzerrt: Fenchel-Allelopathie durch Randplatzierung neutralisiert',
-          en: 'Harmoniously Spaced: Fennel Allelopathy Neutralized by Perimeter Siting'
+          de: 'Harmonisch entzerrt: Fenchel vorsorglich am Gildenrand',
+          en: 'Harmoniously Spaced: Fennel Placed on the Perimeter as a Precaution'
         },
         mechanism: {
-          de: 'Bronzefenchel wurde im interaktiven Pflanzplan automatisch am äußeren Gildenrand (Zone 4) mit mindestens 1,5 m Sicherheitsabstand zu allen anderen Begleitpflanzen platziert. So hemmen seine Anethol-Wurzelexudate keine Nachbarpflanzen, während seine Doldenblüten Schwebfliegen und Schlupfwespen anlocken.',
-          en: 'Bronze fennel was automatically placed on the outer guild perimeter (Zone 4) with at least 1.5 m clearance from all other companions, preventing trans-anethole root exudate inhibition while its umbels attract hoverflies and parasitoid wasps.'
+          de: 'Fenchel wurde im Pflanzplan automatisch am äußeren Gildenrand (Zone 4) mit mindestens 1,5 m Abstand zu allen anderen Begleitpflanzen platziert. Das ist eine Vorsichtsmaßnahme: Fenchelextrakte und -öl hemmten im Labor Keimung und Keimlingswachstum; eine Messung an lebenden Pflanzen im Beet wurde nicht gefunden.',
+          en: 'Fennel was automatically placed on the outer guild perimeter (Zone 4) with at least 1.5 m clearance from all other companions. This is a precaution: fennel extracts and oil inhibited germination and seedling growth in the lab; no measurement for living plants in a bed was found.'
         },
-        scientificCitations: [
-          'Al-Charchafchi, F. M. R., et al. (2007). Allelopathic effects of Foeniculum vulgare on germination and radicle growth of crops. Allelopathy Journal, 20(2), 341–352.'
-        ],
+        scientificCitations: [...FENNEL_ALLELOPATHY_CITATIONS],
         safeDistanceM: 1.5,
         spatialAdvice: {
           de: closestFennelPeer
@@ -572,12 +570,10 @@ export function analyzeGuildAntagonisms(
     }
   }
 
-  // Wormwood allelopathy (< 1.2 m); Ribes tolerate absinthin
+  // Wormwood allelopathy (< 1.2 m): Funke (1943) found every test species except wormwood itself injured within ~1 m
   const wormwood = placedPlants.find(p => isWormwoodPlant(p.plant));
   if (wormwood) {
-    const sensitivePeersForWormwood = placedPlants.filter(
-      p => p.plant.id !== wormwood.plant.id && !p.plant.botanicalName.toLowerCase().startsWith('ribes')
-    );
+    const sensitivePeersForWormwood = placedPlants.filter(p => p.plant.id !== wormwood.plant.id);
     const closeToWormwood = sensitivePeersForWormwood.filter(p => distBetween(wormwood, p) < 1.2);
 
     if (closeToWormwood.length > 0) {
@@ -593,17 +589,14 @@ export function analyzeGuildAntagonisms(
           en: 'Allelopathy: Wormwood Leaf Drip (Absinthin) Inhibits Neighbouring Plants'
         },
         mechanism: {
-          de: 'Echter Wermut bildet in seinen Blattdrüsenhaaren das Sesquiterpenlacton Absinthin sowie Thujon, die durch Regenwasser (Blatttraufe) in den Oberboden ausgewaschen werden. In einem Umkreis von unter 1,2 m hemmen diese Verbindungen stark die Keimung und das Wurzelwachstum krautiger Begleitpflanzen (insbesondere Doldenblütler wie Fenchel/Liebstöckel und Leguminosen; Johannisbeeren/Ribes sind hingegen tolerant).',
-          en: 'Wormwood synthesizes the sesquiterpene lactone absinthin and thujone in glandular leaf trichomes, which leach into the topsoil via rain drip. Within 1.2 m, these compounds strongly inhibit seed germination and root growth of herbaceous companions (especially Apiaceae umbellifers and Fabaceae legumes, whereas Ribes currants are tolerant).'
+          de: 'Die Blätter des Echten Wermuts tragen Drüsenhaare, die ätherische Öle und den Bitterstoff Absinthin ausscheiden. Im Garten wurden Fenchel-Keimlinge und andere Arten innerhalb von etwa 1 m um Wermut im Wachstum gehemmt. In einem Versuch mit 18 Arten neben einer Wermuthecke wurden alle Testarten außer Wermut selbst im Umkreis von etwa 100 cm stark geschädigt, Liebstöckel starb sogar ab; als Ursache gilt wahrscheinlich das ausgeschiedene Absinthin.',
+          en: 'Wormwood leaves bear glandular hairs that excrete essential oils and the bitter compound absinthin. In a garden, fennel seedlings and other species within about 1 m of wormwood grew poorly. In a trial with 18 species sown beside a wormwood hedge, every test species except wormwood itself was severely injured within about 100 cm, and lovage was even killed; the excreted absinthin is the probable cause.'
         },
-        scientificCitations: [
-          'Bode, H. R. (1940). Über die Blattausscheidungen des Wermuts und ihre Wirkung auf andere Pflanzen. Planta, 30(5), 767–785.',
-          'Funke, G. L. (1943). The influence of Artemisia absinthium on neighbouring plants. Blumea, 5(2), 281–293.'
-        ],
+        scientificCitations: [...WORMWOOD_ALLELOPATHY_CITATIONS],
         safeDistanceM: 1.2,
         spatialAdvice: {
-          de: `Wermut steht nur ${formatNumber(minWormwoodDist, 2, 'de')} m von krautigen Begleitern entfernt. Platziere Wermut als Solitär am windzugewandten Außenrand (Zone 4) mit mindestens 1,2 m Abstand zu Doldenblütlern, Leguminosen und feinen Kräutern.`,
-          en: `Wormwood is currently only ${formatNumber(minWormwoodDist, 2, 'en')} m from herbaceous companions. Place wormwood as an isolated windward boundary plant (Zone 4) with at least 1.2 m separation from umbellifers, legumes, and tender herbs.`
+          de: `Wermut steht nur ${formatNumber(minWormwoodDist, 2, 'de')} m von krautigen Begleitern entfernt. Wermut als Solitär am Außenrand (Zone 4) platzieren, mit mindestens 1,2 m Abstand zu anderen Pflanzen – etwas mehr als die in Versuchen beobachtete Wirkzone von etwa 1 m.`,
+          en: `Wormwood is currently only ${formatNumber(minWormwoodDist, 2, 'en')} m from herbaceous companions. Place wormwood as an isolated boundary plant (Zone 4) at least 1.2 m from other plants – a little more than the effect zone of about 1 m observed in trials.`
         },
         affectedPlants: [
           placedAt(wormwood, 'Asteraceae Allelopath (Absinthin)'),
@@ -633,16 +626,14 @@ export function analyzeGuildAntagonisms(
         antagonistName: { de: 'Echter Wermut (Automatisch am Außenrand entzerrt)', en: 'Wormwood (Optimally Separated on Perimeter)' },
         antagonistBotanical: 'Artemisia absinthium',
         title: {
-          de: 'Harmonisch entzerrt: Wermut schützt am Außenrand ohne Absinthin-Hemmung',
-          en: 'Harmoniously Spaced: Wormwood Shields Perimeter Without Absinthin Inhibition'
+          de: 'Harmonisch entzerrt: Wermut mit Abstand am Außenrand',
+          en: 'Harmoniously Spaced: Wormwood Kept Apart on the Perimeter'
         },
         mechanism: {
-          de: 'Echter Wermut wurde automatisch am äußeren Gildenrand (Zone 4) mit mindestens 1,2 m Abstand zu empfindlichen Begleitkräutern platziert. Dadurch wirkt seine Duftwolke gegen Säulchenrost, Blattwespen und Wickler, ohne Nachbarpflanzen durch Absinthin-Blatttraufe zu beeinträchtigen.',
-          en: 'Wormwood was automatically positioned on the outer perimeter (Zone 4) with at least 1.2 m separation from sensitive herbs, providing volatile pest and rust deterrence without absinthin drip inhibition.'
+          de: 'Echter Wermut wurde automatisch am äußeren Gildenrand (Zone 4) mit mindestens 1,2 m Abstand zu empfindlichen Begleitpflanzen platziert. In Versuchen schädigte Wermut Nachbarpflanzen innerhalb von etwa 1 m, wahrscheinlich durch ausgeschiedenes Absinthin.',
+          en: 'Wormwood was automatically placed on the outer perimeter (Zone 4) at least 1.2 m from sensitive companions. In trials, wormwood injured neighbouring plants within about 1 m, probably through excreted absinthin.'
         },
-        scientificCitations: [
-          'Bode, H. R. (1940). Über die Blattausscheidungen des Wermuts und ihre Wirkung auf andere Pflanzen. Planta, 30(5), 767–785.'
-        ],
+        scientificCitations: [...WORMWOOD_ALLELOPATHY_CITATIONS],
         safeDistanceM: 1.2,
         spatialAdvice: {
           de: closestWormwoodPeer
@@ -658,8 +649,8 @@ export function analyzeGuildAntagonisms(
   }
 
   // Soil pH: strict calcifuges vs. calcicoles
-  const starIsStrictAcidophile = ['shrub-blueberry', 'shrub-rhododendron', 'tree-tea-sinensis', 'tree-tea-assamica', 'tree-chestnut'].includes(starTree.id);
-  const starIsStrictCalcicole = ['tree-fig'].includes(starTree.id);
+  const starIsStrictAcidophile = STRICT_ACIDOPHILE_STAR_IDS.has(starTree.id);
+  const starIsStrictCalcicole = isAcidIntolerantStar(starTree);
   const acidophileCompanions = placedPlants.filter(p => isStrictAcidophilePlant(p.plant));
   const calcicoleCompanions = placedPlants.filter(p => isStrictCalcicolePlant(p.plant));
 
@@ -669,10 +660,10 @@ export function analyzeGuildAntagonisms(
   if (hasAcidophile && hasCalcicole) {
     const affectedEdaphic: AffectedPlantLocation[] = [
       ...(starIsStrictAcidophile || starIsStrictCalcicole
-        ? [starAt(starTree, starIsStrictAcidophile ? 'Strict Acidophile (pH 4.2–5.8)' : 'Calcicole (pH 6.8–8.0)')]
+        ? [starAt(starTree, starIsStrictAcidophile ? 'Strict Acidophile' : 'Needs Less Acid Soil (pH ≥ 6)')]
         : []),
-      ...acidophileCompanions.map(ap => placedAt(ap, 'Strict Acidophile / Calcifuge (pH 4.0–5.8)')),
-      ...calcicoleCompanions.map(cp => placedAt(cp, 'Calcicole / Alkaline-Lover (pH 6.5–8.0)'))
+      ...acidophileCompanions.map(ap => placedAt(ap, 'Strict Acidophile / Calcifuge')),
+      ...calcicoleCompanions.map(cp => placedAt(cp, 'Calcicole / Neutral-to-Chalky Soil'))
     ];
 
     conflicts.push({
@@ -680,23 +671,20 @@ export function analyzeGuildAntagonisms(
       type: 'INTERNAL_PROXIMITY',
       severity: 'WARNING',
       antagonistName: { de: 'Boden-pH-Unverträglichkeit: Moorbeetpflanzen (Kalkflüchter) ↔ Kalkliebende Arten', en: 'Edaphic pH Antagonism: Strict Calcifuges ↔ Calcicole Species' },
-      antagonistBotanical: 'Ericaceae / Theaceae (pH 4.2–5.5) vs. Calcicoles (pH 6.8–8.0)',
+      antagonistBotanical: 'Acid-soil plants (e.g. Ericaceae, Theaceae) vs. lime-tolerant plants',
       title: {
         de: 'Edaphischer Konflikt: Unvereinbare Boden-pH-Ansprüche im selben Wurzelraum',
         en: 'Edaphic Conflict: Incompatible Rhizosphere pH Requirements'
       },
       mechanism: {
-        de: 'Strikte Kalkflüchter (Heidelbeere, Cranberry, Preiselbeere, Scheinbeere, Teestrauch, Lupine) benötigen stark saure Böden (pH 4,2–5,8) und ericoide Mykorrhiza; freies Calciumcarbonat blockiert ihre Eisen- und Manganaufnahme (Kalkchlorose). Umgekehrt benötigen kalkliebende Arten (Luzerne/Sinorhizobium meliloti, Lavendel, Rosmarin, Christrose, Ysop) neutrale bis alkalische Böden (pH 6,5–8,0) und erleiden im sauren Milieu Aluminiumtoxizität und Knöllchenversagen.',
-        en: 'Strict calcifuges (Blueberry, Cranberry, Lingonberry, Wintergreen, Tea, Lupine) require acidic soils (pH 4.2–5.8) and ericoid mycorrhizae, suffering fatal iron chlorosis in calcareous soil. Conversely, calcicoles (Alfalfa/Sinorhizobium meliloti, Lavender, Rosemary, Hellebore, Hyssop) require neutral-to-alkaline soil (pH 6.5–8.0) and suffer aluminum root toxicity and nodulation failure in acidic soil.'
+        de: 'Der Planer führt einige Arten als strikte Säurepflanzen (z. B. Heidelbeere, Cranberry, Teestrauch) und andere als Pflanzen neutraler bis kalkhaltiger Böden (z. B. Salbei, Luzerne, Esparsette, Christrose). Pflanzen unterscheiden sich stark in ihrem Calciumbedarf, was die Flora kalkreicher und saurer Böden prägt. Tee braucht einen Boden-pH von etwa 4,5–5,6. Luzerne wächst dagegen auf sauren Böden schlecht, wo Aluminium giftig wirkt, und Kalkung verbessert ihr Wachstum. Ein gemeinsamer Wurzelraum kann daher nicht beiden Gruppen gerecht werden.',
+        en: 'The planner rates some species as strict acid-soil plants (e.g. blueberry, cranberry, tea) and others as plants of neutral to chalky soils (e.g. sage, alfalfa, sainfoin, Christmas rose). Plants differ widely in their calcium requirements, which shapes the flora of chalky and acid soils. Tea needs a soil pH of about 4.5–5.6. Alfalfa (lucerne), in contrast, grows poorly on acid soils where aluminium is toxic, and liming improves its growth. One shared root zone therefore cannot suit both groups.'
       },
-      scientificCitations: [
-        'Ghanati, F., et al. (2005). Deposition of suberin and lignin in tea roots as affected by calcium and pH. Physiologia Plantarum, 123(2), 170–178.',
-        'Munns, D. N. (1965). Soil acidity and growth of a legume: Interactions of lime with nitrogen and phosphate on growth of Medicago sativa L. and Trifolium subterraneum L. Australian Journal of Agricultural Research, 16(5), 733–741.'
-      ],
+      scientificCitations: [...EDAPHIC_PH_CITATIONS],
       safeDistanceM: 2.5,
       spatialAdvice: {
-        de: 'Kombiniere keine strengen Moorbeet-/Säurepflanzen mit kalkliebenden mediterranen Kräutern oder Luzerne innerhalb derselben Baumscheibe (< 2,5 m). Ersetze die unpassende Art passend zum Ziel-pH-Wert deiner Leitpflanze.',
-        en: 'Do not combine obligate acidophiles with calcicole Mediterranean subshrubs or alfalfa within the same root zone (< 2.5 m). Replace the mismatched species to match your star plant’s target soil pH.'
+        de: 'Strenge Säurepflanzen nicht mit Pflanzen neutraler bis kalkhaltiger Böden (z. B. Salbei, Luzerne, Esparsette, Christrose) in denselben Wurzelraum setzen. Die 2,5 m sind ein vorsorglicher Planungswert. Die unpassende Art passend zum pH-Bedarf deiner Leitpflanze ersetzen.',
+        en: 'Do not combine strict acid-soil plants with plants of neutral to chalky soils (e.g. sage, alfalfa, sainfoin, Christmas rose) in the same root zone. The 2.5 m is a precautionary planning value. Replace the mismatched species to match your star plant’s soil pH needs.'
       },
       affectedPlants: affectedEdaphic
     });
@@ -713,27 +701,27 @@ export function analyzeGuildAntagonisms(
       type: 'EXTERNAL_ALERT',
       severity: 'WARNING',
       antagonistName: { de: 'Kalkreicher Boden, Bauschutt & Freies Calciumcarbonat', en: 'Calcareous / Chalky Soils & Free Calcium Carbonate' },
-      antagonistBotanical: 'CaCO3 / pH > 6.5',
+      antagonistBotanical: 'CaCO3 / soil pH > 5.6',
       title: {
-        de: 'Kalkchlorose-Risiko: Teesträucher sind strikte Kalkflüchter',
-        en: 'Lime Chlorosis Risk: Tea Plants Are Strict Calcifuges'
+        de: 'Kalk-Risiko: Teesträucher brauchen sauren Boden',
+        en: 'Lime Risk: Tea Plants Need Acid Soil'
       },
       mechanism: {
-        de: 'Teepflanzen (Camellia sinensis) sind hochgradig acidophil (optimaler pH-Wert 4,5–5,8). Freie Calcium-Ionen (Ca2+) im Boden fällen Eisen (Fe) und Mangan (Mn) unlöslich aus. Bei pH > 6,5 führt dies zu schwerer intervaskulärer Blattchlorose, Wachstumsstillstand und Triebspitzennekrosen.',
-        en: 'Tea plants (Camellia sinensis) are strictly acidophilic (optimum pH 4.5–5.8). Free calcium ions (Ca2+) in alkaline or chalky soils precipitate essential iron and manganese into insoluble complexes. At pH > 6.5, this induces severe interveinal leaf chlorosis, metabolic arrest, and apical dieback.'
+        de: 'Tee (Camellia sinensis) wird in den Tropen und Subtropen auf sauren Böden angebaut; sein pH-Bedarf liegt bei etwa 4,5–5,6. Kalk, Holzasche und kalkhaltige Baustoffe heben den Boden-pH über diesen Bereich.',
+        en: 'Tea (Camellia sinensis) is grown in the tropics and subtropics on acid soils; its pH requirement is about 4.5–5.6. Lime, wood ash and lime-containing building materials raise soil pH above this range.'
       },
       scientificCitations: [
-        'Ghanati, F., et al. (2005). Deposition of suberin and lignin in tea roots as affected by calcium and pH. Physiologia Plantarum, 123(2), 170–178.',
-        'White, P. J., & Broadley, M. R. (2003). Calcium in plants. Annals of Botany, 92(4), 487–511.'
+        'Hajiboland, R. (2017). Environmental and nutritional requirements for tea cultivation. Folia Horticulturae, 29(2), 199–220. doi:10.1515/fhort-2017-0019',
+        'White, P. J., & Broadley, M. R. (2003). Calcium in plants. Annals of Botany, 92(4), 487–511. doi:10.1093/aob/mcg164'
       ],
       safeDistanceM: 5.0,
       spatialAdvice: {
-        de: 'Halte Teepflanzen mindestens 5 m entfernt von frisch betonierten Mauern/Fundamenten (Kalkaustrag), Holzasche-Gaben oder kalkhaltigen Düngern. Mulche den Wurzelbereich kontinuierlich mit Nadelstreu oder saurem Laubkompost.',
-        en: 'Keep tea plants at least 5 m away from concrete foundations leaching calcium hydroxide, wood ash applications, or lime fertilizers. Maintain the rhizosphere acidic using pine needle or oak leaf mulch.'
+        de: 'Teepflanzen nicht an frisch betonierte Mauern oder Fundamente setzen und weder Holzasche noch Kalkdünger geben. Die 5 m sind ein vorsorglicher Planungswert.',
+        en: 'Do not plant tea next to fresh concrete walls or foundations, and do not apply wood ash or lime. The 5 m is a precautionary planning value.'
       },
       affectedPlants: [
-        ...(starIsTea ? [starAt(starTree, 'Calcifuge (pH 4.5–5.8)')] : []),
-        ...placedPlants.filter(p => isTea(p.plant)).map(tp => placedAt(tp, 'Calcifuge (pH 4.5–5.8)'))
+        ...(starIsTea ? [starAt(starTree, 'Calcifuge (pH 4.5–5.6)')] : []),
+        ...placedPlants.filter(p => isTea(p.plant)).map(tp => placedAt(tp, 'Calcifuge (pH 4.5–5.6)'))
       ]
     });
   }

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { STAR_TREES } from '../src/data/starTrees';
-import { GUILD_PLANTS } from '../src/data/guildPlants';
+import { ACTIVE_GUILD_PLANTS } from '../src/data/guildPlants';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +19,7 @@ const shouldGenerate = (id: string) => !onlyIds || onlyIds.has(id);
 
 // Counts shown on the garden card come from the data, so they can't go stale
 const starPlantCount = STAR_TREES.length;
-const companionCountLabel = `${Math.floor(GUILD_PLANTS.length / 10) * 10}+`;
+const companionCountLabel = `${Math.floor(ACTIVE_GUILD_PLANTS.length / 10) * 10}+`;
 
 function escapeXml(unsafe: string): string {
   return String(unsafe).replace(/[<>&'"]/g, c => {

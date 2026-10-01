@@ -62,6 +62,8 @@ export interface GardenConflict {
   requiredDistanceM: number;
   plantA: { id: string; name: LocalizedString; xM: number; yM: number };
   plantB: { id: string; name: LocalizedString; xM: number; yM: number };
+  /** Literature backing the warning (same citations as the guild-level conflict); none for pure geometry. */
+  sources?: string[];
 }
 
 export interface GardenShadePocket {

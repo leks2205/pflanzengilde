@@ -6,6 +6,7 @@ import { PHENO_SEASONS, getPlantingSeasons, getHarvestSeasons } from '../core/se
 import { t, formatNumber, translateRole, translateLayer, translateSector, translateZone, translateJuglone, translateClimateZone } from '../i18n/translations';
 import { getCompanionPestDefenseForTree } from '../core/pestCompanionEngine';
 import { EvidenceCitations, EvidenceTag } from './EvidenceTag';
+import { SourceList } from './SourceList';
 import { PlantThumbnail } from './PlantThumbnail';
 import { GoogleImagesButton } from './GoogleImagesButton';
 import { getImageCredit } from '../data/imageCredits';
@@ -26,7 +27,6 @@ const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-nasturtium': 'chop-plant-nasturtium',
   'plant-sweet-potato': 'chop-plant-sweet-potato',
   'plant-tansy': 'chop-plant-tansy',
-  'plant-southernwood': 'chop-plant-southernwood',
   'plant-chives': 'chop-plant-chives',
   'plant-tea-sinensis': 'chop-plant-tea-sinensis',
   'plant-hyssop': 'chop-plant-hyssop',
@@ -344,6 +344,10 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
             )}
           </div>
         </div>
+
+        {plant.sources && plant.sources.length > 0 && (
+          <SourceList sources={plant.sources} language={language} className="mb-5 px-1" />
+        )}
 
         {plant.recommendedForTrees && plant.recommendedForTrees.length > 0 && (
           <div className="mb-5 p-3.5 rounded-2xl bg-forest-50/50 border border-forest-100 text-xs">

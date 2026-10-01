@@ -163,16 +163,21 @@ const apple = getTree('tree-apple');
 const walnut = getTree('tree-walnut');
 const alder = getTree('tree-alder');
 
-// 3A. Walnut Juglone vs Sensitive Companions (Alfalfa, Lupine, Cranberry, Tea, Rosemary, Wormwood, Thyme)
+// 3A. Walnut Juglone vs Sensitive Companions: only plants that the extension lists
+//     (Purdue HO-193, UW–Madison D0021, Ontario OMAFA, Morton Arboretum) name as sensitive
 const jugloneSensitiveIds = [
   'plant-alfalfa',
-  'plant-lupine',
-  'plant-cranberry',
-  'plant-tea-sinensis',
-  'plant-rosemary',
-  'plant-wormwood',
-  'plant-thyme',
+  'plant-rhododendron',
+  'plant-blueberry',
+  'plant-rhubarb',
+  'plant-alder',
 ];
+// Plants without list support must not be flagged
+for (const neutralId of ['plant-lupine', 'plant-cranberry', 'plant-tea-sinensis', 'plant-rosemary', 'plant-wormwood', 'plant-thyme', 'plant-lavender']) {
+  if (getPlant(neutralId).jugloneTolerance === 'SENSITIVE') {
+    fail(`${neutralId} is marked juglone-sensitive but no cited list names it`);
+  }
+}
 for (const sensId of jugloneSensitiveIds) {
   const sensPlant = getPlant(sensId);
   const gReport = analyzeGuildAntagonisms(walnut, [sensPlant], 'NORTHERN');
@@ -292,7 +297,8 @@ for (const sensId of jugloneSensitiveIds) {
   }
 }
 
-// 3E. Wormwood Absinthin Allelopathy (< 1.2m) in Guild Builder & Garden Builder (and Ribes exception)
+// 3E. Wormwood Absinthin Allelopathy (< 1.2m) in Guild Builder & Garden Builder (no Ribes exception:
+// Funke 1943 found every test species except wormwood itself injured within ~1 m)
 {
   const wormwood = getPlant('plant-wormwood');
   const lovage = getPlant('plant-lovage');
@@ -307,14 +313,14 @@ for (const sensId of jugloneSensitiveIds) {
     fail('Guild Builder did not flag Wormwood + Lovage placed 0.7m apart');
   }
 
-  // Verify Ribes (Red Currant) is NOT flagged as sensitive to Wormwood
+  // Red Currant (Ribes) is flagged like any other neighbour (the former Ribes exemption had no source)
   const customWormwoodRibes = [
     { plantId: wormwood.id, plant: wormwood, distanceM: 2.2, angleDeg: 180, zone: 'ZONE_4_OUTER' as const, sector: 'SOUTH_SUN' as const },
     { plantId: redCurrant.id, plant: redCurrant, distanceM: 1.5, angleDeg: 180, zone: 'ZONE_3_DRIP' as const, sector: 'SOUTH_SUN' as const },
   ];
   const ribesReport = analyzeGuildAntagonisms(apple, [wormwood, redCurrant], customWormwoodRibes);
-  if (ribesReport.conflicts.some(c => c.id === 'internal-wormwood-allelopathy')) {
-    fail('Guild Builder erroneously flagged Red Currant (Ribes) next to Wormwood');
+  if (!ribesReport.conflicts.some(c => c.id === 'internal-wormwood-allelopathy')) {
+    fail('Guild Builder did not flag Red Currant (Ribes) placed 0.7m from Wormwood');
   }
 
   const aInst: GardenStarPlantInstance = {

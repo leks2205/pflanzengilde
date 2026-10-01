@@ -91,8 +91,8 @@ export interface StarTree {
   matureRadiusM: number;          // Radius of canopy / drip line at maturity in meters
   rootHabit: 'SURFACE_FEEDER' | 'DEEP_TAP' | 'WIDE_SPREADING';
   jugloneProducer: boolean;       // Produces allelopathic juglone (e.g. Walnuts)
-  sunPreference: SunPreference;
-  climateZones: ClimateZone[];
+  sunPreference: SunPreference;   // Light level at which the sources report the best growth/yield (shade tolerance is described in the text)
+  climateZones: ClimateZone[];    // Only zones the cited hardiness data supports (USDA bands as defined on ClimateZone)
   vulnerabilities: { en: string[]; de: string[] }; // Specific pests/diseases
   description: LocalizedString;
   bloomSeason: PhenoSeason;
@@ -105,6 +105,7 @@ export interface StarTree {
   recommendedCompanions: string[]; // IDs of GuildPlants specifically tailored to this plant's vulnerabilities
   plantingTime?: LocalizedString;  // Optimal planting window
   harvestTime?: LocalizedString;   // Typical harvest or bloom phase
+  sources?: string[];              // Citations backing description and soilAdvice ("Author (Year). Title. Journal. doi:…")
 }
 
 export interface GuildPlant {
@@ -133,6 +134,13 @@ export interface GuildPlant {
   recommendedForTrees: string[];      // IDs of StarTrees where this plant is a prime companion
   plantingTime?: LocalizedString;     // Optimal planting window
   harvestTime?: LocalizedString;      // Typical harvest or bloom phase
+  sources?: string[];                 // Citations backing notes and soilNotes ("Author (Year). Title. Journal. doi:…")
+  /**
+   * Retired from the catalogue: never offered, recommended or suggested any more. The entry stays
+   * in GUILD_PLANTS only because share codes encode array indices; old share links drop it on decode,
+   * while old locally saved guilds may still show it.
+   */
+  retired?: boolean;
 }
 
 export interface PlacedPlant {
