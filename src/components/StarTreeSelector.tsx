@@ -4,6 +4,7 @@ import { STAR_TREES } from '../data/starTrees';
 import { AlertTriangle, TreePine, Sun, CloudSun, Cloud, Droplet, Bug, Mountain, Filter, Sparkles, Calendar, Scissors, Globe, ShieldCheck } from 'lucide-react';
 import { t, formatNumber, translateSeason, translateSun, translateRootHabit, translateStarCategory, translateClimateZone } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
+import { PhotoCreditBadge, creditAnchorId } from './PhotoCreditBadge';
 import { GoogleImagesButton } from './GoogleImagesButton';
 import { evidenceLabel, resolvePestDefense } from '../core/pestCompanionEngine';
 import { EvidenceTag } from './EvidenceTag';
@@ -19,6 +20,8 @@ interface StarTreeSelectorProps {
   onSelectTree: (tree: StarTree) => void;
   onLoadPreset?: (presetName: 'apple' | 'walnut' | 'apricot' | 'minimal') => void;
   onFilterByPest?: (pestName: string, plantIds: string[]) => void;
+  /** SPA navigation (used by the photo credit badge) */
+  onNavigate?: (path: string) => void;
 }
 
 export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
@@ -29,6 +32,7 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
   onSelectTree,
   onLoadPreset,
   onFilterByPest,
+  onNavigate,
 }) => {
   const tr = t(language);
   const [shadeFilter, setShadeFilter] = useState<ShadeFilter>('ALL');
@@ -408,16 +412,25 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
         )}
 
         <div className="md:col-span-2 flex flex-col items-center sm:items-start gap-1.5">
-          <PlantThumbnail
-            src={selectedTree.imageUrl}
-            alt={getLoc(selectedTree.commonName, language)}
-            fallbackText={getLoc(selectedTree.commonName, language).substring(0, 2)}
-            fallbackColor={selectedTree.color}
-            className="w-20 h-20 sm:w-24 sm:h-24"
-            roundedClassName="rounded-2xl ring-2 ring-stone-200"
-            targetSize={240}
-            priority="high"
-          />
+          <div className="relative">
+            <PlantThumbnail
+              src={selectedTree.imageUrl}
+              alt={getLoc(selectedTree.commonName, language)}
+              fallbackText={getLoc(selectedTree.commonName, language).substring(0, 2)}
+              fallbackColor={selectedTree.color}
+              className="w-20 h-20 sm:w-24 sm:h-24"
+              roundedClassName="rounded-2xl ring-2 ring-stone-200"
+              targetSize={240}
+              priority="high"
+            />
+            <PhotoCreditBadge
+              imageUrl={selectedTree.imageUrl}
+              anchorId={creditAnchorId(selectedTree.id)}
+              language={language}
+              onNavigate={onNavigate}
+              className="bottom-1.5 right-1.5"
+            />
+          </div>
           <GoogleImagesButton
             query={`${selectedTree.botanicalName} ${getLoc(selectedTree.commonName, language)}`}
             label={tr.googleImages}

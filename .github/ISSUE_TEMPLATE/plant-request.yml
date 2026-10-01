@@ -6,12 +6,12 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a plant! You don't need to write any code. German or English are both fine.
+        Thanks for suggesting a plant! Only the name is required. Fill in whatever else you know, we research and verify every suggestion ourselves anyway. German or English are both fine.
   - type: input
     id: common-name
     attributes:
-      label: Common name
-      description: English and/or German name.
+      label: Name
+      description: Common name (English or German) or botanical name.
       placeholder: "Comfrey / Beinwell"
     validations:
       required: true
@@ -20,8 +20,6 @@ body:
     attributes:
       label: Botanical name
       placeholder: "Symphytum x uplandicum"
-    validations:
-      required: true
   - type: dropdown
     id: kind
     attributes:
@@ -30,8 +28,6 @@ body:
         - Companion plant
         - Star tree / shrub (guild centre)
         - Not sure
-    validations:
-      required: true
   - type: checkboxes
     id: roles
     attributes:
@@ -52,10 +48,8 @@ body:
     attributes:
       label: Why it belongs in a guild
       description: Which trees it pairs well with, where it goes (distance from the trunk, sun/shade), soil and climate needs, and anything it conflicts with.
-    validations:
-      required: true
   - type: textarea
     id: sources
     attributes:
       label: Sources
-      description: Papers, extension service publications, books or your own field experience. Optional, but very helpful.
+      description: Papers, extension service publications, books or your own field experience. Optional.

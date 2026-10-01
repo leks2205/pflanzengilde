@@ -305,8 +305,8 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
       en: 'Chip branches (< 7 cm) into ramial chipped wood (BRF); lay summer leaves 5–10 cm deep in Zone 3 and 4, keeping 30 cm from the trunk.'
     },
     nutrientBenefit: {
-      de: 'Stickstoffreiches, leicht saures Laub aus Frankia-Fixierung (100–150 kg N/ha und Jahr).',
-      en: 'N-rich, mildly acidic leaf litter from Frankia fixation (100–150 kg N/ha/yr).'
+      de: 'Stickstoffreiches, leicht saures Laub aus Frankia-Fixierung (je nach Standort 40–300 kg N/ha und Jahr).',
+      en: 'N-rich, mildly acidic leaf litter from Frankia fixation (40–300 kg N/ha/yr depending on site).'
     }
   },
   'plant-linden': {

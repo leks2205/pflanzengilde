@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/og-image.png" alt="Pflanzengilde.de" width="720" />
+<img src=".github/banner.png" alt="Pflanzengilde.de" width="600" />
 
 # Pflanzengilde
 

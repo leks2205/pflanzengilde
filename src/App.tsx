@@ -728,6 +728,7 @@ export const App: React.FC = () => {
               onSelectTree={handleSelectTree}
               onLoadPreset={handleLoadPreset}
               onFilterByPest={handleFilterByPest}
+              onNavigate={navigateTo}
             />
 
             <div id="guild-builder-step" className="scroll-mt-20 transition-all">

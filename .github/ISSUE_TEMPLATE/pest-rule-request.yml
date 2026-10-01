@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a pest rule! You don't need to write any code. German or English are both fine.
+        Thanks for suggesting a pest rule! Only the pest or disease is required. Fill in whatever else you know, we research and verify every suggestion ourselves anyway. German or English are both fine.
   - type: input
     id: pest
     attributes:
@@ -19,15 +19,11 @@ body:
     attributes:
       label: Affected trees or shrubs
       placeholder: "Apple, pear, walnut"
-    validations:
-      required: true
   - type: textarea
     id: companions
     attributes:
       label: Companions or measures that help
       description: Which plants help, and how (repelling, attracting predators, trap crop, …). Non-plant measures like nets or mulch are welcome too.
-    validations:
-      required: true
   - type: dropdown
     id: evidence
     attributes:
@@ -38,10 +34,8 @@ body:
         - Promising, but limited evidence
         - Gardening folklore / own experience
         - Not sure
-    validations:
-      required: true
   - type: textarea
     id: sources
     attributes:
       label: Sources
-      description: Links or citations. Optional, but needed before a rule can show an evidence badge.
+      description: Links or citations. Optional.

@@ -2,6 +2,7 @@ import React from 'react';
 import { GuildPlant, Language, StarTree, getLoc } from '../types/guild';
 import { Sprout, ExternalLink, Sparkles } from 'lucide-react';
 import { t } from '../i18n/translations';
+import { PhotoCreditBadge, creditAnchorId } from './PhotoCreditBadge';
 
 interface GuildEmbedCardProps {
   starTree: StarTree;
@@ -44,6 +45,14 @@ export const GuildEmbedCard: React.FC<GuildEmbedCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/90 to-stone-950/25" />
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/60 to-transparent" />
       </div>
+      {/* Embeds live in iframes on other sites, so the credit opens in a new tab. */}
+      <PhotoCreditBadge
+        imageUrl={starTree.imageUrl}
+        anchorId={creditAnchorId(starTree.id)}
+        language={language}
+        external
+        className="top-2 right-2 sm:top-3 sm:right-3"
+      />
 
       <div className="relative z-10 space-y-3 sm:space-y-4 max-w-xl">
         <div className="flex flex-wrap items-center gap-2">

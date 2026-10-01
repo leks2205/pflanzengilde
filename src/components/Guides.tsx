@@ -497,7 +497,14 @@ const SOURCES: Source[] = [
     author: 'Guangming Online – Kepu China (光明网-科普中国) (2022)',
     title: '【科学种植百问百答】如何进行茶树修剪？ (Science-based cultivation Q&A: How should tea bushes be pruned?)',
     journal: 'kepu.gmw.cn, 3 August 2022 (https://kepu.gmw.cn/2022-08/03/content_35930355.htm)',
-    note: 'Chinese extension guidance on the three formative cuts (Dingxing XiuJian) of young tea: 1st cut after transplanting once seedlings exceed 25 cm (main stem cut at 15–20 cm, laterals spared); 2nd cut the following year in late February–early March (30–40 cm); 3rd cut one year later (level cut at 40–55 cm); then two seasons of light tipping before full plucking at 60–80 cm height.'
+    note: 'Chinese extension guidance on the three formative cuts (Dingxing XiuJian) of young tea, made to promote axillary-bud break and increase the number of scaffold branches: 1st cut after transplanting once seedlings exceed 25 cm (main stem cut at 15–20 cm, laterals spared); 2nd cut the following year in late February–early March (30–40 cm); 3rd cut one year later (level cut at 40–55 cm); then two seasons of light tipping before full plucking at 60–80 cm height.'
+  },
+  {
+    id: 'fn-47',
+    author: 'Yuan, Y., Chen, Z., Huang, X., Wang, F., Guo, H., Huang, Z., & Yang, H. (2023)',
+    title: 'Comparative analysis of nitrogen content and its influence on actinorhizal nodule and rhizospheric microorganism diversity in three Alnus species',
+    journal: 'Frontiers in Microbiology, 14, 1230170 (DOI: 10.3389/fmicb.2023.1230170)',
+    note: 'Compares Alnus glutinosa, A. formosana and A. cremastogyne; summarises that black, red and sitka alders fix 40–300 kg N/ha/yr (comparable to alfalfa and clover), with the amount of fixed N transferred to nearby soils varying greatly within that range.'
   }
 ];
 
@@ -1783,7 +1790,7 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                       </text>
                     </svg>
                     <p className="text-[11px] text-stone-300 mt-2 leading-snug">
-                      {tr.guidesEachLateWinterCutRemoves}
+                      <RichText text={tr.guidesEachLateWinterCutRemoves} onFootnote={scrollToFootnote} />
                     </p>
                   </div>
                 </div>
