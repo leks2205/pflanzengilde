@@ -1,5 +1,8 @@
-import { GuildPlant, Hemisphere, StarTree } from '../types/guild';
-import { StarPlantClusterConfig, StarPlantPattern } from '../types/garden';
+import { ClimateZone, GuildPlant, Hemisphere, SoilType, StarTree } from '../types/guild';
+import { GardenShadePocket, GardenStarPlantInstance, StarPlantClusterConfig, StarPlantPattern } from '../types/garden';
+import { GardenResolution, resolveGardenConflicts } from './gardenOptimizer';
+import { detectGardenShadePockets } from './gardenAntagonist';
+import { calculateSpatialMetrics } from './placementRules';
 
 export interface RelativePoint {
   index: number;
@@ -18,12 +21,24 @@ export interface MultiStarLayoutResult {
   heightM: number;
 }
 
-/** Inter-tree spacing from the mature diameter, so canopies just touch at maturity. */
+/**
+ * Smallest trunk-to-trunk distance between two identical stars that the garden conflict analysis
+ * accepts (same threshold as the TRUNK_COLLISION rule in analyzeGardenAntagonisms).
+ */
+export function getMinTrunkDistanceM(starTree: StarTree): number {
+  return Math.max(1.5, starTree.matureRadiusM * 2 * 0.4);
+}
+
+/**
+ * Inter-tree spacing from the mature diameter, so canopies just touch at maturity. Never below the
+ * garden's minimum trunk distance, so the recommended spacing never triggers a trunk collision.
+ */
 export function getRecommendedSpacingM(starTree: StarTree): { min: number; optimal: number; max: number } {
   const diameter = starTree.matureRadiusM * 2;
-  const min = Math.max(1.0, Number((diameter * 0.75).toFixed(1)));
-  const optimal = Math.max(1.2, Number((diameter * 0.95).toFixed(1)));
-  const max = Math.max(1.8, Number((diameter * 1.3).toFixed(1)));
+  const minTrunk = getMinTrunkDistanceM(starTree);
+  const min = Math.max(minTrunk, Number((diameter * 0.75).toFixed(1)));
+  const optimal = Math.max(minTrunk, 1.2, Number((diameter * 0.95).toFixed(1)));
+  const max = Math.max(1.8, optimal, Number((diameter * 1.3).toFixed(1)));
   return { min, optimal, max };
 }
 
@@ -133,238 +148,102 @@ export function generateStarPlantCoordinates(
   };
 }
 
-export interface ClusterCompanionResult {
-  plantId: string;
-  plant: GuildPlant;
-  dxM: number;
-  dyM: number;
-  servicingTreeIndices: number[];
-  isMerged: boolean;
-  roleCategory: 'INSECTARY' | 'NITROGEN_MULCH' | 'PERIMETER_BARRIER' | 'DYNAMIC_ACCUMULATOR' | 'SENTINEL_REPELLER';
+/* ------------------------------------------------------------------------------------------------
+ * Multi-star cluster = a small garden
+ *
+ * The radial plan's multi-star mode and "Open in garden grid" both build the same star instances
+ * and run the garden pipeline (resolveGardenConflicts: optimizeGardenCompanions + garden conflict
+ * analysis + automatic substitution), so the radial preview and the garden show the same layout.
+ * ---------------------------------------------------------------------------------------------- */
+
+/** Instance id of star `index` of a cluster. Same scheme for the radial preview and the garden. */
+export function clusterStarInstanceId(starTree: StarTree, idStamp: string, index: number): string {
+  return `star-tree-${starTree.id}-${idStamp}-${index}`;
 }
 
 /**
- * Companion positions for a multi-tree cluster, shared where possible instead of 1:1 per tree:
- * insectaries between 2-3 trees, N-fixers/mulch between neighbours, barriers on the perimeter.
+ * Garden star instances for a cluster: positions from generateStarPlantCoordinates, every instance
+ * with the guild's companion ids. `idStamp` only makes the ids unique (the layout depends on
+ * positions and plant ids, and the id scheme keeps all id-based tie-breaks identical).
  */
-export function generateClusterCompanions(
+export function buildClusterStarInstances(
   starTree: StarTree,
-  selectedPlants: GuildPlant[],
-  cluster: MultiStarLayoutResult,
-  hemisphere: Hemisphere = 'NORTHERN'
-): {
-  companions: ClusterCompanionResult[];
-  unoptimizedCount: number;
-  optimizedCount: number;
-  savingsPercent: number;
-} {
-  const { count, treePoints } = cluster;
-  const companions: ClusterCompanionResult[] = [];
-  const unoptimizedCount = count * selectedPlants.length;
+  config: StarPlantClusterConfig,
+  selectedPlantIds: readonly string[],
+  idStamp = 'radial'
+): GardenStarPlantInstance[] {
+  const layout = generateStarPlantCoordinates(starTree, config);
+  return layout.treePoints.map(pt => ({
+    instanceId: clusterStarInstanceId(starTree, idStamp, pt.index),
+    treeId: starTree.id,
+    starTree,
+    xM: pt.dxM,
+    yM: pt.dyM,
+    selectedPlantIds: [...selectedPlantIds],
+  }));
+}
 
-  if (count <= 1 || treePoints.length <= 1) {
-    const r = Math.max(1.0, starTree.matureRadiusM * 0.7);
-    selectedPlants.forEach((p, idx) => {
-      const angle = (idx * (360 / Math.max(1, selectedPlants.length)) * Math.PI) / 180;
-      companions.push({
-        plantId: p.id,
-        plant: p,
-        dxM: Number((r * Math.sin(angle)).toFixed(2)),
-        dyM: Number((-r * Math.cos(angle)).toFixed(2)),
-        servicingTreeIndices: [0],
-        isMerged: false,
-        roleCategory: 'SENTINEL_REPELLER'
-      });
-    });
+export interface ClusterGardenOptions {
+  hemisphere?: Hemisphere;
+  zone?: ClimateZone;
+  soil?: SoilType;
+  /** Automatic conflict resolution (GardenPlannerPage default: on). */
+  autoResolve?: boolean;
+  allGuildPlants?: GuildPlant[];
+  idStamp?: string;
+}
 
-    return {
-      companions,
-      unoptimizedCount,
-      optimizedCount: companions.length,
-      savingsPercent: 0,
-    };
-  }
+export interface ClusterGardenLayout {
+  layout: MultiStarLayoutResult;
+  starPlants: GardenStarPlantInstance[];
+  /** Exactly what GardenPlannerPage computes for these instances (companions, stats, conflicts, swaps). */
+  resolution: GardenResolution;
+  shadePockets: GardenShadePocket[];
+  /** Extent of canopies, companion spreads and zone rings, in metres. */
+  boundsM: { minX: number; maxX: number; minY: number; maxY: number };
+}
 
-  // Each plant gets exactly one primary role
-  const insectaryPlants: GuildPlant[] = [];
-  const nitrogenAndMulchPlants: GuildPlant[] = [];
-  const dynamicAccumulators: GuildPlant[] = [];
-  const grassBarriers: GuildPlant[] = [];
-  const repellers: GuildPlant[] = [];
-  const otherPlants: GuildPlant[] = [];
-
-  selectedPlants.forEach(p => {
-    if (p.roles.includes('POLLINATOR_MAGNET') || p.botanicalName.includes('Achillea') || p.botanicalName.includes('Foeniculum')) {
-      insectaryPlants.push(p);
-    } else if (p.roles.includes('NITROGEN_FIXER') || p.roles.includes('LIVING_MULCH') || p.roles.includes('BIOMASS_PRODUCER')) {
-      nitrogenAndMulchPlants.push(p);
-    } else if (p.roles.includes('DYNAMIC_ACCUMULATOR')) {
-      dynamicAccumulators.push(p);
-    } else if (p.roles.includes('GRASS_BARRIER') || p.layer === 'BULB_ROOT') {
-      grassBarriers.push(p);
-    } else if (p.roles.includes('PEST_REPELLER') || p.roles.includes('ANTIFUNGAL')) {
-      repellers.push(p);
-    } else {
-      otherPlants.push(p);
-    }
+/**
+ * Layout of N identical stars with the garden pipeline. This is what the radial plan renders in
+ * multi-star mode; App.handleOpenInGardenGrid places the same instances in the garden.
+ */
+export function computeClusterGardenLayout(
+  starTree: StarTree,
+  config: StarPlantClusterConfig,
+  selectedPlantIds: readonly string[],
+  options: ClusterGardenOptions = {}
+): ClusterGardenLayout {
+  const layout = generateStarPlantCoordinates(starTree, config);
+  const starPlants = buildClusterStarInstances(starTree, config, selectedPlantIds, options.idStamp);
+  const resolution = resolveGardenConflicts(starPlants, {
+    ...(options.allGuildPlants ? { allGuildPlants: options.allGuildPlants } : {}),
+    hemisphere: options.hemisphere ?? 'NORTHERN',
+    zone: options.zone,
+    soil: options.soil,
+    enabled: options.autoResolve ?? true,
   });
+  const shadePockets = detectGardenShadePockets(starPlants);
 
-  // Insectaries: one station per 2-3 trees
-  insectaryPlants.forEach(plant => {
-    const stationsNeeded = Math.max(1, Math.ceil(count / 2.5));
-    const step = Math.max(1, Math.floor(treePoints.length / stationsNeeded));
-
-    for (let s = 0; s < stationsNeeded; s++) {
-      const idxA = (s * step) % treePoints.length;
-      const idxB = Math.min(treePoints.length - 1, idxA + 1);
-      const ptA = treePoints[idxA];
-      const ptB = treePoints[idxB];
-
-      const sunOffset = (hemisphere === 'NORTHERN' ? 0.6 : -0.6);
-      const dxM = Number(((ptA.dxM + ptB.dxM) / 2).toFixed(2));
-      const dyM = Number(((ptA.dyM + ptB.dyM) / 2 + sunOffset).toFixed(2));
-
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM,
-        dyM,
-        servicingTreeIndices: idxA === idxB ? [idxA] : [idxA, idxB],
-        isMerged: idxA !== idxB,
-        roleCategory: 'INSECTARY'
-      });
-    }
-  });
-
-  // N-fixers and living mulch between neighbouring trees
-  nitrogenAndMulchPlants.forEach(plant => {
-    for (let i = 0; i < treePoints.length - 1; i++) {
-      const ptA = treePoints[i];
-      const ptB = treePoints[i + 1];
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number(((ptA.dxM + ptB.dxM) / 2).toFixed(2)),
-        dyM: Number(((ptA.dyM + ptB.dyM) / 2).toFixed(2)),
-        servicingTreeIndices: [i, i + 1],
-        isMerged: true,
-        roleCategory: 'NITROGEN_MULCH'
-      });
-    }
-  });
-
-  // Dynamic accumulators on the shaded side, one per two trees
-  dynamicAccumulators.forEach(plant => {
-    const stationsNeeded = Math.max(1, Math.ceil(count / 2));
-    for (let i = 0; i < stationsNeeded; i++) {
-      const ptIdx = Math.min(treePoints.length - 1, i * 2);
-      const pt = treePoints[ptIdx];
-      const shadeOffset = (hemisphere === 'NORTHERN' ? -starTree.matureRadiusM * 0.75 : starTree.matureRadiusM * 0.75);
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number(pt.dxM.toFixed(2)),
-        dyM: Number((pt.dyM + shadeOffset).toFixed(2)),
-        servicingTreeIndices: [ptIdx],
-        isMerged: false,
-        roleCategory: 'DYNAMIC_ACCUMULATOR'
-      });
-    }
-  });
-
-  // Grass barriers at both ends of the formation (and mid-row for 3+)
-  grassBarriers.forEach(plant => {
-    const r = Math.max(0.6, starTree.matureRadiusM * 0.45);
-    const sunSide = hemisphere === 'NORTHERN' ? r : -r;
-
-    const ptFirst = treePoints[0];
-    const ptLast = treePoints[treePoints.length - 1];
-
-    companions.push({
-      plantId: plant.id,
-      plant,
-      dxM: Number((ptFirst.dxM - r).toFixed(2)),
-      dyM: Number(ptFirst.dyM.toFixed(2)),
-      servicingTreeIndices: [0],
-      isMerged: false,
-      roleCategory: 'PERIMETER_BARRIER'
-    });
-
-    if (treePoints.length > 1) {
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number((ptLast.dxM + r).toFixed(2)),
-        dyM: Number(ptLast.dyM.toFixed(2)),
-        servicingTreeIndices: [treePoints.length - 1],
-        isMerged: false,
-        roleCategory: 'PERIMETER_BARRIER'
-      });
-    }
-
-    if (treePoints.length >= 3) {
-      const midIdx = Math.floor(treePoints.length / 2);
-      const ptMid = treePoints[midIdx];
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number(ptMid.dxM.toFixed(2)),
-        dyM: Number((ptMid.dyM + sunSide).toFixed(2)),
-        servicingTreeIndices: [midIdx],
-        isMerged: false,
-        roleCategory: 'PERIMETER_BARRIER'
-      });
-    }
-  });
-
-  // Repeller sentinels
-  repellers.forEach(plant => {
-    const stationsNeeded = Math.max(1, Math.ceil(count * 0.7));
-    const step = Math.max(1, Math.floor(treePoints.length / stationsNeeded));
-    for (let s = 0; s < stationsNeeded; s++) {
-      const idx = Math.min(treePoints.length - 1, s * step);
-      const pt = treePoints[idx];
-      const angle = (idx % 2 === 0 ? 180 : 270) * (Math.PI / 180);
-      const r = Math.max(0.8, starTree.matureRadiusM * 0.6);
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number((pt.dxM + r * Math.sin(angle)).toFixed(2)),
-        dyM: Number((pt.dyM - r * Math.cos(angle)).toFixed(2)),
-        servicingTreeIndices: [idx],
-        isMerged: false,
-        roleCategory: 'SENTINEL_REPELLER'
-      });
-    }
-  });
-
-  otherPlants.forEach(plant => {
-    const stationsNeeded = Math.max(1, Math.ceil(count / 2));
-    for (let i = 0; i < stationsNeeded; i++) {
-      const idx = Math.min(treePoints.length - 1, i * 2);
-      const pt = treePoints[idx];
-      const r = starTree.matureRadiusM * 0.8;
-      companions.push({
-        plantId: plant.id,
-        plant,
-        dxM: Number((pt.dxM + r * 0.7).toFixed(2)),
-        dyM: Number((pt.dyM + r * 0.7).toFixed(2)),
-        servicingTreeIndices: [idx],
-        isMerged: false,
-        roleCategory: 'SENTINEL_REPELLER'
-      });
-    }
-  });
-
-  const optimizedCount = companions.length;
-  const savingsPercent = unoptimizedCount > 0
-    ? Math.max(0, Math.round(((unoptimizedCount - optimizedCount) / unoptimizedCount) * 100))
-    : 0;
+  // Per-star zone rings reach the outer edge of the drip zone
+  const treeReach = Math.max(starTree.matureRadiusM, calculateSpatialMetrics(starTree).dripZoneOuterM);
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  const grow = (x: number, y: number, r: number) => {
+    minX = Math.min(minX, x - r); maxX = Math.max(maxX, x + r);
+    minY = Math.min(minY, y - r); maxY = Math.max(maxY, y + r);
+  };
+  for (const t of starPlants) grow(t.xM, t.yM, treeReach);
+  for (const c of resolution.companions) grow(c.xM, c.yM, Math.max(0.3, c.plant.spreadM / 2));
 
   return {
-    companions,
-    unoptimizedCount,
-    optimizedCount,
-    savingsPercent,
+    layout,
+    starPlants,
+    resolution,
+    shadePockets,
+    boundsM: {
+      minX: Number(minX.toFixed(2)),
+      maxX: Number(maxX.toFixed(2)),
+      minY: Number(minY.toFixed(2)),
+      maxY: Number(maxY.toFixed(2)),
+    },
   };
 }

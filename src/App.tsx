@@ -19,7 +19,7 @@ import { isCompatibleWithGuild, partitionGuildByCompatibility } from './core/com
 import { GUILD_PRESETS as PRESETS, DEFAULT_GUILD_PLANT_IDS } from './core/guildPresets';
 import { t } from './i18n/translations';
 import { CheckCircle2, AlertCircle, X } from 'lucide-react';
-import { generateStarPlantCoordinates } from './core/multiStarLayout';
+import { buildClusterStarInstances } from './core/multiStarLayout';
 import { StarPlantClusterConfig, GardenStarPlantInstance } from './types/garden';
 
 // Legal pages are operator-specific and not in the repository. Drop Impressum.tsx /
@@ -319,17 +319,14 @@ export const App: React.FC = () => {
   };
 
   const handleOpenInGardenGrid = (tree: StarTree, clusterConfig: StarPlantClusterConfig) => {
-    const layout = generateStarPlantCoordinates(tree, clusterConfig);
-    const plantIds = selectedPlants.map(p => p.id);
-    const now = Date.now();
-    const instances: GardenStarPlantInstance[] = layout.treePoints.map((pt, idx) => ({
-      instanceId: `star-tree-${tree.id}-${now}-${idx}`,
-      treeId: tree.id,
-      starTree: tree,
-      xM: pt.dxM,
-      yM: pt.dyM,
-      selectedPlantIds: [...plantIds]
-    }));
+    // Same instances (positions, companion lists, id scheme) the radial plan feeds into the garden
+    // pipeline (computeClusterGardenLayout), so the garden shows the layout the radial plan showed
+    const instances: GardenStarPlantInstance[] = buildClusterStarInstances(
+      tree,
+      clusterConfig,
+      selectedPlants.map(p => p.id),
+      String(Date.now())
+    );
     setPendingTreesToPlace(instances);
     navigateTo('/garten');
   };
@@ -746,6 +743,8 @@ export const App: React.FC = () => {
                   selectedPlants={selectedPlants}
                   currentSeason={currentSeason}
                   hemisphere={hemisphere}
+                  selectedSoil={selectedSoil}
+                  selectedZone={selectedZone}
                   onSelectPlant={setModalPlant}
                   onSwapPlant={handleSwapPlant}
                   onOpenInGardenGrid={handleOpenInGardenGrid}

@@ -1,7 +1,16 @@
 import { STAR_TREES } from '../src/data/starTrees';
 import { GUILD_PLANTS } from '../src/data/guildPlants';
-import { generateStarPlantCoordinates, generateClusterCompanions, getRecommendedSpacingM } from '../src/core/multiStarLayout';
-import { optimizeGardenCompanions } from '../src/core/gardenOptimizer';
+import {
+  buildClusterStarInstances,
+  computeClusterGardenLayout,
+  generateStarPlantCoordinates,
+  getMinTrunkDistanceM,
+  getRecommendedSpacingM
+} from '../src/core/multiStarLayout';
+import { optimizeGardenCompanions, resolveGardenConflicts } from '../src/core/gardenOptimizer';
+import { partitionGuildByCompatibility } from '../src/core/compatibility';
+import { StarPlantPattern } from '../src/types/garden';
+import { Hemisphere } from '../src/types/guild';
 import { analyzeGardenAntagonisms, detectGardenShadePockets } from '../src/core/gardenAntagonist';
 import { buildGardenIcsContent } from '../src/core/gardenCalendar';
 import { GardenStarPlantInstance, GardenState } from '../src/types/garden';
@@ -64,11 +73,93 @@ const testGuildCompanions = GUILD_PLANTS.filter(p =>
 );
 assert(testGuildCompanions.length === 5, 'Found 5 test guild plants');
 
-const clusterCompanions = generateClusterCompanions(appleTree, testGuildCompanions, lineLayout, 'NORTHERN');
-assert(clusterCompanions.unoptimizedCount === 15, `Naive 1:1 duplication count is 15 (got ${clusterCompanions.unoptimizedCount})`);
-assert(clusterCompanions.optimizedCount < clusterCompanions.unoptimizedCount, `Optimized companion count (${clusterCompanions.optimizedCount}) is less than naive 15`);
-assert(clusterCompanions.savingsPercent > 0, `Savings percent is positive (${clusterCompanions.savingsPercent}%)`);
-assert(clusterCompanions.companions.some(c => c.isMerged), 'Has merged companion instances between trees');
+// The radial multi-star mode runs the garden pipeline (computeClusterGardenLayout ->
+// resolveGardenConflicts) on the cluster's star instances
+const testIds = testGuildCompanions.map(p => p.id);
+const lineGarden = computeClusterGardenLayout(appleTree, { count: 3, pattern: 'LINE', spacingM: 4.0, orientationDeg: 90 }, testIds);
+const lineStats = lineGarden.resolution.stats;
+assert(lineGarden.starPlants.length === 3, 'Cluster garden has 3 star instances');
+assert(lineStats.unoptimizedCompanionCount === 15, `Naive 1:1 duplication count is 15 (got ${lineStats.unoptimizedCompanionCount})`);
+assert(lineStats.companionPlantCount < lineStats.unoptimizedCompanionCount, `Optimized companion count (${lineStats.companionPlantCount}) is less than naive 15`);
+assert(lineStats.savingsPercent > 0, `Savings percent is positive (${lineStats.savingsPercent}%)`);
+assert(lineGarden.resolution.companions.some(c => c.isMerged), 'Has merged companion instances between trees');
+assert(lineStats.companionPlantCount === lineGarden.resolution.companions.length, 'Stats count matches the rendered companions');
+
+// Same instances as App.handleOpenInGardenGrid -> identical to what the garden planner computes
+const gardenInstances = buildClusterStarInstances(appleTree, { count: 3, pattern: 'LINE', spacingM: 4.0, orientationDeg: 90 }, testIds, '1759300000000');
+const gardenResolution = resolveGardenConflicts(gardenInstances, { hemisphere: 'NORTHERN', enabled: true });
+const layoutKey = (cs: { plantId: string; xM: number; yM: number; servicingTreeIds: string[] }[], ids: string[]) =>
+  cs.map(c => `${c.plantId}@${c.xM},${c.yM}[${c.servicingTreeIds.map(id => ids.indexOf(id)).join('+')}]`).sort().join(' ');
+assert(
+  layoutKey(lineGarden.resolution.companions, lineGarden.starPlants.map(t => t.instanceId)) ===
+    layoutKey(gardenResolution.companions, gardenInstances.map(t => t.instanceId)),
+  'Radial cluster layout is identical to the garden layout of the handed-over instances'
+);
+
+console.log('\n--- 2b. Multi-star clusters across stars, counts 2-6, patterns and hemispheres ---');
+let clusterCases = 0;
+let clusterFailures = 0;
+const check = (ok: boolean, msg: string) => {
+  if (!ok) {
+    clusterFailures++;
+    if (clusterFailures <= 10) console.error(`FAIL: ${msg}`);
+  }
+};
+for (const star of STAR_TREES) {
+  const rec = getRecommendedSpacingM(star);
+  assert(rec.optimal >= getMinTrunkDistanceM(star), `${star.id}: recommended spacing ${rec.optimal} m >= minimum trunk distance`);
+  const guild = partitionGuildByCompatibility(
+    star,
+    GUILD_PLANTS.filter(p => star.recommendedCompanions.slice(0, 7).includes(p.id))
+  ).compatible.map(p => p.id);
+  for (const hemisphere of ['NORTHERN', 'SOUTHERN'] as Hemisphere[]) {
+    for (const pattern of ['LINE', 'GRID', 'TRIANGLE'] as StarPlantPattern[]) {
+      for (let count = 2; count <= 6; count++) {
+        clusterCases++;
+        const cfg = { pattern, count, spacingM: rec.optimal, orientationDeg: 90 };
+        const res = computeClusterGardenLayout(star, cfg, guild, { hemisphere });
+        const tag = `${star.id} ${pattern}x${count} ${hemisphere}`;
+        check(res.starPlants.length === count, `${tag}: ${count} star instances`);
+        check(new Set(res.starPlants.map(t => t.instanceId)).size === count, `${tag}: unique instance ids`);
+        check(!res.resolution.unresolved.some(c => c.type === 'TRUNK_COLLISION'), `${tag}: no trunk collision at recommended spacing`);
+        // Every star gets every companion of its (resolved) list from some placed instance
+        for (const t of res.starPlants) {
+          for (const id of res.resolution.effectiveCompanionIds[t.instanceId] ?? []) {
+            check(
+              res.resolution.companions.some(c => c.plantId === id && c.servicingTreeIds.includes(t.instanceId)),
+              `${tag}: ${t.instanceId} is served by ${id}`
+            );
+          }
+        }
+        for (const c of res.resolution.companions) {
+          check(Number.isFinite(c.xM) && Number.isFinite(c.yM), `${tag}: finite companion position`);
+          check(
+            res.starPlants.every(t => Math.hypot(c.xM - t.xM, c.yM - t.yM) >= 0.39),
+            `${tag}: ${c.plantId} keeps the trunk collar of every star bare`
+          );
+          const b = res.boundsM;
+          check(c.xM >= b.minX && c.xM <= b.maxX && c.yM >= b.minY && c.yM <= b.maxY, `${tag}: companion inside bounds`);
+        }
+        // No two companions stacked on the same spot (the old cluster layout stacked whole guilds)
+        const cs = res.resolution.companions;
+        for (let i = 0; i < cs.length; i++) {
+          for (let j = i + 1; j < cs.length; j++) {
+            check(Math.hypot(cs[i].xM - cs[j].xM, cs[i].yM - cs[j].yM) >= 0.3, `${tag}: ${cs[i].plantId} / ${cs[j].plantId} not stacked`);
+          }
+        }
+        // Deterministic and independent of the instance-id stamp (radial preview vs garden hand-over)
+        const handed = buildClusterStarInstances(star, cfg, guild, 'x42');
+        const again = resolveGardenConflicts(handed, { hemisphere, enabled: true });
+        check(
+          layoutKey(res.resolution.companions, res.starPlants.map(t => t.instanceId)) ===
+            layoutKey(again.companions, handed.map(t => t.instanceId)),
+          `${tag}: garden hand-over reproduces the radial layout`
+        );
+      }
+    }
+  }
+}
+assert(clusterFailures === 0, `All ${clusterCases} multi-star cluster cases pass the garden checks (${clusterFailures} failures)`);
 
 // 3. REAL-TIME BOTANICAL ANTAGONISM ENGINE TESTS
 console.log('\n--- 3. Botanical Antagonisms (Juglone & Allium vs Legume) ---');
