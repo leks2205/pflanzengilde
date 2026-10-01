@@ -5,6 +5,7 @@ import { X, Sparkles, Sun, Shield, Layers, Calendar, Scissors, AlertTriangle, Mo
 import { PHENO_SEASONS, getPlantingSeasons, getHarvestSeasons } from '../core/seasonalGapEngine';
 import { t, formatNumber, translateRole, translateLayer, translateSector, translateZone, translateJuglone, translateClimateZone } from '../i18n/translations';
 import { getCompanionPestDefenseForTree } from '../core/pestCompanionEngine';
+import { getGuildIncompatibility, summarizeIncompatibility } from '../core/compatibility';
 import { EvidenceCitations, EvidenceTag } from './EvidenceTag';
 import { SourceList } from './SourceList';
 import { PlantThumbnail } from './PlantThumbnail';
@@ -76,6 +77,8 @@ interface PlantDetailModalProps {
   onToggleSelect: (plant: GuildPlant) => void;
   // When set, the add/remove button is disabled and shows this as its tooltip
   toggleDisabledReason?: string;
+  // Companions already in the guild; adding is blocked if the plant conflicts with one of them
+  guildPlants?: GuildPlant[];
   onNavigate?: (path: string) => void;
 }
 
@@ -89,6 +92,7 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
   isSelected,
   onToggleSelect,
   toggleDisabledReason,
+  guildPlants,
   onNavigate,
 }) => {
   useEffect(() => {
@@ -121,7 +125,12 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
   const chopAnchor = CHOP_PLANT_ANCHORS[plant.id] || 'chop-overview';
   const hasDedicatedChopGuide = Boolean(CHOP_PLANT_ANCHORS[plant.id]);
   const pestDefenses = selectedTree ? getCompanionPestDefenseForTree(plant, selectedTree, selectedZone) : [];
-  const blockedByJuglone = !isSelected && !!selectedTree?.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE';
+  // Same prefilter as the guild builder (compatibility.ts): star conflicts, plus pair conflicts with the guild
+  const incompatibility = selectedTree ? getGuildIncompatibility(plant, selectedTree, guildPlants ?? []) : [];
+  const blockedByConflict = !isSelected && incompatibility.length > 0;
+  const conflictText = selectedTree
+    ? summarizeIncompatibility(incompatibility, selectedTree.id).map(r => getLoc(r.message, language)).join(' · ')
+    : '';
   const photoCredit = getImageCredit(plant.imageUrl);
 
   const handleNavigateToGuide = (path: string) => {
@@ -620,6 +629,16 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
           </div>
         </div>
 
+        {incompatibility.length > 0 && !toggleDisabledReason && (
+          <div className="flex items-start gap-1.5 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-[11px] text-rose-800" role="note">
+            <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0 text-rose-500" />
+            <div>
+              <span className="font-bold">{isSelected ? tr.compatSelectedConflict : tr.compatCannotAdd}:</span>{' '}
+              <span>{conflictText}</span>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center justify-between gap-3 pt-3 border-t border-stone-100">
           <GoogleImagesButton
             query={`${plant.botanicalName} ${getLoc(plant.commonName, language)}`}
@@ -636,7 +655,7 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
             </button>
             <button
               type="button"
-              disabled={blockedByJuglone || !!toggleDisabledReason}
+              disabled={blockedByConflict || !!toggleDisabledReason}
               onClick={() => {
                 onToggleSelect(plant);
                 onClose();
@@ -646,11 +665,11 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
                   ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
                   : isSelected
                   ? 'bg-rose-600 text-white hover:bg-rose-700'
-                  : blockedByJuglone
+                  : blockedByConflict
                   ? 'bg-rose-200 text-rose-600 cursor-not-allowed'
                   : 'bg-forest-700 text-white hover:bg-forest-800'
               }`}
-              title={toggleDisabledReason ?? (blockedByJuglone ? tr.jugloneWarning : undefined)}
+              title={toggleDisabledReason ?? (blockedByConflict ? `${tr.compatCannotAdd}: ${conflictText}` : undefined)}
             >
               {isSelected ? tr.removeGuildBtn : tr.addGuildBtn}
             </button>

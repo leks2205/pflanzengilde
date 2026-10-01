@@ -57,6 +57,40 @@ const NON_PLANT_MEASURES: NonPlantMeasure[] = [
   }
 ];
 
+/** Title of a rule or research note, for "See also" links. */
+const entryTitle = (id: string, language: Language): string | undefined => {
+  const rule = PEST_DEFENSE_RULES.find(r => r.id === id);
+  if (rule) return getLoc(rule.ruleTitle, language);
+  const note = PEST_RESEARCH_NOTES.find(n => n.id === id);
+  return note ? `${getLoc(note.pest, language)}: ${getLoc(note.companions, language)}` : undefined;
+};
+
+/** Links to related entries on this page; scrolls instead of changing the URL hash (the app routes on it). */
+const SeeAlso: React.FC<{ ids?: string[]; language: Language; label: string }> = ({ ids, language, label }) => {
+  const links = (ids || []).flatMap(id => {
+    const title = entryTitle(id, language);
+    return title ? [{ id, title }] : [];
+  });
+  if (links.length === 0) return null;
+  return (
+    <p className="text-xs text-stone-600">
+      {label}
+      {links.map((link, i) => (
+        <React.Fragment key={link.id}>
+          {i > 0 && ', '}
+          <button
+            type="button"
+            onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+            className="text-emerald-700 underline underline-offset-2 hover:text-emerald-900"
+          >
+            {link.title}
+          </button>
+        </React.Fragment>
+      ))}
+    </p>
+  );
+};
+
 const starName = (id: string, language: Language) => {
   const tree = STAR_TREES.find(star => star.id === id);
   return tree ? getLoc(tree.commonName, language) : id;
@@ -107,7 +141,7 @@ export const PestEvidenceGuide: React.FC<{ language: Language }> = ({ language }
         </h3>
         <div className="grid grid-cols-1 gap-4">
           {PEST_DEFENSE_RULES.map(rule => (
-            <div key={rule.id} className="p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2.5">
+            <div key={rule.id} id={rule.id} className="scroll-mt-24 p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2.5">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-stone-200 pb-2.5">
                 <div>
                   <h4 className="text-base font-bold text-stone-900">{getLoc(rule.ruleTitle, language)}</h4>
@@ -124,6 +158,7 @@ export const PestEvidenceGuide: React.FC<{ language: Language }> = ({ language }
               </p>
               <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">{getLoc(rule.scientificMechanism, language)}</p>
               <EvidenceCitations citations={rule.citations} title={sourcesTitle} />
+              <SeeAlso ids={rule.seeAlso} language={language} label={tr.pestEvidenceSeeAlso} />
             </div>
           ))}
         </div>
@@ -140,7 +175,7 @@ export const PestEvidenceGuide: React.FC<{ language: Language }> = ({ language }
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {(['promising', 'folklore'] as const).flatMap(level =>
             PEST_RESEARCH_NOTES.filter(n => n.evidence === level).map(note => (
-              <div key={note.id} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-1.5">
+              <div key={note.id} id={note.id} className="scroll-mt-24 p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-1.5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="text-sm font-bold text-stone-900">{getLoc(note.pest, language)}</div>
@@ -150,6 +185,7 @@ export const PestEvidenceGuide: React.FC<{ language: Language }> = ({ language }
                 </div>
                 <p className="text-xs text-stone-700 leading-relaxed">{getLoc(note.note, language)}</p>
                 <EvidenceCitations citations={note.citations} title={sourcesTitle} />
+                <SeeAlso ids={note.seeAlso} language={language} label={tr.pestEvidenceSeeAlso} />
               </div>
             ))
           )}

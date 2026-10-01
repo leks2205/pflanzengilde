@@ -16,6 +16,7 @@ import {
   calculateSpatialMetrics
 } from './placementRules';
 import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
+import { isCompatibleWithGuild } from './compatibility';
 import { formatNumber } from '../i18n/translations';
 
 export interface AlternativeRolePlant {
@@ -57,7 +58,10 @@ export interface SpacingReport {
   zoneSaturations: ZoneSaturationReport[];
 }
 
-/** Up to three more compact catalog plants that share at least one role with a crowded plant. */
+/**
+ * Up to three more compact catalog plants that share at least one role with a crowded plant.
+ * Only plants compatible with the star and the remaining companions are offered (compatibility.ts).
+ */
 export function suggestAlternativeRolePlants(
   crowdedPlant: GuildPlant,
   starTree: StarTree,
@@ -66,6 +70,7 @@ export function suggestAlternativeRolePlants(
   selectedZone?: ClimateZone
 ): AlternativeRolePlant[] {
   const selectedIds = new Set(selectedPlants.map(p => p.id));
+  const remainingPlants = selectedPlants.filter(p => p.id !== crowdedPlant.id);
 
   const candidates: {
     plant: GuildPlant;
@@ -86,6 +91,7 @@ export function suggestAlternativeRolePlants(
 
     if (selectedSoil && candidate.unsuitableSoils.includes(selectedSoil)) return;
     if (selectedZone && !candidate.climateZones.includes(selectedZone)) return;
+    if (!isCompatibleWithGuild(candidate, starTree, remainingPlants)) return;
 
     const spreadDiff = crowdedSpread - candidate.spreadM;
     const isMoreCompact = spreadDiff >= 0.15;

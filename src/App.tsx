@@ -14,7 +14,9 @@ import { AntagonistCard } from './components/AntagonistCard';
 import { GuildEmbedCard } from './components/GuildEmbedCard';
 import { GardenEmbedCard } from './components/ShareGardenModal';
 import { parseGuildUrl, parseGardenUrl, SOIL_TYPES, CLIMATE_ZONES } from './utils/shareUtils';
-import { optimizeGardenCompanions } from './core/gardenOptimizer';
+import { resolveGardenConflicts } from './core/gardenOptimizer';
+import { isCompatibleWithGuild, partitionGuildByCompatibility } from './core/compatibility';
+import { GUILD_PRESETS as PRESETS, DEFAULT_GUILD_PLANT_IDS } from './core/guildPresets';
 import { t } from './i18n/translations';
 import { CheckCircle2, AlertCircle, X } from 'lucide-react';
 import { generateStarPlantCoordinates } from './core/multiStarLayout';
@@ -50,51 +52,6 @@ const isSoilType = (v: unknown): v is SoilType => (SOIL_TYPES as unknown[]).incl
 const isClimateZone = (v: unknown): v is ClimateZone => (CLIMATE_ZONES as unknown[]).includes(v);
 const isHemisphere = (v: unknown): v is Hemisphere => v === 'NORTHERN' || v === 'SOUTHERN';
 
-const PRESETS: Record<'apple' | 'walnut' | 'apricot' | 'minimal', { treeId: string; plantIds: string[] }> = {
-  apple: {
-    treeId: 'tree-apple',
-    plantIds: [
-      'plant-comfrey',
-      'plant-white-clover',
-      'plant-chives',
-      'plant-daffodil',
-      'plant-yarrow',
-      'plant-horseradish',
-      'plant-red-currant',
-      'plant-sedum',
-    ],
-  },
-  walnut: {
-    treeId: 'tree-walnut',
-    plantIds: [
-      'plant-comfrey',
-      'plant-elderberry',
-      'plant-woodruff',
-      'plant-red-currant',
-      'plant-chives',
-      'plant-nettle',
-      'plant-bugleweed',
-      'plant-crocus',
-    ],
-  },
-  apricot: {
-    treeId: 'tree-apricot',
-    plantIds: [
-      'plant-chives',
-      'plant-crocus',
-      'plant-horseradish',
-      'plant-comfrey',
-      'plant-white-clover',
-      'plant-dandelion',
-      'plant-lavender',
-      'plant-yarrow',
-    ],
-  },
-  minimal: {
-    treeId: 'tree-apple',
-    plantIds: ['plant-comfrey', 'plant-white-clover', 'plant-chives'],
-  },
-};
 
 const readGuildUrl = () => {
   if (typeof window === 'undefined') return null;
@@ -144,7 +101,7 @@ export const App: React.FC = () => {
       if (plants.length > 0) return plants;
     }
     return GUILD_PLANTS.filter(p =>
-      ['plant-comfrey', 'plant-white-clover', 'plant-chives', 'plant-daffodil', 'plant-yarrow'].includes(p.id)
+      DEFAULT_GUILD_PLANT_IDS.includes(p.id)
     );
   });
   const [currentSeason, setCurrentSeason] = useState<PhenoSeason>('LATE_SPRING');
@@ -279,12 +236,14 @@ export const App: React.FC = () => {
     }
   }, [selectedTree, selectedPlants, hemisphere, selectedSoil, selectedZone]);
 
+  // Adding is guarded by the compatibility prefilter (compatibility.ts); removing is always allowed
   const handleTogglePlant = (plant: GuildPlant) => {
     setSelectedPlants(prev => {
       const exists = prev.some(p => p.id === plant.id);
       if (exists) {
         return prev.filter(p => p.id !== plant.id);
       } else {
+        if (!isCompatibleWithGuild(plant, selectedTree, prev)) return prev;
         return [...prev, plant];
       }
     });
@@ -293,6 +252,7 @@ export const App: React.FC = () => {
   const handleAddPlant = (plant: GuildPlant) => {
     setSelectedPlants(prev => {
       if (prev.some(p => p.id === plant.id)) return prev;
+      if (!isCompatibleWithGuild(plant, selectedTree, prev)) return prev;
       return [...prev, plant];
     });
   };
@@ -301,6 +261,7 @@ export const App: React.FC = () => {
     setSelectedPlants(prev => {
       const filtered = prev.filter(p => p.id !== removePlantId);
       if (filtered.some(p => p.id === addPlant.id)) return filtered;
+      if (!isCompatibleWithGuild(addPlant, selectedTree, filtered)) return prev;
       return [...filtered, addPlant];
     });
   };
@@ -329,12 +290,21 @@ export const App: React.FC = () => {
     setActivePestFilter(null);
   };
 
+  // Switching the star drops companions that conflict with the new star (or with each other) and says which
   const handleSelectTree = (tree: StarTree) => {
     setSelectedTree(tree);
     setActiveGapFilter(null);
     setActivePestFilter(null);
-    if (tree.jugloneProducer) {
-      setSelectedPlants(prev => prev.filter(p => p.jugloneTolerance !== 'SENSITIVE'));
+    const { compatible, incompatible } = partitionGuildByCompatibility(tree, selectedPlants);
+    if (incompatible.length > 0) {
+      setSelectedPlants(compatible);
+      setToast({
+        type: 'success',
+        message: tr.compatAutoRemovedToast
+          .replace('{count}', String(incompatible.length))
+          .replace('{star}', getLoc(tree.commonName, language))
+          .replace('{names}', incompatible.map(x => getLoc(x.plant.commonName, language)).join(', '))
+      });
     }
   };
 
@@ -342,8 +312,10 @@ export const App: React.FC = () => {
     const preset = PRESETS[presetName];
     setActiveGapFilter(null);
     setActivePestFilter(null);
-    setSelectedTree(STAR_TREES.find(t => t.id === preset.treeId)!);
-    setSelectedPlants(GUILD_PLANTS.filter(p => preset.plantIds.includes(p.id)));
+    const tree = STAR_TREES.find(t => t.id === preset.treeId)!;
+    setSelectedTree(tree);
+    // Presets are covered by test_conflicts; the partition is a safety net against data drift
+    setSelectedPlants(partitionGuildByCompatibility(tree, GUILD_PLANTS.filter(p => preset.plantIds.includes(p.id))).compatible);
   };
 
   const handleOpenInGardenGrid = (tree: StarTree, clusterConfig: StarPlantClusterConfig) => {
@@ -583,11 +555,11 @@ export const App: React.FC = () => {
   if (currentPath.startsWith('/embed')) {
     const gardenData = typeof window !== 'undefined' ? parseGardenUrl(window.location.search) : null;
     if (gardenData && gardenData.starPlants.length > 0) {
-      const { companions: embedCompanions } = optimizeGardenCompanions(
-        gardenData.starPlants,
-        GUILD_PLANTS,
-        gardenData.hemisphere
-      );
+      const { companions: embedCompanions } = resolveGardenConflicts(gardenData.starPlants, {
+        hemisphere: gardenData.hemisphere,
+        zone: gardenData.zone || selectedZone,
+        soil: gardenData.soil || selectedSoil,
+      });
       const embedLang = gardenData.language || language;
       const embedTr = t(embedLang);
       const defaultName = embedTr.appDefaultGardenName;
@@ -802,6 +774,7 @@ export const App: React.FC = () => {
         onClose={() => setModalPlant(null)}
         isSelected={modalPlant ? selectedPlants.some(p => p.id === modalPlant.id) : false}
         onToggleSelect={handleTogglePlant}
+        guildPlants={selectedPlants}
         onNavigate={(path) => {
           setModalPlant(null);
           navigateTo(path);

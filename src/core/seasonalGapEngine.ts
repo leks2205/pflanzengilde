@@ -1,6 +1,7 @@
 import { GuildPlant, GuildRole, LocalizedString, PhenoSeason, SeasonalGap, StarTree } from '../types/guild';
 import { getCompanionPestDefenseForTree } from './pestCompanionEngine';
 import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
+import { isCompatiblePair, isCompatibleWithGuild } from './compatibility';
 
 export interface PhenoSeasonDef {
   id: PhenoSeason;
@@ -113,15 +114,16 @@ const LAYER_RANK: Record<GuildPlant['layer'], number> = {
 
 /**
  * Catalogue plants (retired ones excluded) that fill `role` in `season`, best first: companions
- * recommended for the star plant, then smaller layers, then plants with more roles. Juglone-sensitive
- * plants are left out for juglone-producing stars.
+ * recommended for the star plant, then smaller layers, then plants with more roles. Plants that
+ * conflict with the star or with the already chosen `guildPlants` (compatibility.ts) are left out.
  */
 export function getGapCandidateIds(
   role: GuildRole,
   season: PhenoSeason,
   excludeIds: Set<string> = new Set(),
   starTree?: StarTree | null,
-  limit = 4
+  limit = 4,
+  guildPlants: readonly GuildPlant[] = []
 ): string[] {
   const isRecommended = (p: GuildPlant) =>
     !!starTree && (starTree.recommendedCompanions.includes(p.id) || p.recommendedForTrees.includes(starTree.id));
@@ -129,7 +131,7 @@ export function getGapCandidateIds(
     .map((plant, index) => ({ plant, index }))
     .filter(({ plant }) =>
       !excludeIds.has(plant.id) &&
-      !(starTree?.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE') &&
+      (starTree ? isCompatibleWithGuild(plant, starTree, guildPlants) : guildPlants.every(g => isCompatiblePair(plant, g))) &&
       plantCoversRoleInSeason(plant, role, season)
     )
     .sort((a, b) =>
@@ -148,7 +150,7 @@ export function getGapCandidateIds(
  */
 export function analyzeSeasonalRoleGaps(selectedPlants: GuildPlant[], starTree?: StarTree | null): RoleSeasonalStatus[] {
   const selectedIds = new Set(selectedPlants.map(p => p.id));
-  const candidatesFor = (role: GuildRole, season: PhenoSeason) => getGapCandidateIds(role, season, selectedIds, starTree);
+  const candidatesFor = (role: GuildRole, season: PhenoSeason) => getGapCandidateIds(role, season, selectedIds, starTree, 4, selectedPlants);
   const allRoles: GuildRole[] = [
     'POLLINATOR_MAGNET',
     'LIVING_MULCH',
@@ -366,6 +368,8 @@ export function analyzePlantRedundancy(selectedPlants: GuildPlant[], starTree?: 
     if (isFullyRedundant && allCoveringMap.size > 0) {
       const candidateReplacements = ACTIVE_GUILD_PLANTS.filter(candidate => {
         if (selectedIds.has(candidate.id)) return false;
+        // A replacement must fit the guild that remains after removing `plant`
+        if (starTree ? !isCompatibleWithGuild(candidate, starTree, otherPlants) : !otherPlants.every(o => isCompatiblePair(candidate, o))) return false;
         return candidate.roles.some(r => uncoveredRolesInGuild.includes(r));
       }).slice(0, 3);
 

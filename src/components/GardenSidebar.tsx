@@ -3,7 +3,7 @@ import { GuildPlant, Language, StarTree, getLoc } from '../types/guild';
 import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance, GardenStats, ImportedGuildTemplate } from '../types/garden';
 import { GardenWarningsBox } from './GardenWarningsBox';
 import { PlantThumbnail } from './PlantThumbnail';
-import { starTreeToGuildPlant } from '../core/gardenOptimizer';
+import { GardenSubstitution, starTreeToGuildPlant } from '../core/gardenOptimizer';
 import { Upload, Plus, Trash2, Copy, Trees, FileJson, Info, ChevronDown, ChevronRight, Sprout } from 'lucide-react';
 import { t, formatNumber, translateRole } from '../i18n/translations';
 
@@ -27,6 +27,12 @@ interface GardenSidebarProps {
   onToggleAutoShade?: () => void;
   onApplyShadePlant?: (plantId: string) => void;
   onOpenPlantDetailModal?: (plant: GuildPlant) => void;
+  substitutions?: GardenSubstitution[];
+  suggestions?: GardenSubstitution[];
+  autoResolveEnabled?: boolean;
+  onToggleAutoResolve?: () => void;
+  onKeepOriginal?: (sub: GardenSubstitution) => void;
+  onApplySuggestion?: (sub: GardenSubstitution) => void;
 }
 
 export const GardenSidebar: React.FC<GardenSidebarProps> = ({
@@ -49,6 +55,12 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
   onToggleAutoShade,
   onApplyShadePlant,
   onOpenPlantDetailModal,
+  substitutions,
+  suggestions,
+  autoResolveEnabled,
+  onToggleAutoResolve,
+  onKeepOriginal,
+  onApplySuggestion,
 }) => {
   const tr = t(language);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -491,6 +503,12 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
         autoShadeEnabled={autoShadeEnabled}
         onToggleAutoShade={onToggleAutoShade}
         onApplyShadePlant={onApplyShadePlant}
+        substitutions={substitutions}
+        suggestions={suggestions}
+        autoResolveEnabled={autoResolveEnabled}
+        onToggleAutoResolve={onToggleAutoResolve}
+        onKeepOriginal={onKeepOriginal}
+        onApplySuggestion={onApplySuggestion}
       />
     </div>
   );

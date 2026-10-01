@@ -1,6 +1,8 @@
 import { ClimateZone, Language, LocalizedString, GuildPlant, StarTree } from '../types/guild';
 import { t } from '../i18n/translations';
 import { GUILD_PLANTS } from '../data/guildPlants';
+import { STAR_TREES } from '../data/starTrees';
+import { isCompatibleWithStar } from './compatibility';
 
 /**
  * Evidence tiers. Only the two strongest tiers may produce pest-defense badges;
@@ -35,6 +37,8 @@ export interface PestDefenseRule {
   companionEvidence?: Partial<Record<string, BadgeEvidenceLevel>>;
   scientificMechanism: LocalizedString;
   companionRoles: Record<string, LocalizedString>;
+  /** Ids of related rules or research notes, linked as "See also" in the pest guide. */
+  seeAlso?: string[];
 }
 
 export interface PestResearchNote {
@@ -44,6 +48,8 @@ export interface PestResearchNote {
   evidence: Extract<EvidenceLevel, 'promising' | 'folklore'>;
   note: LocalizedString;
   citations: EvidenceCitation[];
+  /** Ids of related rules or research notes, linked as "See also" in the pest guide. */
+  seeAlso?: string[];
 }
 
 /** UI badge label for an evidence level, from the central string files. */
@@ -67,6 +73,15 @@ const PLANT_ZONES = new Map(GUILD_PLANTS.map(p => [p.id, p.climateZones]));
 
 const growsInZone = (plantId: string, zone?: ClimateZone): boolean =>
   !zone || !!PLANT_ZONES.get(plantId)?.includes(zone);
+
+const PLANTS_BY_ID = new Map(GUILD_PLANTS.map(p => [p.id, p]));
+
+/** Companion may join the star's guild (compatibility.ts); unknown IDs pass. */
+const fitsStar = (plantId: string, starTreeId?: string): boolean => {
+  const star = starTreeId ? STAR_TREES.find(t => t.id === starTreeId) : undefined;
+  const plant = PLANTS_BY_ID.get(plantId);
+  return !star || !plant || isCompatibleWithStar(plant, star);
+};
 
 const companionEvidence = (rule: PestDefenseRule, plantId: string): BadgeEvidenceLevel =>
   rule.companionEvidence?.[plantId] ?? rule.evidence;
@@ -293,15 +308,16 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     ],
     companionPlantIds: ['plant-phacelia'],
     scientificMechanism: {
-      en: 'In a replicated trial under 10-year-old Chardonnay vines in New Zealand, inter-row phacelia (and ryegrass) mulched in place in winter kept the soil moister and raised soil biological activity 1.5 to 4.5-fold compared with bare ground. Vine debris on the ground broke down faster, carried less Botrytis cinerea inoculum, and bunch rot severity was lower at flowering and at harvest. This is a single vineyard and season; in the Italian cover-crop trial behind the mildew rules, grey mould did not develop, so it could not be tested there. Keep up canopy airflow and remove infected bunches.',
-      de: 'In einem wiederholten Versuch unter 10-jährigen Chardonnay-Reben in Neuseeland hielt im Winter vor Ort gemulchte Phazelie (wie auch Weidelgras) in der Fahrgasse den Boden feuchter und steigerte das Bodenleben gegenüber offenem Boden um das 1,5- bis 4,5-Fache. Rebreste am Boden wurden schneller abgebaut, trugen weniger Botrytis-cinerea-Inokulum, und die Grauschimmelfäule war zur Blüte und zur Ernte schwächer. Belegt ist das für einen Weinberg und eine Saison; im italienischen Begrünungsversuch hinter den Mehltau-Regeln trat Grauschimmel nicht auf und ließ sich dort nicht prüfen. Gute Durchlüftung der Laubwand und das Entfernen befallener Trauben bleiben wichtig.'
+      en: 'In a replicated trial under 10-year-old Chardonnay vines in New Zealand, inter-row phacelia (and ryegrass) mulched in place in winter kept the soil moister and raised soil biological activity 1.5 to 4.5-fold compared with bare ground. Vine debris on the ground broke down faster, carried less Botrytis cinerea inoculum, and bunch rot severity was lower at flowering and at harvest. This is a single vineyard and season; in the Italian cover-crop trial behind the mildew rules, grey mould did not develop, so it could not be tested there. Keep up canopy airflow and remove infected bunches. Oregano, chamomile, garlic and chives, often recommended against grey mould, have no trial behind them (see the evidence check in the pest guide).',
+      de: 'In einem wiederholten Versuch unter 10-jährigen Chardonnay-Reben in Neuseeland hielt im Winter vor Ort gemulchte Phazelie (wie auch Weidelgras) in der Fahrgasse den Boden feuchter und steigerte das Bodenleben gegenüber offenem Boden um das 1,5- bis 4,5-Fache. Rebreste am Boden wurden schneller abgebaut, trugen weniger Botrytis-cinerea-Inokulum, und die Grauschimmelfäule war zur Blüte und zur Ernte schwächer. Belegt ist das für einen Weinberg und eine Saison; im italienischen Begrünungsversuch hinter den Mehltau-Regeln trat Grauschimmel nicht auf und ließ sich dort nicht prüfen. Gute Durchlüftung der Laubwand und das Entfernen befallener Trauben bleiben wichtig. Oregano, Kamille, Knoblauch und Schnittlauch, die oft gegen Grauschimmel empfohlen werden, sind durch keinen Versuch belegt (siehe Faktencheck im Schädlings-Ratgeber).'
     },
     companionRoles: {
       'plant-phacelia': {
         en: 'Sown in the inter-row and mulched in place in winter; the mulch layer speeds up the breakdown of fallen vine debris on which Botrytis survives.',
         de: 'In der Fahrgasse gesät und im Winter vor Ort gemulcht; die Mulchschicht beschleunigt den Abbau herabgefallener Rebreste, auf denen Botrytis überdauert.'
       }
-    }
+    },
+    seeAlso: ['note-grey-mould']
   },
 
   // 7. Tea Green Leafhopper (Empoasca onukii) – sicklepod intercrop
@@ -554,10 +570,11 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Oregano, chamomile, garlic, chives', de: 'Oregano, Kamille, Knoblauch, Schnittlauch' },
     evidence: 'folklore',
     note: {
-      en: 'No trial was found in which living oregano, chamomile, garlic or chives reduced grey mould on a neighbouring crop. Rely on airflow, thinning and removing infected material.',
-      de: 'Es wurde kein Versuch gefunden, in dem lebender Oregano, Kamille, Knoblauch oder Schnittlauch Grauschimmel an einer Nachbarkultur verringerte. Auf Luftzirkulation, Auslichten und Entfernen befallener Teile setzen.'
+      en: 'No trial was found in which living oregano, chamomile, garlic or chives reduced grey mould on a neighbouring crop. Rely on airflow, thinning and removing infected material. For grapevine there is one field result with a different plant: phacelia sown in the inter-row and mulched in place in winter lowered bunch rot (scientific tier, see the grapevine Botrytis rule). Caveats: a single vineyard and season, and ryegrass mulch had the same effect, so the mulch layer rather than phacelia itself seems to do the work.',
+      de: 'Es wurde kein Versuch gefunden, in dem lebender Oregano, Kamille, Knoblauch oder Schnittlauch Grauschimmel an einer Nachbarkultur verringerte. Auf Luftzirkulation, Auslichten und Entfernen befallener Teile setzen. Für die Rebe gibt es einen Feldbefund mit einer anderen Pflanze: In der Fahrgasse gesäte und im Winter vor Ort gemulchte Phazelie verringerte die Traubenfäule (Stufe Wissenschaftlich, siehe die Botrytis-Regel der Rebe). Einschränkungen: nur ein Weinberg und eine Saison, und Weidelgras-Mulch wirkte genauso – offenbar wirkt die Mulchschicht, nicht die Phazelie selbst.'
     },
-    citations: []
+    citations: [],
+    seeAlso: ['rule-grape-botrytis']
   },
   {
     id: 'note-lace-bug',
@@ -644,7 +661,8 @@ export interface PestResolution {
 
 /**
  * Whether a star plant's pest can be countered by catalog companions with field evidence.
- * With a climate zone, only companions that grow there count.
+ * With a climate zone, only companions that grow there count; with a star plant, only companions
+ * compatible with it (compatibility.ts).
  */
 export function resolvePestDefense(pestText: string, starTreeId?: string, zone?: ClimateZone): PestResolution {
   const lower = pestText.toLowerCase().trim();
@@ -652,7 +670,7 @@ export function resolvePestDefense(pestText: string, starTreeId?: string, zone?:
   for (const rule of PEST_DEFENSE_RULES) {
     if (!ruleAppliesToTree(rule, starTreeId)) continue;
     if (rule.keywords.some(k => lower.includes(k))) {
-      const companionPlantIds = rule.companionPlantIds.filter(id => growsInZone(id, zone));
+      const companionPlantIds = rule.companionPlantIds.filter(id => growsInZone(id, zone) && fitsStar(id, starTreeId));
       if (companionPlantIds.length === 0) continue;
       return {
         pestText,

@@ -623,7 +623,7 @@ const SOURCES: Source[] = [
     author: 'Hasanaliyeva, G., Furiosi, M., Rossi, V., & Caffi, T. (2024)',
     title: 'Cover crops lower the dispersal of grapevine foliar pathogens from the ground and contribute to early-season disease management',
     journal: 'Frontiers in Plant Science, 15, 1498848 (DOI: 10.3389/fpls.2024.1498848)',
-    note: 'Inter-row cover crops in vineyards reduced the raindrops impacting the soil by 46–74% and the rain-splash droplets escaping the ground by 75–95%, and delayed (by 14–30 days) and reduced downy and powdery mildew epidemics.'
+    note: 'Inter-row cover crops in vineyards reduced the raindrops impacting the soil by 46–74% and the rain-splash droplets escaping the ground by 75–95%, and delayed (by 14–30 days) and reduced downy and powdery mildew epidemics. In two organic vineyards a spring-sown cover of Vicia sativa (92 %) and Sinapis (8 %) was "chopped and incorporated into the soil just before grapevine flowering"; the effect was more evident in plots not treated with fungicides, and cut cover-crop foliage left on the inter-row ground may act as a mulch against splash dispersal.'
   },
   {
     id: 'fn-65',
@@ -1029,7 +1029,7 @@ const SOURCES: Source[] = [
     author: 'Yim, B., Hanschen, F. S., Wrede, A., Nitt, H., Schreiner, M., Smalla, K., & Winkelmann, T. (2016)',
     title: 'Effects of biofumigation using Brassica juncea and Raphanus sativus in comparison to disinfection using Basamid on apple plant growth and soil microbial communities at three field sites with replant disease',
     journal: 'Plant and Soil, 406(1–2), pp. 389–408 (DOI: 10.1007/s11104-016-2876-3)',
-    note: 'Indian mustard and oilseed radish grown, chopped and incorporated as biofumigation on apple replant-disease soil; apple rootstocks grew clearly better than in untreated soil at some sites but not at others, and the effect was weaker than soil disinfection with Basamid.'
+    note: 'Indian mustard and oilseed radish grown, chopped and incorporated as biofumigation on apple replant-disease soil; apple rootstocks grew clearly better than in untreated soil at some sites but not at others, and the effect was weaker than soil disinfection with Basamid. "The highest glucosinolate concentrations were found in inflorescences of both biofumigant plant species"; their isothiocyanate breakdown products were detected in the treated soils.'
   },
   {
     id: 'fn-123',
@@ -1099,7 +1099,42 @@ const SOURCES: Source[] = [
     author: 'Southern Cover Crops Council (n.d.)',
     title: 'Cover crop information sheet: Vetch, common (Vicia sativa)',
     journal: 'Southern Cover Crops Council (https://southerncovercrops.org/wp-content/uploads/2018/10/Vetch-Common-Row-Crop-CP.pdf)',
-    note: 'Preferred soil pH 6.0–7.0; inoculate with Rhizobium leguminosarum bv. viciae; terminate at about 80 % bloom; hard seed can make it a weed.'
+    note: 'Preferred soil pH 6.0–7.0; inoculate with Rhizobium leguminosarum bv. viciae; "Mechanical termination is more successful at 80% bloom, but should be conducted before seed set"; hard seed can make it a weed.'
+  },
+  {
+    id: 'fn-133',
+    author: 'eOrganic (2009), adapted from Clark, A. (Ed.) (2007)',
+    title: 'Buckwheat for cover cropping in organic farming (adapted from Managing Cover Crops Profitably, 3rd ed.)',
+    journal: 'eOrganic, Extension Foundation (https://eorganic.org/node/467)',
+    note: '"Buckwheat solubilizes and takes up phosphorus that is otherwise unavailable to crops, then releases these nutrients to later crops as the residue breaks down."'
+  },
+  {
+    id: 'fn-134',
+    author: 'Smither-Kopperl, M. (2018)',
+    title: 'Plant guide for lacy phacelia (Phacelia tanacetifolia)',
+    journal: 'USDA Natural Resources Conservation Service, Lockeford Plant Materials Center, Lockeford, CA (https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_phta.pdf)',
+    note: '"Lacy phacelia winter kills at approximately 18°F" (about -8 °C) and "may be planted in late summer and then winter kills"; for pollinator plantings "termination should occur post bloom"; it "is a prolific seed producer and will regenerate from seed" and may become weedy if not properly managed.'
+  },
+  {
+    id: 'fn-135',
+    author: 'Carreck, N. L., & Williams, I. H. (2002)',
+    title: 'Food for insect pollinators on farmland: insect visits to flowers of annual seed mixtures',
+    journal: 'Journal of Insect Conservation, 6(1), pp. 13–23 (DOI: 10.1023/A:1015764925536)',
+    note: 'Plots in Hertfordshire, UK, sown to mixtures of six annuals including phacelia established and flowered well from a range of sowing dates; "Sequential sowings provided nectar and pollen from early summer to late autumn."'
+  },
+  {
+    id: 'fn-136',
+    author: 'Yim, B., Nitt, H., Wrede, A., Jacquiod, S., Sørensen, S. J., Winkelmann, T., & Smalla, K. (2017)',
+    title: 'Effects of soil pre-treatment with Basamid® granules, Brassica juncea, Raphanus sativus, and Tagetes patula on bacterial and fungal communities at two apple replant disease sites',
+    journal: 'Frontiers in Microbiology, 8, 1604 (DOI: 10.3389/fmicb.2017.01604)',
+    note: 'Method of the biofumigation field trials: Indian mustard and oilseed radish "at full flowering, about 8 weeks after sowing were cut at the soil line, chopped and subsequently incorporated into the soils" with flail mulchers and a rotary cultivator.'
+  },
+  {
+    id: 'fn-137',
+    author: 'SARE Outreach (2007); contributors: Chen, G., Clark, A., Kremen, A., Lawley, Y., Price, A., Stocking, L., & Weil, R.',
+    title: 'Brassicas and mustards. In: Managing Cover Crops Profitably (3rd ed.)',
+    journal: 'SARE Handbook Series 9, Sustainable Agriculture Research and Education (https://www.sare.org/publications/managing-cover-crops-profitably/nonlegume-cover-crops/brassicas-and-mustards/)',
+    note: '"Brassica cover crops are often mowed and incorporated to maximize their natural fumigant potential. This is because the fumigant chemicals are produced only when individual plant cells are ruptured."'
   }
 ];
 
@@ -1650,8 +1685,8 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   latin={tr.guidesChopBuckwheatLatin}
                   badge={tr.guidesChopBuckwheatBadge}
                   cut={<RichText text={tr.guidesChopBuckwheatCut} onFootnote={scrollToFootnote} />}
-                  much={tr.guidesChopBuckwheatMuch}
-                  spread={tr.guidesChopBuckwheatSpread}
+                  much={<RichText text={tr.guidesChopBuckwheatMuch} onFootnote={scrollToFootnote} />}
+                  spread={<RichText text={tr.guidesChopBuckwheatSpread} onFootnote={scrollToFootnote} />}
                 />
                 <ChopCard
                   tr={tr}
@@ -1659,8 +1694,8 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   name={tr.guidesChopPhaceliaName}
                   latin={tr.guidesChopPhaceliaLatin}
                   badge={tr.guidesChopPhaceliaBadge}
-                  cut={tr.guidesChopPhaceliaCut}
-                  much={tr.guidesChopPhaceliaMuch}
+                  cut={<RichText text={tr.guidesChopPhaceliaCut} onFootnote={scrollToFootnote} />}
+                  much={<RichText text={tr.guidesChopPhaceliaMuch} onFootnote={scrollToFootnote} />}
                   spread={<RichText text={tr.guidesChopPhaceliaSpread} onFootnote={scrollToFootnote} />}
                 />
                 <ChopCard
@@ -1670,7 +1705,7 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   latin={tr.guidesChopFodderRadishLatin}
                   badge={tr.guidesChopFodderRadishBadge}
                   cut={<RichText text={tr.guidesChopFodderRadishCut} onFootnote={scrollToFootnote} />}
-                  much={tr.guidesChopFodderRadishMuch}
+                  much={<RichText text={tr.guidesChopFodderRadishMuch} onFootnote={scrollToFootnote} />}
                   spread={<RichText text={tr.guidesChopFodderRadishSpread} onFootnote={scrollToFootnote} />}
                 />
                 <ChopCard
@@ -1679,8 +1714,8 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   name={tr.guidesChopIndianMustardName}
                   latin={tr.guidesChopIndianMustardLatin}
                   badge={tr.guidesChopIndianMustardBadge}
-                  cut={tr.guidesChopIndianMustardCut}
-                  much={tr.guidesChopIndianMustardMuch}
+                  cut={<RichText text={tr.guidesChopIndianMustardCut} onFootnote={scrollToFootnote} />}
+                  much={<RichText text={tr.guidesChopIndianMustardMuch} onFootnote={scrollToFootnote} />}
                   spread={<RichText text={tr.guidesChopIndianMustardSpread} onFootnote={scrollToFootnote} />}
                 />
                 <ChopCard
@@ -1710,7 +1745,7 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   latin={tr.guidesChopCommonVetchLatin}
                   badge={tr.guidesChopCommonVetchBadge}
                   cut={<RichText text={tr.guidesChopCommonVetchCut} onFootnote={scrollToFootnote} />}
-                  much={tr.guidesChopCommonVetchMuch}
+                  much={<RichText text={tr.guidesChopCommonVetchMuch} onFootnote={scrollToFootnote} />}
                   spread={<RichText text={tr.guidesChopCommonVetchSpread} onFootnote={scrollToFootnote} />}
                 />
               </div>

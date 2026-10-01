@@ -2,13 +2,27 @@ import { STAR_TREES } from '../src/data/starTrees';
 import { GUILD_PLANTS } from '../src/data/guildPlants';
 import { autoPlaceGuildPlants, isAlliumPlant, isLegumePlant } from '../src/core/placementRules';
 import { analyzeGuildAntagonisms } from '../src/core/antagonistEngine';
-import { analyzeGuildSpacing } from '../src/core/spacingEngine';
+import { analyzeGuildSpacing, suggestAlternativeRolePlants } from '../src/core/spacingEngine';
 import { optimizeGardenCompanions } from '../src/core/gardenOptimizer';
 import { analyzeGardenAntagonisms } from '../src/core/gardenAntagonist';
 import { generateGardenPlanPdfDoc } from '../src/core/gardenPdfExporter';
 import { generateGuildPdf } from '../src/core/pdfExporter';
 import { GardenStarPlantInstance } from '../src/types/garden';
 import { Hemisphere } from '../src/types/guild';
+import { ACTIVE_GUILD_PLANTS } from '../src/data/guildPlants';
+import { STRICT_ACIDOPHILE_STAR_IDS, isStrictAcidophilePlant, isStrictCalcicolePlant } from '../src/core/placementRules';
+import { PEST_HOST_CONFLICTS } from '../src/core/pestHostConflicts';
+import {
+  SPACING_SOLVABLE_RULES,
+  getStarIncompatibility,
+  isCompatiblePair,
+  isCompatibleWithGuild,
+  isCompatibleWithStar,
+  partitionGuildByCompatibility
+} from '../src/core/compatibility';
+import { GUILD_PRESETS, DEFAULT_GUILD_PLANT_IDS } from '../src/core/guildPresets';
+import { getGapCandidateIds, analyzePlantRedundancy } from '../src/core/seasonalGapEngine';
+import { resolvePestDefense } from '../src/core/pestCompanionEngine';
 
 let allPassed = true;
 const fail = (msg: string) => {
@@ -455,6 +469,145 @@ for (const sensId of jugloneSensitiveIds) {
   if (guildDoc.getNumberOfPages() < 2) {
     fail(`Expected at least 2 pages in Guild PDF, got ${guildDoc.getNumberOfPages()}`);
   }
+}
+
+// N. Guild compatibility prefilter (compatibility.ts) must match the antagonist engine exactly
+{
+  const isBlocking = (c: { type: string; severity: string }) =>
+    c.type === 'INTERNAL_PROXIMITY' && (c.severity === 'CRITICAL' || c.severity === 'WARNING');
+  const spacingSolvable = new Set(SPACING_SOLVABLE_RULES.map(r => r.conflictId));
+  let starChecks = 0;
+  let hiddenTotal = 0;
+
+  for (const hemi of hemispheres) {
+    for (const tree of STAR_TREES) {
+      const baseIds = new Set(analyzeGuildAntagonisms(tree, [], hemi).conflicts.filter(isBlocking).map(c => c.id));
+      for (const plant of ACTIVE_GUILD_PLANTS) {
+        const added = analyzeGuildAntagonisms(tree, [plant], hemi).conflicts
+          .filter(c => isBlocking(c) && !baseIds.has(c.id));
+        const compatible = isCompatibleWithStar(plant, tree);
+        starChecks++;
+        if (hemi === 'NORTHERN' && !compatible) hiddenTotal++;
+        if (compatible && added.length > 0) {
+          fail(`[${hemi}] builder shows ${plant.id} for ${tree.id}, but the engine reports ${added.map(c => `${c.id} (${c.severity})`).join(', ')}`);
+        }
+        if (!compatible && added.length === 0) {
+          fail(`[${hemi}] ${plant.id} hidden for ${tree.id} (${getStarIncompatibility(plant, tree).map(r => r.code).join(', ')}) without any engine conflict`);
+        }
+        if (!compatible && !added.some(c => getStarIncompatibility(plant, tree).some(r => r.conflictId === c.id))) {
+          fail(`[${hemi}] ${plant.id} vs ${tree.id}: compatibility reason ids do not match engine conflict ids`);
+        }
+      }
+    }
+  }
+
+  // Companion pairs under a pH-neutral star without pest-host specs
+  const neutralStar = STAR_TREES.find(t =>
+    !t.jugloneProducer &&
+    !STRICT_ACIDOPHILE_STAR_IDS.has(t.id) &&
+    !t.unsuitableSoils.includes('ACIDIC') &&
+    !PEST_HOST_CONFLICTS.some(s => s.starTreeIds.includes(t.id))
+  )!;
+  const pairPool = ACTIVE_GUILD_PLANTS.filter(p => isCompatibleWithStar(p, neutralStar));
+  const singleIds = new Map(pairPool.map(p => [
+    p.id,
+    new Set(analyzeGuildAntagonisms(neutralStar, [p]).conflicts.filter(isBlocking).map(c => c.id))
+  ]));
+  let pairChecks = 0;
+  for (let i = 0; i < pairPool.length; i++) {
+    for (let j = i + 1; j < pairPool.length; j++) {
+      const a = pairPool[i];
+      const b = pairPool[j];
+      const engine = analyzeGuildAntagonisms(neutralStar, [a, b]).conflicts.filter(c =>
+        isBlocking(c) && !spacingSolvable.has(c.id) && !singleIds.get(a.id)!.has(c.id) && !singleIds.get(b.id)!.has(c.id)
+      );
+      const compatible = isCompatiblePair(a, b) && isCompatiblePair(b, a);
+      pairChecks++;
+      if (compatible && engine.length > 0) fail(`pair ${a.id} + ${b.id} allowed, but engine reports ${engine.map(c => c.id).join(', ')}`);
+      if (!compatible && engine.length === 0) fail(`pair ${a.id} + ${b.id} blocked without an engine conflict`);
+    }
+  }
+
+  // Default guilds: every recommended companion (both directions of the link) is compatible
+  for (const tree of STAR_TREES) {
+    const recs = tree.recommendedCompanions
+      .map(id => ACTIVE_GUILD_PLANTS.find(p => p.id === id))
+      .filter((p): p is NonNullable<typeof p> => Boolean(p));
+    for (const p of recs) {
+      const r = getStarIncompatibility(p, tree);
+      if (r.length > 0) fail(`${tree.id}.recommendedCompanions contains incompatible ${p.id} (${r.map(x => x.code).join(', ')})`);
+    }
+    const { incompatible } = partitionGuildByCompatibility(tree, recs);
+    for (const x of incompatible) {
+      fail(`${tree.id} default guild: ${x.plant.id} conflicts (${x.reasons.map(r => `${r.code} with ${r.withId}`).join(', ')})`);
+    }
+    for (const p of ACTIVE_GUILD_PLANTS.filter(q => q.recommendedForTrees.includes(tree.id))) {
+      const r = getStarIncompatibility(p, tree);
+      if (r.length > 0) fail(`${p.id}.recommendedForTrees lists incompatible star ${tree.id} (${r.map(x => x.code).join(', ')})`);
+    }
+  }
+
+  // The owner's example: Chinese tea hides sage; a tea guild can never take sage
+  const tea = getTree('tree-tea-sinensis');
+  const sage = ACTIVE_GUILD_PLANTS.find(p => p.id.includes('sage') && isStrictCalcicolePlant(p));
+  if (!sage) fail('expected a sage companion in the catalogue');
+  else if (isCompatibleWithStar(sage, tea)) fail('sage must be incompatible with Chinese tea');
+
+  // Star switch / share link cleanup keeps the earlier plant of a conflicting pair
+  const blueberryPlant = ACTIVE_GUILD_PLANTS.find(p => isStrictAcidophilePlant(p));
+  if (sage && blueberryPlant) {
+    const part = partitionGuildByCompatibility(neutralStar, [blueberryPlant, sage]);
+    if (part.compatible.length !== 1 || part.compatible[0].id !== blueberryPlant.id || part.incompatible[0]?.plant.id !== sage.id) {
+      fail('partitionGuildByCompatibility must keep the first plant of an acid/lime pair');
+    }
+  }
+
+  // Presets and the first-visit guild
+  for (const [name, preset] of Object.entries(GUILD_PRESETS)) {
+    const tree = getTree(preset.treeId);
+    const { incompatible } = partitionGuildByCompatibility(tree, preset.plantIds.map(getPlant));
+    for (const x of incompatible) fail(`preset ${name}: ${x.plant.id} conflicts (${x.reasons.map(r => r.code).join(', ')})`);
+  }
+  {
+    const { incompatible } = partitionGuildByCompatibility(STAR_TREES[0], DEFAULT_GUILD_PLANT_IDS.map(getPlant));
+    for (const x of incompatible) fail(`first-visit guild: ${x.plant.id} conflicts with ${STAR_TREES[0].id}`);
+  }
+
+  // Every suggestion source only offers compatible plants
+  const roles = ['POLLINATOR_MAGNET', 'LIVING_MULCH', 'GRASS_BARRIER', 'PEST_REPELLER', 'BIOMASS_PRODUCER', 'NITROGEN_FIXER', 'DYNAMIC_ACCUMULATOR'] as const;
+  const seasons = ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'] as const;
+  for (const tree of STAR_TREES) {
+    // A guild holding one acid-soil plant and one lime plant (if star-compatible) forces pair filtering
+    const guild = [ACTIVE_GUILD_PLANTS.find(p => isStrictAcidophilePlant(p) && isCompatibleWithStar(p, tree))]
+      .filter((p): p is NonNullable<typeof p> => Boolean(p));
+    for (const role of roles) {
+      for (const season of seasons) {
+        for (const id of getGapCandidateIds(role, season, new Set(guild.map(g => g.id)), tree, 50, guild)) {
+          if (!isCompatibleWithGuild(getPlant(id), tree, guild)) fail(`gap candidate ${id} (${role}/${season}) conflicts with ${tree.id} guild`);
+        }
+      }
+    }
+    for (const pest of tree.vulnerabilities.en) {
+      for (const id of resolvePestDefense(pest, tree.id).companionPlantIds) {
+        if (!isCompatibleWithStar(getPlant(id), tree)) fail(`pest companion ${id} for "${pest}" conflicts with ${tree.id}`);
+      }
+    }
+    const recs = tree.recommendedCompanions.map(getPlant);
+    for (const crowded of recs) {
+      for (const alt of suggestAlternativeRolePlants(crowded, tree, [...recs, ...guild])) {
+        const rest = [...recs, ...guild].filter(p => p.id !== crowded.id);
+        if (!isCompatibleWithGuild(alt.plant, tree, rest)) fail(`spacing swap ${alt.plant.id} for ${crowded.id} conflicts with ${tree.id} guild`);
+      }
+    }
+    for (const report of analyzePlantRedundancy([...recs, ...guild], tree)) {
+      const rest = [...recs, ...guild].filter(p => p.id !== report.plant.id);
+      for (const alt of report.suggestedAlternativeForGaps) {
+        if (!isCompatibleWithGuild(alt, tree, rest)) fail(`redundancy swap ${alt.id} for ${report.plant.id} conflicts with ${tree.id} guild`);
+      }
+    }
+  }
+
+  console.log(`compatibility: ${starChecks} star×plant checks, ${pairChecks} pair checks (${hiddenTotal} star-incompatible combinations)`);
 }
 
 if (!allPassed) process.exit(1);

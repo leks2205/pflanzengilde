@@ -1339,7 +1339,7 @@ export function generateGuildCalendarIcs(options: CalendarExportOptions): string
     }
 
     const harvestSeasons = getHarvestSeasons(plant);
-    const hasEdibleHarvest = plant.roles.includes('EDIBLE_UNDERSTORY') || (plant.harvestTime && !plant.harvestTime.de.toLowerCase().includes('nicht essbar'));
+    const hasEdibleHarvest = plant.roles.includes('EDIBLE_UNDERSTORY');
 
     if (hasEdibleHarvest && harvestSeasons.length > 0) {
       const harvestTiming = getNextOccurringDate(harvestSeasons[0], 'HARVEST', plantFirstPlantingDate, hemisphere);

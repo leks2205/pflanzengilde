@@ -3,8 +3,13 @@ import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree, getL
 import { GardenStarPlantInstance, GardenState, ImportedGuildTemplate } from '../types/garden';
 import { STAR_TREES } from '../data/starTrees';
 import { GUILD_PLANTS } from '../data/guildPlants';
-import { optimizeGardenCompanions } from '../core/gardenOptimizer';
-import { analyzeGardenAntagonisms, detectGardenShadePockets } from '../core/gardenAntagonist';
+import {
+  GardenSubstitution,
+  applyGardenSubstitution,
+  pinKey,
+  resolveGardenConflicts
+} from '../core/gardenOptimizer';
+import { detectGardenShadePockets } from '../core/gardenAntagonist';
 import { GardenGridCanvas } from './GardenGridCanvas';
 import { GardenSidebar } from './GardenSidebar';
 import { PlantDetailModal } from './PlantDetailModal';
@@ -174,6 +179,14 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   const [autoShadeEnabled, setAutoShadeEnabled] = useState<boolean>(() => {
     return urlGarden?.autoShadeEnabled ?? savedData?.autoShadeEnabled ?? false;
   });
+  // Garden-level conflict resolution: on by default; local preference only (not part of share codes)
+  const [autoResolveEnabled, setAutoResolveEnabled] = useState<boolean>(() =>
+    typeof savedData?.autoResolveEnabled === 'boolean' ? savedData.autoResolveEnabled : true
+  );
+  // Companions the user chose in the garden itself (pinKey(tree, plant)): never auto-replaced
+  const [pinnedCompanions, setPinnedCompanions] = useState<string[]>(() =>
+    Array.isArray(savedData?.pinnedCompanions) ? savedData.pinnedCompanions.filter((k: unknown) => typeof k === 'string') : []
+  );
 
   // Keep the planner tab's current guild at the top of the templates
   useEffect(() => {
@@ -211,13 +224,15 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
         gardenName,
         starPlants,
         loadedGuildTemplates,
-        autoShadeEnabled
+        autoShadeEnabled,
+        autoResolveEnabled,
+        pinnedCompanions
       };
       localStorage.setItem(STORAGE_KEY_GARDEN_GRID, JSON.stringify(data));
     } catch (e) {
       console.error('Failed to save garden grid state to localStorage', e);
     }
-  }, [gardenId, gardenName, starPlants, loadedGuildTemplates, autoShadeEnabled]);
+  }, [gardenId, gardenName, starPlants, loadedGuildTemplates, autoShadeEnabled, autoResolveEnabled, pinnedCompanions]);
 
   useEffect(() => {
     if (!toast) return;
@@ -225,13 +240,54 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const { companions, stats } = useMemo(() => {
-    return optimizeGardenCompanions(starPlants, GUILD_PLANTS, hemisphere);
-  }, [starPlants, hemisphere]);
+  // Optimizer + garden conflict resolution. Substitutions are derived on every render (never persisted),
+  // so saved gardens and share codes keep the user's own lists.
+  const resolution = useMemo(() => {
+    return resolveGardenConflicts(starPlants, {
+      allGuildPlants: GUILD_PLANTS,
+      hemisphere,
+      zone: selectedZone,
+      soil: selectedSoil,
+      enabled: autoResolveEnabled,
+      pinned: new Set(pinnedCompanions)
+    });
+  }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions]);
+  const { companions, stats } = resolution;
+  const conflicts = resolution.unresolved;
 
-  const conflicts = useMemo(() => {
-    return analyzeGardenAntagonisms(starPlants, companions);
-  }, [starPlants, companions]);
+  /** Companion list as shown (after automatic substitutions). */
+  const resolvedCompanionIds = (tree: GardenStarPlantInstance): string[] =>
+    resolution.effectiveCompanionIds[tree.instanceId] ?? effectiveCompanionIds(tree);
+
+  const plantLabel = (id: string | null) => {
+    const p = id ? GUILD_PLANTS.find(gp => gp.id === id) : undefined;
+    return p ? getLoc(p.commonName, language) : id ?? '';
+  };
+
+  // Undo an automatic swap: the original plant becomes a user choice and is only suggested from now on
+  const handleKeepOriginal = (sub: GardenSubstitution) => {
+    const keys = sub.servedTreeIds.map(tid => pinKey(tid, sub.removedPlantId));
+    setPinnedCompanions(prev => [...prev, ...keys.filter(k => !prev.includes(k))]);
+    setToast({ type: 'success', message: tr.gardenResolveKeptToast.replace('{plant}', plantLabel(sub.removedPlantId)) });
+  };
+
+  // One-click fix for a suggestion: write the resolved lists (with the swap) into the served trees
+  const handleApplySuggestion = (sub: GardenSubstitution) => {
+    const next = applyGardenSubstitution(resolution.effectiveCompanionIds, sub);
+    setStarPlants(prev => prev.map(tree => (
+      sub.servedTreeIds.includes(tree.instanceId) && next[tree.instanceId]
+        ? { ...tree, selectedPlantIds: [...next[tree.instanceId]] }
+        : tree
+    )));
+    const dropKeys = new Set(sub.servedTreeIds.map(tid => pinKey(tid, sub.removedPlantId)));
+    setPinnedCompanions(prev => prev.filter(k => !dropKeys.has(k)));
+    setToast({
+      type: 'success',
+      message: tr.gardenResolveAppliedToast
+        .replace('{removed}', plantLabel(sub.removedPlantId))
+        .replace('{added}', sub.addedPlantIds.length > 0 ? sub.addedPlantIds.map(plantLabel).join(' + ') : '-')
+    });
+  };
 
   const shadePockets = useMemo(() => {
     return detectGardenShadePockets(starPlants);
@@ -535,6 +591,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
 
   const handleResetGarden = () => {
     setStarPlants([]);
+    setPinnedCompanions([]);
     setGardenId(newGardenId());
     setSelectedTreeId(null);
     setSelectedTreeIds([]);
@@ -562,7 +619,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   }, [modalPlant, modalPlantIsStarPlant, companions, starPlants, selectedTreeId]);
 
   const modalPlantInGuild = modalPlant && modalTargetTree
-    ? effectiveCompanionIds(modalTargetTree).includes(modalPlant.id)
+    ? resolvedCompanionIds(modalTargetTree).includes(modalPlant.id)
     : false;
 
   const handleToggleModalCompanion = (plant: GuildPlant) => {
@@ -577,7 +634,9 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       return;
     }
     const treeName = target.customName || getLoc(target.starTree.commonName, language);
-    const current = effectiveCompanionIds(target);
+    // Edit what the user sees: automatic swaps of this tree become part of its own list
+    const current = resolvedCompanionIds(target);
+    const key = pinKey(target.instanceId, plant.id);
 
     if (current.includes(plant.id)) {
       const next = current.filter(id => id !== plant.id);
@@ -590,6 +649,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
         return;
       }
       setStarPlants(prev => prev.map(tree => (tree.instanceId === target.instanceId ? { ...tree, selectedPlantIds: next } : tree)));
+      setPinnedCompanions(prev => prev.filter(k => k !== key));
       setToast({
         type: 'success',
         message: tr.gardenPageCompanionRemoved.replace('{plant}', plantName).replace('{tree}', treeName)
@@ -603,6 +663,8 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       return;
     }
     setStarPlants(prev => prev.map(tree => (tree.instanceId === target.instanceId ? { ...tree, selectedPlantIds: [...current, plant.id] } : tree)));
+    // Added by hand in the garden: respected as the user's choice, never replaced automatically
+    setPinnedCompanions(prev => (prev.includes(key) ? prev : [...prev, key]));
     setToast({
       type: 'success',
       message: tr.gardenPageCompanionAdded.replace('{plant}', plantName).replace('{tree}', treeName)
@@ -682,6 +744,12 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             onToggleAutoShade={() => setAutoShadeEnabled(prev => !prev)}
             onApplyShadePlant={handleApplyShadePlant}
             onOpenPlantDetailModal={setModalPlant}
+            substitutions={resolution.substitutions}
+            suggestions={resolution.suggestions}
+            autoResolveEnabled={autoResolveEnabled}
+            onToggleAutoResolve={() => setAutoResolveEnabled(prev => !prev)}
+            onKeepOriginal={handleKeepOriginal}
+            onApplySuggestion={handleApplySuggestion}
           />
         </div>
 

@@ -1,9 +1,11 @@
 import React from 'react';
-import { Language, getLoc } from '../types/guild';
+import { GuildRole, Language, getLoc } from '../types/guild';
 import { GardenConflict, GardenShadePocket, GardenStarPlantInstance, GardenStats } from '../types/garden';
-import { AlertOctagon, AlertTriangle, CheckCircle2, CloudRain, ShieldCheck, Sparkles, Sun } from 'lucide-react';
-import { t, formatNumber } from '../i18n/translations';
+import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, CloudRain, RefreshCw, ShieldCheck, Sparkles, Sun, Undo2 } from 'lucide-react';
+import { t, formatNumber, translateRole } from '../i18n/translations';
 import { SourceList } from './SourceList';
+import { GardenSubstitution } from '../core/gardenOptimizer';
+import { GUILD_PLANTS } from '../data/guildPlants';
 
 interface GardenWarningsBoxProps {
   language: Language;
@@ -14,7 +16,18 @@ interface GardenWarningsBoxProps {
   autoShadeEnabled?: boolean;
   onToggleAutoShade?: () => void;
   onApplyShadePlant?: (plantId: string) => void;
+  /** Companion swaps applied by the garden conflict resolver. */
+  substitutions?: GardenSubstitution[];
+  /** Swaps offered for user-chosen companions (or all, when auto-resolution is off). */
+  suggestions?: GardenSubstitution[];
+  autoResolveEnabled?: boolean;
+  onToggleAutoResolve?: () => void;
+  /** Undo an automatic swap and keep the original plant. */
+  onKeepOriginal?: (sub: GardenSubstitution) => void;
+  onApplySuggestion?: (sub: GardenSubstitution) => void;
 }
+
+const PLANT_NAMES = new Map(GUILD_PLANTS.map(p => [p.id, p.commonName]));
 
 export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
   language,
@@ -25,8 +38,50 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
   autoShadeEnabled = false,
   onToggleAutoShade,
   onApplyShadePlant,
+  substitutions = [],
+  suggestions = [],
+  autoResolveEnabled = true,
+  onToggleAutoResolve,
+  onKeepOriginal,
+  onApplySuggestion,
 }) => {
   const tr = t(language);
+  const plantName = (id: string | null) => {
+    const name = id ? PLANT_NAMES.get(id) : undefined;
+    return name ? getLoc(name, language) : id ?? '';
+  };
+  const treeNames = (ids: string[]) =>
+    ids
+      .map(id => starPlants.find(s => s.instanceId === id))
+      .filter((s): s is GardenStarPlantInstance => Boolean(s))
+      .map(s => s.customName || getLoc(s.starTree.commonName, language))
+      .join(', ');
+  const roleList = (roles: GuildRole[]) => roles.map(r => translateRole(r, language)).join(', ');
+  const starIds = new Set(starPlants.map(s => s.instanceId));
+  const hasStarStarConflict = conflicts.some(c => starIds.has(c.plantA.id) && starIds.has(c.plantB.id));
+
+  const renderSwap = (sub: GardenSubstitution) => (
+    <div className="space-y-1 min-w-0">
+      <div className="font-semibold flex flex-wrap items-center gap-1">
+        <span className="line-through decoration-stone-400 text-stone-500">{plantName(sub.removedPlantId)}</span>
+        <ArrowRight className="w-3 h-3 text-stone-400 shrink-0" />
+        <span className="text-forest-800">
+          {sub.addedPlantIds.length > 0 ? sub.addedPlantIds.map(plantName).join(' + ') : tr.gardenResolveDropped}
+        </span>
+      </div>
+      <p className="text-[11px] text-stone-600">
+        {tr.gardenResolveInGuild.replace('{trees}', treeNames(sub.servedTreeIds))}
+        {' · '}
+        {tr.gardenResolveReason.replace('{reason}', getLoc(sub.reason, language))}
+      </p>
+      {sub.rolesPreserved.length > 0 && (
+        <p className="text-[11px] text-emerald-800">{tr.gardenResolveRolesKept.replace('{roles}', roleList(sub.rolesPreserved))}</p>
+      )}
+      {sub.rolesLost.length > 0 && (
+        <p className="text-[11px] text-amber-800">{tr.gardenResolveRolesLost.replace('{roles}', roleList(sub.rolesLost))}</p>
+      )}
+    </div>
+  );
   const involvedTreeIds = new Set(shadePockets.flatMap(p => p.treeIds));
   const involvedTrees = starPlants.filter(t => involvedTreeIds.has(t.instanceId));
 
@@ -110,6 +165,84 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
           </div>
         )}
       </div>
+
+      {hasStarStarConflict && (
+        <p className="text-[11px] text-stone-600 leading-relaxed -mt-2">{tr.gardenResolveStarStarHint}</p>
+      )}
+
+      {(substitutions.length > 0 || suggestions.length > 0 || !autoResolveEnabled) && (
+        <div className="space-y-2 pt-2 border-t border-stone-100">
+          <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <RefreshCw className="w-3.5 h-3.5 text-forest-600" />
+              <span>{tr.gardenResolveHeading}</span>
+            </span>
+            <button
+              type="button"
+              onClick={onToggleAutoResolve}
+              className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
+                autoResolveEnabled
+                  ? 'bg-forest-600 text-white shadow-xs'
+                  : 'bg-stone-100 hover:bg-stone-200 text-stone-600 border border-stone-200'
+              }`}
+              title={tr.gardenResolveToggleTitle}
+              aria-pressed={autoResolveEnabled}
+            >
+              <Sparkles className="w-3 h-3" />
+              <span>Auto: {autoResolveEnabled ? tr.gardenWarningsOn : tr.gardenWarningsOff}</span>
+            </button>
+          </div>
+
+          {substitutions.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-[11px] text-stone-600 leading-relaxed">{tr.gardenResolveIntro}</p>
+              {substitutions.map(sub => (
+                <div key={sub.id} className="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-stone-900 flex items-start justify-between gap-2">
+                  {renderSwap(sub)}
+                  {onKeepOriginal && (
+                    <button
+                      type="button"
+                      onClick={() => onKeepOriginal(sub)}
+                      className="shrink-0 px-2 py-1 rounded-lg text-[10px] font-bold bg-white border border-stone-200 hover:border-stone-400 text-stone-700 flex items-center gap-1 cursor-pointer"
+                      title={tr.gardenResolveUndoTitle.replace('{plant}', plantName(sub.removedPlantId))}
+                    >
+                      <Undo2 className="w-3 h-3" />
+                      <span>{tr.gardenResolveUndo.replace('{plant}', plantName(sub.removedPlantId))}</span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {suggestions.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-[11px] font-semibold text-stone-700">{tr.gardenResolveSuggestionsHeading}</p>
+              <p className="text-[11px] text-stone-600 leading-relaxed">
+                {autoResolveEnabled ? tr.gardenResolveSuggestionsPinned : tr.gardenResolveSuggestionsOff}
+              </p>
+              {suggestions.map(sub => (
+                <div key={sub.id} className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-stone-900 flex items-start justify-between gap-2">
+                  {renderSwap(sub)}
+                  {onApplySuggestion && (
+                    <button
+                      type="button"
+                      onClick={() => onApplySuggestion(sub)}
+                      className="shrink-0 px-2 py-1 rounded-lg text-[10px] font-bold bg-forest-600 hover:bg-forest-700 text-white flex items-center gap-1 cursor-pointer"
+                      title={tr.gardenResolveApplyTitle
+                        .replace('{removed}', plantName(sub.removedPlantId))
+                        .replace('{added}', sub.addedPlantIds.length > 0 ? sub.addedPlantIds.map(plantName).join(' + ') : '-')}
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>{tr.gardenResolveApply}</span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="space-y-2 pt-2 border-t border-stone-100">
         <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">

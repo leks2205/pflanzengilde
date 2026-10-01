@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ActiveGapFilter, ActivePestFilter, ClimateZone, GuildPlant, GuildRole, Language, SoilType, StarTree, getLoc } from '../types/guild';
 import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
-import { Search, Filter, Check, Plus, AlertOctagon, Sparkles, Layers, Star, Mountain, Globe, X, ShieldCheck, AlertTriangle, FlaskConical, Sprout } from 'lucide-react';
+import { Search, Check, Plus, AlertOctagon, Sparkles, Layers, Star, Mountain, Globe, X, ShieldCheck, AlertTriangle, FlaskConical, Sprout, Eye, EyeOff, Ban } from 'lucide-react';
+import { IncompatibilityReason, getGuildIncompatibility, partitionGuildByCompatibility, summarizeIncompatibility } from '../core/compatibility';
 import { t, translateRole, translateLayer, translateZone } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
 import { GoogleImagesButton } from './GoogleImagesButton';
@@ -41,7 +42,8 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
   const tr = t(language);
   const [activeTab, setActiveTab] = useState<RoleFilter>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
-  const [hideIncompatible, setHideIncompatible] = useState(true);
+  // Plants that conflict with the star or the chosen companions are hidden unless revealed here
+  const [showConflicting, setShowConflicting] = useState(false);
   const [filterOnlyOptimalSoil, setFilterOnlyOptimalSoil] = useState(false);
   const [filterOnlyOptimalZone, setFilterOnlyOptimalZone] = useState(true);
 
@@ -58,6 +60,24 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
   }, [activePestFilter]);
 
   const selectedPlantIds = useMemo(() => new Set(selectedPlants.map(p => p.id)), [selectedPlants]);
+
+  // Compatibility prefilter (compatibility.ts). Selected plants: the later plant of a conflicting
+  // pair is flagged (partition); unselected plants: conflicts with the star or any chosen companion.
+  const conflictsById = useMemo(() => {
+    const map = new Map<string, IncompatibilityReason[]>();
+    for (const { plant, reasons } of partitionGuildByCompatibility(selectedTree, selectedPlants).incompatible) {
+      map.set(plant.id, reasons);
+    }
+    for (const plant of ACTIVE_GUILD_PLANTS) {
+      if (selectedPlantIds.has(plant.id)) continue;
+      const reasons = getGuildIncompatibility(plant, selectedTree, selectedPlants);
+      if (reasons.length > 0) map.set(plant.id, reasons);
+    }
+    return map;
+  }, [selectedTree, selectedPlants, selectedPlantIds]);
+
+  const conflictText = (reasons: IncompatibilityReason[]) =>
+    summarizeIncompatibility(reasons, selectedTree.id).map(r => getLoc(r.message, language)).join(' · ');
 
   const pestDefense = useMemo(
     () => (activePestFilter ? resolvePestDefense(activePestFilter.pestName, selectedTree.id, selectedZone) : null),
@@ -88,14 +108,10 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
     }
   };
 
-  const filteredPlants = useMemo(() => {
+  // All filters except compatibility; conflicting plants are split off below
+  const matchingPlants = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return ACTIVE_GUILD_PLANTS.filter(plant => {
-      const isJugloneSensitive = selectedTree.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE';
-      if (isJugloneSensitive && hideIncompatible) {
-        return false;
-      }
-
       if (filterOnlyOptimalSoil) {
         const isOptimalSoil = plant.suitableSoils?.includes(selectedSoil);
         if (!isOptimalSoil) return false;
@@ -142,7 +158,6 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
     activeTab,
     searchQuery,
     selectedTree,
-    hideIncompatible,
     selectedSoil,
     filterOnlyOptimalSoil,
     filterOnlyOptimalZone,
@@ -151,6 +166,23 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
     activeGapFilter
   ]);
 
+  // Selected plants always stay visible (flagged) so a conflicting one can be removed
+  const hiddenConflicting = useMemo(
+    () => matchingPlants.filter(p => !selectedPlantIds.has(p.id) && conflictsById.has(p.id)),
+    [matchingPlants, selectedPlantIds, conflictsById]
+  );
+  const filteredPlants = useMemo(
+    () => (showConflicting ? matchingPlants : matchingPlants.filter(p => selectedPlantIds.has(p.id) || !conflictsById.has(p.id))),
+    [matchingPlants, showConflicting, selectedPlantIds, conflictsById]
+  );
+  // Star wording when every hidden plant conflicts with the star itself (pair conflicts may come on top)
+  const hiddenOnlyByStar = hiddenConflicting.every(p => conflictsById.get(p.id)!.some(r => r.withId === selectedTree.id));
+  const starName = getLoc(selectedTree.commonName, language);
+  const hiddenNote = (hiddenOnlyByStar
+    ? (hiddenConflicting.length === 1 ? tr.compatHiddenNoteOne : tr.compatHiddenNote)
+    : tr.compatHiddenNoteGuild
+  ).replace('{count}', String(hiddenConflicting.length)).replace('{star}', starName);
+
   const activeSeasonDef = activeGapFilter
     ? PHENO_SEASONS.find(s => s.id === activeGapFilter.season)
     : null;
@@ -158,16 +190,11 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
   const roleTab = activeGapFilter ? filterTabs.find(t => t.id === activeGapFilter.role) : null;
   const activeRoleName = roleTab ? roleTab.label : (activeGapFilter ? translateRole(activeGapFilter.role, language) : '');
 
-  // Selected plants float to the top.
+  // Selected plants float to the top, revealed conflicting plants sink to the bottom.
   const sortedPlants = useMemo(() => {
-    return [...filteredPlants].sort((a, b) => {
-      const aSelected = selectedPlantIds.has(a.id);
-      const bSelected = selectedPlantIds.has(b.id);
-      if (aSelected && !bSelected) return -1;
-      if (!aSelected && bSelected) return 1;
-      return 0;
-    });
-  }, [filteredPlants, selectedPlantIds]);
+    const rank = (p: GuildPlant) => (selectedPlantIds.has(p.id) ? 0 : conflictsById.has(p.id) ? 2 : 1);
+    return [...filteredPlants].sort((a, b) => rank(a) - rank(b));
+  }, [filteredPlants, selectedPlantIds, conflictsById]);
 
   return (
     <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm space-y-4">
@@ -193,21 +220,6 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
               className="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-stone-300 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-transparent w-full"
             />
           </div>
-
-          {selectedTree.jugloneProducer && (
-            <button
-              type="button"
-              onClick={() => setHideIncompatible(!hideIncompatible)}
-              className={`px-2.5 py-1.5 text-xs rounded-lg border flex items-center gap-1 font-medium transition-colors cursor-pointer shrink-0 ${
-                hideIncompatible
-                  ? 'bg-amber-100 border-amber-300 text-amber-900'
-                  : 'bg-stone-50 border-stone-300 text-stone-700'
-              }`}
-            >
-              <Filter className="w-3 h-3" />
-              <span>{hideIncompatible ? tr.safeOnly : tr.showAll}</span>
-            </button>
-          )}
 
           <button
             type="button"
@@ -245,9 +257,10 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
           ? (defense.scientificMechanism[language] || defense.scientificMechanism.en)
           : null;
 
+        // resolvePestDefense already drops star-incompatible plants; also drop pair conflicts
         const companionPlants = defense.companionPlantIds
           .map(id => ACTIVE_GUILD_PLANTS.find(p => p.id === id))
-          .filter((p): p is GuildPlant => !!p);
+          .filter((p): p is GuildPlant => !!p && (selectedPlantIds.has(p.id) || !conflictsById.has(p.id)));
 
         return (
           <div className="mb-5 p-4 sm:p-5 bg-gradient-to-br from-emerald-50 via-teal-50/60 to-emerald-50 border border-emerald-300 rounded-2xl text-xs text-emerald-950 shadow-xs animate-fadeIn space-y-3.5">
@@ -416,10 +429,33 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
         })}
       </div>
 
+      {hiddenConflicting.length > 0 && (
+        <div
+          className="-mt-2 mb-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-stone-500"
+          data-testid="compat-hidden-note"
+        >
+          <Ban className="w-3 h-3 text-stone-400 shrink-0" />
+          <span>{hiddenNote}</span>
+          <button
+            type="button"
+            onClick={() => setShowConflicting(!showConflicting)}
+            className="inline-flex items-center gap-1 text-stone-600 hover:text-forest-700 underline font-medium cursor-pointer"
+            aria-pressed={showConflicting}
+          >
+            {showConflicting ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+            <span>{showConflicting ? tr.compatHideHidden : tr.compatShowHidden}</span>
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[520px] overflow-y-auto pr-1">
         {sortedPlants.map(plant => {
           const isSelected = selectedPlantIds.has(plant.id);
-          const isJugloneSensitive = selectedTree.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE';
+          const conflictReasons = conflictsById.get(plant.id);
+          // Revealed conflicting plant: greyed out and cannot be added
+          const isBlocked = !isSelected && !!conflictReasons;
+          // Already in the guild but conflicting (old link, import): flagged for removal
+          const isSelectedConflict = isSelected && !!conflictReasons;
           const isSuperHero = plant.roles.length >= 3;
           const isRecommendedForTree =
             selectedTree.recommendedCompanions?.includes(plant.id) ||
@@ -436,8 +472,10 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
             <div
               key={plant.id}
               className={`p-3.5 rounded-xl border transition-all flex flex-col justify-between ${
-                isJugloneSensitive
-                  ? 'border-rose-300 bg-rose-50/40 opacity-75'
+                isSelectedConflict
+                  ? 'border-rose-400 bg-rose-50/60 ring-1 ring-rose-400/40'
+                  : isBlocked
+                  ? 'border-stone-200 bg-stone-50 opacity-60 grayscale'
                   : isSelected
                   ? 'border-forest-600 bg-forest-50/40 ring-1 ring-forest-600/30'
                   : fillsActiveGap
@@ -522,25 +560,33 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
 
                   <button
                     type="button"
-                    disabled={isJugloneSensitive}
+                    disabled={isBlocked}
                     onClick={() => onTogglePlant(plant)}
                     className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${
-                      isSelected
+                      isSelectedConflict
+                        ? 'bg-rose-600 text-white shadow-xs hover:bg-rose-700'
+                        : isSelected
                         ? 'bg-forest-600 text-white shadow-xs'
-                        : isJugloneSensitive
-                        ? 'bg-rose-200 text-rose-600 cursor-not-allowed'
+                        : isBlocked
+                        ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
                         : 'border border-stone-300 text-stone-600 hover:border-forest-500 hover:text-forest-600'
                     }`}
-                    title={isSelected ? tr.removeGuildBtn : tr.addGuildBtn}
+                    title={isSelected ? tr.removeGuildBtn : isBlocked ? `${tr.compatCannotAdd}: ${conflictText(conflictReasons!)}` : tr.addGuildBtn}
                   >
-                    {isSelected ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                    {isSelectedConflict ? <X className="w-4 h-4" /> : isSelected ? <Check className="w-4 h-4" /> : isBlocked ? <Ban className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </button>
                 </div>
 
-                {isJugloneSensitive && (
-                  <div className="mt-2 flex items-center gap-1 text-[10px] text-rose-700 font-medium">
-                    <AlertOctagon className="w-3 h-3 flex-shrink-0" />
-                    <span>{tr.jugloneWarning}</span>
+                {conflictReasons && (
+                  <div
+                    className={`mt-2 flex items-start gap-1 text-[10px] font-medium ${isSelectedConflict ? 'text-rose-700' : 'text-stone-600'}`}
+                    data-testid="compat-reason"
+                  >
+                    <AlertOctagon className="w-3 h-3 flex-shrink-0 mt-px" />
+                    <span>
+                      {isSelectedConflict && <strong>{tr.compatSelectedConflict}: </strong>}
+                      {conflictText(conflictReasons)}
+                    </span>
                   </div>
                 )}
 

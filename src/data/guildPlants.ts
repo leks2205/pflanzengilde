@@ -199,7 +199,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Allium schoenoprasum',
     layer: 'BULB_ROOT',
-    roles: ['POLLINATOR_MAGNET'],
+    roles: ['POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['LATE_SPRING', 'SUMMER'],
@@ -207,7 +207,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       chopAndDropSeasons: ['SUMMER'],
       pestDeterrenceSeasons: [],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
-      harvestSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN']
+      harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN', 'EARLY_SPRING']
     },
     preferredZone: 'ZONE_1_BULB',
     preferredSector: 'SOUTH_SUN',
@@ -218,8 +218,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.3,
     perennial: true,
     notes: {
-      en: 'The ultimate permaculture workhorse. Forms dense, fibrous clumps (claims that they hold back turf grass have not been measured). The popular idea that its sulfur compounds suppress apple scab (Venturia inaequalis) or black spot is unproven. The flowers are frequently visited by many types of bees.',
-      de: 'Das ultimative Permakultur-Arbeitstier. Bildet dichte, büschelige Horste (eine Hemmung von Rasengräsern wurde nie gemessen). Die verbreitete Annahme, seine Schwefelverbindungen hemmten Apfelschorf (Venturia inaequalis) oder Pilzkrankheiten, ist unbewiesen. Die Blüten werden häufig von vielen Bienenarten besucht.'
+      en: 'The ultimate permaculture workhorse. Forms dense, fibrous clumps (claims that they hold back turf grass have not been measured). The popular idea that its sulfur compounds suppress apple scab (Venturia inaequalis) or black spot is unproven. The flowers are frequently visited by many types of bees. Grown for its edible leaves and flowers: once the leaves are at least 15 cm tall, cut outer leaves about 5 cm above the base and leave some for regrowth; after flowering the clump can be cut back to about 7.5 cm to force new, tender leaves (UC Master Gardeners of Santa Clara County).',
+      de: 'Das ultimative Permakultur-Arbeitstier. Bildet dichte, büschelige Horste (eine Hemmung von Rasengräsern wurde nie gemessen). Die verbreitete Annahme, seine Schwefelverbindungen hemmten Apfelschorf (Venturia inaequalis) oder Pilzkrankheiten, ist unbewiesen. Die Blüten werden häufig von vielen Bienenarten besucht. Angebaut wegen der essbaren Blätter und Blüten: Sobald die Blätter mindestens 15 cm lang sind, äußere Blätter etwa 5 cm über der Basis abschneiden und einige zum Nachwachsen stehen lassen; nach der Blüte kann der Horst auf etwa 7,5 cm zurückgeschnitten werden, um neue, zarte Blätter zu treiben (UC Master Gardeners of Santa Clara County).'
     },
     color: '#a855f7',
     iconName: 'ShieldAlert',
@@ -235,15 +235,16 @@ export const GUILD_PLANTS: GuildPlant[] = [
       en: 'Spring (Mar–May) or late summer (Aug–Oct)'
     },
     harvestTime: {
-      de: 'März bis November (kontinuierlicher Schnitt)',
-      en: 'March to November (continuous cut-and-come-again)'
+      de: 'Die ganze Vegetationsperiode über, sobald die Blätter etwa 15 cm lang sind, bis das Laub in kalten Lagen im Winter abstirbt (laufender Nachschnitt); auch die Blüten sind essbar',
+      en: 'Throughout the growing season once the leaves are about 15 cm long, until the foliage dies back over winter in cold climates (continuous cut-and-come-again); the flowers are edible too'
     },
     recommendedForTrees: [
       'tree-apple', 'tree-walnut', 'tree-peach', 'tree-apricot', 'tree-plum', 'tree-pear', 'tree-cherry', 'tree-quince', 'shrub-blackcurrant', 'vine-grape', 'herb-rhubarb', 'tree-ginkgo',
       'tree-tea-sinensis',
       'herb-hemp', 'shrub-red-currant', 'shrub-rhododendron'],
     sources: [
-      'UC Master Gardeners of Santa Clara County (n.d.). Chives. University of California Agriculture and Natural Resources. https://ucanr.edu/site/uc-master-gardeners-santa-clara-county/chives'
+      'UC Master Gardeners of Santa Clara County (n.d.). Chives. University of California Agriculture and Natural Resources. https://ucanr.edu/site/uc-master-gardeners-santa-clara-county/chives',
+      'Mahr, S. (rev. 2026). Chives, Allium schoenoprasum. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/chives-allium-schoenoprasum/'
     ]
   },
   {
@@ -4894,8 +4895,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.5,
     perennial: true,
     notes: {
-      en: 'Perennial pasture herb with a fibrous root system (not a deep taproot). It is valued for mineral-rich leaves: on a New Zealand organic dairy farm narrow-leaved plantain often had significantly more Mg, Mn, Cu, Zn, B, Co and Se than ryegrass and white clover (Harrington et al. 2006), and in a Danish trial forage herbs including plantain had higher P, Mg, K and S than grasses and legumes (Pirhofer-Walzl et al. 2011). Cut leaves return these minerals as mulch. Caution: ribwort plantain is the summer host of the rosy apple aphid (Dysaphis plantaginea), a key pest of apple (Blommers et al. 2004), so do not plant it under apple. A common lawn weed; flowers April to August.',
-      de: 'Ausdauerndes Weidekraut mit Faserwurzelsystem (keine tiefe Pfahlwurzel). Geschätzt wegen seiner mineralstoffreichen Blätter: Auf einem neuseeländischen Bio-Milchviehbetrieb enthielt Spitzwegerich oft signifikant mehr Mg, Mn, Cu, Zn, B, Co und Se als Weidelgras und Weißklee (Harrington et al. 2006), und in einem dänischen Versuch hatten Futterkräuter einschließlich Spitzwegerich höhere P-, Mg-, K- und S-Gehalte als Gräser und Leguminosen (Pirhofer-Walzl et al. 2011). Geschnittene Blätter geben diese Mineralstoffe als Mulch zurück. Achtung: Spitzwegerich ist der Sommerwirt der Mehligen Apfelblattlaus (Dysaphis plantaginea), eines Hauptschädlings des Apfels (Blommers et al. 2004) – daher nicht unter Apfelbäume pflanzen. Häufiges Rasenunkraut; Blüte April bis August.'
+      en: 'Perennial pasture herb with a fibrous root system (not a deep taproot). It is valued for mineral-rich leaves: on a New Zealand organic dairy farm narrow-leaved plantain often had significantly more Mg, Mn, Cu, Zn, B, Co and Se than ryegrass and white clover (Harrington et al. 2006), and in a Danish trial forage herbs including plantain had higher P, Mg, K and S than grasses and legumes (Pirhofer-Walzl et al. 2011). Cut leaves return these minerals as mulch. Caution: ribwort plantain is the summer host of the rosy apple aphid (Dysaphis plantaginea), a key pest of apple (Blommers et al. 2004), so do not plant it under apple. A common lawn weed; flowers April to August. Rated hardy to USDA zones 5–9 (NC State Extension); in Canada it is abundant mainly in southern British Columbia, Ontario and Quebec and on the coasts of Prince Edward Island and Nova Scotia (Cavers et al. 1980), so it is not listed for boreal gardens.',
+      de: 'Ausdauerndes Weidekraut mit Faserwurzelsystem (keine tiefe Pfahlwurzel). Geschätzt wegen seiner mineralstoffreichen Blätter: Auf einem neuseeländischen Bio-Milchviehbetrieb enthielt Spitzwegerich oft signifikant mehr Mg, Mn, Cu, Zn, B, Co und Se als Weidelgras und Weißklee (Harrington et al. 2006), und in einem dänischen Versuch hatten Futterkräuter einschließlich Spitzwegerich höhere P-, Mg-, K- und S-Gehalte als Gräser und Leguminosen (Pirhofer-Walzl et al. 2011). Geschnittene Blätter geben diese Mineralstoffe als Mulch zurück. Achtung: Spitzwegerich ist der Sommerwirt der Mehligen Apfelblattlaus (Dysaphis plantaginea), eines Hauptschädlings des Apfels (Blommers et al. 2004) – daher nicht unter Apfelbäume pflanzen. Häufiges Rasenunkraut; Blüte April bis August. Winterhart in den USDA-Zonen 5–9 (NC State Extension); in Kanada ist er vor allem im Süden von British Columbia, Ontario und Québec sowie an den Küsten von Prince Edward Island und Nova Scotia häufig (Cavers et al. 1980), daher hier nicht für boreale Gärten geführt.'
     },
     color: '#4d7c0f',
     iconName: 'Leaf',
@@ -4919,6 +4920,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Harrington, K. C., Thatcher, A., & Kemp, P. D. (2006). Mineral composition and nutritive value of some common pasture weeds. New Zealand Plant Protection, 59, 261–265. doi:10.30843/nzpp.2006.59.4414',
       'Pirhofer-Walzl, K., Søegaard, K., Høgh-Jensen, H., Eriksen, J., Sanderson, M. A., Rasmussen, J., & Rasmussen, J. (2011). Forage herbs improve mineral composition of grassland herbage. Grass and Forage Science, 66(3), 415–423. doi:10.1111/j.1365-2494.2011.00799.x',
       'Blommers, L. H. M., Helsen, H. H. M., & Vaal, F. W. N. M. (2004). Life history data of the rosy apple aphid Dysaphis plantaginea (Pass.) (Homopt., Aphididae) on plantain and as migrant to apple. Journal of Pest Science, 77(3), 155–163. doi:10.1007/s10340-004-0046-5',
+      'Cavers, P. B., Bassett, I. J., & Crompton, C. W. (1980). The biology of Canadian weeds. 47. Plantago lanceolata L. Canadian Journal of Plant Science, 60(4), 1269–1282. doi:10.4141/cjps80-180',
+      'NC State Extension (n.d.). Plantago lanceolata. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/plantago-lanceolata/',
       'Plants For A Future (n.d.). Plantago lanceolata – Ribwort Plantain. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Plantago+lanceolata'
     ]
   },
@@ -5194,8 +5197,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Gedeiht in jedem gut dränierten, mäßig nährstoffreichen Boden in Sonne, auch auf mageren Böden; schwach sauer bis schwach alkalisch. Am besten bei 1.000–2.000 mm Jahresniederschlag und 15–31 °C Jahresmitteltemperatur; mäßig trockenheitsresistent.'
     },
     plantingTime: {
-      de: 'Direktsaat an Ort und Stelle',
-      en: 'Sow in situ'
+      de: 'Meist über Steckhölzer: 20–40 cm lange Stücke aus ausgereiftem Holz 10–20 cm tief stecken (1–2 Knoten unter, 2 oder mehr über der Erde) und angießen; oder in eine flache Rille säen, dünn mit Erde bedecken und mulchen. Die Triebe bewurzeln sich besonders in der Regenzeit leicht an den Knoten. Pflanzabstand 0,75–2 m',
+      en: 'Usually from stem cuttings: set 20–40 cm pieces of mature wood 10–20 cm deep (1–2 nodes below and 2 or more above ground) and water them; or sow in a shallow furrow, cover lightly and mulch. Stems root readily from their nodes, especially in the rainy season. Plant 0.75–2 m apart'
     },
     harvestTime: {
       de: 'Ganzjährig blühend; Blätter und weiche Triebe regelmäßig vor der Samenreife schneiden (nicht essbar)',
@@ -5205,6 +5208,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Jama, B., Palm, C. A., Buresh, R. J., Niang, A., Gachengo, C., Nziguheba, G., & Amadalo, B. (2000). Tithonia diversifolia as a green manure for soil fertility improvement in western Kenya: A review. Agroforestry Systems, 49(2), 201–221. doi:10.1023/A:1006339025728',
       'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Tithonia diversifolia. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Tithonia_diversifolia.PDF',
+      'Cook, B. G., Pengelly, B. C., Schultze-Kraft, R., Taylor, M., Burkart, S., Cardoso Arango, J. A., González Guzmán, J. J., Cox, K., Jones, C., & Peters, M. (2020). Tithonia diversifolia. In Tropical Forages: An interactive selection tool (2nd rev. edn). International Center for Tropical Agriculture (CIAT), Cali, and International Livestock Research Institute (ILRI), Nairobi. https://tropicalforages.info/text/entities/tithonia_diversifolia.htm',
+      'ICRAF (1997). Using the wild sunflower, tithonia, in Kenya for soil fertility and crop yield improvement (contributors: M. Nyasimi, A. Niang, B. Amadalo, E. Obonyo, B. Jama). International Centre for Research in Agroforestry, Nairobi. https://www.cifor-icraf.org/publications/downloads/Publications/PDFS/MN26886.pdf',
       'Kriticos, J. M., & Kriticos, D. J. (2021). Pretty (and) invasive: The potential global distribution of Tithonia diversifolia under current and future climates. Invasive Plant Science and Management, 14(4), 205–213. doi:10.1017/inp.2021.29',
       'Plants For A Future (n.d.). Tithonia diversifolia – Mexican Sunflower. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Tithonia+diversifolia'
     ]
@@ -5643,8 +5648,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Kreuzblütler-Gründüngungen wachsen am besten auf gut drainierten Böden mit einem pH von etwa 5,5–8,5 und gedeihen auf schlecht drainierten Böden schlecht, besonders beim Auflaufen.'
     },
     plantingTime: {
-      de: 'Aussaat Spätsommer (Aug) oder Frühjahr (Apr–Mai) auf dem künftigen Pflanzplatz; zur Blüte häckseln und sofort einarbeiten',
-      en: 'Sow in late summer (Aug) or spring (Apr–May) on the future planting site; chop at flowering and work in immediately'
+      de: 'Aussaat Spätsommer (Aug) oder Frühjahr (Apr–Mai) auf dem künftigen Pflanzplatz; zur Vollblüte häckseln und einarbeiten',
+      en: 'Sow in late summer (Aug) or spring (Apr–May) on the future planting site; chop at full flowering and work in'
     },
     harvestTime: {
       de: 'Nicht als Ernte gedacht; Blüte etwa Jul–Okt je nach Saattermin (Einarbeitungszeitpunkt)',
@@ -5704,8 +5709,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       en: 'Sow in late winter to early spring (late Feb–early Mar), 2.5–5 cm deep'
     },
     harvestTime: {
-      de: 'Kurz vor der Rebblüte (Mai–Jun), spätestens bei etwa 80 % Blüte, häckseln und einarbeiten (nicht essbar)',
-      en: 'Chop and work in just before grapevine flowering (May–Jun), at the latest at about 80 % bloom (not edible)'
+      de: 'Kurz vor der Rebblüte (Mai–Jun) häckseln und einarbeiten; die Wicke vor ihrer Samenreife schneiden (nicht essbar)',
+      en: 'Chop and work in just before grapevine flowering (May–Jun); always cut the vetch before it sets seed (not edible)'
     },
     recommendedForTrees: ['vine-grape'],
     sources: [

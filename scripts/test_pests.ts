@@ -53,6 +53,17 @@ for (const note of PEST_RESEARCH_NOTES) {
   if (!note.note.en || !note.note.de) fail(`${note.id}: note needs DE and EN`);
 }
 
+// 2b. "See also" cross-references point at existing rules or notes
+{
+  const entryIds = new Set([...PEST_DEFENSE_RULES.map(r => r.id), ...PEST_RESEARCH_NOTES.map(n => n.id)]);
+  for (const entry of [...PEST_DEFENSE_RULES, ...PEST_RESEARCH_NOTES]) {
+    for (const ref of entry.seeAlso || []) {
+      if (!entryIds.has(ref)) fail(`${entry.id}: seeAlso ${ref} is not a rule or research note`);
+      if (ref === entry.id) fail(`${entry.id}: seeAlso points at itself`);
+    }
+  }
+}
+
 // 3. DE/EN symmetry per index (catches mismatched vulnerability lists)
 for (const tree of STAR_TREES) {
   const { en, de } = tree.vulnerabilities;
