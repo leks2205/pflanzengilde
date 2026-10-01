@@ -1,0 +1,61 @@
+name: Plant request
+description: Suggest a new star tree or companion plant.
+title: "Plant request: "
+labels: ["plant request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a plant! You don't need to write any code. German or English are both fine.
+  - type: input
+    id: common-name
+    attributes:
+      label: Common name
+      description: English and/or German name.
+      placeholder: "Comfrey / Beinwell"
+    validations:
+      required: true
+  - type: input
+    id: botanical-name
+    attributes:
+      label: Botanical name
+      placeholder: "Symphytum x uplandicum"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Star tree or companion?
+      options:
+        - Companion plant
+        - Star tree / shrub (guild centre)
+        - Not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: roles
+    attributes:
+      label: Roles in a guild
+      description: Pick everything it does.
+      options:
+        - label: Nitrogen fixer
+        - label: Dynamic accumulator
+        - label: Pollinator attractor
+        - label: Pest repeller
+        - label: Living mulch
+        - label: Grass barrier
+        - label: Antifungal
+        - label: Biomass producer (chop and drop)
+        - label: Edible understory
+  - type: textarea
+    id: details
+    attributes:
+      label: Why it belongs in a guild
+      description: Which trees it pairs well with, where it goes (distance from the trunk, sun/shade), soil and climate needs, and anything it conflicts with.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Papers, extension service publications, books or your own field experience. Optional, but very helpful.

@@ -1,0 +1,47 @@
+name: Pest rule request
+description: Suggest a pest or disease and the companions that help against it.
+title: "Pest rule: "
+labels: ["pest rule"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a pest rule! You don't need to write any code. German or English are both fine.
+  - type: input
+    id: pest
+    attributes:
+      label: Pest or disease
+      placeholder: "Codling moth (Cydia pomonella) / Apfelwickler"
+    validations:
+      required: true
+  - type: input
+    id: trees
+    attributes:
+      label: Affected trees or shrubs
+      placeholder: "Apple, pear, walnut"
+    validations:
+      required: true
+  - type: textarea
+    id: companions
+    attributes:
+      label: Companions or measures that help
+      description: Which plants help, and how (repelling, attracting predators, trap crop, …). Non-plant measures like nets or mulch are welcome too.
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: How well is it backed up?
+      options:
+        - Field trials
+        - Scientific study (lab, greenhouse or single trial)
+        - Promising, but limited evidence
+        - Gardening folklore / own experience
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Links or citations. Optional, but needed before a rule can show an evidence badge.

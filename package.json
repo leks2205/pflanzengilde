@@ -1,0 +1,35 @@
+{
+  "name": "plantguild",
+  "private": true,
+  "version": "1.0.0",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "npx tsx scripts/test_pests.ts && npx tsx scripts/test_conflicts.ts && npx tsx scripts/test_garden_optimizer.ts && npx tsx scripts/test_calendar.ts && npx tsx scripts/test_garden_pdf.ts && npx tsx scripts/test_garden_share.ts",
+    "build": "tsc && vite build && npx tsx scripts/postbuild.ts",
+    "generate-og": "npx tsx scripts/generate_og_embeds.ts",
+    "preview": "vite preview",
+    "deploy": "bash ./scripts/deploy.sh"
+  },
+  "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "clsx": "^2.1.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
+  }
+}
