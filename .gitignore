@@ -34,6 +34,7 @@ yarn-error.log*
 # Notes and docs are kept outside the repository
 *.md
 !README.md
+!.github/SECURITY.md
 
 # Operator-specific files (legal pages, deployment, domain-specific SEO)
 src/legal/
