@@ -1269,7 +1269,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Herbst-Fetthenne'
     },
     botanicalName: 'Hylotelephium spectabile',
-    layer: 'GROUND_COVER',
+    layer: 'HERBACEOUS',
     roles: ['POLLINATOR_MAGNET'],
     seasonalActivity: {
       activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
@@ -1604,7 +1604,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Winterling'
     },
     botanicalName: 'Eranthis hyemalis',
-    layer: 'GROUND_COVER',
+    layer: 'BULB_ROOT',
     roles: ['POLLINATOR_MAGNET'],
     seasonalActivity: {
       activeSeasons: ['WINTER', 'EARLY_SPRING'],
@@ -2685,7 +2685,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Echter Dost / Wilder Majoran'
     },
     botanicalName: 'Origanum vulgare',
-    layer: 'GROUND_COVER',
+    layer: 'HERBACEOUS',
     roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
@@ -2737,7 +2737,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Hou, H., Zhang, X., Zhao, T., & Zhou, L. (2020). Effects of Origanum vulgare essential oil and its two main components, carvacrol and thymol, on the plant pathogen Botrytis cinerea. PeerJ, 8, e9626. doi:10.7717/peerj.9626',
       'Zhang, J., et al. (2019). Antifungal activity of thymol and carvacrol against postharvest pathogens Botrytis cinerea. Journal of Food Science and Technology, 56(5), 2611–2620. doi:10.1007/s13197-019-03747-0',
       'Kosakowska, O., et al. (2021). Antioxidant and antibacterial activity of essential oils and hydroethanolic extracts of Greek oregano (O. vulgare L. subsp. hirtum (Link) Ietswaart) and common oregano (O. vulgare L. subsp. vulgare). Molecules, 26(4), 988. doi:10.3390/molecules26040988',
-      'Rollings, R., & Goulson, D. (2019). Quantifying the attractiveness of garden flowers for pollinators. Journal of Insect Conservation, 23(5–6), 803–817. doi:10.1007/s10841-019-00177-3'
+      'Rollings, R., & Goulson, D. (2019). Quantifying the attractiveness of garden flowers for pollinators. Journal of Insect Conservation, 23(5–6), 803–817. doi:10.1007/s10841-019-00177-3',
+      'North Carolina State Extension (n.d.). Origanum vulgare (oregano): "ground cover for sunny sites, forming a slowly spreading clump". North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/origanum-vulgare/'
     ]
   },
   {
@@ -3189,7 +3190,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Preiselbeere'
     },
     botanicalName: 'Vaccinium vitis-idaea',
-    layer: 'SHRUB',
+    layer: 'GROUND_COVER',
     roles: ['EDIBLE_UNDERSTORY', 'LIVING_MULCH', 'POLLINATOR_MAGNET'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
@@ -3314,7 +3315,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Geflecktes Lungenkraut'
     },
     botanicalName: 'Pulmonaria officinalis',
-    layer: 'GROUND_COVER',
+    layer: 'HERBACEOUS',
     roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
@@ -3364,7 +3365,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'Mizuno, T., Akita, Y., Uehara, A., & Iwashina, T. (2021). Identification of anthocyanins and phenolic acid in the flowers of three lungwort (Pulmonaria) cultivars and their comparisons during flower developmental stage. Bulletin of the National Museum of Nature and Science, Series B (Botany), 47(3), 143–151. doi:10.50826/bnmnsbot.47.3_143',
       'Meeus, S., Honnay, O., & Jacquemyn, H. (2013). Differences in fine-scale spatial genetic structure across the distribution range of the distylous forest herb Pulmonaria officinalis (Boraginaceae). BMC Genetics, 14, 101. doi:10.1186/1471-2156-14-101',
-      'Dana, M. N., & Lerner, B. R. (2001). Black walnut toxicity (HO-193-W). Purdue University Cooperative Extension Service. https://www.purdue.edu/hla/sites/yardandgarden/wp-content/uploads/sites/2/2016/10/HO-193.pdf'
+      'Dana, M. N., & Lerner, B. R. (2001). Black walnut toxicity (HO-193-W). Purdue University Cooperative Extension Service. https://www.purdue.edu/hla/sites/yardandgarden/wp-content/uploads/sites/2/2016/10/HO-193.pdf',
+      'North Carolina State Extension (n.d.). Pulmonaria officinalis: spreads by rhizomes at a very slow pace; not invasive. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/pulmonaria-officinalis/'
     ]
   },
   {
@@ -3375,7 +3377,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Großblütige Elfenblume'
     },
     botanicalName: 'Epimedium grandiflorum',
-    layer: 'GROUND_COVER',
+    layer: 'HERBACEOUS',
     roles: ['LIVING_MULCH'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
@@ -3681,7 +3683,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Winterheckenzwiebel / Lauchzwiebel'
     },
     botanicalName: 'Allium fistulosum',
-    layer: 'BULB_ROOT',
+    layer: 'HERBACEOUS',
     roles: ['ANTIFUNGAL', 'EDIBLE_UNDERSTORY'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
