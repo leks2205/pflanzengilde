@@ -12,7 +12,7 @@ Pick a tree, add companions by what they do, and get a metric planting plan that
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
 ![Languages](https://img.shields.io/badge/i18n-DE%20%7C%20EN-16a34a)
 ![Tracking](https://img.shields.io/badge/cookies%20%26%20tracking-none-16a34a)
