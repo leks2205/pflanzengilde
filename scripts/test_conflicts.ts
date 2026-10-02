@@ -407,6 +407,15 @@ for (const sensId of jugloneSensitiveIds) {
   if (!lupineAlert || lupineAlert.type !== 'EXTERNAL_ALERT') {
     fail('Guild Builder did not show the lupine / ink disease alert for chestnut as an external alert');
   }
+  const assamReport = analyzeGuildAntagonisms(getTree('tree-tea-assamica'), [getPlant('plant-nepal-alder')], 'NORTHERN');
+  const shadeAlert = assamReport.conflicts.find(c => c.id === 'external-dense-shade-tea-mosquito-bug');
+  if (!shadeAlert || shadeAlert.type !== 'EXTERNAL_ALERT') {
+    fail('Guild Builder did not show the dense-shade / tea mosquito bug INFO for Assam tea with Nepalese alder');
+  }
+  const sinensisReport = analyzeGuildAntagonisms(getTree('tree-tea-sinensis'), [getPlant('plant-alder')], 'NORTHERN');
+  if (sinensisReport.conflicts.some(c => c.id === 'external-dense-shade-tea-mosquito-bug')) {
+    fail('Dense-shade tea mosquito bug INFO must not fire for Chinese tea (Helopeltis is not a listed sinensis pest)');
+  }
 
   const cInst: GardenStarPlantInstance = { instanceId: 'ch1', treeId: cherry.id, starTree: cherry, xM: 0, yM: 0, selectedPlantIds: [] };
   const eInst: GardenStarPlantInstance = { instanceId: 'el1', treeId: 'shrub-elderberry', starTree: getTree('shrub-elderberry'), xM: 12, yM: 0, selectedPlantIds: [] };

@@ -1088,7 +1088,7 @@ export const de = {
   guidesDropPruningsUnderAcidLoving: 'Schnittgut in Zone 2 und 3 unter säureliebenden oder Heidekraut-Begleitern verteilen. Teeblätter reichern Aluminium und Fluorid an, vor allem ältere Blätter [^78]. Das Schnittgut versauert den Boden jedoch nicht: In einem Topfversuch hob zurückgeführter Teeschnitt den Boden-pH deutlich an [^111].',
   guidesOpenCompleteTeaPruningManual: 'Zur kompletten Tee-Schnittanleitung (Dingxing, Qing & Shen XiuJian Schritt für Schritt) →',
   guidesHyssop: 'Echter Ysop',
-  guidesHyssopusOfficinalisAntimicrobial: 'Hyssopus officinalis • Antimikrobieller mediterraner Halbstrauch',
+  guidesHyssopusOfficinalisAntimicrobial: 'Hyssopus officinalis • Aromatischer mediterraner Halbstrauch',
   guidesAutumnPostBloomPrunePinocamphone: 'Herbst-Rückschnitt • Aromatischer Mulch',
   guidesPruneBackMidAutumnOctober: 'Im Frühherbst (September/Oktober) nach dem Abblühen der blauen Blütenähren mit einer scharfen Rosenschere zurückschneiden.',
   guidesCutBackSoftFloweringShoots: 'Verblühte Triebe um 30–40 % auf 10–15 cm über der verholzten Basis einkürzen. Stets oberhalb gesunder Augen schneiden.',
@@ -1273,7 +1273,7 @@ export const de = {
   guides25M40: '2,5 m – 4,0 m Wirkradius',
   guidesActinorhizalNitrogenFixersGoumiBerry: 'Aktinorhizale Stickstoff-Gehölze (Goumi, Doldige Ölweide, Sanddorn mit 2,5 m; Schwarzerle mit 4,0 m) [^1] – ihr gebundener Stickstoff kann Nachbarpflanzen erreichen, wobei umstritten ist, ob direkt über gemeinsame Mykorrhiza-Netzwerke (CMN) oder über den Boden [^33].',
   guides18MRadius: '1,8 m Wirkradius',
-  guidesDynamicAccumulatorsHerbaceousLegumes: 'Nährstoffpumpen, krautige Leguminosen & im Feld geprüfte Abwehrpflanzen (Beinwell, Weißklee, Luzerne, Pfefferminze, Rosmarin).',
+  guidesDynamicAccumulatorsHerbaceousLegumes: 'Nährstoffpumpen, krautige Leguminosen & im Feld geprüfte Begleiter (Beinwell, Weißklee, Luzerne, Pfefferminze, Rosmarin).',
   guides08MCollarNever: '0,8 m Stammkragen (Niemals geteilt)',
   guidesTrunkCollarBulbsAlliumsDaffodil: 'Stammkragen-Zwiebeln & Allium (Narzisse, Hyazinthe, Schnittlauch, Knoblauch) – niemals zwischen Bäumen zusammengelegt; jeder Stamm erhält seinen eigenen Zwiebelring. In Fütterungsversuchen widerstanden Narzissenzwiebeln dem Fraß von Wühlmäusen, während getrocknete Hyazinthen- und Zwiebelknollen bereitwillig gefressen wurden [^29].',
   // guides: tea_sinensis

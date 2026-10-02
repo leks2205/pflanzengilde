@@ -944,8 +944,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.1,
     perennial: true,
     notes: {
-      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers. In young apple orchards in British Columbia, a creeping-thyme living mulch reduced other orchard herbs compared with forage grasses for two of three seasons, but vole feeding still killed many young trees: no living mulch protected them as well as herbicide-kept bare soil, so use a trunk guard (Sullivan et al. 2018).',
-      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Sand-Thymian in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern; Wühlmausfraß tötete dennoch viele Jungbäume: Kein lebender Mulch schützte sie so gut wie mit Herbizid offen gehaltener Boden, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
+      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers. In young apple orchards in British Columbia, a creeping-thyme living mulch reduced other orchard herbs compared with forage grasses for two of three seasons, and unlike sweet woodruff it did not come to dominate the tree row, but vole feeding still killed many young trees: no living mulch protected them as well as herbicide-kept bare soil, so use a trunk guard (Sullivan et al. 2018).',
+      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Sand-Thymian in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern, wurde aber anders als Waldmeister im Baumstreifen nicht dominant; Wühlmausfraß tötete dennoch viele Jungbäume: Kein lebender Mulch schützte sie so gut wie mit Herbizid offen gehaltener Boden, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
     },
     color: '#9333ea',
     iconName: 'Shield',
@@ -1119,8 +1119,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.2,
     perennial: true,
     notes: {
-      en: 'Evergreen to semi-evergreen mat spreading by runners; in cool, shady areas where grass will not grow it forms a thick ground cover (suppression of established grasses has not been measured). Blue flower spikes attract bumblebees. Listed as juglone-tolerant by Penn State Extension (observation-based list). As an early-flowering native perennial it adds spring flowers to the kind of perennial alley flower strip that, in organic apple orchards in 7 European countries, brought more natural enemies onto the trees and lowered codling moth numbers and fruit damage (Cahenzli et al. 2019); it works through natural enemies, not scent, and the effect is proven for the mix, not for bugleweed alone.',
-      de: 'Immergrüner bis halbimmergrüner, sich über Ausläufer ausbreitender Teppich; an kühlen, schattigen Stellen, an denen kein Gras wächst, bildet er eine dichte Bodendecke (eine Unterdrückung etablierter Gräser wurde nicht gemessen). Blaue Blütenkerzen locken Hummeln an. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste). Als früh blühende heimische Staude ergänzt er Frühjahrsblüten in der Art von mehrjährigem Fahrgassen-Blühstreifen, der in Bio-Apfelanlagen in 7 europäischen Ländern mehr Nützlinge auf die Bäume brachte und Apfelwickler-Zahlen und Fruchtschäden senkte (Cahenzli et al. 2019); er wirkt über Nützlinge, nicht über Duft, und belegt ist die Wirkung für die Mischung, nicht für Günsel allein.'
+      en: 'Evergreen to semi-evergreen mat spreading by runners; in cool, shady areas where grass will not grow it forms a thick ground cover (suppression of established grasses has not been measured). Blue flower spikes attract bumblebees. Listed as juglone-tolerant by Penn State Extension (observation-based list). As an early-flowering native perennial it adds spring flowers to the kind of perennial alley flower strip that, in organic apple orchards in 7 European countries, brought more natural enemies onto the trees and lowered codling moth numbers and fruit damage (Cahenzli et al. 2019); it works through natural enemies, not scent, and the effect is proven for the mix, not for bugleweed alone. Ajuga reptans was one of the sown species in the tested strips (Pfiffner et al. 2019).',
+      de: 'Immergrüner bis halbimmergrüner, sich über Ausläufer ausbreitender Teppich; an kühlen, schattigen Stellen, an denen kein Gras wächst, bildet er eine dichte Bodendecke (eine Unterdrückung etablierter Gräser wurde nicht gemessen). Blaue Blütenkerzen locken Hummeln an. Von Penn State Extension als juglontolerant gelistet (Beobachtungsliste). Als früh blühende heimische Staude ergänzt er Frühjahrsblüten in der Art von mehrjährigem Fahrgassen-Blühstreifen, der in Bio-Apfelanlagen in 7 europäischen Ländern mehr Nützlinge auf die Bäume brachte und Apfelwickler-Zahlen und Fruchtschäden senkte (Cahenzli et al. 2019); er wirkt über Nützlinge, nicht über Duft, und belegt ist die Wirkung für die Mischung, nicht für Günsel allein. Kriechender Günsel gehörte zu den eingesäten Arten der geprüften Streifen (Pfiffner et al. 2019).'
     },
     color: '#2563eb',
     iconName: 'Shield',
@@ -1143,7 +1143,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     sources: [
       'North Carolina State Extension (n.d.). Ajuga reptans. NC Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/ajuga-reptans/',
       'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
-      'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011'
+      'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
+      'Pfiffner, L., Cahenzli, F., Steinemann, B., Jamar, L., Bjørn, M. C., Porcel, M., Tasin, M., Telfser, J., Kelderer, M., Lisek, J., & Sigsgaard, L. (2019). Design, implementation and management of perennial flower strips to promote functional agrobiodiversity in organic apple orchards: A pan-European study. Agriculture, Ecosystems & Environment, 278, 61–71. doi:10.1016/j.agee.2019.03.005'
     ]
   },
   {
@@ -2630,7 +2631,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       floweringSeasons: ['LATE_SPRING', 'SUMMER'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER'],
       chopAndDropSeasons: ['SUMMER'],
-      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER'],
+      pestDeterrenceSeasons: [],
       plantingSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER']
     },
@@ -2767,8 +2768,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.8,
     perennial: true,
     notes: {
-      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers. Intercropped between apple rows together with French marigold or ageratum, catnip plots had significantly fewer spirea aphids than natural vegetation over four years (Song et al. 2017), and in a pear orchard it was one of five aromatic intercrops that all lowered pest numbers (Song et al. 2010).',
-      de: 'Bildet Nepetalacton, das Stechmücken und Fliegen über den Reizrezeptor TRPA1 der Insekten abschreckt; Katzenminzenöl wirkte im Labor stark abschreckend auf Wadenstecher und Stubenfliegen. Nepetalacton ist zugleich Bestandteil des Blattlaus-Sexualpheromons: In Fallenversuchen lockte es Blattlaus-Schlupfwespen der Gattung Praon (vor allem im Herbst) und Männchen von Chrysopa-Florfliegen an, schreckte aber die Gemeine Florfliege (Chrysoperla carnea) ab. Bienen aller Art, Wespen, Fliegen und viele Schmetterlinge besuchen die nektarreichen Blüten. Zusammen mit Studentenblume oder Leberbalsam zwischen Apfelreihen gepflanzt, hatten Katzenminze-Parzellen über vier Jahre deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs (Song et al. 2017); in einer Birnenanlage war sie eine von fünf Duftpflanzen-Zwischenkulturen, die alle die Schädlingszahlen senkten (Song et al. 2010).'
+      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers. Intercropped between apple rows together with French marigold or ageratum, catnip plots had significantly fewer spirea aphids than natural vegetation over four years (Song et al. 2017).',
+      de: 'Bildet Nepetalacton, das Stechmücken und Fliegen über den Reizrezeptor TRPA1 der Insekten abschreckt; Katzenminzenöl wirkte im Labor stark abschreckend auf Wadenstecher und Stubenfliegen. Nepetalacton ist zugleich Bestandteil des Blattlaus-Sexualpheromons: In Fallenversuchen lockte es Blattlaus-Schlupfwespen der Gattung Praon (vor allem im Herbst) und Männchen von Chrysopa-Florfliegen an, schreckte aber die Gemeine Florfliege (Chrysoperla carnea) ab. Bienen aller Art, Wespen, Fliegen und viele Schmetterlinge besuchen die nektarreichen Blüten. Zusammen mit Studentenblume oder Leberbalsam zwischen Apfelreihen gepflanzt, hatten Katzenminze-Parzellen über vier Jahre deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs (Song et al. 2017).'
     },
     color: '#818cf8',
     iconName: 'Flower2',
@@ -2800,8 +2801,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Hardie, J., et al. (1994). The responses of Praon spp. parasitoids to aphid sex pheromone components in the field. Entomologia Experimentalis et Applicata, 71(2), 95–99. doi:10.1111/j.1570-7458.1994.tb01775.x',
       'Koczor, S., et al. (2010). Attraction of Chrysoperla carnea complex and Chrysopa spp. lacewings (Neuroptera: Chrysopidae) to aphid sex pheromone components and a synthetic blend of floral compounds in Hungary. Pest Management Science, 66(12), 1374–1379. doi:10.1002/ps.2030',
       'Mahr, S. (n.d., revised 2026). Catnip, Nepeta cataria. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/catnip-nepeta-cataria/',
-      'Song, B., Liang, Y., Liu, S., Zhang, L., Tang, G., Ma, T., & Yao, Y. (2017). Behavioral responses of Aphis citricola (Hemiptera: Aphididae) and its natural enemy Harmonia axyridis (Coleoptera: Coccinellidae) to non-host plant volatiles. Florida Entomologist, 100(2), 411–421. doi:10.1653/024.100.0202',
-      'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2'
+      'Song, B., Liang, Y., Liu, S., Zhang, L., Tang, G., Ma, T., & Yao, Y. (2017). Behavioral responses of Aphis citricola (Hemiptera: Aphididae) and its natural enemy Harmonia axyridis (Coleoptera: Coccinellidae) to non-host plant volatiles. Florida Entomologist, 100(2), 411–421. doi:10.1653/024.100.0202'
     ]
   },
   {
@@ -2935,13 +2935,13 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     botanicalName: 'Mentha x piperita',
     layer: 'GROUND_COVER',
-    roles: ['PEST_REPELLER', 'LIVING_MULCH', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
+    roles: ['LIVING_MULCH', 'POLLINATOR_MAGNET', 'EDIBLE_UNDERSTORY', 'GRASS_BARRIER'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       floweringSeasons: ['SUMMER', 'AUTUMN'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
       chopAndDropSeasons: ['SUMMER', 'AUTUMN'],
-      pestDeterrenceSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      pestDeterrenceSeasons: [],
       plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
       harvestSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN']
     },
@@ -2954,8 +2954,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.45,
     perennial: true,
     notes: {
-      en: 'Menthol- and menthone-rich aromatic groundcover. In a field trial, peppermint intercrops reduced spotted-wing drosophila emergence from fruit and supported more predators and pollinators than a ryegrass/clover mix; potted peppermint did not reduce green peach aphids. The oil repelled spider mites in lab tests. Vigorous stoloniferous living mulch, listed as tolerant of black walnut (juglone). Planted as a living mulch in the tree rows of an organic apple orchard, it cut weed numbers by 54 % in summer and weed cover by about 70 % compared with the natural cover, the strongest summer effect of the species tested; its effect on the trees was not measured (Golian et al. 2023).',
-      de: 'Bodendecker reich an Menthol und Menthon. In einem Feldversuch verringerte Pfefferminze als Zwischenkultur den Schlupf der Kirschessigfliege aus Früchten und förderte mehr Räuber und Bestäuber als eine Weidelgras-Klee-Mischung; auf Grüne Pfirsichblattläuse hatte sie im Topfversuch keinen Effekt. Das ätherische Öl wirkte im Labor abschreckend auf Spinnmilben. Wüchsiger, Ausläufer bildender Bodendecker, gilt als tolerant gegenüber Walnuss-Juglon. Als lebender Mulch in den Baumreihen einer ökologischen Apfelanlage gepflanzt, senkte sie die Unkrautzahl im Sommer um 54 % und den Unkrautdeckungsgrad um etwa 70 % gegenüber dem natürlichen Bewuchs, die stärkste Sommerwirkung der geprüften Arten; die Wirkung auf die Bäume wurde nicht gemessen (Golian et al. 2023).'
+      en: 'Menthol- and menthone-rich aromatic groundcover. In a field trial, peppermint intercrops reduced spotted-wing drosophila emergence from fruit and supported more predators and pollinators than a ryegrass/clover mix; potted peppermint did not reduce green peach aphids. In the lab its oil deterred spider mites and reduced their egg-laying on treated leaf discs (spearmint oil more strongly). Vigorous stoloniferous living mulch, listed as tolerant of black walnut (juglone). Planted as a living mulch in the tree rows of an organic apple orchard, it cut weed numbers by 54 % in summer and weed cover by about 70 % compared with the natural cover, the strongest summer effect of the species tested; its effect on the trees was not measured (Golian et al. 2023). In the second year it was the only living mulch that also reduced the cover of couch grass (Elymus repens).',
+      de: 'Bodendecker reich an Menthol und Menthon. In einem Feldversuch verringerte Pfefferminze als Zwischenkultur den Schlupf der Kirschessigfliege aus Früchten und förderte mehr Räuber und Bestäuber als eine Weidelgras-Klee-Mischung; auf Grüne Pfirsichblattläuse hatte sie im Topfversuch keinen Effekt. Im Labor schreckte ihr Öl Spinnmilben ab und verringerte die Eiablage auf behandelten Blattscheiben (Grüne-Minze-Öl stärker). Wüchsiger, Ausläufer bildender Bodendecker, gilt als tolerant gegenüber Walnuss-Juglon. Als lebender Mulch in den Baumreihen einer ökologischen Apfelanlage gepflanzt, senkte sie die Unkrautzahl im Sommer um 54 % und den Unkrautdeckungsgrad um etwa 70 % gegenüber dem natürlichen Bewuchs, die stärkste Sommerwirkung der geprüften Arten; die Wirkung auf die Bäume wurde nicht gemessen (Golian et al. 2023). Im zweiten Jahr verringerte sie als einziger lebender Mulch auch den Deckungsgrad der Quecke (Elymus repens).'
     },
     color: '#0d9488',
     iconName: 'Leaf',
@@ -3134,7 +3134,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       floweringSeasons: ['SUMMER'],
       foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
       chopAndDropSeasons: [],
-      pestDeterrenceSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      pestDeterrenceSeasons: [],
       plantingSeasons: ['EARLY_SPRING', 'AUTUMN'],
       harvestSeasons: ['AUTUMN', 'WINTER']
     },
@@ -3147,11 +3147,11 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.15,
     perennial: true,
     notes: {
-      en: 'Acid-loving evergreen groundcover for deep to dappled shade. Like blueberries and cranberries it forms ericoid mycorrhizae, and these fungi show little host specificity among heath-family plants. Leaves, stems and berries are rich in salicylates, mostly as gaultherin (a methyl salicylate glycoside, source of the wintergreen aroma). Edible red winter berries.',
-      de: 'Säureliebender, immergrüner Bodendecker für lichten bis tiefen Schatten. Bildet wie Heidelbeere und Moosbeere eine ericoide Mykorrhiza; diese Pilze sind zwischen Heidekrautgewächsen kaum wirtsspezifisch. Blätter, Stängel und Beeren sind reich an Salicylaten, vor allem Gaultherin (ein Methylsalicylat-Glykosid, Quelle des Wintergrün-Aromas). Essbare rote Winterbeeren.'
+      en: 'Acid-loving evergreen groundcover for deep to dappled shade. Like blueberries and cranberries it forms ericoid mycorrhizae, and these fungi show little host specificity among heath-family plants. Leaves, stems and berries are rich in salicylates, mostly as gaultherin (a methyl salicylate glycoside, source of the wintergreen aroma). Its leaf oil, almost pure methyl salicylate, induced resistance to a fungal pathogen when sprayed on test plants in the lab; a protective effect of the living groundcover has not been tested (Vergnes et al. 2014). Edible red winter berries.',
+      de: 'Säureliebender, immergrüner Bodendecker für lichten bis tiefen Schatten. Bildet wie Heidelbeere und Moosbeere eine ericoide Mykorrhiza; diese Pilze sind zwischen Heidekrautgewächsen kaum wirtsspezifisch. Blätter, Stängel und Beeren sind reich an Salicylaten, vor allem Gaultherin (ein Methylsalicylat-Glykosid, Quelle des Wintergrün-Aromas). Ihr Blattöl, nahezu reines Methylsalicylat, löste im Labor auf Testpflanzen gesprüht Resistenz gegen einen Schadpilz aus; eine Schutzwirkung des lebenden Bodendeckers ist nicht geprüft (Vergnes et al. 2014). Essbare rote Winterbeeren.'
     },
     color: '#dc2626',
-    iconName: 'Shield',
+    iconName: 'Leaf',
     imageUrl: '/images/plants/plant-wintergreen.webp?v=2',
     suitableSoils: ['ACIDIC', 'SANDY', 'LOAM'],
     unsuitableSoils: ['CHALKY', 'CLAY'],
@@ -3177,7 +3177,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'NC State Extension (n.d.). Gaultheria procumbens. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/gaultheria-procumbens/',
       'Massicotte, H. B., Melville, L. H., & Peterson, R. L. (2005). Structural characteristics of root-fungal interactions for five ericaceous species in eastern Canada. Canadian Journal of Botany, 83(8), 1057–1064. doi:10.1139/b05-046',
       'Walker, J. F., et al. (2011). Diverse Helotiales associated with the roots of three species of Arctic Ericaceae provide no evidence for host specificity. New Phytologist, 191(2), 515–527. doi:10.1111/j.1469-8137.2011.03703.x',
-      'Ribnicky, D. M., Poulev, A., & Raskin, I. (2003). The determination of salicylates in Gaultheria procumbens for use as a natural aspirin alternative. Journal of Nutraceuticals, Functional & Medical Foods, 4(1), 39–52. doi:10.1300/J133v04n01_05'
+      'Ribnicky, D. M., Poulev, A., & Raskin, I. (2003). The determination of salicylates in Gaultheria procumbens for use as a natural aspirin alternative. Journal of Nutraceuticals, Functional & Medical Foods, 4(1), 39–52. doi:10.1300/J133v04n01_05',
+      'Vergnes, S., Ladouce, N., Fournier, S., Ferhout, H., Attia, F., & Dumas, B. (2014). Foliar treatments with Gaultheria procumbens essential oil induce defense responses and resistance against a fungal pathogen in Arabidopsis. Frontiers in Plant Science, 5, 477. doi:10.3389/fpls.2014.00477'
     ]
   },
   {
@@ -3608,7 +3609,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Parki, A., et al. (2017). Seasonal variation in essential oil compositions and antioxidant properties of Acorus calamus L. accessions. Medicines, 4(4), 81. doi:10.3390/medicines4040081',
       'Wang, R., et al. (2022). The toxicity, sublethal effects, and biochemical mechanism of β-asarone, a potential plant-derived insecticide, against Bemisia tabaci. International Journal of Molecular Sciences, 23(18), 10462. doi:10.3390/ijms231810462',
       'Aryal, S., et al. (2023). Insecticidal toxicity of essential oil of Nepalese Acorus calamus (Acorales: Acoraceae) against Sitophilus zeamais (Coleoptera: Curculionidae). Heliyon, 9(11), e22130. doi:10.1016/j.heliyon.2023.e22130',
-      'NC State Extension (n.d.). Acorus calamus \'Variegatus\'. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/acorus-calamus-variegatus/'
+      'NC State Extension (n.d.). Acorus calamus \'Variegatus\'. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/acorus-calamus-variegatus/',
+      'Uebel, T., Hermes, L., Haupenthal, S., Müller, L., & Esselen, M. (2021). α-Asarone, β-asarone, and γ-asarone: Current status of toxicological evaluation. Journal of Applied Toxicology, 41(8), 1166–1179. doi:10.1002/jat.4112'
     ]
   },
   {

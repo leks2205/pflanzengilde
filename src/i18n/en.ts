@@ -1088,7 +1088,7 @@ export const en = {
   guidesDropPruningsUnderAcidLoving: 'Drop prunings under acid-loving or ericaceous companions in Zone 2 and 3. Tea leaves accumulate aluminum and fluoride, especially older leaves [^78]. Note that the prunings do not acidify the soil: in a pot trial, returning tea prunings significantly raised soil pH [^111].',
   guidesOpenCompleteTeaPruningManual: 'Open Complete Tea Pruning Manual (Dingxing, Qing & Shen XiuJian Step-by-Step) →',
   guidesHyssop: 'Hyssop',
-  guidesHyssopusOfficinalisAntimicrobial: 'Hyssopus officinalis • Antimicrobial Mediterranean Subshrub',
+  guidesHyssopusOfficinalisAntimicrobial: 'Hyssopus officinalis • Aromatic Mediterranean Subshrub',
   guidesAutumnPostBloomPrunePinocamphone: 'Autumn Post-Bloom Prune • Aromatic Mulch',
   guidesPruneBackMidAutumnOctober: 'Prune back in mid-autumn (October) after the blue nectar flowers have finished blooming. Use clean hand bypass shears.',
   guidesCutBackSoftFloweringShoots: 'Cut back soft flowering shoots by 30–40% down to 10–15 cm above the woody crown. Never prune below the lowest green leaf nodes before winter.',
@@ -1273,7 +1273,7 @@ export const en = {
   guides25M40: '2.5 m – 4.0 m Radius',
   guidesActinorhizalNitrogenFixersGoumiBerry: 'Actinorhizal Nitrogen Fixers (Goumi Berry, Autumn Olive, Sea Buckthorn at 2.5 m; Black Alder at 4.0 m) [^1] — their fixed nitrogen can reach neighbouring plants, though whether directly via common mycorrhizal networks (CMNs) or through the soil is debated [^33].',
   guides18MRadius: '1.8 m Radius',
-  guidesDynamicAccumulatorsHerbaceousLegumes: 'Dynamic Accumulators, Herbaceous Legumes & Field-Tested Repellers (Russian Comfrey, White Clover, Alfalfa, Peppermint, Rosemary).',
+  guidesDynamicAccumulatorsHerbaceousLegumes: 'Dynamic Accumulators, Herbaceous Legumes & Field-Tested Companions (Russian Comfrey, White Clover, Alfalfa, Peppermint, Rosemary).',
   guides08MCollarNever: '0.8 m Collar (Never Merged)',
   guidesTrunkCollarBulbsAlliumsDaffodil: 'Trunk Collar Bulbs & Alliums (Daffodil, Hyacinth, Chives, Garlic) — never shared across distant trees; every tree gets its own root-collar ring. In feeding trials, daffodil bulbs resisted vole feeding, whereas dried hyacinth and onion bulbs were readily eaten [^29].',
   // guides: tea_sinensis

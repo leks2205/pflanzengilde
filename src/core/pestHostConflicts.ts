@@ -196,5 +196,33 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
       de: 'Vorsorglich Lupinen nicht direkt an den Kastanienstamm pflanzen, besonders auf nassen oder verdichteten Böden. Die 5 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
       en: 'As a precaution, do not plant lupines right next to the chestnut trunk, especially on wet or compacted soils. The 5 m distance is a precautionary planning value, not a measured limit.'
     }
+  },
+  {
+    id: 'external-dense-shade-tea-mosquito-bug',
+    kind: 'EXTERNAL',
+    severity: 'INFO',
+    starTreeIds: ['tree-tea-assamica'],
+    hostPlantIds: ['plant-nepal-alder', 'plant-albizia', 'plant-gliricidia'],
+    hostStarIds: [],
+    safeDistanceM: 3,
+    antagonistName: { de: 'Dichter Schatten durch Schattenbäume', en: 'Dense shade from shade trees' },
+    antagonistBotanical: 'Alnus nepalensis, Albizia chinensis, Gliricidia sepium',
+    title: {
+      de: 'Teewanze (Helopeltis theivora): Schatten nicht zu dicht werden lassen',
+      en: 'Tea Mosquito Bug (Helopeltis theivora): Keep the Shade Light'
+    },
+    mechanism: {
+      de: 'In einer Feldbeobachtung auf Hainan (China) hatte eine großblättrige Teepflanzung unter dichtem Regenwald-Kronendach (etwa 20 % Licht) mehr Fraßschäden der Teewanze als Pflanzungen unter mittlerem Schatten durch Betelnusspalmen (etwa 50 % Licht) oder ohne Schatten (72, 60 und 49 befallene Triebe pro 100). Untersucht wurde nur je eine Pflanzung pro Schattenstufe in einem Monat, und die Schattenbäume waren andere Arten; der Befund ist daher eine Korrelation, kein Nachweis, dass Schattenbäume den Befall verursachen. Mäßiger Schatten bleibt empfohlen: In Yunnan steigerten zwischengepflanzte Erlen den Ertrag von Assam-Tee um 50–72 %, und Schatten erhöht den Theaningehalt der Triebe.',
+      en: 'In a field survey on Hainan (China), a large-leaf tea plantation under dense rainforest canopy (about 20 % light) had more tea mosquito bug feeding damage than plantations under medium shade from areca palms (about 50 % light) or without shade (72, 60 and 49 damaged shoots per 100). Only one plantation per shade level was surveyed in a single month, and the shade trees were other species, so this is a correlation, not proof that shade trees cause infestation. Moderate shade remains recommended: in Yunnan, interplanted alders raised Assam tea yield by 50–72 %, and shade raises the theanine content of the shoots.'
+    },
+    scientificCitations: [
+      'Yao, Q., Lin, Y., Qin, S., Lin, Z., & Ji, X. (2025). Characterization of feeding damage by tea mosquito bug, Helopeltis theivora Waterhouse (Hemiptera: Miridae) on Hainan Dayezhong tea cultivar. Frontiers in Plant Science, 15, 1529535. doi:10.3389/fpls.2024.1529535',
+      'Mortimer, P. E., Gui, H., Xu, J., Zhang, C., Barrios, E., & Hyde, K. D. (2015). Alder trees enhance crop productivity and soil microbial biomass in tea plantations. Applied Soil Ecology, 96, 25–32. doi:10.1016/j.apsoil.2015.05.012',
+      'Sano, T., Horie, H., Matsunaga, A., & Hirono, Y. (2018). Effect of shading intensity on morphological and color traits and on chemical components of new tea (Camellia sinensis L.) shoots under direct covering cultivation. Journal of the Science of Food and Agriculture, 98(15), 5666–5676. doi:10.1002/jsfa.9112'
+    ],
+    spatialAdvice: {
+      de: 'Schattenbäume regelmäßig auslichten oder schneiteln, sodass etwa die Hälfte des Lichts oder mehr den Tee erreicht. Die 3 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Lop or pollard shade trees regularly so that about half the light or more reaches the tea. The 3 m distance is a precautionary planning value, not a measured limit.'
+    }
   }
 ];

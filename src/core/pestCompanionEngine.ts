@@ -278,8 +278,8 @@ export const PEST_DEFENSE_RULES: PestDefenseRule[] = [
     ],
     companionPlantIds: ['plant-white-clover', 'plant-sainfoin'],
     scientificMechanism: {
-      en: 'Across 38 vineyards in south-western France, summer berry damage by the grapevine moth decreased with a higher share of ground vegetation cover in the vineyard. In a 14-year survey in Portugal, parasitism of the caterpillars was higher in vineyards with ground cover. In Austrian vineyards, pupal predation was about 10 % higher with species-rich than with species-poor cover crops. The evidence is correlational: it supports keeping the inter-row green, not any single species.',
-      de: 'In 38 Weinbergen in Südwestfrankreich nahmen die Sommerschäden des Traubenwicklers an den Beeren mit höherem Anteil an Bodenvegetation ab. In einer 14-jährigen Erhebung in Portugal waren in begrünten Weinbergen mehr Raupen parasitiert. In österreichischen Weinbergen war der Fraß an den Puppen bei artenreicher Begrünung um etwa 10 % höher als bei artenarmer. Der Beleg ist korrelativ: Er spricht für eine grüne Fahrgasse, nicht für eine einzelne Art.'
+      en: 'Across 38 vineyards in south-western France, summer berry damage by the grapevine moth decreased with a higher share of ground vegetation cover in the vineyard. In a 14-year survey in Portugal, parasitism of the caterpillars was higher in vineyards with ground cover. In Austrian vineyards, pupal predation was about 10 % higher with species-rich than with species-poor cover crops, a difference the authors considered unlikely to matter much in practice. The evidence is correlational: it supports keeping the inter-row green, not any single species.',
+      de: 'In 38 Weinbergen in Südwestfrankreich nahmen die Sommerschäden des Traubenwicklers an den Beeren mit höherem Anteil an Bodenvegetation ab. In einer 14-jährigen Erhebung in Portugal waren in begrünten Weinbergen mehr Raupen parasitiert. In österreichischen Weinbergen war der Fraß an den Puppen bei artenreicher Begrünung um etwa 10 % höher als bei artenarmer; die Autoren halten diesen Unterschied für praktisch wenig bedeutsam. Der Beleg ist korrelativ: Er spricht für eine grüne Fahrgasse, nicht für eine einzelne Art.'
     },
     companionRoles: {
       'plant-white-clover': {
@@ -465,13 +465,14 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
     companions: { en: 'Yarrow, fennel, stinging nettle, catmint', de: 'Schafgarbe, Fenchel, Brennnessel, Katzenminze' },
     evidence: 'promising',
     note: {
-      en: 'Mixed perennial flower margins reduced rosy apple aphid damage in apple orchards (trees with damaged fruit fell from 80 % to 48 %), but no single plant has been tested on its own. Nettle aphids on stinging nettle supported aphid enemies (lacewing larvae, a parasitoid wasp) in a lab study. In a fennel–cotton intercrop, fennel aphids were associated with ladybirds, but no reduction of cotton aphids was shown. No trial was found testing living catmint as an aphid companion.',
-      de: 'Gemischte mehrjährige Blühsäume verringerten Schäden durch die Mehlige Apfelblattlaus in Apfelanlagen (Bäume mit geschädigten Früchten sanken von 80 % auf 48 %), aber keine Einzelpflanze wurde allein getestet. Brennnessel-Blattläuse ernährten in einer Laborstudie Blattlausfeinde (Florfliegenlarven, eine Schlupfwespe). In einem Fenchel-Baumwoll-Mischanbau traten Fenchel-Blattläuse gemeinsam mit Marienkäfern auf, eine Abnahme der Baumwoll-Blattläuse wurde aber nicht gezeigt. Ein Versuch mit lebender Katzenminze als Begleitpflanze gegen Blattläuse wurde nicht gefunden.'
+      en: 'Mixed perennial flower margins reduced rosy apple aphid damage in apple orchards (trees with damaged fruit fell from 80 % to 48 %), but no single plant has been tested on its own. Nettle aphids on stinging nettle supported aphid enemies (lacewing larvae, a parasitoid wasp) in a lab study. In a fennel–cotton intercrop, fennel aphids were associated with ladybirds, but no reduction of cotton aphids was shown. In a 4-year apple trial in China, catnip sown in the alleys together with French marigold or ageratum had significantly fewer spirea aphids than native vegetation; catnip alone was not tested.',
+      de: 'Gemischte mehrjährige Blühsäume verringerten Schäden durch die Mehlige Apfelblattlaus in Apfelanlagen (Bäume mit geschädigten Früchten sanken von 80 % auf 48 %), aber keine Einzelpflanze wurde allein getestet. Brennnessel-Blattläuse ernährten in einer Laborstudie Blattlausfeinde (Florfliegenlarven, eine Schlupfwespe). In einem Fenchel-Baumwoll-Mischanbau traten Fenchel-Blattläuse gemeinsam mit Marienkäfern auf, eine Abnahme der Baumwoll-Blattläuse wurde aber nicht gezeigt. In einem 4-jährigen Apfelversuch in China hatten Fahrgassen mit Katzenminze plus Studentenblume oder Leberbalsam deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs; Katzenminze allein wurde nicht geprüft.'
     },
     citations: [
       { label: 'Howard et al. 2024, J. Appl. Ecol. 61:821–835', doi: '10.1111/1365-2664.14598' },
       { label: 'Baverstock et al. 2011, BioControl 56:215–223 (lab)', doi: '10.1007/s10526-010-9330-x' },
-      { label: 'Fernandes et al. 2015, PLoS ONE 10:e0131449', doi: '10.1371/journal.pone.0131449' }
+      { label: 'Fernandes et al. 2015, PLoS ONE 10:e0131449', doi: '10.1371/journal.pone.0131449' },
+      { label: 'Song et al. 2017, Fla. Entomol. 100:411–421 (4-year field trial, mixtures)', doi: '10.1653/024.100.0202' }
     ]
   },
   {
