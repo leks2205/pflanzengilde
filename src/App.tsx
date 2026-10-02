@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActiveGapFilter, ActivePestFilter, ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, SoilType, StarTree, getLoc } from './types/guild';
+import { ActiveGapFilter, ActivePestFilter, ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, SoilType, StarTree, TreeAgeMode, getLoc } from './types/guild';
 import { STAR_TREES } from './data/starTrees';
 import { GUILD_PLANTS } from './data/guildPlants';
 import { Navbar } from './components/Navbar';
@@ -106,6 +106,8 @@ export const App: React.FC = () => {
   });
   const [currentSeason, setCurrentSeason] = useState<PhenoSeason>('LATE_SPRING');
   const [hemisphere, setHemisphere] = useState<Hemisphere>('NORTHERN');
+  // Planting age: young trees keep a wider bare zone around the trunk (ground-cover areas)
+  const [treeAge, setTreeAge] = useState<TreeAgeMode>('YOUNG');
   const [modalPlant, setModalPlant] = useState<GuildPlant | null>(null);
   const [activeGapFilter, setActiveGapFilter] = useState<ActiveGapFilter | null>(null);
   const [activePestFilter, setActivePestFilter] = useState<ActivePestFilter | null>(null);
@@ -215,6 +217,7 @@ export const App: React.FC = () => {
         if (isHemisphere(data.hemisphere)) setHemisphere(data.hemisphere);
         if (isSoilType(data.soilType)) setSelectedSoil(data.soilType);
         if (isClimateZone(data.climateZone)) setSelectedZone(data.climateZone);
+        if (data.treeAge === 'YOUNG' || data.treeAge === 'ESTABLISHED') setTreeAge(data.treeAge);
       }
     } catch (e) {
       console.error('Failed to load guild from storage or URL', e);
@@ -229,12 +232,13 @@ export const App: React.FC = () => {
         hemisphere,
         soilType: selectedSoil,
         climateZone: selectedZone,
+        treeAge,
       };
       localStorage.setItem(STORAGE_KEY_GUILD, JSON.stringify(data));
     } catch (e) {
       console.error('Failed to save guild to storage', e);
     }
-  }, [selectedTree, selectedPlants, hemisphere, selectedSoil, selectedZone]);
+  }, [selectedTree, selectedPlants, hemisphere, selectedSoil, selectedZone, treeAge]);
 
   // Adding is guarded by the compatibility prefilter (compatibility.ts); removing is always allowed
   const handleTogglePlant = (plant: GuildPlant) => {
@@ -400,7 +404,9 @@ export const App: React.FC = () => {
         selectedPlants,
         selectedSoil,
         hemisphere,
-        language
+        language,
+        treeAge,
+        selectedZone
       });
     } catch (err) {
       console.error('Failed to generate PDF:', err);
@@ -670,6 +676,8 @@ export const App: React.FC = () => {
             selectedSoil={selectedSoil}
             selectedZone={selectedZone}
             hemisphere={hemisphere}
+            treeAge={treeAge}
+            onSelectTreeAge={setTreeAge}
             onNavigate={navigateTo}
             initialStarTree={selectedTree}
             initialSelectedPlants={selectedPlants}
@@ -687,6 +695,8 @@ export const App: React.FC = () => {
               onSelectZone={setSelectedZone}
               hemisphere={hemisphere}
               onSelectHemisphere={setHemisphere}
+              treeAge={treeAge}
+              onSelectTreeAge={setTreeAge}
             />
 
             <StarTreeSelector
@@ -745,6 +755,7 @@ export const App: React.FC = () => {
                   hemisphere={hemisphere}
                   selectedSoil={selectedSoil}
                   selectedZone={selectedZone}
+                  treeAge={treeAge}
                   onSelectPlant={setModalPlant}
                   onSwapPlant={handleSwapPlant}
                   onOpenInGardenGrid={handleOpenInGardenGrid}

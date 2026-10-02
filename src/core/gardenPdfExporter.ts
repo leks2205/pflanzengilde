@@ -1,11 +1,15 @@
-import { jsPDF } from 'jspdf';
+import { jsPDF, GState } from 'jspdf';
 import { GardenState } from '../types/garden';
 import { getLoc, SoilType } from '../types/guild';
 import { t, formatNumber, translateClimateZone, translateRole } from '../i18n/translations';
 import { analyzeGardenAntagonisms, detectGardenShadePockets } from './gardenAntagonist';
+import { CoverShape, buildGardenCoverInput, computeGroundCovers } from './groundCoverEngine';
+import { getGroundCoverSpec } from '../data/groundCoverSpecs';
 
 export interface GenerateGardenPdfOptions {
   garden: GardenState;
+  /** Ground-cover areas as shown on screen; computed from the garden when absent. */
+  groundCovers?: CoverShape[];
 }
 
 const WIN_ANSI_EXTRA = '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ';
@@ -343,9 +347,17 @@ export function generateGardenPlanPdfDoc(options: GenerateGardenPdfOptions): jsP
   doc.setLineWidth(0.5);
   doc.rect(mapX, mapY, mapW, mapH, 'FD');
 
-  // Fit the map to the bounding box of all plants.
-  const rawX = [...starPlants.map(s => s.xM), ...placedCompanions.map(c => c.xM)];
-  const rawY = [...starPlants.map(s => s.yM), ...placedCompanions.map(c => c.yM)];
+  // Ground-cover areas (same engine as the garden grid)
+  const groundCovers = options.groundCovers ?? (placedCompanions.some(c => getGroundCoverSpec(c.plant))
+    ? computeGroundCovers(buildGardenCoverInput(starPlants, placedCompanions, {
+        hemisphere: garden.hemisphere, zone: garden.zone, treeAge: garden.treeAge ?? 'YOUNG',
+      }))
+    : []);
+  const coverPts = groundCovers.flatMap(sh => sh.rings.flat());
+
+  // Fit the map to the bounding box of all plants and ground-cover areas.
+  const rawX = [...starPlants.map(s => s.xM), ...placedCompanions.map(c => c.xM), ...coverPts.map(p => p[0])];
+  const rawY = [...starPlants.map(s => s.yM), ...placedCompanions.map(c => c.yM), ...coverPts.map(p => p[1])];
   const minXM = rawX.length > 0 ? Math.min(...rawX) : -5;
   const maxXM = rawX.length > 0 ? Math.max(...rawX) : 5;
   const minYM = rawY.length > 0 ? Math.min(...rawY) : -5;
@@ -392,6 +404,34 @@ export function generateGardenPlanPdfDoc(options: GenerateGardenPdfOptions): jsP
     if (yPos >= mapY && yPos <= mapY + mapH) {
       doc.line(mapX, yPos, mapX + mapW, yPos);
     }
+  }
+
+  // Ground covers: translucent even-odd areas (holes stay open), clipped to the map frame
+  if (groundCovers.length > 0) {
+    doc.saveGraphicsState();
+    doc.rect(mapX, mapY, mapW, mapH, null);
+    doc.clip();
+    doc.discardPath();
+    for (const shape of groundCovers) {
+      const [r, g, b] = hexToRgb(shape.color || '#16a34a');
+      doc.setGState(new GState({ opacity: Math.min(0.5, shape.opacity + 0.06) }));
+      doc.setFillColor(r, g, b);
+      let any = false;
+      for (const ring of shape.rings) {
+        if (ring.length < 3) continue;
+        doc.moveTo(toPdfX(ring[0][0]), toPdfY(ring[0][1]));
+        for (let i = 1; i < ring.length; i++) doc.lineTo(toPdfX(ring[i][0]), toPdfY(ring[i][1]));
+        doc.close();
+        any = true;
+      }
+      if (any) doc.fillEvenOdd();
+      if (shape.dots.length > 0) {
+        doc.setGState(new GState({ opacity: 0.8 }));
+        const dotR = Math.max(0.25, Math.min(0.6, 0.04 * scaleMmPerM));
+        for (const [x, y] of shape.dots) doc.circle(toPdfX(x), toPdfY(y), dotR, 'F');
+      }
+    }
+    doc.restoreGraphicsState();
   }
 
   // Dimension lines from each star plant to its two nearest neighbours.

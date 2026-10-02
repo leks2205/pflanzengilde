@@ -89,6 +89,7 @@ export interface StarTree {
   botanicalName: string;
   category: StarPlantCategory;
   matureRadiusM: number;          // Radius of canopy / drip line at maturity in meters
+  matureHeightM?: number;         // Typical mature height in a garden (m); sourced in `sources`
   rootHabit: 'SURFACE_FEEDER' | 'DEEP_TAP' | 'WIDE_SPREADING';
   jugloneProducer: boolean;       // Produces allelopathic juglone (e.g. Walnuts)
   sunPreference: SunPreference;   // Light level at which the sources report the best growth/yield (shade tolerance is described in the text)
@@ -181,6 +182,9 @@ export interface RoleCoverageReport {
 }
 
 export type Hemisphere = 'NORTHERN' | 'SOUTHERN';
+
+/** Age of the planting: young trees (first ~5 years) need a wider bare zone around the trunk. */
+export type TreeAgeMode = 'YOUNG' | 'ESTABLISHED';
 
 export function getLoc(val: LocalizedString | string, lang: Language): string {
   if (typeof val === 'string') return val;

@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useDeferredValue, useEffect } from 'react';
-import { ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, PlacedPlant, SoilType, StarTree, getLoc } from '../types/guild';
+import React, { useState, useMemo, useDeferredValue, useEffect, useRef } from 'react';
+import { ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, PlacedPlant, SoilType, StarTree, TreeAgeMode, getLoc } from '../types/guild';
 import { GardenCompanionInstance, StarPlantClusterConfig } from '../types/garden';
 import { autoPlaceGuildPlants, calculateSpatialMetrics, isAlliumPlant, isLegumePlant, isFennelPlant, isWormwoodPlant } from '../core/placementRules';
 import { analyzeGuildSpacing } from '../core/spacingEngine';
@@ -7,10 +7,16 @@ import { computeClusterGardenLayout, getMinTrunkDistanceM, getRecommendedSpacing
 import { GardenSubstitution } from '../core/gardenOptimizer';
 import { GUILD_PLANTS } from '../data/guildPlants';
 import { readSavedAutoResolvePreference, STORAGE_KEY_GARDEN_GRID } from '../utils/gardenStorage';
-import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, Compass, Eye, EyeOff, RefreshCw, ShieldCheck, SunMedium, Shrink, Sparkles, Trees } from 'lucide-react';
+import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, Compass, Eye, EyeOff, RefreshCw, ShieldCheck, SunMedium, Shrink, Sparkles, Trees, Layers } from 'lucide-react';
 import { t, formatNumber, translateZone, translateLayer, translateRole } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
 import { SpacingWarningBanner } from './SpacingWarningBanner';
+import { GroundCoverLayer } from './GroundCoverLayer';
+import { ShiftHint, SpotLegend, useShiftKey } from './SpotInspector';
+import { plantsAtSpot } from '../core/spotInspector';
+import { isCoverInSeason } from '../core/groundCoverEngine';
+import { buildGardenCoverInput, buildRadialCoverInput, computeGroundCovers, coverReachM, trunkClearanceM } from '../core/groundCoverEngine';
+import { isAreaPlant } from '../data/groundCoverSpecs';
 
 interface GardenPlanCanvasProps {
   language: Language;
@@ -21,6 +27,8 @@ interface GardenPlanCanvasProps {
   /** Garden soil and climate zone: used by the garden conflict resolution in multi-star mode. */
   selectedSoil?: SoilType;
   selectedZone?: ClimateZone;
+  /** Planting age (bare zone around trunks for ground covers); default young. */
+  treeAge?: TreeAgeMode;
   onSelectPlant: (plant: GuildPlant) => void;
   onSwapPlant?: (removePlantId: string, addPlant: GuildPlant) => void;
   onOpenInGardenGrid?: (starTree: StarTree, clusterConfig: StarPlantClusterConfig) => void;
@@ -40,6 +48,7 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
   hemisphere,
   selectedSoil,
   selectedZone,
+  treeAge = 'YOUNG',
   onSelectPlant,
   onSwapPlant,
   onOpenInGardenGrid,
@@ -49,6 +58,11 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
   const [showRings, setShowRings] = useState(true);
   const [showSunOverlay, setShowSunOverlay] = useState(true);
   const [showCanopySpread, setShowCanopySpread] = useState(true);
+  const [showGroundCovers, setShowGroundCovers] = useState(true);
+  // Shift + hover: legend of everything growing at the hovered spot
+  const shiftDown = useShiftKey();
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [spot, setSpot] = useState<{ px: number; py: number; vx: number; vy: number; w: number } | null>(null);
   const [hoveredPlant, setHoveredPlant] = useState<PlacedPlant | null>(null);
   const [hoveredClusterComp, setHoveredClusterComp] = useState<GardenCompanionInstance | null>(null);
 
@@ -125,10 +139,24 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
   const viewBoxSize = 640;
   const center = viewBoxSize / 2;
   const maxPlacedR = placedPlants.length > 0 ? Math.max(...placedPlants.map(p => p.distanceM + p.plant.spreadM / 2)) : 0;
-  const maxRadiusM = Math.max(metrics.outerZoneMaxM, maxPlacedR) + 0.8;
+  const maxCoverR = placedPlants.length > 0 ? Math.max(0, ...placedPlants.map(p => coverReachM(starTree, p.plant))) : 0;
+  const maxRadiusM = Math.max(metrics.outerZoneMaxM, maxPlacedR, maxCoverR) + 0.8;
+
+  // Ground-cover areas (single star at the origin, metres x east / y south)
+  const radialCovers = useMemo(() => {
+    if (!placedPlants.some(p => isAreaPlant(p.plant))) return [];
+    return computeGroundCovers(buildRadialCoverInput(starTree, placedPlants, { hemisphere, zone: selectedZone, treeAge }));
+  }, [starTree, placedPlants, hemisphere, selectedZone, treeAge]);
   const scale = (viewBoxSize * 0.44) / maxRadiusM; // px per metre
 
   // Fit the whole cluster (zone rings, companion spreads) into the view, centred on its extent
+  const clusterCovers = useMemo(() => {
+    if (!clusterLayout || !clusterLayout.resolution.companions.some(c => isAreaPlant(c.plant))) return [];
+    return computeGroundCovers(buildGardenCoverInput(clusterLayout.starPlants, clusterLayout.resolution.companions, {
+      hemisphere, zone: selectedZone, treeAge, resolutionM: 0.08,
+    }));
+  }, [clusterLayout, hemisphere, selectedZone, treeAge]);
+
   const clusterView = useMemo(() => {
     if (!clusterLayout) return { scale: 1, cxM: 0, cyM: 0 };
     const b = clusterLayout.boundsM;
@@ -303,6 +331,18 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
               <Shrink className="w-3.5 h-3.5 text-emerald-600" />
               <span>{tr.spacingToggleCanopy}</span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setShowGroundCovers(!showGroundCovers)}
+              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1 transition-colors ${
+                showGroundCovers ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-medium' : 'bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100'
+              }`}
+              title={tr.groundCoverLegendHint}
+            >
+              <Layers className="w-3.5 h-3.5 text-emerald-600" />
+              <span>{tr.showGroundCovers}</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-1.5 text-xs flex-wrap justify-start sm:justify-end">
@@ -448,7 +488,18 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
       )}
 
 
-      <div className="relative w-full aspect-square max-w-[580px] mx-auto bg-stone-900/5 rounded-2xl overflow-hidden border border-stone-200 flex items-center justify-center">
+      <div
+        ref={mapRef}
+        className="relative w-full aspect-square max-w-[580px] mx-auto bg-stone-900/5 rounded-2xl overflow-hidden border border-stone-200 flex items-center justify-center"
+        onMouseMove={e => {
+          const box = mapRef.current?.getBoundingClientRect();
+          if (!box || !e.shiftKey) { if (spot) setSpot(null); return; }
+          const px = e.clientX - box.left;
+          const py = e.clientY - box.top;
+          setSpot({ px, py, vx: (px / box.width) * viewBoxSize, vy: (py / box.height) * viewBoxSize, w: box.width });
+        }}
+        onMouseLeave={() => setSpot(null)}
+      >
         <svg
           id="radial-garden-map-svg"
           xmlns="http://www.w3.org/2000/svg"
@@ -723,13 +774,22 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
                   fontSize="8"
                   fontWeight="600"
                 >
-                  {tr.keepCollarBare}
+                  {tr.keepCollarBare.replace('{m}', `${formatNumber(trunkClearanceM(starTree, treeAge), 2, language)} m`)}
                 </text>
               </g>
 
+              {showGroundCovers && (
+                <GroundCoverLayer
+                  shapes={radialCovers}
+                  toPx={(xM, yM) => ({ x: center + xM * scale, y: center + yM * scale })}
+                  scale={scale}
+                  season={currentSeason}
+                />
+              )}
+
               {showCanopySpread && (
                 <g id="canopy-spreads" className="pointer-events-none select-none">
-                  {placedPlants.map((placed) => {
+                  {placedPlants.filter(placed => !showGroundCovers || !isAreaPlant(placed.plant)).map((placed) => {
                     const coords = toCoords(placed.distanceM, placed.angleDeg);
                     const radiusPx = (placed.plant.spreadM / 2) * scale;
                     const conflict = spacingReport.conflicts.find(
@@ -981,9 +1041,19 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
                 })}
               </g>
 
+              {showGroundCovers && (
+                <GroundCoverLayer
+                  id="cluster-ground-covers"
+                  shapes={clusterCovers}
+                  toPx={toClusterCoords}
+                  scale={clusterScale}
+                  season={currentSeason}
+                />
+              )}
+
               {showCanopySpread && (
                 <g id="cluster-canopy-spreads" className="pointer-events-none select-none">
-                  {clusterLayout.resolution.companions.map(comp => {
+                  {clusterLayout.resolution.companions.filter(comp => !showGroundCovers || !isAreaPlant(comp.plant)).map(comp => {
                     const coords = toClusterCoords(comp.xM, comp.yM);
                     return (
                       <circle
@@ -1101,7 +1171,34 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
           )}
         </svg>
 
-        {(hoveredPlant || (hoveredClusterComp && clusterLayout)) && (() => {
+        {shiftDown && spot && (() => {
+          const xM = isMulti ? (spot.vx - center) / clusterScale + clusterView.cxM : (spot.vx - center) / scale;
+          const yM = isMulti ? (spot.vy - center) / clusterScale + clusterView.cyM : (spot.vy - center) / scale;
+          const entries = isMulti && clusterLayout
+            ? plantsAtSpot({
+                xM, yM,
+                stars: clusterLayout.starPlants.map(st => ({ key: st.instanceId, xM: st.xM, yM: st.yM, star: st.starTree })),
+                plants: clusterLayout.resolution.companions.map(c => ({ key: c.instanceId, xM: c.xM, yM: c.yM, plant: c.plant })),
+                covers: showGroundCovers ? clusterCovers : [],
+                isInSeason: sh => isCoverInSeason(sh.spec, currentSeason),
+                pickRadiusM: 12 / clusterScale,
+              })
+            : plantsAtSpot({
+                xM, yM,
+                stars: [{ key: 'star', xM: 0, yM: 0, star: starTree }],
+                plants: placedPlants.map(p => {
+                  const rad = ((p.angleDeg - 90) * Math.PI) / 180;
+                  return { key: p.instanceId, xM: p.distanceM * Math.cos(rad), yM: p.distanceM * Math.sin(rad), plant: p.plant };
+                }),
+                covers: showGroundCovers ? radialCovers : [],
+                isInSeason: sh => isCoverInSeason(sh.spec, currentSeason),
+                pickRadiusM: 12 / scale,
+              });
+          const subtitle = isMulti ? undefined : tr.spotFromTrunk.replace('{m}', formatNumber(Math.hypot(xM, yM), 1, language));
+          return <SpotLegend language={language} entries={entries} x={spot.px} y={spot.py} containerWidth={spot.w} subtitle={subtitle} />;
+        })()}
+
+        {!(shiftDown && spot) && (hoveredPlant || (hoveredClusterComp && clusterLayout)) && (() => {
           const plant = hoveredPlant ? hoveredPlant.plant : hoveredClusterComp!.plant;
           const coords = hoveredPlant
             ? toCoords(hoveredPlant.distanceM, hoveredPlant.angleDeg)
@@ -1178,6 +1275,8 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
           );
         })()}
       </div>
+
+      <ShiftHint language={language} className="justify-center -mt-1" />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-stone-100 text-[11px] text-stone-600">
         <div className="flex items-center gap-1.5">

@@ -82,7 +82,7 @@ export const de = {
   lightPref: 'Lichtbedarf',
   rootHabit: 'Wurzeltyp',
   keyPests: 'Hauptschädlinge',
-  keepCollarBare: '30 cm Stammkragen freihalten',
+  keepCollarBare: '{m} um den Stamm freihalten',
 
   // Step 2
   step2Title: '2. Unterstützende Begleitpflanzen wählen',
@@ -1562,4 +1562,23 @@ export const de = {
   guidesStunningSpecialtyJingguXishuangbanna: 'Ein Weißtee-Stil aus Jinggu (Yunnan) aus dem großblättrigen Camellia sinensis var. assamica. Wie bei jedem Weißtee gibt es weder Kill-Green noch Rollen: Die Triebe werden einfach lange gewelkt – die 36–72-stündige Welke ist der entscheidende Schritt für die Weißteequalität [^57] – und anschließend schonend getrocknet. Anders als typische Weißtees wird Yue Guang Bai nicht in der heißen Mittagssonne gewelkt, sondern drinnen oder nachts im Freien („im Mondlicht“) [^117]. Sonnengewelkter Jinggu-Weißtee aus der örtlichen Großblattsorte Jinggu Dabaicha hat dagegen ein stärker fruchtiges und süßes Aroma als Weißtees aus Fujian, vor allem durch Linalool (fruchtig) und Phenylacetaldehyd (süß) [^58].',
   // guides: sources
   guidesAllBotanicalMechanicsRootSpatial: 'Die Sachaussagen dieser Leitfäden sind durch die unten aufgeführten Fachartikel, Beratungspublikationen und weiteren Quellen belegt; Planungsabstände, Radien und Puffer sind Standardwerte unseres Systems, sofern keine Quelle angegeben ist.',
+  treeAgeLabel: 'Alter der Pflanzung',
+  treeAgeYoung: 'Jung (bis 5 Jahre)',
+  treeAgeEstablished: 'Etabliert',
+  treeAgeHint: 'Junge Bäume brauchen um den Stamm eine offene, gemulchte Zone von etwa 0,75 m, weil Bodendecker in den ersten Jahren um Wasser und Stickstoff konkurrieren; etablierte Bäume brauchen nur einen Kragen von 0,3 m (0,5 m bei dichten, wühlmausfreundlichen Bodendeckern).',
+  groundCoverLegend: 'Bodendecker-Fläche',
+  groundCoverLegendHint: 'Die Flächen zeigen, wo ein Bodendecker wächst: offen um die Stämme, Aussparungen um andere Pflanzen, Schattenliebhaber auf der Schattenseite. Der genaue Umriss ist eine Planungsform.',
+  groundCoverOutOfSeason: 'in dieser Jahreszeit nicht aktiv',
+  coverSeasonAll: 'Alle Jahreszeiten',
+  showGroundCovers: 'Bodendecker',
+  spotHintKey: 'Umschalt',
+  spotHint: 'Halte die Umschalttaste gedrückt und fahre über den Garten, um zu sehen, welche Pflanzen an dieser Stelle wachsen.',
+  spotTitle: 'An dieser Stelle',
+  spotNothing: 'Offener Boden (hier ist nichts gepflanzt)',
+  spotKindTrunk: 'Stamm',
+  spotKindCanopy: 'unter der Krone',
+  spotKindPlant: 'Pflanze',
+  spotKindCover: 'Bodendecker',
+  spotKindDrift: 'Zwiebel-Gruppe',
+  spotFromTrunk: '{m} m vom Stamm',
 };

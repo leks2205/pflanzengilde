@@ -1,3 +1,4 @@
+import { isAreaPlant } from '../data/groundCoverSpecs';
 import {
   ClimateZone,
   GuildPlant,
@@ -167,7 +168,8 @@ export function analyzeGuildSpacing(
 
   const zoneSaturations: ZoneSaturationReport[] = zoneDefinitions.map(def => {
     const zoneAreaM2 = Math.PI * (def.outerR * def.outerR - def.innerR * def.innerR);
-    const plantsInZone = placedPlants.filter(p => p.zone === def.zone);
+    // Area plants (ground covers) are drawn as areas that share the ground; they don't crowd a zone
+    const plantsInZone = placedPlants.filter(p => p.zone === def.zone && !isAreaPlant(p.plant));
     const plantsAreaM2 = plantsInZone.reduce((sum, p) => {
       const r = p.plant.spreadM / 2;
       return sum + Math.PI * r * r;
@@ -201,6 +203,8 @@ export function analyzeGuildSpacing(
       const pA = placedPlants[i];
       const pB = placedPlants[j];
 
+      // Ground covers grow as areas around other plants (holes are built into their shape)
+      if (isAreaPlant(pA.plant) || isAreaPlant(pB.plant)) continue;
       const distanceM = calculatePolarDistanceM(pA.distanceM, pA.angleDeg, pB.distanceM, pB.angleDeg);
 
       const rA = pA.plant.spreadM / 2;

@@ -1,4 +1,5 @@
-import { jsPDF } from 'jspdf';
+import { jsPDF, GState } from 'jspdf';
+import { buildRadialCoverInput, computeGroundCovers } from './groundCoverEngine';
 import {
   GuildPlant,
   Hemisphere,
@@ -9,6 +10,8 @@ import {
   PlacedPlant,
   SoilType,
   StarTree,
+  TreeAgeMode,
+  ClimateZone,
   getLoc
 } from '../types/guild';
 import { autoPlaceGuildPlants, calculateSpatialMetrics } from './placementRules';
@@ -28,6 +31,9 @@ export interface GeneratePdfOptions {
   radialMapDataUrl?: string | null;
   treeImageDataUrl?: string | null;
   plantImages?: Map<string, string>;
+  /** Ground-cover areas in the vector fallback map. */
+  treeAge?: TreeAgeMode;
+  selectedZone?: ClimateZone;
 }
 
 /** Small radar in each plant card: trunk, zone rings and this plant's position. */
@@ -115,7 +121,8 @@ function drawNativeRadialMap(
   language: Language,
   cx: number,
   cy: number,
-  maxR: number
+  maxR: number,
+  coverOpts: { treeAge: TreeAgeMode; zone?: ClimateZone } = { treeAge: 'YOUNG' }
 ) {
   const metrics = calculateSpatialMetrics(starTree);
   const outerM = metrics.outerZoneMaxM;
@@ -158,6 +165,35 @@ function drawNativeRadialMap(
   doc.setFillColor(254, 226, 226);
   doc.setDrawColor(220, 38, 38);
   doc.circle(cx, cy, metrics.collarRadiusM * scale, 'FD');
+
+  // Ground-cover areas (same engine as the on-screen map), clipped to the map disc
+  const covers = computeGroundCovers(buildRadialCoverInput(starTree, placedPlants, { hemisphere, zone: coverOpts.zone, treeAge: coverOpts.treeAge }));
+  if (covers.length > 0) {
+    doc.saveGraphicsState();
+    doc.circle(cx, cy, maxR, null);
+    doc.clip();
+    doc.discardPath();
+    for (const shape of covers) {
+      const hex = (shape.color || '#16a34a').replace('#', '');
+      const r = parseInt(hex.slice(0, 2), 16), g = parseInt(hex.slice(2, 4), 16), b = parseInt(hex.slice(4, 6), 16);
+      doc.setGState(new GState({ opacity: Math.min(0.5, shape.opacity + 0.06) }));
+      doc.setFillColor(r, g, b);
+      let any = false;
+      for (const ring of shape.rings) {
+        if (ring.length < 3) continue;
+        doc.moveTo(cx + ring[0][0] * scale, cy + ring[0][1] * scale);
+        for (let i = 1; i < ring.length; i++) doc.lineTo(cx + ring[i][0] * scale, cy + ring[i][1] * scale);
+        doc.close();
+        any = true;
+      }
+      if (any) doc.fillEvenOdd();
+      if (shape.dots.length > 0) {
+        doc.setGState(new GState({ opacity: 0.8 }));
+        for (const [x, y] of shape.dots) doc.circle(cx + x * scale, cy + y * scale, 0.35, 'F');
+      }
+    }
+    doc.restoreGraphicsState();
+  }
 
   doc.setFillColor(120, 53, 15);
   doc.circle(cx, cy, 2.5, 'F');
@@ -209,7 +245,9 @@ export function generateGuildPdf({
   language,
   radialMapDataUrl,
   treeImageDataUrl,
-  plantImages
+  plantImages,
+  treeAge,
+  selectedZone
 }: GeneratePdfOptions): jsPDF {
   const doc = new jsPDF({
     orientation: 'p',
@@ -524,10 +562,10 @@ export function generateGuildPdf({
       doc.addImage(radialMapDataUrl, 'PNG', mapX, mapY, mapSize, mapSize);
     } catch (err) {
       console.warn('Failed to embed captured radial map image, using native vector fallback:', err);
-      drawNativeRadialMap(doc, starTree, placedPlants, hemisphere, language, marginX + contentWidth / 2, mapY + mapSize / 2, mapSize / 2);
+      drawNativeRadialMap(doc, starTree, placedPlants, hemisphere, language, marginX + contentWidth / 2, mapY + mapSize / 2, mapSize / 2, { treeAge: treeAge ?? 'YOUNG', zone: selectedZone });
     }
   } else {
-    drawNativeRadialMap(doc, starTree, placedPlants, hemisphere, language, marginX + contentWidth / 2, mapY + mapSize / 2, mapSize / 2);
+    drawNativeRadialMap(doc, starTree, placedPlants, hemisphere, language, marginX + contentWidth / 2, mapY + mapSize / 2, mapSize / 2, { treeAge: treeAge ?? 'YOUNG', zone: selectedZone });
   }
 
   // Map legend: two centred rows

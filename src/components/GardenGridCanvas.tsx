@@ -1,8 +1,15 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { GuildPlant, Language, getLoc } from '../types/guild';
+import { GuildPlant, Language, PhenoSeason, TreeAgeMode, getLoc } from '../types/guild';
 import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance } from '../types/garden';
 import { ZoomIn, ZoomOut, Maximize2, Sparkles, Move, Trees, MousePointer, Hand } from 'lucide-react';
-import { t, formatNumber } from '../i18n/translations';
+import { t, formatNumber, translateSeason } from '../i18n/translations';
+import { CoverShape } from '../core/groundCoverEngine';
+import { isAreaPlant } from '../data/groundCoverSpecs';
+import { GroundCoverLayer } from './GroundCoverLayer';
+import { TreeAgeToggle } from './TreeAgeToggle';
+import { ShiftHint, SpotLegend, useShiftKey } from './SpotInspector';
+import { plantsAtSpot } from '../core/spotInspector';
+import { isCoverInSeason } from '../core/groundCoverEngine';
 
 // Stable default so the selection-sync effect doesn't re-fire on every render
 const NO_IDS: string[] = [];
@@ -23,6 +30,12 @@ interface GardenGridCanvasProps {
   onPasteTrees?: (treesToPaste: GardenStarPlantInstance[]) => void;
   onSelectCompanion?: (plant: GuildPlant) => void;
   onDropJsonFile?: (file: File, xM: number, yM: number) => void;
+  /** Ground-cover areas (computed by the planner page so the PDF uses the same shapes). */
+  groundCovers?: CoverShape[];
+  coverSeason?: PhenoSeason | 'ALL';
+  onCoverSeasonChange?: (season: PhenoSeason | 'ALL') => void;
+  treeAge?: TreeAgeMode;
+  onSelectTreeAge?: (age: TreeAgeMode) => void;
 }
 
 export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
@@ -41,11 +54,19 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
   onPasteTrees,
   onSelectCompanion,
   onDropJsonFile,
+  groundCovers = [],
+  coverSeason = 'ALL',
+  onCoverSeasonChange,
+  treeAge,
+  onSelectTreeAge,
 }) => {
   const tr = t(language);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [toolMode, setToolMode] = useState<'PAN' | 'SELECT'>('PAN');
+  // Shift + hover: legend of everything growing at the hovered spot
+  const shiftDown = useShiftKey();
+  const [spot, setSpot] = useState<{ px: number; py: number; w: number } | null>(null);
   const [localSelectedIds, setLocalSelectedIds] = useState<string[]>(() =>
     selectedTreeIds.length > 0 ? selectedTreeIds : (selectedTreeId ? [selectedTreeId] : [])
   );
@@ -483,6 +504,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
         </div>
       </div>
 
+      <ShiftHint language={language} className="w-full mb-2" />
+
       <div
         ref={containerRef}
         className={`relative w-full aspect-square max-w-[800px] overflow-hidden rounded-xl border transition-all ${
@@ -497,7 +520,13 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
             : 'cursor-default'
         }`}
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
+        onMouseMove={e => {
+          handleMouseMove(e);
+          const box = containerRef.current?.getBoundingClientRect();
+          if (!box || !e.shiftKey) { if (spot) setSpot(null); return; }
+          setSpot({ px: e.clientX - box.left, py: e.clientY - box.top, w: box.width });
+        }}
+        onMouseLeave={() => setSpot(null)}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -607,6 +636,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
               </g>
             );
           })}
+
+          <GroundCoverLayer shapes={groundCovers} toPx={toScreen} scale={zoom} season={coverSeason} />
 
           {conflicts.map(c => {
             const posA = toScreen(c.plantA.xM, c.plantA.yM);
@@ -791,7 +822,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
           {companions.map(comp => {
             const pos = toScreen(comp.xM, comp.yM);
             const isHovered = hoveredCompId === comp.instanceId;
-            const rPx = Math.max(5, (comp.plant.spreadM / 2) * zoom);
+            // Area plants are drawn by the ground-cover layer; only their marker remains here
+            const rPx = isAreaPlant(comp.plant) ? 0 : Math.max(5, (comp.plant.spreadM / 2) * zoom);
 
             return (
               <g
@@ -801,7 +833,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
                 onClick={() => onSelectCompanion?.(comp.plant)}
                 className="cursor-pointer group"
               >
-                <circle
+                {rPx > 0 && <circle
                   cx={pos.x}
                   cy={pos.y}
                   r={rPx}
@@ -810,7 +842,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
                   stroke={comp.plant.color}
                   strokeWidth="0.8"
                   strokeDasharray="2,2"
-                />
+                />}
 
                 {comp.isMerged && (
                   <circle
@@ -921,7 +953,46 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
           <Move className="w-3 h-3 text-stone-400" />
           <span>{tr.gardenGridOriginLabel}</span>
         </div>
+
+        {shiftDown && spot && (() => {
+          const { xM, yM } = toMetric(spot.px, spot.py);
+          const entries = plantsAtSpot({
+            xM, yM,
+            stars: starPlants.map(st => ({ key: st.instanceId, xM: st.xM, yM: st.yM, star: st.starTree })),
+            plants: companions.map(c => ({ key: c.instanceId, xM: c.xM, yM: c.yM, plant: c.plant })),
+            covers: groundCovers,
+            isInSeason: sh => isCoverInSeason(sh.spec, coverSeason),
+            pickRadiusM: 8 / zoom,
+          });
+          const subtitle = `x ${formatNumber(xM, 1, language)} m · y ${formatNumber(yM, 1, language)} m`;
+          return <SpotLegend language={language} entries={entries} x={spot.px} y={spot.py} containerWidth={spot.w} subtitle={subtitle} />;
+        })()}
       </div>
+
+      {(onCoverSeasonChange || (treeAge && onSelectTreeAge)) && (
+        <div className="w-full flex flex-wrap items-center justify-between gap-2 pt-2 mt-2 border-t border-stone-100 text-xs">
+          {onCoverSeasonChange && (
+            <div className="flex items-center gap-1 flex-wrap" title={tr.groundCoverLegendHint}>
+              <span className="text-[11px] text-stone-500 font-medium mr-1">{tr.groundCoverLegend}:</span>
+              {(['ALL', 'EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'] as const).map(season => (
+                <button
+                  key={season}
+                  type="button"
+                  onClick={() => onCoverSeasonChange(season)}
+                  className={`px-2 py-0.5 rounded-md border transition-colors cursor-pointer ${
+                    coverSeason === season ? 'bg-forest-600 text-white border-forest-600' : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100'
+                  }`}
+                >
+                  {season === 'ALL' ? tr.coverSeasonAll : translateSeason(season, language)}
+                </button>
+              ))}
+            </div>
+          )}
+          {treeAge && onSelectTreeAge && (
+            <TreeAgeToggle language={language} treeAge={treeAge} onSelectTreeAge={onSelectTreeAge} />
+          )}
+        </div>
+      )}
     </div>
   );
 };

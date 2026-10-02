@@ -1,4 +1,4 @@
-import { ClimateZone, GuildPlant, Hemisphere, Language, LocalizedString, SoilType, StarTree } from './guild';
+import { ClimateZone, GuildPlant, Hemisphere, Language, LocalizedString, SoilType, StarTree, TreeAgeMode } from './guild';
 
 export type StarPlantPattern = 'SINGLE' | 'LINE' | 'GRID' | 'TRIANGLE';
 
@@ -99,4 +99,6 @@ export interface GardenState {
   starPlants: GardenStarPlantInstance[];
   placedCompanions: GardenCompanionInstance[];
   gridBoundsM: { minX: number; maxX: number; minY: number; maxY: number };
+  /** Planting age (bare zone around trunks for ground covers); absent = young. */
+  treeAge?: TreeAgeMode;
 }

@@ -11,6 +11,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Malus domestica',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.5,
+    matureHeightM: 4.5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -108,7 +109,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Oster, M., et al. (2021). Comfrey (Symphytum spp.) as a feed supplement in pig nutrition contributes to regional resource cycles. Science of The Total Environment, 796, 148988. doi:10.1016/j.scitotenv.2021.148988',
       'Campbell, A. J., Wilby, A., Sutton, P., & Wäckers, F. (2017). Getting More Power from Your Flowers: Multi-Functional Flower Strips Enhance Pollinators and Pest Control Agents in Apple Orchards. Insects, 8(3), 101. doi:10.3390/insects8030101',
-      'Utah State University Extension (n.d.). Phytophthora Crown and Collar Rot. Utah Pests IPM Fact Sheets. https://extension.usu.edu/pests/ipm/notes_ag/fruit-phytophthora.php'
+      'Utah State University Extension (n.d.). Phytophthora Crown and Collar Rot. Utah Pests IPM Fact Sheets. https://extension.usu.edu/pests/ipm/notes_ag/fruit-phytophthora.php',
+      'Royal Horticultural Society (n.d.). How to grow apples. RHS Grow Your Own. https://www.rhs.org.uk/fruit/apples/grow-your-own'
     ]
   },
   {
@@ -121,6 +123,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Juglans nigra',
     category: 'NUT_TREE',
     matureRadiusM: 5.5,
+    matureHeightM: 15,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: true,
     sunPreference: 'FULL_SUN',
@@ -185,7 +188,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Dana, M. N., & Lerner, B. R. (1994). Black Walnut Toxicity. Purdue University Cooperative Extension Service, HO-193. https://www.extension.purdue.edu/extmedia/ho/ho-193.pdf',
       'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
-      'Williams, R. D. (1990). Juglans nigra L. – Black Walnut. In Silvics of North America, Vol. 2: Hardwoods. USDA Forest Service, Agriculture Handbook 654. https://research.fs.usda.gov/silvics/black-walnut'
+      'Williams, R. D. (1990). Juglans nigra L. – Black Walnut. In Silvics of North America, Vol. 2: Hardwoods. USDA Forest Service, Agriculture Handbook 654. https://research.fs.usda.gov/silvics/black-walnut',
+      'NC State Extension (n.d.). Juglans nigra. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/juglans-nigra/'
     ]
   },
   {
@@ -198,6 +202,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus persica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.8,
+    matureHeightM: 4,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -267,7 +272,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Layton, B., & Henn, A. (2023). Disease and Insect Control for Homegrown Peaches and Plums. Mississippi State University Extension, Publication P2858. https://extension.msstate.edu/publications/disease-and-insect-control-for-homegrown-peaches-and-plums',
       'Masabni, J. G., Strang, J. G., Hartman, J. R., & Bessin, R. (2007). Growing Peaches in Kentucky. University of Kentucky Cooperative Extension Service, HO-57. https://publications.mgcafe.uky.edu/sites/publications.ca.uky.edu/files/ho57.pdf',
-      'Adaskaveg, J. E., Duncan, R. A., Hasey, J. K., & Day, K. R. (2015). Phytophthora Root and Crown Rot (Peach). UC IPM Pest Management Guidelines, UC ANR Publication 3454. https://ipm.ucanr.edu/agriculture/peach/phytophthora-root-and-crown-rot/'
+      'Adaskaveg, J. E., Duncan, R. A., Hasey, J. K., & Day, K. R. (2015). Phytophthora Root and Crown Rot (Peach). UC IPM Pest Management Guidelines, UC ANR Publication 3454. https://ipm.ucanr.edu/agriculture/peach/phytophthora-root-and-crown-rot/',
+      'NC State Extension (n.d.). Prunus persica. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/prunus-persica/'
     ]
   },
   {
@@ -280,6 +286,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus domestica',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.2,
+    matureHeightM: 4.5,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -359,7 +366,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
       'University of Wisconsin–Madison CIAS (n.d.). European Plum. Uncommon Fruit. https://uncommonfruit.cias.wisc.edu/european-plum/',
-      'Hamdani, A., Hssaini, L., Bouda, S., Adiba, A., & Razouk, R. (2022). Japanese plums behavior under water stress: impact on yield and biochemical traits. Heliyon, 8(4), e09278. doi:10.1016/j.heliyon.2022.e09278'
+      'Hamdani, A., Hssaini, L., Bouda, S., Adiba, A., & Razouk, R. (2022). Japanese plums behavior under water stress: impact on yield and biochemical traits. Heliyon, 8(4), e09278. doi:10.1016/j.heliyon.2022.e09278',
+      'Royal Horticultural Society (n.d.). How to grow plums. RHS Grow Your Own. https://www.rhs.org.uk/fruit/plums/grow-your-own'
     ]
   },
   {
@@ -372,6 +380,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Pyrus communis',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.8,
+    matureHeightM: 5,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -449,7 +458,8 @@ export const STAR_TREES: StarTree[] = [
     ],
     sources: [
       'Ellis, M. A., & Ivey, M. L. (2016). Fire Blight of Apples and Pears. Ohio State University Extension, PLPATH-FRU-22. https://cfaes.osu.edu/fact-sheet/fire-blight-apples-and-pears',
-      'Zhao, Y., et al. (2023). Bicarbonate rather than high pH in growth medium induced Fe-deficiency chlorosis in dwarfing rootstock quince A (Cydonia oblonga Mill.) but did not impair Fe nutrition of vigorous rootstock Pyrus betulifolia. Frontiers in Plant Science, 14, 1237327. doi:10.3389/fpls.2023.1237327'
+      'Zhao, Y., et al. (2023). Bicarbonate rather than high pH in growth medium induced Fe-deficiency chlorosis in dwarfing rootstock quince A (Cydonia oblonga Mill.) but did not impair Fe nutrition of vigorous rootstock Pyrus betulifolia. Frontiers in Plant Science, 14, 1237327. doi:10.3389/fpls.2023.1237327',
+      'Royal Horticultural Society (n.d.). How to grow pears. RHS Grow Your Own. https://www.rhs.org.uk/fruit/pears/grow-your-own'
     ]
   },
   {
@@ -462,6 +472,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Ficus carica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.5,
+    matureHeightM: 3.5,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -535,6 +546,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Corylus avellana',
     category: 'NUT_TREE',
     matureRadiusM: 2.5,
+    matureHeightM: 5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',
@@ -609,6 +621,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Castanea sativa',
     category: 'NUT_TREE',
     matureRadiusM: 5.0,
+    matureHeightM: 15,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -679,6 +692,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus armeniaca',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.0,
+    matureHeightM: 4.5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -747,7 +761,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Rodrigo, J., Julian, C., & Herrero, M. (2006). Spring frost damage in buds, flowers and developing fruits in apricot. Acta Horticulturae, 717, 87–88. doi:10.17660/ActaHortic.2006.717.15',
       'Ziems, A. D. (2009). Brown Rot on Apricot and Other Stone Fruits (G1965). University of Nebraska–Lincoln Extension. https://extensionpubs.unl.edu/publication/g1965/na/pdf/view',
-      'Adaskaveg, J. E., et al. (2014). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Apricot, UC ANR Publication 3433. https://ipm.ucanr.edu/agriculture/apricot/phytophthora-root-and-crown-rot/'
+      'Adaskaveg, J. E., et al. (2014). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Apricot, UC ANR Publication 3433. https://ipm.ucanr.edu/agriculture/apricot/phytophthora-root-and-crown-rot/',
+      'Royal Horticultural Society (n.d.). How to grow apricots. RHS Grow Your Own. https://www.rhs.org.uk/fruit/apricots/grow-your-own'
     ]
   },
   {
@@ -760,6 +775,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus avium',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.5,
+    matureHeightM: 6,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -831,7 +847,8 @@ export const STAR_TREES: StarTree[] = [
     ],
     sources: [
       'Welk, E., de Rigo, D., & Caudullo, G. (2016). Prunus avium in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Prunus_avium.pdf',
-      'Adaskaveg, J. E., & Caprile, J. L. (2015). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Cherry, UC ANR Publication 3440. https://ipm.ucanr.edu/agriculture/cherry/phytophthora-root-and-crown-rot/'
+      'Adaskaveg, J. E., & Caprile, J. L. (2015). Phytophthora Root and Crown Rot. UC IPM Pest Management Guidelines: Cherry, UC ANR Publication 3440. https://ipm.ucanr.edu/agriculture/cherry/phytophthora-root-and-crown-rot/',
+      'Royal Horticultural Society (n.d.). How to grow cherries. RHS Grow Your Own. https://www.rhs.org.uk/fruit/cherries/grow-your-own'
     ]
   },
   {
@@ -844,6 +861,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Cydonia oblonga',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.2,
+    matureHeightM: 4,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -915,6 +933,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Morus nigra',
     category: 'FRUIT_TREE',
     matureRadiusM: 4.2,
+    matureHeightM: 7,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -983,6 +1002,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Hippophae rhamnoides',
     category: 'NITROGEN_FIXING_TREE',
     matureRadiusM: 2.0,
+    matureHeightM: 4,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1045,6 +1065,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Alnus glutinosa',
     category: 'NITROGEN_FIXING_TREE',
     matureRadiusM: 3.8,
+    matureHeightM: 12,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1115,6 +1136,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Asimina triloba',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.5,
+    matureHeightM: 5,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1165,7 +1187,8 @@ export const STAR_TREES: StarTree[] = [
     sources: [
       'Jones, S. C., Peterson, R. N., Turner, T., Pomper, K. W., & Layne, D. R. (n.d.). Pawpaw Planting Guide. Kentucky State University Cooperative Extension Program. https://www.kysu.edu/academics/college-ahnr/school-of-anr/pawpaw/pawpaw-planting-guide.php',
       'Sullivan, J. (1993). Asimina triloba. Fire Effects Information System. USDA Forest Service, Rocky Mountain Research Station. https://www.fs.usda.gov/database/feis/plants/tree/asitri/all.html',
-      'McLaughlin, J. L. (2008). Paw Paw and Cancer: Annonaceous Acetogenins from Discovery to Commercial Products. Journal of Natural Products, 71(7), 1311–1321. doi:10.1021/np800191t'
+      'McLaughlin, J. L. (2008). Paw Paw and Cancer: Annonaceous Acetogenins from Discovery to Commercial Products. Journal of Natural Products, 71(7), 1311–1321. doi:10.1021/np800191t',
+      'NC State Extension (n.d.). Asimina triloba. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/asimina-triloba/'
     ]
   },
   {
@@ -1178,6 +1201,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Vaccinium corymbosum',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.1,
+    matureHeightM: 1.8,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1243,6 +1267,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Ribes nigrum',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.0,
+    matureHeightM: 1.5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1306,6 +1331,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Vitis vinifera',
     category: 'VINE',
     matureRadiusM: 1.8,
+    matureHeightM: 2,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1380,6 +1406,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Actinidia arguta',
     category: 'VINE',
     matureRadiusM: 2.0,
+    matureHeightM: 2.4,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1441,6 +1468,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Rheum rhabarbarum',
     category: 'PERENNIAL_HERB',
     matureRadiusM: 0.9,
+    matureHeightM: 1,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1488,7 +1516,8 @@ export const STAR_TREES: StarTree[] = [
     ],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow rhubarb. RHS Grow Your Own. https://www.rhs.org.uk/vegetables/rhubarb/grow-your-own',
-      'Lyon, E., & Young, C. E. (2021). Growing Rhubarb in the Home Garden (HYG-1631). Ohio State University Extension. https://cfaes.osu.edu/fact-sheet/growing-rhubarb-home-garden'
+      'Lyon, E., & Young, C. E. (2021). Growing Rhubarb in the Home Garden (HYG-1631). Ohio State University Extension. https://cfaes.osu.edu/fact-sheet/growing-rhubarb-home-garden',
+      'Plants For A Future (n.d.). Rheum x cultorum – Rhubarb. PFAF Plant Database. https://pfaf.org/user/plant.aspx?latinname=Rheum+x+cultorum'
     ]
   },
   {
@@ -1501,6 +1530,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Sambucus nigra',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.8,
+    matureHeightM: 4,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1551,7 +1581,8 @@ export const STAR_TREES: StarTree[] = [
       'Forbes, R. S. (n.d.). Sambucus nigra L. Fermanagh species accounts. Botanical Society of Britain & Ireland. https://bsbi.org/in-your-area/local-botany/co-fermanagh/fermanagh-species-accounts/sambucus-nigra-l',
       'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
       'Nedvěd, O., & Salvucci, S. (2008). Ladybird Coccinella septempunctata (Coleoptera: Coccinellidae) prefers toxic prey in laboratory choice experiment. European Journal of Entomology, 105(3), 431–436. doi:10.14411/eje.2008.055',
-      'InfluentialPoints (n.d.). Aphis sambuci (Elder aphid). http://influentialpoints.com/Gallery/Aphis_sambuci_elder_aphid.htm'
+      'InfluentialPoints (n.d.). Aphis sambuci (Elder aphid). http://influentialpoints.com/Gallery/Aphis_sambuci_elder_aphid.htm',
+      'NC State Extension (n.d.). Sambucus nigra. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/sambucus-nigra/'
     ]
   },
   {
@@ -1564,6 +1595,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Ginkgo biloba',
     category: 'NUT_TREE',
     matureRadiusM: 4.0,
+    matureHeightM: 15,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1617,7 +1649,8 @@ export const STAR_TREES: StarTree[] = [
     ],
     sources: [
       'Moore, L. M., & Walker Wilson, J. D. (2006). Ginkgo, Ginkgo species. USDA NRCS Plant Guide. https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_ginkg.pdf',
-      'Gilman, E. F., et al. (2018). Ginkgo biloba: Ginkgo (ST273). UF/IFAS Extension. https://ask.ifas.ufl.edu/publication/ST273'
+      'Gilman, E. F., et al. (2018). Ginkgo biloba: Ginkgo (ST273). UF/IFAS Extension. https://ask.ifas.ufl.edu/publication/ST273',
+      'NC State Extension (n.d.). Ginkgo biloba. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/ginkgo-biloba/'
     ]
   },
   {
@@ -1630,6 +1663,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Camellia sinensis var. sinensis',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.2,
+    matureHeightM: 1.2,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',
@@ -1704,6 +1738,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Camellia sinensis var. assamica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2,
+    matureHeightM: 1.5,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',
@@ -1773,6 +1808,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Cannabis sativa',
     category: 'ANNUAL_HERB',
     matureRadiusM: 0.9,
+    matureHeightM: 2,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1839,6 +1875,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Ribes rubrum',
     category: 'BERRY_SHRUB',
     matureRadiusM: 0.9,
+    matureHeightM: 1.2,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',
@@ -1910,6 +1947,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Tilia cordata',
     category: 'NUT_TREE',
     matureRadiusM: 4.5,
+    matureHeightM: 15,
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1972,7 +2010,8 @@ export const STAR_TREES: StarTree[] = [
       'De Jaegere, T., Hein, S., & Claessens, H. (2016). A Review of the Characteristics of Small-Leaved Lime (Tilia cordata Mill.) and Their Implications for Silviculture in a Changing Climate. Forests, 7(3), 56. doi:10.3390/f7030056',
       'Eaton, E., Caudullo, G., & de Rigo, D. (2016). Tilia cordata, Tilia platyphyllos and other limes in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Tilia_spp.pdf',
       'Fern, K. (n.d.). Tilia cordata. Useful Temperate Plants Database. https://temperate.theferns.info/plant/Tilia+cordata',
-      'Cranshaw, W. S., & Sclar, D. C. (2014). Spider Mites. Colorado State University Extension, Fact Sheet 5.507. https://extension.colostate.edu/topic-areas/insects/spider-mites-5-507/'
+      'Cranshaw, W. S., & Sclar, D. C. (2014). Spider Mites. Colorado State University Extension, Fact Sheet 5.507. https://extension.colostate.edu/topic-areas/insects/spider-mites-5-507/',
+      'NC State Extension (n.d.). Tilia cordata. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/tilia-cordata/'
     ]
   },
   {
@@ -1985,6 +2024,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Rhododendron catawbiense',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.3,
+    matureHeightM: 2.5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',

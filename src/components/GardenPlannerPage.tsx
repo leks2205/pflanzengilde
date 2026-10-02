@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree, getLoc } from '../types/guild';
+import React, { useState, useMemo, useEffect, useRef, useDeferredValue } from 'react';
+import { ClimateZone, GuildPlant, Hemisphere, Language, PhenoSeason, SoilType, StarTree, TreeAgeMode, getLoc } from '../types/guild';
 import { GardenStarPlantInstance, GardenState, ImportedGuildTemplate } from '../types/garden';
 import { STAR_TREES } from '../data/starTrees';
 import { GUILD_PLANTS } from '../data/guildPlants';
@@ -21,6 +21,8 @@ import { exportGardenCalendarIcs, hashString } from '../core/gardenCalendar';
 import { exportGardenPlanPdf } from '../core/gardenPdfExporter';
 import { Check, AlertOctagon } from 'lucide-react';
 import { t } from '../i18n/translations';
+import { buildGardenCoverInput, computeGroundCovers } from '../core/groundCoverEngine';
+import { isAreaPlant } from '../data/groundCoverSpecs';
 
 /** Companion list the optimizer will actually use for this tree (empty selection falls back to recommendations). */
 function effectiveCompanionIds(tree: GardenStarPlantInstance): string[] {
@@ -52,6 +54,8 @@ interface GardenPlannerPageProps {
   selectedSoil: SoilType;
   selectedZone: ClimateZone;
   hemisphere: Hemisphere;
+  treeAge?: TreeAgeMode;
+  onSelectTreeAge?: (age: TreeAgeMode) => void;
   onNavigate: (path: string) => void;
   initialStarTree?: StarTree;
   initialSelectedPlants?: GuildPlant[];
@@ -64,6 +68,8 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   selectedSoil,
   selectedZone,
   hemisphere,
+  treeAge = 'YOUNG',
+  onSelectTreeAge,
   onNavigate,
   initialStarTree,
   initialSelectedPlants,
@@ -255,6 +261,15 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions]);
   const { companions, stats } = resolution;
   const conflicts = resolution.unresolved;
+
+  // Ground-cover areas: computed from deferred values so dragging a tree stays responsive
+  const [coverSeason, setCoverSeason] = useState<PhenoSeason | 'ALL'>('ALL');
+  const deferredStars = useDeferredValue(starPlants);
+  const deferredCompanions = useDeferredValue(companions);
+  const groundCovers = useMemo(() => {
+    if (!deferredCompanions.some(c => isAreaPlant(c.plant))) return [];
+    return computeGroundCovers(buildGardenCoverInput(deferredStars, deferredCompanions, { hemisphere, zone: selectedZone, treeAge }));
+  }, [deferredStars, deferredCompanions, hemisphere, selectedZone, treeAge]);
 
   /** Companion list as shown (after automatic substitutions). */
   const resolvedCompanionIds = (tree: GardenStarPlantInstance): string[] =>
@@ -542,7 +557,8 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     language,
     starPlants,
     placedCompanions: companions,
-    gridBoundsM: { minX: -20, maxX: 20, minY: -20, maxY: 20 }
+    gridBoundsM: { minX: -20, maxX: 20, minY: -20, maxY: 20 },
+    treeAge
   });
 
   const handleExportJson = () => {
@@ -784,6 +800,11 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             onPasteTrees={handlePasteTrees}
             onSelectCompanion={setModalPlant}
             onDropJsonFile={handleImportJsonFile}
+            groundCovers={groundCovers}
+            coverSeason={coverSeason}
+            onCoverSeasonChange={setCoverSeason}
+            treeAge={treeAge}
+            onSelectTreeAge={onSelectTreeAge}
           />
         </div>
       </div>

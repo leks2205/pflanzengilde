@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ClimateZone, Hemisphere, Language, SoilType, StarTree, getLoc } from '../types/guild';
+import { ClimateZone, Hemisphere, Language, SoilType, StarTree, TreeAgeMode, getLoc } from '../types/guild';
 import { Mountain, AlertTriangle, CheckCircle2, Info, Droplets, Globe, Compass, Check } from 'lucide-react';
 import { t, translateClimateZone } from '../i18n/translations';
 import { ClimateZoneModal } from './ClimateZoneModal';
+import { TreeAgeToggle } from './TreeAgeToggle';
 
 interface SiteConditionsBarProps {
   language: Language;
@@ -13,6 +14,8 @@ interface SiteConditionsBarProps {
   onSelectZone: (zone: ClimateZone) => void;
   hemisphere: Hemisphere;
   onSelectHemisphere: (hemisphere: Hemisphere) => void;
+  treeAge?: TreeAgeMode;
+  onSelectTreeAge?: (age: TreeAgeMode) => void;
 }
 
 export const SiteConditionsBar: React.FC<SiteConditionsBarProps> = ({
@@ -24,6 +27,8 @@ export const SiteConditionsBar: React.FC<SiteConditionsBarProps> = ({
   onSelectZone,
   hemisphere,
   onSelectHemisphere,
+  treeAge,
+  onSelectTreeAge,
 }) => {
   const tr = t(language);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
@@ -133,6 +138,10 @@ export const SiteConditionsBar: React.FC<SiteConditionsBarProps> = ({
               🗺️ {tr.siteConditionsWorldMap}
             </span>
           </button>
+
+          {treeAge && onSelectTreeAge && (
+            <TreeAgeToggle language={language} treeAge={treeAge} onSelectTreeAge={onSelectTreeAge} />
+          )}
 
           <div className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl bg-stone-100/90 border border-stone-200 text-stone-800 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-600" />

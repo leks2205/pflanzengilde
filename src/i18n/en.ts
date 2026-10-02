@@ -82,7 +82,7 @@ export const en = {
   lightPref: 'Light',
   rootHabit: 'Root Habit',
   keyPests: 'Key Pests',
-  keepCollarBare: 'Keep 1ft Collar Bare',
+  keepCollarBare: 'Keep {m} around the trunk bare',
 
   // Step 2
   step2Title: '2. Choose Supporting Guild Plants',
@@ -1562,4 +1562,23 @@ export const en = {
   guidesStunningSpecialtyJingguXishuangbanna: 'A white-tea style from Jinggu (Yunnan) made from large-leaf Camellia sinensis var. assamica. As with every white tea, there is no kill-green and no rolling: the shoots are simply withered for a long time – the 36–72 h withering is the key step that shapes white tea quality [^57] – and then dried gently. Unlike typical white teas, Yue Guang Bai is not withered in hot noon sunlight but indoors, or outdoors at night ("under the moonlight") [^117]. Sun-withered Jinggu white tea from the local large-leaf cultivar Jinggu Dabaicha, by comparison, has a stronger fruity and sweet aroma than white teas from Fujian, mainly from linalool (fruity) and phenylacetaldehyde (sweet) [^58].',
   // guides: sources
   guidesAllBotanicalMechanicsRootSpatial: 'The factual statements in these guides are backed by the peer-reviewed papers, extension publications and other sources listed below; planning distances, radii and buffers are design defaults of our system unless a source is given.',
+  treeAgeLabel: 'Planting age',
+  treeAgeYoung: 'Young (up to 5 years)',
+  treeAgeEstablished: 'Established',
+  treeAgeHint: 'Young trees need a bare, mulched zone of about 0.75 m around the trunk because ground covers compete for water and nitrogen in the first years; established trees only need a 0.3 m collar (0.5 m for dense, vole-friendly covers).',
+  groundCoverLegend: 'Ground cover area',
+  groundCoverLegendHint: 'Shaded areas show where a ground cover grows: bare around trunks, holes around other plants, shade lovers on the shady side. The exact outline is a planning shape.',
+  groundCoverOutOfSeason: 'not active this season',
+  coverSeasonAll: 'All seasons',
+  showGroundCovers: 'Ground covers',
+  spotHintKey: 'Shift',
+  spotHint: 'Hold Shift while hovering over the garden to see which plants grow at that spot.',
+  spotTitle: 'At this spot',
+  spotNothing: 'Open ground (nothing planted here)',
+  spotKindTrunk: 'trunk',
+  spotKindCanopy: 'under the canopy',
+  spotKindPlant: 'plant',
+  spotKindCover: 'ground cover',
+  spotKindDrift: 'bulb drift',
+  spotFromTrunk: '{m} m from the trunk',
 };
