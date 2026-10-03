@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { ClimateZone, Hemisphere, Language, SoilType, getLoc } from '../types/guild';
-import { GardenCompanionInstance, GardenStarPlantInstance } from '../types/garden';
+import { ClimateZone, Hemisphere, Language, SoilType, TreeAgeMode, getLoc } from '../types/guild';
+import { GardenCompanionInstance, GardenInfrastructure, GardenStarPlantInstance } from '../types/garden';
 import { buildEmbedIframeCode, buildGardenEmbedUrl, buildGardenShareUrl } from '../utils/shareUtils';
 import { X, Copy, Check, Share2, Code, MessageCircle, Send, Mail, Sparkles, Grid, ExternalLink, Trees, Sprout } from 'lucide-react';
 import { t, formatNumber } from '../i18n/translations';
@@ -258,6 +258,8 @@ interface ShareGardenModalProps {
   hemisphere: Hemisphere;
   language: Language;
   autoShadeEnabled?: boolean;
+  treeAge?: TreeAgeMode;
+  infrastructure?: GardenInfrastructure;
 }
 
 export const ShareGardenModal: React.FC<ShareGardenModalProps> = ({
@@ -271,6 +273,8 @@ export const ShareGardenModal: React.FC<ShareGardenModalProps> = ({
   hemisphere,
   language,
   autoShadeEnabled = false,
+  treeAge,
+  infrastructure,
 }) => {
   const tr = t(language);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -292,6 +296,8 @@ export const ShareGardenModal: React.FC<ShareGardenModalProps> = ({
     hemisphere,
     language,
     autoShadeEnabled,
+    treeAge,
+    infrastructure,
   };
 
   const shareUrl = buildGardenShareUrl(encodePayload);

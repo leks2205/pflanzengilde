@@ -944,8 +944,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.1,
     perennial: true,
     notes: {
-      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers. In young apple orchards in British Columbia, a creeping-thyme living mulch reduced other orchard herbs compared with forage grasses for two of three seasons, and unlike sweet woodruff it did not come to dominate the tree row, but vole feeding still killed many young trees: no living mulch protected them as well as herbicide-kept bare soil, so use a trunk guard (Sullivan et al. 2018).',
-      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Sand-Thymian in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern, wurde aber anders als Waldmeister im Baumstreifen nicht dominant; Wühlmausfraß tötete dennoch viele Jungbäume: Kein lebender Mulch schützte sie so gut wie mit Herbizid offen gehaltener Boden, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
+      en: 'Dense, evergreen aromatic mat providing winter soil cover. Its essential oil varies strongly between chemotypes (wild Lithuanian plants were dominated by 1,8-cineole, germacrene B and other compounds rather than thymol). As a vapour in lab chambers, the oil inhibited brown rot fungi (Monilinia spp.), but a pest- or disease-repelling effect of the living plant is unproven. Drought resistant on the southern sun skirt. Bees and butterflies are attracted to the nectar of its flowers. In young apple orchards in British Columbia, a creeping-thyme living mulch reduced other orchard herbs compared with forage grasses for two of three seasons; unlike sweet woodruff and the forage grasses, it did not increase its share of the tree row over time, but vole feeding still killed many young trees: no living mulch protected them as well as herbicide-kept bare soil, so use a trunk guard (Sullivan et al. 2018).',
+      de: 'Dichter, wintergrüner Duftteppich für Bodenschutz im Winter. Sein ätherisches Öl unterscheidet sich stark zwischen Chemotypen (wilde Pflanzen aus Litauen enthielten vor allem 1,8-Cineol, Germacren B und andere Stoffe statt Thymol). Als Dampf hemmte das Öl im Laborversuch Monilia-Fruchtfäulepilze, eine Abwehr von Schädlingen oder Krankheiten durch die lebende Pflanze ist jedoch unbewiesen. Trockenheitsresistent am sonnigen Südrand. Bienen und Schmetterlinge besuchen die Blüten wegen ihres Nektars. In jungen Apfelanlagen in British Columbia verringerte ein lebender Mulch aus Sand-Thymian in zwei von drei Jahren den übrigen Krautbewuchs gegenüber Futtergräsern, anders als Waldmeister und die Futtergräser nahm sein Anteil im Baumstreifen mit der Zeit nicht zu; Wühlmausfraß tötete dennoch viele Jungbäume: Kein lebender Mulch schützte sie so gut wie mit Herbizid offen gehaltener Boden, daher einen Stammschutz verwenden (Sullivan et al. 2018).'
     },
     color: '#9333ea',
     iconName: 'Shield',
@@ -2738,7 +2738,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Zhang, J., et al. (2019). Antifungal activity of thymol and carvacrol against postharvest pathogens Botrytis cinerea. Journal of Food Science and Technology, 56(5), 2611–2620. doi:10.1007/s13197-019-03747-0',
       'Kosakowska, O., et al. (2021). Antioxidant and antibacterial activity of essential oils and hydroethanolic extracts of Greek oregano (O. vulgare L. subsp. hirtum (Link) Ietswaart) and common oregano (O. vulgare L. subsp. vulgare). Molecules, 26(4), 988. doi:10.3390/molecules26040988',
       'Rollings, R., & Goulson, D. (2019). Quantifying the attractiveness of garden flowers for pollinators. Journal of Insect Conservation, 23(5–6), 803–817. doi:10.1007/s10841-019-00177-3',
-      'North Carolina State Extension (n.d.). Origanum vulgare (oregano): "ground cover for sunny sites, forming a slowly spreading clump". North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/origanum-vulgare/'
+      'North Carolina State Extension (n.d.). Origanum vulgare: herbaceous perennial 0.3–0.9 m tall that \'can also be grown as a ground cover for sunny sites, forming a slowly spreading clump\'. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/origanum-vulgare/'
     ]
   },
   {
@@ -2769,7 +2769,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 0.8,
     perennial: true,
     notes: {
-      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers. Intercropped between apple rows together with French marigold or ageratum, catnip plots had significantly fewer spirea aphids than natural vegetation over four years (Song et al. 2017).',
+      en: 'Produces nepetalactone, which repels mosquitoes and flies by activating the insect irritant receptor TRPA1; catnip oil strongly repelled stable flies and house flies in lab tests. Nepetalactone is also an aphid sex-pheromone component: in field trap trials, nepetalactone lures attracted aphid parasitoids of the genus Praon (mainly in autumn) and males of Chrysopa lacewings, but deterred common green lacewings (Chrysoperla carnea). Bees of all kinds, wasps, flies and many butterflies visit its nectar-rich flowers. Intercropped between apple rows together with French marigold or ageratum, catnip plots had significantly fewer spirea aphids than natural vegetation over four years (Song et al. 2017); auch die Mischung ohne Katzenminze (Leberbalsam + Studentenblume) hatte deutlich weniger Blattläuse, der Anteil der Katzenminze selbst ist daher unbekannt; the mixture without catnip (ageratum + French marigold) also had significantly fewer aphids, so catnip\'s own share is unknown.',
       de: 'Bildet Nepetalacton, das Stechmücken und Fliegen über den Reizrezeptor TRPA1 der Insekten abschreckt; Katzenminzenöl wirkte im Labor stark abschreckend auf Wadenstecher und Stubenfliegen. Nepetalacton ist zugleich Bestandteil des Blattlaus-Sexualpheromons: In Fallenversuchen lockte es Blattlaus-Schlupfwespen der Gattung Praon (vor allem im Herbst) und Männchen von Chrysopa-Florfliegen an, schreckte aber die Gemeine Florfliege (Chrysoperla carnea) ab. Bienen aller Art, Wespen, Fliegen und viele Schmetterlinge besuchen die nektarreichen Blüten. Zusammen mit Studentenblume oder Leberbalsam zwischen Apfelreihen gepflanzt, hatten Katzenminze-Parzellen über vier Jahre deutlich weniger Grüne Apfelblattläuse als natürlicher Bewuchs (Song et al. 2017).'
     },
     color: '#818cf8',
@@ -3315,7 +3315,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Geflecktes Lungenkraut'
     },
     botanicalName: 'Pulmonaria officinalis',
-    layer: 'HERBACEOUS',
+    layer: 'GROUND_COVER',
     roles: ['POLLINATOR_MAGNET', 'LIVING_MULCH'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
@@ -3366,7 +3366,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Mizuno, T., Akita, Y., Uehara, A., & Iwashina, T. (2021). Identification of anthocyanins and phenolic acid in the flowers of three lungwort (Pulmonaria) cultivars and their comparisons during flower developmental stage. Bulletin of the National Museum of Nature and Science, Series B (Botany), 47(3), 143–151. doi:10.50826/bnmnsbot.47.3_143',
       'Meeus, S., Honnay, O., & Jacquemyn, H. (2013). Differences in fine-scale spatial genetic structure across the distribution range of the distylous forest herb Pulmonaria officinalis (Boraginaceae). BMC Genetics, 14, 101. doi:10.1186/1471-2156-14-101',
       'Dana, M. N., & Lerner, B. R. (2001). Black walnut toxicity (HO-193-W). Purdue University Cooperative Extension Service. https://www.purdue.edu/hla/sites/yardandgarden/wp-content/uploads/sites/2/2016/10/HO-193.pdf',
-      'North Carolina State Extension (n.d.). Pulmonaria officinalis: spreads by rhizomes at a very slow pace; not invasive. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/pulmonaria-officinalis/'
+      'North Carolina State Extension (n.d.). Pulmonaria officinalis: herbaceous perennial groundcover, 15–30 cm, spreading slowly by rhizomes; not invasive. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/pulmonaria-officinalis/'
     ]
   },
   {
@@ -3377,7 +3377,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Großblütige Elfenblume'
     },
     botanicalName: 'Epimedium grandiflorum',
-    layer: 'HERBACEOUS',
+    layer: 'GROUND_COVER',
     roles: ['LIVING_MULCH'],
     seasonalActivity: {
       activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
@@ -3586,8 +3586,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 1.0,
     perennial: true,
     notes: {
-      en: 'Semi-aquatic reed herb of wet ground with intensely aromatic rhizomes. Their essential oil is dominated by beta-asarone, which is insecticidal and repellent to pest insects in lab tests; a repellent effect on soil larvae in the garden has not been shown. Beta-asarone is considered carcinogenic, so the rhizome is not food. Suited to moist swales and rain-catchment basins.',
-      de: 'Sumpf- und Feuchtzonenpflanze mit intensiv würzigem Wurzelstock. Dessen ätherisches Öl besteht überwiegend aus beta-Asaron, das im Labor insektizid und abschreckend auf Schadinsekten wirkt; eine Wirkung gegen Bodenlarven im Garten ist nicht belegt. Beta-Asaron gilt als krebserregend, der Wurzelstock ist daher kein Lebensmittel. Geeignet für feuchte Mulden und Regenrückhaltebecken.'
+      en: 'Semi-aquatic reed herb of wet ground with intensely aromatic rhizomes. Their essential oil is dominated by beta-asarone, which is insecticidal and repellent to pest insects in lab tests; a repellent effect on soil larvae in the garden has not been shown. Beta-asarone was genotoxic and carcinogenic in animal studies, and its use in food is restricted, so the rhizome is not food. Suited to moist swales and rain-catchment basins.',
+      de: 'Sumpf- und Feuchtzonenpflanze mit intensiv würzigem Wurzelstock. Dessen ätherisches Öl besteht überwiegend aus beta-Asaron, das im Labor insektizid und abschreckend auf Schadinsekten wirkt; eine Wirkung gegen Bodenlarven im Garten ist nicht belegt. Beta-Asaron war in Tierversuchen erbgutschädigend und krebserzeugend, und seine Verwendung in Lebensmitteln ist beschränkt; der Wurzelstock ist daher kein Lebensmittel. Geeignet für feuchte Mulden und Regenrückhaltebecken.'
     },
     color: '#65a30d',
     iconName: 'Shield',
@@ -4011,8 +4011,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     heightM: 10.0,
     perennial: true,
     notes: {
-      en: 'Fast-growing actinorhizal (Frankia) pioneer of Himalayan and SW Chinese mountains that colonises landslides, and a classic N-fixing shade tree for large cardamom and highland tea. In a Yunnan field study, alders interplanted into mature var. assamica tea raised tea yield by 50–72% and soil fungal and bacterial biomass compared with tea monoculture (Mortimer et al., 2015). Plant on the sun side of the tea row and pollard or lop side branches to keep shade light; its leaf litter is N-rich (about 3.4–3.7% N). Native range lies at about 500–3,000 m with mean annual temperatures of 13–26 °C.',
-      de: 'Schnellwüchsiger aktinorhizaler (Frankia) Pionierbaum der Gebirge des Himalaya und Südwestchinas, der Rutschhänge besiedelt, und klassischer stickstofffixierender Schattenbaum für Großen Kardamom und Hochland-Tee. In einer Feldstudie in Yunnan steigerten in reife var.-assamica-Teegärten gepflanzte Erlen den Teeertrag um 50–72 % sowie die Pilz- und Bakterienbiomasse im Boden gegenüber der Tee-Monokultur (Mortimer et al., 2015). Auf der Sonnenseite der Teereihe pflanzen und köpfen oder Seitenäste schneiteln, um den Schatten licht zu halten; das Falllaub ist N-reich (etwa 3,4–3,7 % N). Natürliches Areal etwa 500–3.000 m bei 13–26 °C Jahresmitteltemperatur.'
+      en: 'Fast-growing actinorhizal (Frankia) pioneer of Himalayan and SW Chinese mountains that colonises landslides, and a classic N-fixing shade tree for large cardamom and highland tea. In a Yunnan field study, alders interplanted into mature var. assamica tea raised tea yield by 52–72% and soil fungal and bacterial biomass compared with tea monoculture (Mortimer et al., 2015). Plant on the sun side of the tea row and pollard or lop side branches to keep shade light; its leaf litter is N-rich (about 3.4–3.7% N). Native range lies at about 500–3,000 m with mean annual temperatures of 13–26 °C.',
+      de: 'Schnellwüchsiger aktinorhizaler (Frankia) Pionierbaum der Gebirge des Himalaya und Südwestchinas, der Rutschhänge besiedelt, und klassischer stickstofffixierender Schattenbaum für Großen Kardamom und Hochland-Tee. In einer Feldstudie in Yunnan steigerten in reife var.-assamica-Teegärten gepflanzte Erlen den Teeertrag um 52–72 % sowie die Pilz- und Bakterienbiomasse im Boden gegenüber der Tee-Monokultur (Mortimer et al., 2015). Auf der Sonnenseite der Teereihe pflanzen und köpfen oder Seitenäste schneiteln, um den Schatten licht zu halten; das Falllaub ist N-reich (etwa 3,4–3,7 % N). Natürliches Areal etwa 500–3.000 m bei 13–26 °C Jahresmitteltemperatur.'
     },
     color: '#166534',
     iconName: 'Leaf',

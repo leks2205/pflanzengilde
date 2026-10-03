@@ -3,10 +3,12 @@ import { GuildPlant, Language, PhenoSeason, TreeAgeMode, getLoc } from '../types
 import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance } from '../types/garden';
 import { ZoomIn, ZoomOut, Maximize2, Sparkles, Move, Trees, MousePointer, Hand } from 'lucide-react';
 import { t, formatNumber, translateSeason } from '../i18n/translations';
-import { CoverShape } from '../core/groundCoverEngine';
+import { CoverShape, ringsToSvgPath } from '../core/groundCoverEngine';
 import { isAreaPlant } from '../data/groundCoverSpecs';
 import { GroundCoverLayer } from './GroundCoverLayer';
 import { TreeAgeToggle } from './TreeAgeToggle';
+import { InfraTool, useGardenInfrastructureLayer } from './GardenInfrastructureLayer';
+import { GardenInfrastructure, GardenShape } from '../types/garden';
 import { ShiftHint, SpotLegend, useShiftKey } from './SpotInspector';
 import { plantsAtSpot } from '../core/spotInspector';
 import { isCoverInSeason } from '../core/groundCoverEngine';
@@ -36,6 +38,18 @@ interface GardenGridCanvasProps {
   onCoverSeasonChange?: (season: PhenoSeason | 'ALL') => void;
   treeAge?: TreeAgeMode;
   onSelectTreeAge?: (age: TreeAgeMode) => void;
+  /** Garden outline and raised beds with their drawing / editing tools. */
+  infrastructure?: GardenInfrastructure;
+  infraTool?: InfraTool | null;
+  selectedShapeId?: string | null;
+  onSelectShape?: (id: string | null) => void;
+  onCommitShape?: (target: 'OUTLINE' | 'BED', shape: GardenShape) => void;
+  onUpdateShape?: (id: string, shape: GardenShape) => void;
+  onDeleteShape?: (id: string) => void;
+  onCancelInfraTool?: () => void;
+  /** Companion species highlighted from the sidebar. */
+  highlightedPlantId?: string | null;
+  onHighlightPlant?: (plantId: string | null) => void;
 }
 
 export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
@@ -59,6 +73,16 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
   onCoverSeasonChange,
   treeAge,
   onSelectTreeAge,
+  infrastructure,
+  infraTool = null,
+  selectedShapeId = null,
+  onSelectShape,
+  onCommitShape,
+  onUpdateShape,
+  onDeleteShape,
+  onCancelInfraTool,
+  highlightedPlantId = null,
+  onHighlightPlant,
 }) => {
   const tr = t(language);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -134,6 +158,26 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
     }),
     [centerX, centerY, pan.x, pan.y, zoom]
   );
+
+  const infraLayer = useGardenInfrastructureLayer({
+    language,
+    infrastructure: infrastructure ?? { outline: null, raisedBeds: [] },
+    tool: infraTool,
+    selectedShapeId,
+    onSelectShape: id => onSelectShape?.(id),
+    onCommitShape: (target, shape) => onCommitShape?.(target, shape),
+    onUpdateShape: (id, shape) => onUpdateShape?.(id, shape),
+    onCancelTool: () => onCancelInfraTool?.(),
+    toScreen,
+    clientToMetric: (cx, cy) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      return rect ? toMetric(cx - rect.left, cy - rect.top) : { xM: 0, yM: 0 };
+    },
+    zoom,
+    width: canvasDim.width,
+    height: canvasDim.height,
+    editable: true,
+  });
 
   const handleZoom = (delta: number) => {
     setZoom(prev => Math.min(65, Math.max(12, prev + delta)));
@@ -230,6 +274,12 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
         return;
       }
 
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedShapeId && onDeleteShape && activeIds.length === 0) {
+        e.preventDefault();
+        onDeleteShape(selectedShapeId);
+        return;
+      }
+
       if ((e.key === 'Delete' || e.key === 'Backspace') && activeIds.length > 0) {
         e.preventDefault();
         onDeleteTrees?.(activeIds);
@@ -242,7 +292,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [localSelectedIds, selectedTreeId, starPlants, clipboardTrees, onDeleteTrees, onPasteTrees, onSelectTree, onSelectTreeIds]);
+  }, [localSelectedIds, selectedTreeId, starPlants, clipboardTrees, onDeleteTrees, onPasteTrees, onSelectTree, onSelectTreeIds, selectedShapeId, onDeleteShape]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     const isBackground =
@@ -250,6 +300,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
       (e.target as HTMLElement).id === 'grid-background';
 
     if (!isBackground) return;
+    if (selectedShapeId) onSelectShape?.(null);
+    if (highlightedPlantId) onHighlightPlant?.(null);
 
     if (toolMode === 'PAN') {
       setIsPanning(true);
@@ -626,6 +678,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
             })}
           </g>
 
+          {infraLayer.base}
+
           {shadePockets.map(pocket => {
             const pos = toScreen(pocket.xM, pocket.yM);
             const rPx = pocket.radiusM * zoom;
@@ -919,6 +973,26 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
               pointerEvents="none"
             />
           )}
+          {highlightedPlantId && (
+            <g id="plant-highlight" pointerEvents="none">
+              {groundCovers.filter(sh => sh.plantId === highlightedPlantId).map(sh => (
+                <path key={`hl-${sh.plantId}`} d={ringsToSvgPath(sh.rings, toScreen)} fill="none" stroke="#f59e0b" strokeWidth={3} strokeLinejoin="round" />
+              ))}
+              {companions.filter(c => c.plantId === highlightedPlantId).map(c => {
+                const pos = toScreen(c.xM, c.yM);
+                return (
+                  <g key={`hl-${c.instanceId}`}>
+                    <circle cx={pos.x} cy={pos.y} r={11} fill="none" stroke="#f59e0b" strokeWidth={3} />
+                    <circle cx={pos.x} cy={pos.y} r={11} fill="none" stroke="#f59e0b" strokeWidth={2}>
+                      <animate attributeName="r" from="11" to="26" dur="1.4s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" from="0.9" to="0" dur="1.4s" repeatCount="indefinite" />
+                    </circle>
+                  </g>
+                );
+              })}
+            </g>
+          )}
+          {infraLayer.top}
         </svg>
 
         {isDragOver && (

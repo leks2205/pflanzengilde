@@ -1,4 +1,8 @@
 import { ClimateZone, GuildPlant, GuildRole, Hemisphere, LocalizedString, SoilType, StarTree } from '../types/guild';
+import { RaisedBed } from '../types/garden';
+import { compartmentAt } from './compartments';
+import { plantCrossesBedWall } from './bedWallRules';
+import { nearestPointInside, nearestPointOutside } from './geometry2d';
 import {
   GardenCompanionInstance,
   GardenConflict,
@@ -143,7 +147,8 @@ export function calculateLocalLight(
 export function optimizeGardenCompanions(
   starPlants: GardenStarPlantInstance[],
   allGuildPlants: GuildPlant[] = GUILD_PLANTS,
-  hemisphere: Hemisphere = 'NORTHERN'
+  hemisphere: Hemisphere = 'NORTHERN',
+  beds: readonly RaisedBed[] = []
 ): {
   companions: GardenCompanionInstance[];
   stats: GardenStats;
@@ -189,6 +194,9 @@ export function optimizeGardenCompanions(
 
   const placedCompanions: GardenCompanionInstance[] = [];
   const plantsById = new Map(allGuildPlants.map(p => [p.id, p]));
+  // Raised beds are separate compartments: a companion only serves guilds on the other side of a
+  // bed wall if everything it does crosses the wall (pollinators, scents; see bedWallRules.ts)
+  const compartmentOf = new Map(starPlants.map(t => [t.instanceId, compartmentAt(t.xM, t.yM, beds)]));
 
   for (const plantId of allUniqueCompanionIds) {
     const plant = plantsById.get(plantId);
@@ -225,8 +233,10 @@ export function optimizeGardenCompanions(
       let bestPartner: GardenStarPlantInstance | null = null;
       let minPartnerDist = Infinity;
 
+      const crossesWalls = beds.length === 0 || plantCrossesBedWall(plant);
       for (const treeB of sortedTrees) {
         if (treeB.instanceId === treeA.instanceId || !unservicedTrees.has(treeB.instanceId)) continue;
+        if (!crossesWalls && compartmentOf.get(treeA.instanceId) !== compartmentOf.get(treeB.instanceId)) continue;
 
         const dist = Math.hypot(treeB.xM - treeA.xM, treeB.yM - treeA.yM);
 
@@ -250,6 +260,7 @@ export function optimizeGardenCompanions(
               treeC.instanceId === bestPartner.instanceId ||
               !unservicedTrees.has(treeC.instanceId)
             ) continue;
+            if (!crossesWalls && compartmentOf.get(treeA.instanceId) !== compartmentOf.get(treeC.instanceId)) continue;
 
             const cx = (treeA.xM + bestPartner.xM + treeC.xM) / 3;
             const cy = (treeA.yM + bestPartner.yM + treeC.yM) / 3;
@@ -409,6 +420,9 @@ export function optimizeGardenCompanions(
     );
   }
 
+  // Companions stay on their guild's side of a raised-bed wall
+  if (beds.length > 0) settleIntoCompartments(placedCompanions, compartmentOf, beds);
+
   const companionPlantCount = placedCompanions.length;
   const plantsSaved = Math.max(0, totalUnoptimizedCompanions - companionPlantCount);
   const savingsPercent = totalUnoptimizedCompanions > 0
@@ -434,7 +448,7 @@ export function optimizeGardenCompanions(
     }
   }
 
-  const activeConflicts = analyzeGardenAntagonisms(starPlants, placedCompanions);
+  const activeConflicts = analyzeGardenAntagonisms(starPlants, placedCompanions, beds);
   const criticalConflictsCount = activeConflicts.filter(c => c.severity === 'CRITICAL').length;
   const warningConflictsCount = activeConflicts.filter(c => c.severity === 'WARNING').length;
 
@@ -755,6 +769,8 @@ export interface ResolveGardenOptions {
   pinned?: ReadonlySet<string>;
   /** Cap on accepted swaps. Default 24. */
   maxIterations?: number;
+  /** Raised beds (lined): separate compartments for conflicts and companion sharing. */
+  beds?: readonly RaisedBed[];
 }
 
 export interface GardenResolution {
@@ -791,9 +807,23 @@ export type StarIncompatibilityReason = 'JUGLONE' | 'EDAPHIC_PH' | 'PEST_HOST' |
 export function getStarIncompatibilityForPlant(
   plant: GuildPlant,
   star: StarTree,
-  distanceM: number
+  distanceM: number,
+  /** A lined raised-bed wall separates the plant from the star. */
+  bedWall = false
 ): StarIncompatibilityReason | null {
-  if (star.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE' && distanceM < JUGLONE_ROOT_ZONE_M) return 'JUGLONE';
+  if (star.jugloneProducer && plant.jugloneTolerance === 'SENSITIVE' && distanceM < JUGLONE_ROOT_ZONE_M) {
+    // a lined bed reduces juglone to an INFO (extension advice); under the canopy leaf litter still falls in
+    if (!bedWall || distanceM < star.matureRadiusM) return 'JUGLONE';
+  }
+  if (bedWall) {
+    for (const spec of PEST_HOST_CONFLICTS) {
+      if (spec.kind !== 'INTERNAL' || spec.bedWall === 'REDUCED' || spec.bedWall === 'BLOCKED') continue;
+      if (spec.starTreeIds.includes(star.id) && spec.hostPlantIds.includes(plant.id) && distanceM < spec.safeDistanceM) {
+        return 'PEST_HOST';
+      }
+    }
+    return null;
+  }
   if (distanceM < 2.5) {
     if (STRICT_ACIDOPHILE_STAR_IDS.has(star.id) && isStrictCalcicolePlant(plant)) return 'EDAPHIC_PH';
     if (isAcidIntolerantStar(star) && isStrictAcidophilePlant(plant)) return 'EDAPHIC_PH';
@@ -862,10 +892,11 @@ export function resolveGardenConflicts(
   const exhaustedSlots = new Set<string>();
   const rejected = new Map<string, Set<string>>();
 
+  const beds = options.beds ?? [];
   const evaluate = (current: Map<string, string[]>): ResolutionRun => {
     const trees = starPlants.map(t => ({ ...t, selectedPlantIds: [...(current.get(t.instanceId) ?? [])] }));
-    const { companions, stats } = optimizeGardenCompanions(trees, allPlants, hemisphere);
-    const conflicts = analyzeGardenAntagonisms(trees, companions);
+    const { companions, stats } = optimizeGardenCompanions(trees, allPlants, hemisphere, beds);
+    const conflicts = analyzeGardenAntagonisms(trees, companions, beds);
     const score = conflicts.reduce((s, c) => s + SEVERITY_WEIGHT[c.severity], 0);
     return { companions, stats, conflicts, score };
   };
@@ -1002,7 +1033,9 @@ export function resolveGardenConflicts(
         if ((current.get(tree.instanceId) ?? []).includes(p.id)) return false;
       }
       for (const { star, dist } of starDistances) {
-        if (getStarIncompatibilityForPlant(p, star.starTree, dist)) return false;
+        const wall = beds.length > 0 && servedTrees.length > 0 &&
+          servedTrees.every(t => compartmentAt(t.xM, t.yM, beds) !== compartmentAt(star.xM, star.yM, beds));
+        if (getStarIncompatibilityForPlant(p, star.starTree, dist, wall)) return false;
       }
       for (const other of [...mates, ...nearby]) {
         if (isStrictAcidophilePlant(p) && isStrictCalcicolePlant(other)) return false;
@@ -1249,4 +1282,34 @@ export function applyGardenSubstitution(
     if (list.length > 0) next[tid] = list;
   }
   return next;
+}
+
+/** Moves companions into the compartment (raised bed or open ground) of the guilds they serve. */
+function settleIntoCompartments(
+  companions: GardenCompanionInstance[],
+  compartmentOf: Map<string, string>,
+  beds: readonly RaisedBed[]
+): void {
+  const bedById = new Map(beds.map(b => [b.id, b]));
+  for (const comp of companions) {
+    const targets = new Set(comp.servicingTreeIds.map(id => compartmentOf.get(id) ?? 'OPEN'));
+    if (targets.size !== 1) continue; // shared across a wall (crossing roles only): stays put
+    const target = [...targets][0];
+    const here = compartmentAt(comp.xM, comp.yM, beds);
+    if (here === target) continue;
+    let x = comp.xM;
+    let y = comp.yM;
+    if (target !== 'OPEN') {
+      const bed = bedById.get(target);
+      if (bed) [x, y] = nearestPointInside(x, y, bed.shape, 0.15);
+    } else {
+      for (let pass = 0; pass < 3; pass++) {
+        const inside = beds.find(b => compartmentAt(x, y, [b]) !== 'OPEN');
+        if (!inside) break;
+        [x, y] = nearestPointOutside(x, y, inside.shape, 0.1);
+      }
+    }
+    comp.xM = roundCm(x);
+    comp.yM = roundCm(y);
+  }
 }

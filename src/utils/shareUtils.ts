@@ -1,5 +1,5 @@
-import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree } from '../types/guild';
-import { GardenStarPlantInstance } from '../types/garden';
+import { ClimateZone, GuildPlant, Hemisphere, Language, SoilType, StarTree, TreeAgeMode } from '../types/guild';
+import { GardenInfrastructure, GardenShape, GardenStarPlantInstance, RaisedBed } from '../types/garden';
 import { STAR_TREES } from '../data/starTrees';
 import { GUILD_PLANTS, isRetiredPlantId } from '../data/guildPlants';
 
@@ -317,6 +317,8 @@ export interface EncodeGardenOptions {
   hemisphere?: Hemisphere;
   language?: Language;
   autoShadeEnabled?: boolean;
+  treeAge?: TreeAgeMode;
+  infrastructure?: GardenInfrastructure;
 }
 
 export interface DecodedGardenData {
@@ -327,6 +329,8 @@ export interface DecodedGardenData {
   hemisphere: Hemisphere;
   language: Language;
   autoShadeEnabled: boolean;
+  treeAge?: TreeAgeMode;
+  infrastructure?: GardenInfrastructure;
 }
 
 /**
@@ -341,6 +345,13 @@ export interface DecodedGardenData {
  *   unsigned LEB128 varints (still one byte while < 128), so those ceilings are gone. Unknown
  *   trees are left out instead of being written as index 0.
  * Every code whose version is not 2 is decoded with the legacy rules, exactly as before.
+ *
+ * Extension (still version 2, so older clients keep decoding the trees): byte 1 bit 5 = an
+ * extension block follows the name (or the stars), bit 6 = established planting. Block: varint
+ * flags (bit 0 = outline), [outline shape], varint bed count, per bed: shape + uint8 height (cm/5).
+ * Shape: uint8 kind (0 rect, 1 circle, 2 polygon); rect = int16 x, y, w, h; circle = int16 cx, cy, r;
+ * polygon = varint n, int16 x0, y0, then n-1 zigzag-varint deltas – all in centimetres, so 0.25 m
+ * snapping survives a share.
  */
 const GARDEN_CODE_VERSION = 2;
 
@@ -363,7 +374,11 @@ export function encodeGardenToCode(options: EncodeGardenOptions): string {
   const hasCustomNameBit = isDefaultName ? 0 : 1;
 
   const byte0 = (s & 0x07) | ((z & 0x07) << 3) | ((hemiBit & 0x01) << 6) | ((langBit & 0x01) << 7);
-  const byte1 = (GARDEN_CODE_VERSION & 0x07) | ((autoShadeBit & 0x01) << 3) | ((hasCustomNameBit & 0x01) << 4);
+  const infra = options.infrastructure;
+  const hasExt = Boolean(infra && (infra.outline || infra.raisedBeds.length > 0));
+  const establishedBit = options.treeAge === 'ESTABLISHED' ? 1 : 0;
+  const byte1 = (GARDEN_CODE_VERSION & 0x07) | ((autoShadeBit & 0x01) << 3) | ((hasCustomNameBit & 0x01) << 4) |
+    ((hasExt ? 1 : 0) << 5) | (establishedBit << 6);
 
   const stars = options.starPlants
     .map(sp => ({ sp, tIdx: STAR_TREES.findIndex(t => t.id === sp.treeId) }))
@@ -393,7 +408,111 @@ export function encodeGardenToCode(options: EncodeGardenOptions): string {
     for (let b = 0; b < nameBytes.length; b++) chunks.push(nameBytes[b]);
   }
 
+  if (hasExt && infra) {
+    pushVarint(chunks, infra.outline ? 1 : 0);
+    if (infra.outline) pushShape(chunks, infra.outline);
+    const beds = infra.raisedBeds.slice(0, 64);
+    pushVarint(chunks, beds.length);
+    for (const bed of beds) {
+      pushShape(chunks, bed.shape);
+      chunks.push(Math.max(1, Math.min(255, Math.round((bed.heightM * 100) / 5))));
+    }
+  }
+
   return bytesToBase64Url(new Uint8Array(chunks));
+}
+
+const toCm = (m: number) => Math.max(-32768, Math.min(32767, Math.round(m * 100)));
+function pushInt16(chunks: number[], v: number) {
+  const u = v & 0xffff;
+  chunks.push((u >> 8) & 0xff, u & 0xff);
+}
+function readInt16(bytes: Uint8Array, pos: number): number {
+  if (pos + 1 >= bytes.length) throw new Error('short');
+  const raw = (bytes[pos] << 8) | bytes[pos + 1];
+  return raw >= 0x8000 ? raw - 0x10000 : raw;
+}
+const zigzag = (v: number) => (v >= 0 ? v * 2 : -v * 2 - 1);
+const unzigzag = (v: number) => (v % 2 === 0 ? v / 2 : -(v + 1) / 2);
+
+function pushShape(chunks: number[], shape: GardenShape) {
+  if (shape.kind === 'RECT') {
+    chunks.push(0);
+    [shape.xM, shape.yM, shape.wM, shape.hM].forEach(v => pushInt16(chunks, toCm(v)));
+  } else if (shape.kind === 'CIRCLE') {
+    chunks.push(1);
+    [shape.cxM, shape.cyM, shape.rM].forEach(v => pushInt16(chunks, toCm(v)));
+  } else {
+    chunks.push(2);
+    const pts = shape.points.slice(0, 256).map(([x, y]) => [toCm(x), toCm(y)] as [number, number]);
+    pushVarint(chunks, pts.length);
+    pushInt16(chunks, pts[0][0]);
+    pushInt16(chunks, pts[0][1]);
+    for (let i = 1; i < pts.length; i++) {
+      pushVarint(chunks, zigzag(pts[i][0] - pts[i - 1][0]));
+      pushVarint(chunks, zigzag(pts[i][1] - pts[i - 1][1]));
+    }
+  }
+}
+
+function readShape(bytes: Uint8Array, pos: number): { shape: GardenShape; next: number } {
+  const kind = bytes[pos];
+  let p = pos + 1;
+  if (kind === 0 || kind === 1) {
+    const n = kind === 0 ? 4 : 3;
+    const v: number[] = [];
+    for (let i = 0; i < n; i++) { v.push(readInt16(bytes, p) / 100); p += 2; }
+    const shape: GardenShape = kind === 0
+      ? { kind: 'RECT', xM: v[0], yM: v[1], wM: v[2], hM: v[3] }
+      : { kind: 'CIRCLE', cxM: v[0], cyM: v[1], rM: v[2] };
+    return { shape, next: p };
+  }
+  if (kind === 2) {
+    const nField = readVarint(bytes, p);
+    if (!nField || nField.value < 3 || nField.value > 256) throw new Error('bad polygon');
+    p = nField.next;
+    let x = readInt16(bytes, p); p += 2;
+    let y = readInt16(bytes, p); p += 2;
+    const pts: Array<[number, number]> = [[x / 100, y / 100]];
+    for (let i = 1; i < nField.value; i++) {
+      const dx = readVarint(bytes, p); if (!dx) throw new Error('short'); p = dx.next;
+      const dy = readVarint(bytes, p); if (!dy) throw new Error('short'); p = dy.next;
+      x += unzigzag(dx.value);
+      y += unzigzag(dy.value);
+      pts.push([x / 100, y / 100]);
+    }
+    return { shape: { kind: 'POLYGON', points: pts }, next: p };
+  }
+  throw new Error('bad shape');
+}
+
+function readInfrastructure(bytes: Uint8Array, pos: number): GardenInfrastructure | undefined {
+  try {
+    const flags = readVarint(bytes, pos);
+    if (!flags) return undefined;
+    let p = flags.next;
+    let outline: GardenShape | null = null;
+    if (flags.value & 1) {
+      const r = readShape(bytes, p);
+      outline = r.shape;
+      p = r.next;
+    }
+    const count = readVarint(bytes, p);
+    if (!count) return { outline, raisedBeds: [] };
+    p = count.next;
+    const raisedBeds: RaisedBed[] = [];
+    for (let i = 0; i < Math.min(64, count.value); i++) {
+      const r = readShape(bytes, p);
+      p = r.next;
+      if (p >= bytes.length) break;
+      const heightM = (bytes[p] * 5) / 100;
+      p += 1;
+      raisedBeds.push({ id: `bed-${i + 1}`, shape: r.shape, heightM });
+    }
+    return { outline, raisedBeds };
+  } catch {
+    return undefined;
+  }
 }
 
 export function decodeGardenFromCode(code: string): DecodedGardenData | null {
@@ -475,8 +594,13 @@ export function decodeGardenFromCode(code: string): DecodedGardenData | null {
       const nameField = readField(offset);
       if (nameField && nameField.next + nameField.value <= bytes.length) {
         gardenName = new TextDecoder().decode(bytes.subarray(nameField.next, nameField.next + nameField.value));
+        offset = nameField.next + nameField.value;
       }
     }
+
+    const hasExt = !isLegacy && ((byte1 >> 5) & 0x01) === 1;
+    const established = !isLegacy && ((byte1 >> 6) & 0x01) === 1;
+    const infrastructure = hasExt && offset < bytes.length ? readInfrastructure(bytes, offset) : undefined;
 
     return {
       gardenName,
@@ -486,6 +610,8 @@ export function decodeGardenFromCode(code: string): DecodedGardenData | null {
       hemisphere,
       language,
       autoShadeEnabled,
+      ...(established ? { treeAge: 'ESTABLISHED' as TreeAgeMode } : {}),
+      ...(infrastructure ? { infrastructure } : {}),
     };
   } catch (e) {
     return null;

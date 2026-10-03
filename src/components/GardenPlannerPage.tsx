@@ -15,7 +15,13 @@ import { GardenSidebar } from './GardenSidebar';
 import { PlantDetailModal } from './PlantDetailModal';
 import { ShareGardenModal } from './ShareGardenModal';
 import { parseGardenUrl } from '../utils/shareUtils';
-import { STORAGE_KEY_GARDEN_GRID } from '../utils/gardenStorage';
+import { STORAGE_KEY_GARDEN_GRID, sanitizeInfrastructure } from '../utils/gardenStorage';
+import { GardenInfrastructure, GardenShape, RaisedBed } from '../types/garden';
+import { InfraTool } from './GardenInfrastructureLayer';
+import { InfrastructurePanel } from './InfrastructurePanel';
+import { analyzeGardenSite } from '../core/gardenSite';
+import { compartmentAt } from '../core/compartments';
+import { pointInShape, translateShape } from '../core/geometry2d';
 import { placeClusterInGarden } from '../core/multiStarLayout';
 import { exportGardenCalendarIcs, hashString } from '../core/gardenCalendar';
 import { exportGardenPlanPdf } from '../core/gardenPdfExporter';
@@ -190,6 +196,18 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   const [autoResolveEnabled, setAutoResolveEnabled] = useState<boolean>(() =>
     typeof savedData?.autoResolveEnabled === 'boolean' ? savedData.autoResolveEnabled : true
   );
+  // Garden outline and raised beds (drawn in the Infrastructure card)
+  const [infrastructure, setInfrastructure] = useState<GardenInfrastructure>(() =>
+    sanitizeInfrastructure(urlGarden?.infrastructure ?? savedData?.infrastructure)
+  );
+  const [infraTool, setInfraTool] = useState<InfraTool | null>(null);
+  const [highlightedPlantId, setHighlightedPlantId] = useState<string | null>(null);
+  useEffect(() => {
+    if (urlGarden?.treeAge && onSelectTreeAge) onSelectTreeAge(urlGarden.treeAge);
+    // only once, for a shared link
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
   // Companions the user chose in the garden itself (pinKey(tree, plant)): never auto-replaced
   const [pinnedCompanions, setPinnedCompanions] = useState<string[]>(() =>
     Array.isArray(savedData?.pinnedCompanions) ? savedData.pinnedCompanions.filter((k: unknown) => typeof k === 'string') : []
@@ -233,13 +251,14 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
         loadedGuildTemplates,
         autoShadeEnabled,
         autoResolveEnabled,
-        pinnedCompanions
+        pinnedCompanions,
+        infrastructure
       };
       localStorage.setItem(STORAGE_KEY_GARDEN_GRID, JSON.stringify(data));
     } catch (e) {
       console.error('Failed to save garden grid state to localStorage', e);
     }
-  }, [gardenId, gardenName, starPlants, loadedGuildTemplates, autoShadeEnabled, autoResolveEnabled, pinnedCompanions]);
+  }, [gardenId, gardenName, starPlants, loadedGuildTemplates, autoShadeEnabled, autoResolveEnabled, pinnedCompanions, infrastructure]);
 
   useEffect(() => {
     if (!toast) return;
@@ -256,9 +275,10 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       zone: selectedZone,
       soil: selectedSoil,
       enabled: autoResolveEnabled,
-      pinned: new Set(pinnedCompanions)
+      pinned: new Set(pinnedCompanions),
+      beds: infrastructure.raisedBeds
     });
-  }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions]);
+  }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions, infrastructure.raisedBeds]);
   const { companions, stats } = resolution;
   const conflicts = resolution.unresolved;
 
@@ -266,10 +286,49 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   const [coverSeason, setCoverSeason] = useState<PhenoSeason | 'ALL'>('ALL');
   const deferredStars = useDeferredValue(starPlants);
   const deferredCompanions = useDeferredValue(companions);
+  const deferredInfra = useDeferredValue(infrastructure);
   const groundCovers = useMemo(() => {
     if (!deferredCompanions.some(c => isAreaPlant(c.plant))) return [];
-    return computeGroundCovers(buildGardenCoverInput(deferredStars, deferredCompanions, { hemisphere, zone: selectedZone, treeAge }));
-  }, [deferredStars, deferredCompanions, hemisphere, selectedZone, treeAge]);
+    const beds = deferredInfra.raisedBeds;
+    const outline = deferredInfra.outline;
+    // Covers stay inside the garden outline (raised-bed walls are handled per tree by the engine)
+    const mask = outline ? (x: number, y: number) => (pointInShape(x, y, outline) ? 1 : 0) : undefined;
+    const compartmentOf = beds.length > 0 ? (x: number, y: number) => compartmentAt(x, y, beds) : undefined;
+    return computeGroundCovers(buildGardenCoverInput(deferredStars, deferredCompanions, { hemisphere, zone: selectedZone, treeAge, mask, compartmentOf }));
+  }, [deferredStars, deferredCompanions, hemisphere, selectedZone, treeAge, deferredInfra]);
+
+  const siteWarnings = useMemo(
+    () => analyzeGardenSite(starPlants, companions, infrastructure),
+    [starPlants, companions, infrastructure]
+  );
+
+  const handleCommitShape = (target: 'OUTLINE' | 'BED', shape: GardenShape) => {
+    if (target === 'OUTLINE') {
+      setInfrastructure(prev => ({ ...prev, outline: shape }));
+    } else {
+      setInfrastructure(prev => {
+        let n = prev.raisedBeds.length + 1;
+        while (prev.raisedBeds.some(b => b.id === `bed-${n}`)) n++;
+        const bed: RaisedBed = { id: `bed-${n}`, shape, heightM: 0.45 };
+        return { ...prev, raisedBeds: [...prev.raisedBeds, bed] };
+      });
+    }
+    setInfraTool(null);
+  };
+  const handleUpdateShape = (id: string, shape: GardenShape) => {
+    setInfrastructure(prev => id === 'outline'
+      ? { ...prev, outline: shape }
+      : { ...prev, raisedBeds: prev.raisedBeds.map(b => (b.id === id ? { ...b, shape } : b)) });
+  };
+  const handleDeleteShape = (id: string) => {
+    setInfrastructure(prev => id === 'outline'
+      ? { ...prev, outline: null }
+      : { ...prev, raisedBeds: prev.raisedBeds.filter(b => b.id !== id) });
+    setSelectedShapeId(null);
+  };
+  const handleUpdateBedHeight = (id: string, heightM: number) => {
+    setInfrastructure(prev => ({ ...prev, raisedBeds: prev.raisedBeds.map(b => (b.id === id ? { ...b, heightM } : b)) }));
+  };
 
   /** Companion list as shown (after automatic substitutions). */
   const resolvedCompanionIds = (tree: GardenStarPlantInstance): string[] =>
@@ -484,6 +543,14 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
               });
             }
           }
+          // Adopt the file's outline / raised beds when this garden has none yet (same offset as the trees)
+          const importedInfra = sanitizeInfrastructure(data.infrastructure);
+          if ((importedInfra.outline || importedInfra.raisedBeds.length > 0)) {
+            setInfrastructure(prev => (prev.outline || prev.raisedBeds.length > 0) ? prev : {
+              outline: importedInfra.outline ? translateShape(importedInfra.outline, targetXM, targetYM) : null,
+              raisedBeds: importedInfra.raisedBeds.map(bed => ({ ...bed, shape: translateShape(bed.shape, targetXM, targetYM) })),
+            });
+          }
           if (importedStars.length > 0) {
             setStarPlants(prev => [...prev, ...importedStars]);
             setLoadedGuildTemplates(prev => [...newTemplates, ...prev]);
@@ -558,7 +625,8 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     starPlants,
     placedCompanions: companions,
     gridBoundsM: { minX: -20, maxX: 20, minY: -20, maxY: 20 },
-    treeAge
+    treeAge,
+    infrastructure
   });
 
   const handleExportJson = () => {
@@ -608,6 +676,9 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
 
   const handleResetGarden = () => {
     setStarPlants([]);
+    setInfrastructure({ outline: null, raisedBeds: [] });
+    setSelectedShapeId(null);
+    setInfraTool(null);
     setPinnedCompanions([]);
     setGardenId(newGardenId());
     setSelectedTreeId(null);
@@ -780,6 +851,24 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             onToggleAutoResolve={() => setAutoResolveEnabled(prev => !prev)}
             onKeepOriginal={handleKeepOriginal}
             onApplySuggestion={handleApplySuggestion}
+            highlightedPlantId={highlightedPlantId}
+            onHighlightPlant={setHighlightedPlantId}
+            afterStarCard={
+            <InfrastructurePanel
+              language={language}
+              infrastructure={infrastructure}
+              tool={infraTool}
+              onSelectTool={setInfraTool}
+              selectedShapeId={selectedShapeId}
+              onSelectShape={setSelectedShapeId}
+              onDeleteShape={handleDeleteShape}
+              onUpdateBedHeight={handleUpdateBedHeight}
+              siteWarnings={siteWarnings}
+              starPlants={starPlants}
+              companions={companions}
+              onNavigate={onNavigate}
+            />
+            }
           />
         </div>
 
@@ -805,6 +894,16 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             onCoverSeasonChange={setCoverSeason}
             treeAge={treeAge}
             onSelectTreeAge={onSelectTreeAge}
+            infrastructure={infrastructure}
+            infraTool={infraTool}
+            selectedShapeId={selectedShapeId}
+            onSelectShape={setSelectedShapeId}
+            onCommitShape={handleCommitShape}
+            onUpdateShape={handleUpdateShape}
+            onDeleteShape={handleDeleteShape}
+            onCancelInfraTool={() => setInfraTool(null)}
+            highlightedPlantId={highlightedPlantId}
+            onHighlightPlant={setHighlightedPlantId}
           />
         </div>
       </div>
@@ -842,6 +941,8 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
           hemisphere={hemisphere}
           language={language}
           autoShadeEnabled={autoShadeEnabled}
+          treeAge={treeAge}
+          infrastructure={infrastructure}
         />
       )}
     </div>

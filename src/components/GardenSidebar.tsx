@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
+import { CollapseChevron, useCollapsible } from './useCollapsible';
 import { GuildPlant, Language, StarTree, getLoc } from '../types/guild';
 import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance, GardenStats, ImportedGuildTemplate } from '../types/garden';
 import { GardenWarningsBox } from './GardenWarningsBox';
@@ -33,6 +34,11 @@ interface GardenSidebarProps {
   onToggleAutoResolve?: () => void;
   onKeepOriginal?: (sub: GardenSubstitution) => void;
   onApplySuggestion?: (sub: GardenSubstitution) => void;
+  /** Companion species highlighted on the grid. */
+  highlightedPlantId?: string | null;
+  onHighlightPlant?: (plantId: string | null) => void;
+  /** Rendered between the star-plant card and the ecology card (the Infrastructure card). */
+  afterStarCard?: React.ReactNode;
 }
 
 export const GardenSidebar: React.FC<GardenSidebarProps> = ({
@@ -61,7 +67,11 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
   onToggleAutoResolve,
   onKeepOriginal,
   onApplySuggestion,
+  highlightedPlantId = null,
+  onHighlightPlant,
+  afterStarCard,
 }) => {
+  const { isOpen, toggle } = useCollapsible();
   const tr = t(language);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -138,8 +148,8 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
   return (
     <div className="w-full lg:w-96 flex flex-col space-y-4 shrink-0">
       <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-4 sm:p-5 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-          <div className="flex items-center gap-2">
+        <div role="button" tabIndex={0} aria-expanded={isOpen('card')} onClick={() => toggle('card')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('card'); } }} className="cursor-pointer select-none flex items-center justify-between pb-3 border-b border-stone-100">
+          <div className="flex items-center gap-2"><CollapseChevron open={isOpen('card')} />
             <Trees className="w-5 h-5 text-forest-700" />
             <h3 className="text-sm font-bold text-stone-900">
               {tr.gardenSidebarTitle}
@@ -149,6 +159,7 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
             {starPlants.length} {tr.gardenSidebarInPlan}
           </span>
         </div>
+{isOpen('card') && (<>
 
         <div
           onDragOver={handleDragOver}
@@ -245,8 +256,8 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
         </div>
 
         <div className="space-y-2 pt-2 border-t border-stone-100">
-          <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
+          <div role="button" tabIndex={0} aria-expanded={isOpen('stars')} onClick={() => toggle('stars')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('stars'); } }} className="cursor-pointer select-none text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+            <div className="flex items-center gap-1.5"><CollapseChevron open={isOpen('stars')} />
               <Trees className="w-3.5 h-3.5 text-forest-700" />
               <span>{tr.gardenSidebarActiveStarPlants}</span>
             </div>
@@ -254,6 +265,7 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
               {starPlants.length}
             </span>
           </div>
+{isOpen('stars') && (<>
 
           {starPlants.length === 0 ? (
             <div className="p-3 text-center text-xs text-stone-400 bg-stone-50 rounded-xl border border-stone-100">
@@ -383,11 +395,12 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
               })}
             </div>
           )}
-        </div>
+        </>)}
+</div>
 
         <div className="space-y-2 pt-3 border-t border-stone-100">
-          <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
+          <div role="button" tabIndex={0} aria-expanded={isOpen('companions')} onClick={() => toggle('companions')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('companions'); } }} className="cursor-pointer select-none text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+            <div className="flex items-center gap-1.5"><CollapseChevron open={isOpen('companions')} />
               <Sprout className="w-3.5 h-3.5 text-forest-600" />
               <span>{tr.gardenSidebarActiveCompanions}</span>
             </div>
@@ -395,6 +408,7 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
               {companions.length}
             </span>
           </div>
+{isOpen('companions') && (<>
 
           {companions.length === 0 ? (
             <div className="p-3 text-center text-xs text-stone-400 bg-stone-50 rounded-xl border border-stone-100">
@@ -408,11 +422,16 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
                 return (
                   <div
                     key={plant.id}
-                    className="rounded-xl border border-stone-200 bg-white hover:bg-stone-50/80 transition-all text-xs"
+                    className={`rounded-xl border transition-all text-xs ${
+                      highlightedPlantId === plant.id
+                        ? 'border-amber-400 bg-amber-50 ring-2 ring-amber-300'
+                        : 'border-stone-200 bg-white hover:bg-stone-50/80'
+                    }`}
                   >
                     <div
-                      onClick={() => toggleCompanionSpecies(plant.id)}
+                      onClick={() => onHighlightPlant?.(highlightedPlantId === plant.id ? null : plant.id)}
                       className="p-2 flex items-center justify-between gap-2 cursor-pointer"
+                      title={tr.gardenSidebarHighlightHint}
                     >
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <PlantThumbnail
@@ -491,8 +510,12 @@ export const GardenSidebar: React.FC<GardenSidebarProps> = ({
               })}
             </div>
           )}
-        </div>
-      </div>
+        </>)}
+</div>
+      </>)}
+</div>
+
+      {afterStarCard}
 
       <GardenWarningsBox
         language={language}

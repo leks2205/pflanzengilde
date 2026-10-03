@@ -25,6 +25,14 @@ export interface PestHostConflictSpec {
   mechanism: LocalizedString;
   scientificCitations: string[];
   spatialAdvice: LocalizedString;
+  /**
+   * Does a lined raised-bed wall between host and star stop the transmission? A lined bed with
+   * pathogen-free fill cuts root contact, but soil-borne pathogens still move with irrigation and
+   * drainage water, soil on tools and infected debris: REDUCED (Verticillium: Baroudy et al. 2018;
+   * Phytophthora zoospores: Hardham 2005). Flying or crawling vectors and airborne spores:
+   * NOT_BLOCKED (default). Nothing is modelled as fully BLOCKED without a source.
+   */
+  bedWall?: 'BLOCKED' | 'REDUCED' | 'NOT_BLOCKED';
 }
 
 const PRUNUS_STARS = ['tree-plum', 'tree-cherry', 'tree-apricot', 'tree-peach'];
@@ -114,6 +122,7 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
   },
   {
     id: 'internal-verticillium-host-companions',
+    bedWall: 'REDUCED',
     kind: 'INTERNAL',
     severity: 'WARNING',
     starTreeIds: ['tree-seabuckthorn-star', 'tree-linden'],
@@ -131,6 +140,7 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
       en: 'These companions can be infected by Verticillium dahliae (horseradish, French and African marigold, peppermint, strawberry). The fungus has more than 200 host species, and its microsclerotia can survive in soil for up to 14 years without a host. Sea buckthorn and linden can also develop Verticillium wilt.'
     },
     scientificCitations: [
+      'Baroudy, F., Habib, W., Tanos, G., Gerges, E., Saab, C., Choueiri, E., & Nigro, F. (2018). Long-distance spread of Verticillium dahliae through rivers and irrigation systems. Plant Disease, 102(8), 1559–1565. doi:10.1094/PDIS-08-17-1189-RE',
       'Yu, J. M., Cafarov, I. H., & Babadoost, M. (2016). Morphology, molecular identity, and pathogenicity of Verticillium dahliae and V. longisporum associated with internally discolored horseradish roots. Plant Disease, 100(4), 749–757. doi:10.1094/PDIS-08-15-0846-RE',
       'Harris, D. C., & Yang, J. R. (1996). The relationship between the amount of Verticillium dahliae in soil and the incidence of strawberry wilt as a basis for disease risk prediction. Plant Pathology, 45(1), 106–114. doi:10.1046/j.1365-3059.1996.d01-96.x',
       'Johnson, D. A., & Santo, G. S. (2001). Development of wilt in mint in response to infection by two pathotypes of Verticillium dahliae and co-infection by Pratylenchus penetrans. Plant Disease, 85(11), 1189–1192. doi:10.1094/PDIS.2001.85.11.1189',
@@ -172,6 +182,7 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
   },
   {
     id: 'external-lupine-chestnut-ink-disease',
+    bedWall: 'REDUCED',
     kind: 'EXTERNAL',
     severity: 'INFO',
     starTreeIds: ['tree-chestnut'],
@@ -189,6 +200,7 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
       en: 'Yellow lupine (Lupinus luteus) is a host of Phytophthora cinnamomi: in Spanish oak rangelands the pathogen was isolated from roots of wilting lupines, and the authors see lupine as a possible inoculum reservoir for tree roots. Other lupine species are untested. P. cinnamomi causes ink disease, to which European sweet chestnut has little or no resistance.'
     },
     scientificCitations: [
+      'Hardham, A. R. (2005). Phytophthora cinnamomi. Molecular Plant Pathology, 6(6), 589–604. doi:10.1111/j.1364-3703.2005.00308.x',
       'Serrano, M. S., et al. (2010). Lupinus luteus, a new host of Phytophthora cinnamomi in Spanish oak-rangeland ecosystems. European Journal of Plant Pathology, 128(2), 149–152. doi:10.1007/s10658-010-9652-7',
       'Santos, C., et al. (2017). First interspecific genetic linkage map for Castanea sativa x Castanea crenata revealed QTLs for resistance to Phytophthora cinnamomi. PLoS ONE, 12(9), e0184381. doi:10.1371/journal.pone.0184381'
     ],
@@ -212,8 +224,8 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
       en: 'Tea Mosquito Bug (Helopeltis theivora): Keep the Shade Light'
     },
     mechanism: {
-      de: 'In einer Feldbeobachtung auf Hainan (China) hatte eine großblättrige Teepflanzung unter dichtem Regenwald-Kronendach (etwa 20 % Licht) mehr Fraßschäden der Teewanze als Pflanzungen unter mittlerem Schatten durch Betelnusspalmen (etwa 50 % Licht) oder ohne Schatten (72, 60 und 49 befallene Triebe pro 100). Untersucht wurde nur je eine Pflanzung pro Schattenstufe in einem Monat, und die Schattenbäume waren andere Arten; der Befund ist daher eine Korrelation, kein Nachweis, dass Schattenbäume den Befall verursachen. Mäßiger Schatten bleibt empfohlen: In Yunnan steigerten zwischengepflanzte Erlen den Ertrag von Assam-Tee um 50–72 %, und Schatten erhöht den Theaningehalt der Triebe.',
-      en: 'In a field survey on Hainan (China), a large-leaf tea plantation under dense rainforest canopy (about 20 % light) had more tea mosquito bug feeding damage than plantations under medium shade from areca palms (about 50 % light) or without shade (72, 60 and 49 damaged shoots per 100). Only one plantation per shade level was surveyed in a single month, and the shade trees were other species, so this is a correlation, not proof that shade trees cause infestation. Moderate shade remains recommended: in Yunnan, interplanted alders raised Assam tea yield by 50–72 %, and shade raises the theanine content of the shoots.'
+      de: 'In einer Feldbeobachtung auf Hainan (China) hatte eine großblättrige Teepflanzung unter dichtem Regenwald-Kronendach (etwa 20 % Licht) mehr Fraßschäden der Teewanze als Pflanzungen unter mittlerem Schatten durch Betelnusspalmen (etwa 50 % Licht) oder ohne Schatten (72, 60 und 49 befallene Triebe pro 100). Auch die Pflanzung unter mittlerem Schatten hatte deutlich mehr Schäden als die unbeschattete. Untersucht wurde nur je eine Pflanzung pro Schattenstufe an einem einzigen Tag im August, und die Schattenbäume waren andere Arten; der Befund ist daher eine Korrelation, kein Nachweis, dass Schattenbäume den Befall verursachen. Schattenbäume haben dennoch Vorteile: In Yunnan steigerten in Assam-Tee gepflanzte Erlen den Teeertrag um 52–72 % (zurückgeführt auf ein reicheres Bodenleben), und in Japan erhöhte das Abdecken der Teesträucher mit Schattiernetzen vor der Ernte den Theaningehalt der jungen Triebe.',
+      en: 'In a field survey on Hainan (China), a large-leaf tea plantation under dense rainforest canopy (about 20 % light) had more tea mosquito bug feeding damage than plantations under medium shade from areca palms (about 50 % light) or without shade (72, 60 and 49 damaged shoots per 100). The medium-shade plantation also had significantly more damage than the unshaded one. Only one plantation per shade level was surveyed, on a single day in August, and the shade trees were other species, so this is a correlation, not proof that shade trees cause infestation. Shade trees still have benefits: in Yunnan, alders interplanted into Assam tea raised tea yield by 52–72 % (attributed to richer soil life), and in Japan, covering tea bushes with shade cloth before harvest raised the theanine content of the new shoots.'
     },
     scientificCitations: [
       'Yao, Q., Lin, Y., Qin, S., Lin, Z., & Ji, X. (2025). Characterization of feeding damage by tea mosquito bug, Helopeltis theivora Waterhouse (Hemiptera: Miridae) on Hainan Dayezhong tea cultivar. Frontiers in Plant Science, 15, 1529535. doi:10.3389/fpls.2024.1529535',
@@ -221,8 +233,8 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
       'Sano, T., Horie, H., Matsunaga, A., & Hirono, Y. (2018). Effect of shading intensity on morphological and color traits and on chemical components of new tea (Camellia sinensis L.) shoots under direct covering cultivation. Journal of the Science of Food and Agriculture, 98(15), 5666–5676. doi:10.1002/jsfa.9112'
     ],
     spatialAdvice: {
-      de: 'Schattenbäume regelmäßig auslichten oder schneiteln, sodass etwa die Hälfte des Lichts oder mehr den Tee erreicht. Die 3 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
-      en: 'Lop or pollard shade trees regularly so that about half the light or more reaches the tea. The 3 m distance is a precautionary planning value, not a measured limit.'
+      de: 'Schattenbäume regelmäßig auslichten oder schneiteln, sodass der Tee lichten Schatten statt eines geschlossenen Kronendachs erhält, und junge Triebe besonders unter dichterem Schatten auf Saugstellen prüfen. In der einzigen vorliegenden Erhebung ging schon etwa halber Schatten mit mehr Schäden einher als volle Sonne. Die 3 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Lop or pollard shade trees regularly so that the tea gets light shade rather than a closed canopy, and check young shoots for feeding spots, especially under denser shade. In the only survey available, even about half shade was linked with more damage than full sun. The 3 m distance is a precautionary planning value, not a measured limit.'
     }
   }
 ];

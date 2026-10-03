@@ -1,4 +1,4 @@
-import { GuildPlant } from '../types/guild';
+import { GuildPlant, LocalizedString } from '../types/guild';
 
 /**
  * Ground covers are planted or spread as an area, not as single plants.
@@ -22,16 +22,18 @@ export type GroundCoverMode = 'CARPET' | 'DRIFT' | 'ALLEY';
 export type CoverSeasonLayer = 'SUMMER' | 'SPRING_EPHEMERAL' | 'COOL_SEASON';
 
 /**
- * Light preference. SHADE covers concentrate in the poleward shade of the canopy, SUN covers avoid
- * it, HALF and ANY covers ignore it. Ellenberg L values (1 deep shade … 9 full light) are given in
- * `ellenbergL` where published (Ellenberg et al. 1991; Hill et al. 1999).
+ * Light preference. SHADE covers concentrate in the poleward shade of the canopy, SUN covers thin
+ * under it, HALF and ANY covers ignore it. `ellenbergL` holds the British-calibrated light value
+ * L of Hill et al. 1999 (1 deep shade … 9 full light) where published; the classes follow it
+ * (SHADE ≤ 4, HALF 5–6, SUN ≥ 7) except where noted (test_ground_cover.ts).
  */
 export type CoverLight = 'SHADE' | 'HALF' | 'SUN' | 'ANY';
 
 /**
- * Clonal growth form (Lovett Doust 1981): GUERRILLA species send long runners that weave into
- * neighbouring covers (soft, wide blend band); PHALANX species advance as a dense front (near-hard
- * edge).
+ * Growth form after Lovett Doust 1981 (defined for clonal plants): GUERRILLA species send long
+ * runners that weave into neighbouring covers (soft, wide blend band); PHALANX species advance as
+ * a dense front (near-hard edge). The assignment per species is a planning judgement (`strategy`
+ * in `heuristic`); non-clonal annuals are drawn as PHALANX.
  */
 export type CoverStrategy = 'GUERRILLA' | 'PHALANX';
 
@@ -52,8 +54,10 @@ export interface GroundCoverSpec {
   seasonLayer: CoverSeasonLayer;
   /** Fraction of the area actually covered once established (drives fill opacity and drift dots). */
   coverFraction: number;
-  /** Dense, tall or vole-friendly cover: keep >= 0.5 m from the trunk even around established trees. */
-  denseVoleFriendly?: boolean;
+  /** Dense mat that holds moisture and gives voles cover at the trunk: keep 0.5 m from established
+   *  trunks (planning value; vole damage was worst under crown vetch, hay mulch and fescue strips,
+   *  Merwin et al. 1999). */
+  denseMat?: boolean;
   /** Only on acidic ground (pH below about 5.5). */
   acidOnly?: boolean;
   /** Strip width for ALLEY covers (m). */
@@ -65,7 +69,9 @@ export interface GroundCoverSpec {
   /** Planting density as published. */
   density?: { min: number; max: number; unit: 'plants/m2' | 'g/m2' | 'kg/ha' | 'bulbs/m2' };
   /** Parameters without a direct source (planning values). */
-  heuristic: Array<'coverFraction' | 'rOuterFactor' | 'stripWidthM' | 'drift' | 'clumpClearanceExtraM'>;
+  /** Important limitation shown in the ground-cover guide. */
+  caveat?: LocalizedString;
+  heuristic: Array<'coverFraction' | 'rOuterFactor' | 'stripWidthM' | 'drift' | 'clumpClearanceExtraM' | 'stolonRateMPerYr' | 'light' | 'strategy' | 'edge' | 'rInnerExtraM' | 'denseMat' | 'alleyUse'>;
   sources: string[];
 }
 
@@ -99,9 +105,10 @@ const S = {
 const SPECS: GroundCoverSpec[] = [
   // ── CARPETS ────────────────────────────────────────────────────────────────────────────────────
   {
-    plantId: 'plant-white-clover', mode: 'CARPET', rOuterFactor: 1.3, light: 'SUN', ellenbergL: 8,
-    strategy: 'GUERRILLA', stolonRateMPerYr: 0.18, edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9,
-    denseVoleFriendly: true, density: { min: 0.4, max: 1.9, unit: 'g/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
+    plantId: 'plant-white-clover', mode: 'CARPET', rOuterFactor: 1.3, light: 'SUN', ellenbergL: 7,
+    strategy: 'GUERRILLA', stolonRateMPerYr: 0.18, // Burdon 1983: "around 18 cm" a year, very variable
+    edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9,
+    denseMat: true, density: { min: 0.4, max: 1.9, unit: 'g/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
     sources: [
       'Coladonato, M. (1993). Trifolium repens. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-trirep',
       'Burdon, J. J. (1983). Trifolium repens L. The Journal of Ecology, 71(1), 307. doi:10.2307/2259979',
@@ -111,181 +118,204 @@ const SPECS: GroundCoverSpec[] = [
     ]
   },
   {
-    plantId: 'plant-woodruff', mode: 'CARPET', rOuterFactor: 1.0, light: 'SHADE', ellenbergL: 2,
-    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9, denseVoleFriendly: true,
-    density: { min: 9, max: 12, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
+    plantId: 'plant-woodruff', mode: 'CARPET', rOuterFactor: 1.0, light: 'SHADE', ellenbergL: 3,
+    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9,
+    density: { min: 9, max: 12, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    caveat: { en: 'Sweet woodruff had fewer voles than forage grasses, but vole feeding still killed many young apple trees under it; use a trunk guard (Sullivan et al. 2018).', de: 'Unter Waldmeister gab es weniger Wühlmäuse als unter Futtergräsern, Wühlmausfraß tötete dort aber dennoch viele junge Apfelbäume; einen Stammschutz verwenden (Sullivan et al. 2018).' },
     sources: [S.ncsu('galium-odoratum', 'Galium odoratum'), S.rhsGroundCover, S.sullivan2018, S.hill1999]
   },
   {
-    plantId: 'plant-thyme', mode: 'CARPET', rOuterFactor: 1.15, light: 'SUN', ellenbergL: 7,
-    strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.85, denseVoleFriendly: true,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('thymus-serpyllum', 'Thymus serpyllum'), S.sullivan2018, S.hill1999, S.lovettDoust1981]
+    plantId: 'plant-thyme', mode: 'CARPET', rOuterFactor: 1.15, light: 'SUN', ellenbergL: 8,
+    strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    caveat: { en: 'Creeping thyme did not repel tree damage: under all living mulches tested, voles still killed many young trees, so use a trunk guard (Sullivan et al. 2018).', de: 'Sand-Thymian verhinderte keine Baumschäden: Unter allen geprüften lebenden Mulchen töteten Wühlmäuse dennoch viele Jungbäume, daher einen Stammschutz verwenden (Sullivan et al. 2018).' },
+    sources: [S.ncsu('thymus-serpyllum', 'Thymus serpyllum'), S.sullivan2018, S.hill1999]
   },
   {
-    plantId: 'plant-bugleweed', mode: 'CARPET', rOuterFactor: 1.0, light: 'HALF', ellenbergL: 6,
+    plantId: 'plant-bugleweed', mode: 'CARPET', rOuterFactor: 1.0, light: 'HALF', ellenbergL: 5,
     strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.85,
-    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
+    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
     sources: [
       S.ncsu('ajuga-reptans', 'Ajuga reptans'), S.rhsGroundCover, S.hill1999,
       'Dong, M., During, H. J., & Werger, M. J. (2002). Root and shoot plasticity of the stoloniferous herb Ajuga reptans L. planted in a heterogeneous environment. Flora - Morphology, Distribution, Functional Ecology of Plants, 197(1), 37-46. doi:10.1078/0367-2530-00010'
     ]
   },
   {
-    plantId: 'plant-creeping-jenny', mode: 'CARPET', rOuterFactor: 1.1, light: 'ANY',
+    plantId: 'plant-creeping-jenny', mode: 'CARPET', rOuterFactor: 1.1, light: 'ANY', ellenbergL: 5,
     strategy: 'GUERRILLA', edge: 'HARD', seasonLayer: 'SUMMER', coverFraction: 0.95, clumpClearanceExtraM: 0.2,
-    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM'],
-    sources: ['Innes, R. J. (2011). Lysimachia nummularia. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-lysnum', S.ncsu('lysimachia-nummularia', 'Lysimachia nummularia'), S.rhsGroundCover]
+    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM', 'strategy', 'edge'],
+    sources: [S.hill1999, 'Innes, R. J. (2011). Lysimachia nummularia. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-lysnum', S.ncsu('lysimachia-nummularia', 'Lysimachia nummularia'), S.rhsGroundCover]
   },
   {
-    plantId: 'plant-strawberry', mode: 'CARPET', rOuterFactor: 1.05, light: 'HALF', ellenbergL: 7,
+    plantId: 'plant-strawberry', mode: 'CARPET', rOuterFactor: 1.05, light: 'HALF', ellenbergL: 6,
     strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.7,
-    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
+    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
     sources: ['Munger, G. T. (2007). Fragaria vesca. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-fraves', S.rhsGroundCover, S.golian2023, S.hill1999]
   },
   {
     plantId: 'plant-cranberry', mode: 'CARPET', rOuterFactor: 0.9, light: 'SUN',
     strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9, acidOnly: true,
-    heuristic: ['coverFraction', 'rOuterFactor'],
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    caveat: { en: 'Needs constantly moist, acidic (pH 4.0–5.2), bog-like soil and full sun; heat and drought harm it (NC State).', de: 'Braucht dauerhaft feuchten, sauren (pH 4,0–5,2), moorähnlichen Boden und volle Sonne; Hitze und Trockenheit schaden ihr (NC State).' },
     sources: [S.ncsu('vaccinium-macrocarpon', 'Vaccinium macrocarpon'), 'DeMoranville, C., Sandler, H., & Caruso, F. (n.d.). Planting new cranberry beds. UMass Cranberry Station. https://wpcdn.web.wsu.edu/wp-wsucahnrs/uploads/sites/2166/2025/07/Planting-New-Cranberry-Beds-1.pdf']
   },
   {
-    plantId: 'plant-wild-garlic', mode: 'CARPET', rOuterFactor: 1.0, light: 'SHADE', ellenbergL: 2,
+    plantId: 'plant-wild-garlic', mode: 'CARPET', rOuterFactor: 1.0, light: 'SHADE', ellenbergL: 4,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SPRING_EPHEMERAL', coverFraction: 0.9,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: ['Oborny, B., Botta-Dukát, Z., Rudolf, K., & Morschhauser, T. (2011). Population ecology ofAllium ursinum, a space-monopolizing clonal plant. Acta Botanica Hungarica, 53(3-4), 371-388. doi:10.1556/abot.53.2011.3-4.18', S.mullerBormann1976, S.hill1999]
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: ['Oborny, B., Botta-Dukát, Z., Rudolf, K., & Morschhauser, T. (2011). Population ecology of Allium ursinum, a space-monopolizing clonal plant. Acta Botanica Hungarica, 53(3-4), 371-388. doi:10.1556/abot.53.2011.3-4.18', S.mullerBormann1976, S.hill1999]
   },
   {
     plantId: 'plant-sweet-potato', mode: 'CARPET', rOuterFactor: 1.1, light: 'SUN',
     strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.8,
-    heuristic: ['coverFraction', 'rOuterFactor'],
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    caveat: { en: 'Needs at least 8 hours of full sun; under or next to a tree canopy it is shaded out, so use it only on the sunny edge or in young plantings (Mississippi State University Extension).', de: 'Braucht mindestens 8 Stunden volle Sonne; unter oder neben einer Baumkrone wird sie beschattet, daher nur am sonnigen Rand oder in jungen Pflanzungen nutzen (Mississippi State University Extension).' },
     sources: [S.ncsu('ipomoea-batatas', 'Ipomoea batatas'), 'Mississippi State University Extension (n.d.). Growing sweet potatoes at home (Publication 2784). https://extension.msstate.edu/publications/growing-sweet-potatoes-home']
   },
   {
     plantId: 'plant-peppermint', mode: 'CARPET', rOuterFactor: 1.1, light: 'HALF',
     strategy: 'GUERRILLA', edge: 'HARD', seasonLayer: 'SUMMER', coverFraction: 0.9, clumpClearanceExtraM: 0.2,
-    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM'],
+    density: { min: 4, max: 6, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM', 'strategy', 'edge'],
     sources: [S.ncsu('mentha-x-piperita', 'Mentha × piperita'), S.mia2021, S.golian2023, 'Royal Horticultural Society (n.d.). Mint: grow your own. https://www.rhs.org.uk/herbs/mint/grow-your-own']
   },
   {
-    plantId: 'plant-nettle', mode: 'CARPET', rOuterFactor: 1.2, rInnerExtraM: 0.5, light: 'ANY',
+    plantId: 'plant-nettle', mode: 'CARPET', rOuterFactor: 1.2, rInnerExtraM: 0.5, light: 'ANY', ellenbergL: 6,
     strategy: 'PHALANX', edge: 'HARD', seasonLayer: 'SUMMER', coverFraction: 1.0, clumpClearanceExtraM: 0.4,
-    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM'],
-    sources: ['Carey, J. H. (1995). Urtica dioica. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/forb/urtdio/all.html', 'Taylor, K. (2009). Biological Flora of the British Isles: Urtica dioica L. Journal of Ecology, 97(6), 1436-1458. doi:10.1111/j.1365-2745.2009.01575.x']
+    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM', 'strategy', 'edge', 'rInnerExtraM'],
+    sources: [S.hill1999, 'Carey, J. H. (1995). Urtica dioica. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/forb/urtdio/all.html (doi:10.2737/feis-species-review-urtdio)', 'Taylor, K. (2009). Biological Flora of the British Isles: Urtica dioica L. Journal of Ecology, 97(6), 1436-1458. doi:10.1111/j.1365-2745.2009.01575.x']
   },
   {
     plantId: 'plant-wintergreen', mode: 'CARPET', rOuterFactor: 0.9, light: 'SHADE',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9, acidOnly: true,
-    density: { min: 8, max: 16, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('gaultheria-procumbens', 'Gaultheria procumbens'), 'Coladonato, M. (1994). Gaultheria procumbens. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/shrub/gaupro/all.html']
+    density: { min: 8, max: 16, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.ncsu('gaultheria-procumbens', 'Gaultheria procumbens'), 'Coladonato, M. (1994). Gaultheria procumbens. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/shrub/gaupro/all.html (doi:10.2737/feis-species-review-gaupro)']
   },
   {
-    plantId: 'plant-lingonberry', mode: 'CARPET', rOuterFactor: 0.9, light: 'HALF', ellenbergL: 5,
-    strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9, acidOnly: true,
-    density: { min: 1.4, max: 2.7, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: ['Penhallegon, R. (2006). Lingonberry production guide for the Pacific Northwest (PNW 583-E). Oregon State University. https://extension.oregonstate.edu/sites/default/files/documents/pnw583.pdf', 'Tirmenstein, D. (1991). Vaccinium vitis-idaea. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/shrub/vacvit/all.html', S.hill1999]
+    plantId: 'plant-lingonberry', mode: 'CARPET', rOuterFactor: 0.9, light: 'HALF', ellenbergL: 6,
+    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.9, acidOnly: true,
+    density: { min: 1.4, max: 2.7, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: ['Penhallegon, R. (2006). Lingonberry production guide for the Pacific Northwest (PNW 583-E). Oregon State University. https://extension.oregonstate.edu/sites/default/files/documents/pnw583.pdf', 'Tirmenstein, D. (1991). Vaccinium vitis-idaea. Fire Effects Information System. USDA Forest Service. https://www.fs.usda.gov/database/feis/plants/shrub/vacvit/all.html (doi:10.2737/feis-species-review-vacvit)', S.hill1999]
   },
   {
     plantId: 'plant-wild-ginger', mode: 'CARPET', rOuterFactor: 0.9, light: 'SHADE',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.85,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('asarum', 'Asarum'), 'Ihor, K., Iurii, S., Hanna, K., & Nataliia, K. (2019). Vitality Structure of the Populations of Vegetative Motile Plants of Forest Ecosystems of the North-East of Ukraine. The Open Agriculture Journal, 13(1), 125-132. doi:10.2174/1874331501913010125']
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: ['Kovalenko, I., Skliar, Y., Klymenko, H., & Kovalenko, N. (2019). Vitality Structure of the Populations of Vegetative Motile Plants of Forest Ecosystems of the North-East of Ukraine. The Open Agriculture Journal, 13(1), 125-132. doi:10.2174/1874331501913010125']
   },
   {
-    plantId: 'plant-subterranean-clover', mode: 'CARPET', rOuterFactor: 1.3, light: 'SUN',
-    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'COOL_SEASON', coverFraction: 0.9, denseVoleFriendly: true,
-    density: { min: 22, max: 34, unit: 'kg/ha' }, heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.sareSubclover, 'Restuccia, A., Scavo, A., Lombardo, S., Pandino, G., Fontanazza, S., Anastasi, U., … Abbate, C. (2020). Long-Term Effect of Cover Crops on Species Abundance and Diversity of Weed Flora. Plants, 9(11), 1506. doi:10.3390/plants9111506']
+    plantId: 'plant-subterranean-clover', mode: 'CARPET', rOuterFactor: 1.3, light: 'SUN', ellenbergL: 8,
+    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'COOL_SEASON', coverFraction: 0.9, denseMat: true, // planning value (dense annual sward; Granatstein & Mullinix 2008: living mulches bring rodents)
+   
+    density: { min: 22, max: 34, unit: 'kg/ha' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge', 'denseMat'],
+    sources: [S.hill1999, S.sareSubclover, 'Granatstein, D., & Mullinix, K. (2008). Mulching Options for Northwest Organic and Conventional Orchards. HortScience, 43(1), 45-50. doi:10.21273/HORTSCI.43.1.45', 'Restuccia, A., Scavo, A., Lombardo, S., Pandino, G., Fontanazza, S., Anastasi, U., … Abbate, C. (2020). Long-Term Effect of Cover Crops on Species Abundance and Diversity of Weed Flora. Plants, 9(11), 1506. doi:10.3390/plants9111506']
   },
   {
     plantId: 'plant-ladys-mantle', mode: 'CARPET', rOuterFactor: 1.0, light: 'ANY',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.8,
-    heuristic: ['coverFraction', 'rOuterFactor'],
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
     sources: [S.ncsu('alchemilla-mollis', 'Alchemilla mollis'), S.mia2021, S.golian2023]
   },
   {
     plantId: 'plant-creeping-phlox', mode: 'CARPET', rOuterFactor: 1.2, light: 'SUN',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.85, clumpClearanceExtraM: 0.15,
-    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM'],
+    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM', 'strategy', 'edge'],
     sources: [S.ncsu('phlox-subulata', 'Phlox subulata'), 'Eom, S. H., Senesac, A. F., Tsontakis-Bradley, I., & Weston, L. A. (2005). Evaluation of Herbaceous Perennials as Weed Suppressive Groundcovers for Use Along Roadsides or in Landscapes. Journal of Environmental Horticulture, 23(4), 198-203. doi:10.24266/0738-2898-23.4.198']
   },
 
   // ── DRIFTS ─────────────────────────────────────────────────────────────────────────────────────
   {
-    plantId: 'plant-daffodil', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY', ellenbergL: 8,
+    plantId: 'plant-daffodil', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY', ellenbergL: 7,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SPRING_EPHEMERAL', coverFraction: 0.3,
-    drift: { parentsPerM2: 0.8, childrenMean: 7, sigmaM: 0.12 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift'],
-    sources: ['Royal Horticultural Society (n.d.). Daffodils: growing guide. https://www.rhs.org.uk/plants/daffodils/growing-guide', S.rhsBulbsInGrass, 'Barkham, J. P. (1992). Population Dynamics of the Wild Daffodil (Narcissus Pseudonarcissus). IV. Clumps and Gaps. The Journal of Ecology, 80(4), 797. doi:10.2307/2260867', S.curtis2009, S.mullerBormann1976]
+    drift: { parentsPerM2: 0.8, childrenMean: 7, sigmaM: 0.12 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift', 'strategy', 'edge'],
+    sources: [S.hill1999, 'Royal Horticultural Society (n.d.). Daffodils: growing guide. https://www.rhs.org.uk/plants/daffodils/growing-guide', S.rhsBulbsInGrass, 'Barkham, J. P. (1992). Population Dynamics of the Wild Daffodil (Narcissus Pseudonarcissus). IV. Clumps and Gaps. The Journal of Ecology, 80(4), 797. doi:10.2307/2260867', S.curtis2009, S.mullerBormann1976]
   },
   {
     plantId: 'plant-crocus', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SPRING_EPHEMERAL', coverFraction: 0.25,
     density: { min: 100, max: 120, unit: 'bulbs/m2' },
-    drift: { parentsPerM2: 1.2, childrenMean: 9, sigmaM: 0.1 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift'],
+    drift: { parentsPerM2: 1.2, childrenMean: 9, sigmaM: 0.1 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift', 'strategy', 'edge'],
+    caveat: { en: 'Crocus corms are readily eaten by voles and mice; at sites with high rodent activity use daffodils or snowdrops instead (Curtis et al. 2009).', de: 'Krokusknollen werden von Wühlmäusen und Mäusen gern gefressen; bei hohem Nagerdruck besser Narzissen oder Schneeglöckchen setzen (Curtis et al. 2009).' },
     sources: ['Royal Horticultural Society (n.d.). Crocus: growing guide. https://www.rhs.org.uk/plants/crocus/growing-guide', S.rhsBulbsInGrass, S.curtis2009]
   },
   {
     plantId: 'plant-snowdrop', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY', ellenbergL: 5,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SPRING_EPHEMERAL', coverFraction: 0.3,
-    drift: { parentsPerM2: 1.0, childrenMean: 8, sigmaM: 0.1 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift'],
+    drift: { parentsPerM2: 1.0, childrenMean: 8, sigmaM: 0.1 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift', 'strategy', 'edge'],
     sources: ['Royal Horticultural Society (n.d.). Snowdrops: growing guide. https://www.rhs.org.uk/plants/snowdrops/growing-guide', S.ncsu('galanthus-nivalis', 'Galanthus nivalis'), S.mullerBormann1976, S.hill1999]
   },
   {
-    plantId: 'plant-winter-aconite', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY',
+    plantId: 'plant-winter-aconite', mode: 'DRIFT', rOuterFactor: 0.8, light: 'ANY', ellenbergL: 3,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SPRING_EPHEMERAL', coverFraction: 0.35,
-    drift: { parentsPerM2: 1.0, childrenMean: 10, sigmaM: 0.12 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift'],
-    sources: [S.ncsu('eranthis-hyemalis', 'Eranthis hyemalis'), S.mullerBormann1976]
+    drift: { parentsPerM2: 1.0, childrenMean: 10, sigmaM: 0.12 }, heuristic: ['coverFraction', 'rOuterFactor', 'drift', 'strategy', 'edge'],
+    sources: [S.hill1999, S.ncsu('eranthis-hyemalis', 'Eranthis hyemalis'), S.mullerBormann1976]
   },
   {
-    plantId: 'plant-miners-lettuce', mode: 'DRIFT', rOuterFactor: 1.0, light: 'HALF',
+    plantId: 'plant-miners-lettuce', mode: 'DRIFT', rOuterFactor: 1.0, light: 'HALF', ellenbergL: 6,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'COOL_SEASON', coverFraction: 0.5,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: ['Matthews, R. F. (1993). Claytonia perfoliata. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-claper']
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.hill1999, 'Matthews, R. F. (1993). Claytonia perfoliata. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-claper']
   },
   {
     plantId: 'plant-nasturtium', mode: 'DRIFT', rOuterFactor: 1.15, light: 'SUN',
-    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
-    density: { min: 11, max: 16, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor'],
+    strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
+    density: { min: 11, max: 16, unit: 'plants/m2' }, heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
     sources: ['Mahr, S. (n.d.). Nasturtium, Tropaeolum majus. University of Wisconsin–Madison Extension. https://hort.extension.wisc.edu/articles/nasturtium-tropaeolum-majus/', S.golian2023]
   },
   {
-    plantId: 'plant-chamomile', mode: 'DRIFT', rOuterFactor: 1.2, light: 'SUN',
+    plantId: 'plant-chamomile', mode: 'DRIFT', rOuterFactor: 1.2, light: 'SUN', ellenbergL: 7,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.5,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('matricaria-chamomilla', 'Matricaria chamomilla')]
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.hill1999, S.ncsu('matricaria-chamomilla', 'Matricaria chamomilla')]
   },
   {
-    plantId: 'plant-yarrow', mode: 'DRIFT', rOuterFactor: 1.25, light: 'SUN',
+    plantId: 'plant-yarrow', mode: 'DRIFT', rOuterFactor: 1.25, light: 'SUN', ellenbergL: 7,
     strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: ['Aleksoff, K. C. (1999). Achillea millefolium. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-achmil', S.ncsu('achillea-millefolium', 'Achillea millefolium')]
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.hill1999, 'Aleksoff, K. C. (1999). Achillea millefolium. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-achmil', S.ncsu('achillea-millefolium', 'Achillea millefolium')]
   },
   {
-    plantId: 'plant-oregano', mode: 'DRIFT', rOuterFactor: 1.15, light: 'SUN',
+    plantId: 'plant-oregano', mode: 'DRIFT', rOuterFactor: 1.15, light: 'HALF', ellenbergL: 6,
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('origanum-vulgare', 'Origanum vulgare')]
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.hill1999, S.ncsu('origanum-vulgare', 'Origanum vulgare')]
   },
   {
-    plantId: 'plant-tansy', mode: 'DRIFT', rOuterFactor: 1.3, light: 'SUN',
+    plantId: 'plant-tansy', mode: 'DRIFT', rOuterFactor: 1.3, light: 'SUN', ellenbergL: 7,
     strategy: 'PHALANX', edge: 'HARD', seasonLayer: 'SUMMER', coverFraction: 0.7, clumpClearanceExtraM: 0.2,
-    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM'],
-    sources: ['Gucker, C. L. (2009). Tanacetum vulgare. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-tanvul', S.ncsu('tanacetum-vulgare', 'Tanacetum vulgare')]
+    heuristic: ['coverFraction', 'rOuterFactor', 'clumpClearanceExtraM', 'strategy', 'edge'],
+    sources: [S.hill1999, 'Gucker, C. L. (2009). Tanacetum vulgare. Fire Effects Information System. USDA Forest Service. doi:10.2737/feis-species-review-tanvul', S.ncsu('tanacetum-vulgare', 'Tanacetum vulgare')]
   },
   {
     plantId: 'plant-ostrich-fern', mode: 'DRIFT', rOuterFactor: 1.0, light: 'SHADE',
+    strategy: 'GUERRILLA', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.ncsu('onoclea-struthiopteris', 'Matteuccia (Onoclea) struthiopteris'), 'Prange, R. K., & Aderkas, P. v. (1985). The Biological Flora of Canada 6. Matteuccia struthiopteris (L.) Todaro, Ostrich Fern. The Canadian field-naturalist, 99(4), 517-532. doi:10.5962/p.355493']
+  },
+  {
+    plantId: 'plant-lungwort', mode: 'DRIFT', rOuterFactor: 0.9, light: 'SHADE',
     strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
-    heuristic: ['coverFraction', 'rOuterFactor'],
-    sources: [S.ncsu('matteuccia-struthiopteris', 'Matteuccia struthiopteris'), 'Prange, R. K., & Aderkas, P. v. (1985). The Biological Flora of Canada 6. Matteuccia struthiopteris (L.) Todaro, Ostrich Fern. The Canadian field-naturalist, 99(4), 517-532. doi:10.5962/p.355493']
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [S.ncsu('pulmonaria-officinalis', 'Pulmonaria officinalis (herbaceous perennial groundcover; spreads slowly by rhizomes)')]
+  },
+  {
+    plantId: 'plant-epimedium', mode: 'DRIFT', rOuterFactor: 0.9, light: 'SHADE',
+    strategy: 'PHALANX', edge: 'SOFT', seasonLayer: 'SUMMER', coverFraction: 0.6,
+    heuristic: ['coverFraction', 'rOuterFactor', 'strategy', 'edge'],
+    sources: [
+      S.ncsu('epimedium', 'Epimedium (woodland groundcover with shallow rhizomes; copes with tree-root competition)'),
+      'Klingaman, G. (2010). Plant of the week: Epimediums. University of Arkansas Cooperative Extension. https://uaex.uada.edu/yard-garden/resource-library/plant-week/epimediums-4-16-10.aspx'
+    ]
   },
 ];
 
 // ── ALLEY STRIPS (sown, outside the drip line) ────────────────────────────────────────────────────
 type AlleyEntry = [string, CoverSeasonLayer, number, number, string[]]; // id, season, strip width, cover, sources
+/** Herb-ley species: sources show them in sown forage swards, not specifically in orchard alleys. */
+const ALLEY_USE_UNVERIFIED = new Set(['plant-chicory', 'plant-ribwort-plantain', 'plant-salad-burnet', 'plant-sorghum-sudangrass']);
 const ALLEY: AlleyEntry[] = [
-  ['plant-alfalfa', 'SUMMER', 1.2, 0.85, ['University of Arkansas Cooperative Extension (n.d.). Alfalfa production (FSA-15).', S.atucha2011]],
+  ['plant-alfalfa', 'SUMMER', 1.2, 0.85, [S.zhang2017, 'Jennings, J. (n.d.). Alfalfa management guide (FSA3158). University of Arkansas Division of Agriculture. https://www.uaex.uada.edu/publications/PDF/FSA3158.pdf']],
   ['plant-sweet-alyssum', 'SUMMER', 1.0, 0.8, ['Gontijo, L. M., Beers, E. H., & Snyder, W. E. (2013). Flowers promote aphid suppression in apple orchards. Biological Control, 66(1), 8-15. doi:10.1016/j.biocontrol.2013.03.007']],
-  ['plant-wild-carrot', 'SUMMER', 1.2, 0.6, [S.cahenzli2019, S.fiblStrips]],
+  ['plant-wild-carrot', 'SUMMER', 0.6, 0.6, [S.cahenzli2019, S.fiblStrips]], // FiBL: 50–60 cm strips in the alley centre
   ['plant-sainfoin', 'SUMMER', 1.2, 0.75, [S.hasanaliyeva2024, S.guerra2012]],
   ['plant-sicklepod', 'SUMMER', 0.8, 0.7, [S.zhang2017]],
   ['plant-soybean', 'SUMMER', 0.8, 0.75, ['Shao, S., Li, Z., Ma, X., Li, Y., Lan, B., Meng, Z., … Ye, J. (2026). Tea–soybean intercropping enhances tea yield and foliar disease suppression associated with phyllosphere Pseudomonas enrichment and apoplastic metabolic shifts. Industrial Crops and Products, 251, 124159. doi:10.1016/j.indcrop.2026.124159']],
@@ -294,12 +324,12 @@ const ALLEY: AlleyEntry[] = [
   ['plant-ribwort-plantain', 'SUMMER', 1.2, 0.6, [S.pirhoferWalzl2011]],
   ['plant-salad-burnet', 'SUMMER', 1.2, 0.6, [S.pirhoferWalzl2011]],
   ['plant-buckwheat', 'SUMMER', 0.9, 0.85, [S.sareBuckwheat]],
-  ['plant-phacelia', 'SUMMER', 1.0, 0.85, ['Smither-Kopperl, M. (2018). Plant guide for lacy phacelia (Phacelia tanacetifolia). USDA NRCS.', S.hasanaliyeva2024]],
+  ['plant-phacelia', 'SUMMER', 1.0, 0.85, ['Smither-Kopperl, M. (2018). Plant guide for lacy phacelia (Phacelia tanacetifolia). USDA-NRCS Lockeford Plant Materials Center. https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_phta.pdf']],
   ['plant-fodder-radish', 'COOL_SEASON', 1.0, 0.9, [S.sareBrassicas]],
-  ['plant-basil', 'SUMMER', 0.8, 0.6, ['Song, B., Tang, G., Sang, X., Zhang, J., Yao, Y., & Wiggins, N. (2013). Intercropping with aromatic plants hindered the occurrence ofAphis citricolain an apple orchard system by shifting predator–prey abundances. Biocontrol Science and Technology, 23(4), 381-395. doi:10.1080/09583157.2013.763904']],
-  ['plant-summer-savory', 'SUMMER', 0.8, 0.6, ['Ontario Ministry of Agriculture, Food and Rural Affairs (n.d.). Summer savory. CropOp. https://omafra.gov.on.ca/CropOp/en/herbs/']],
-  ['plant-cornflower', 'SUMMER', 1.0, 0.6, [S.cahenzli2019]],
-  ['plant-pot-marigold', 'SUMMER', 0.8, 0.65, ['Cai, Z., Ouyang, F., Zhang, X., Chen, J., Xiao, Y., Ge, F., & Zhang, J. (2021). Biological control of Aphis spiraecola (Hemiptera: Aphididae) Using Three Different Flowering Plants in Apple Orchards. Journal of Economic Entomology, 114(3), 1128-1137. doi:10.1093/jee/toab064']],
+  ['plant-basil', 'SUMMER', 0.8, 0.6, ['Song, B., Tang, G., Sang, X., Zhang, J., Yao, Y., & Wiggins, N. (2013). Intercropping with aromatic plants hindered the occurrence of Aphis citricola in an apple orchard system by shifting predator–prey abundances. Biocontrol Science and Technology, 23(4), 381-395. doi:10.1080/09583157.2013.763904']],
+  ['plant-summer-savory', 'SUMMER', 0.8, 0.6, ['Zhang, Y., Han, M., Song, M., Tian, J., Song, B., Hu, Y., … Zhang, J. (2021). Intercropping With Aromatic Plants Increased the Soil Organic Matter Content and Changed the Microbial Community in a Pear Orchard. Frontiers in Microbiology, 12, 616932. doi:10.3389/fmicb.2021.616932']],
+  ['plant-cornflower', 'SUMMER', 0.6, 0.6, [S.fiblStrips]],
+  ['plant-pot-marigold', 'SUMMER', 0.8, 0.65, ['Cai, Z., Ouyang, F., Zhang, X., Chen, J., Xiao, Y., Ge, F., & Zhang, J. (2021). Biological Control ofAphis spiraecola(Hemiptera: Aphididae) Using Three Different Flowering Plants in Apple Orchards. Journal of Economic Entomology, 114(3), 1128-1137. doi:10.1093/jee/toab064']],
   ['plant-african-marigold', 'SUMMER', 0.8, 0.65, ['Niu, Y., Han, S., Wu, Z., Pan, C., Wang, M., Tang, Y., … Zhang, Q. (2022). A push–pull strategy for controlling the tea green leafhopper (Empoasca flavescens F.) using semiochemicals from Tagetes erecta and Flemingia macrophylla. Pest Management Science, 78(6), 2161-2172. doi:10.1002/ps.6840']],
   ['plant-chinese-motherwort', 'SUMMER', 0.8, 0.6, [S.zhang2017]],
   ['plant-indian-mustard', 'COOL_SEASON', 1.0, 0.85, [S.sareBrassicas]],
@@ -307,8 +337,11 @@ const ALLEY: AlleyEntry[] = [
 ];
 for (const [plantId, seasonLayer, stripWidthM, coverFraction, sources] of ALLEY) {
   SPECS.push({
-    plantId, mode: 'ALLEY', rOuterFactor: 1, light: 'ANY', strategy: 'PHALANX', edge: 'SOFT',
-    seasonLayer, coverFraction, stripWidthM, heuristic: ['coverFraction', 'stripWidthM'], sources,
+    // sown sun-loving strips outside the drip line; geometry values are planning values
+    plantId, mode: 'ALLEY', rOuterFactor: 1, light: 'SUN', strategy: 'PHALANX', edge: 'SOFT',
+    seasonLayer, coverFraction, stripWidthM,
+    heuristic: ['coverFraction', 'stripWidthM', 'rOuterFactor', 'strategy', 'edge', ...(ALLEY_USE_UNVERIFIED.has(plantId) ? ['alleyUse' as const] : [])],
+    sources,
   });
 }
 

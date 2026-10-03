@@ -5,6 +5,9 @@ import { t, formatNumber, translateClimateZone, translateRole } from '../i18n/tr
 import { analyzeGardenAntagonisms, detectGardenShadePockets } from './gardenAntagonist';
 import { CoverShape, buildGardenCoverInput, computeGroundCovers } from './groundCoverEngine';
 import { getGroundCoverSpec } from '../data/groundCoverSpecs';
+import { shapeToPolygon, pointInShape as pointInShapeSafe } from './geometry2d';
+import { compartmentAt } from './compartments';
+import { bedLabel } from './gardenSite';
 
 export interface GenerateGardenPdfOptions {
   garden: GardenState;
@@ -351,13 +354,24 @@ export function generateGardenPlanPdfDoc(options: GenerateGardenPdfOptions): jsP
   const groundCovers = options.groundCovers ?? (placedCompanions.some(c => getGroundCoverSpec(c.plant))
     ? computeGroundCovers(buildGardenCoverInput(starPlants, placedCompanions, {
         hemisphere: garden.hemisphere, zone: garden.zone, treeAge: garden.treeAge ?? 'YOUNG',
+        mask: garden.infrastructure?.outline
+          ? (x: number, y: number) => (pointInShapeSafe(x, y, garden.infrastructure!.outline!) ? 1 : 0)
+          : undefined,
+        compartmentOf: garden.infrastructure && garden.infrastructure.raisedBeds.length > 0
+          ? (x: number, y: number) => compartmentAt(x, y, garden.infrastructure!.raisedBeds)
+          : undefined,
       }))
     : []);
   const coverPts = groundCovers.flatMap(sh => sh.rings.flat());
+  const infra = garden.infrastructure;
+  const infraPts = infra ? [
+    ...(infra.outline ? shapeToPolygon(infra.outline) : []),
+    ...infra.raisedBeds.flatMap(b => shapeToPolygon(b.shape)),
+  ] : [];
 
   // Fit the map to the bounding box of all plants and ground-cover areas.
-  const rawX = [...starPlants.map(s => s.xM), ...placedCompanions.map(c => c.xM), ...coverPts.map(p => p[0])];
-  const rawY = [...starPlants.map(s => s.yM), ...placedCompanions.map(c => c.yM), ...coverPts.map(p => p[1])];
+  const rawX = [...starPlants.map(s => s.xM), ...placedCompanions.map(c => c.xM), ...coverPts.map(p => p[0]), ...infraPts.map(p => p[0])];
+  const rawY = [...starPlants.map(s => s.yM), ...placedCompanions.map(c => c.yM), ...coverPts.map(p => p[1]), ...infraPts.map(p => p[1])];
   const minXM = rawX.length > 0 ? Math.min(...rawX) : -5;
   const maxXM = rawX.length > 0 ? Math.max(...rawX) : 5;
   const minYM = rawY.length > 0 ? Math.min(...rawY) : -5;
@@ -404,6 +418,43 @@ export function generateGardenPlanPdfDoc(options: GenerateGardenPdfOptions): jsP
     if (yPos >= mapY && yPos <= mapY + mapH) {
       doc.line(mapX, yPos, mapX + mapW, yPos);
     }
+  }
+
+  // Garden outline (dashed) and raised beds (brown, labelled with their height)
+  if (infra && (infra.outline || infra.raisedBeds.length > 0)) {
+    const drawPoly = (pts: Array<[number, number]>) => {
+      doc.moveTo(toPdfX(pts[0][0]), toPdfY(pts[0][1]));
+      for (let i = 1; i < pts.length; i++) doc.lineTo(toPdfX(pts[i][0]), toPdfY(pts[i][1]));
+      doc.close();
+    };
+    doc.saveGraphicsState();
+    infra.raisedBeds.forEach((bed, i) => {
+      doc.setGState(new GState({ opacity: 0.3 }));
+      doc.setFillColor(146, 64, 14);
+      drawPoly(shapeToPolygon(bed.shape));
+      doc.fill();
+      doc.setGState(new GState({ opacity: 1 }));
+      doc.setDrawColor(120, 53, 15);
+      doc.setLineWidth(0.5);
+      drawPoly(shapeToPolygon(bed.shape));
+      doc.stroke();
+      const pts = shapeToPolygon(bed.shape);
+      const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length;
+      const cy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6);
+      doc.setTextColor(120, 53, 15);
+      doc.text(`${bed.name || getLoc(bedLabel(i), language)} (${Math.round(bed.heightM * 100)} cm)`, toPdfX(cx), toPdfY(cy), { align: 'center' });
+    });
+    if (infra.outline) {
+      doc.setDrawColor(28, 25, 23);
+      doc.setLineWidth(0.6);
+      doc.setLineDashPattern([2, 1.2], 0);
+      drawPoly(shapeToPolygon(infra.outline));
+      doc.stroke();
+      doc.setLineDashPattern([], 0);
+    }
+    doc.restoreGraphicsState();
   }
 
   // Ground covers: translucent even-odd areas (holes stay open), clipped to the map frame
@@ -789,7 +840,7 @@ export function generateGardenPlanPdfDoc(options: GenerateGardenPdfOptions): jsP
 
   let p3Y = 36;
 
-  const conflicts = analyzeGardenAntagonisms(starPlants, placedCompanions);
+  const conflicts = analyzeGardenAntagonisms(starPlants, placedCompanions, garden.infrastructure?.raisedBeds ?? []);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(conflicts.length > 0 ? 185 : 20, conflicts.length > 0 ? 28 : 83, conflicts.length > 0 ? 28 : 45);

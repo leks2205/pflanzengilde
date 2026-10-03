@@ -7,6 +7,7 @@ import {
   Sprout,
   BookOpen,
   Layers,
+  Fence,
   Scissors,
   BookmarkCheck,
   CheckCircle2,
@@ -23,6 +24,7 @@ import {
   Bug,
   HeartHandshake
 } from 'lucide-react';
+import { GroundCoverGuide, RaisedBedGuide } from './RaisedBedGuide';
 
 interface GuidesProps {
   language: Language;
@@ -33,7 +35,7 @@ interface GuidesProps {
 type Tr = ReturnType<typeof t>;
 type Icon = typeof Leaf;
 
-type GuideTab = 'roles' | 'guild_design' | 'chop_and_drop' | 'allelopathy' | 'pests' | 'shade_and_stars' | 'tea_sinensis' | 'tea_assamica' | 'sources';
+type GuideTab = 'roles' | 'guild_design' | 'chop_and_drop' | 'allelopathy' | 'pests' | 'shade_and_stars' | 'tea_sinensis' | 'tea_assamica' | 'raised_beds' | 'sources';
 
 const GUIDE_TABS: { id: GuideTab; icon: Icon; label: keyof Tr }[] = [
   { id: 'roles', icon: Layers, label: 'guidesTabRoles' },
@@ -44,6 +46,7 @@ const GUIDE_TABS: { id: GuideTab; icon: Icon; label: keyof Tr }[] = [
   { id: 'shade_and_stars', icon: Sun, label: 'guidesTabShadeAndStars' },
   { id: 'tea_sinensis', icon: Leaf, label: 'guidesTabTeaSinensis' },
   { id: 'tea_assamica', icon: Sprout, label: 'guidesTabTeaAssamica' },
+  { id: 'raised_beds', icon: Fence, label: 'guidesTabRaisedBeds' },
   { id: 'sources', icon: BookmarkCheck, label: 'guidesTabSources' }
 ];
 
@@ -57,6 +60,7 @@ const tabFromHash = (hash: string): GuideTab | null => {
   if (hash.startsWith('shade-') || hash.startsWith('dual-') || hash === 'shade_and_stars') return 'shade_and_stars';
   if (hash.startsWith('tea-sinensis-') || hash.startsWith('tea-pruning-') || hash === 'tea_sinensis') return 'tea_sinensis';
   if (hash.startsWith('tea-assamica-') || hash === 'tea_assamica') return 'tea_assamica';
+  if (hash.startsWith('bed-') || hash === 'raised_beds') return 'raised_beds';
   if (hash.startsWith('fn-') || hash === 'sources') return 'sources';
   return null;
 };
@@ -1352,6 +1356,7 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
                   </p>
                 </GuideStep>
               </div>
+              <GroundCoverGuide language={language} />
             </div>
           </div>
         )}
@@ -1752,6 +1757,8 @@ export const Guides: React.FC<GuidesProps> = ({ language }) => {
             </div>
           </div>
         )}
+
+        {activeTab === 'raised_beds' && <RaisedBedGuide language={language} />}
 
         {activeTab === 'allelopathy' && (
           <div id="allelopathy" className="space-y-8 animate-in fade-in duration-200 scroll-mt-24">

@@ -11,7 +11,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Malus domestica',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.5,
-    matureHeightM: 4.5,
+    matureHeightM: 4,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -202,7 +202,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Prunus persica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.8,
-    matureHeightM: 4,
+    matureHeightM: 4.5,
     rootHabit: 'SURFACE_FEEDER',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -380,7 +380,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Pyrus communis',
     category: 'FRUIT_TREE',
     matureRadiusM: 3.8,
-    matureHeightM: 5,
+    matureHeightM: 4.5,
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -472,7 +472,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Ficus carica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2.5,
-    matureHeightM: 3.5,
+    matureHeightM: 3.5, // planning value (free-standing bush; no garden-height source)
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -621,7 +621,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Castanea sativa',
     category: 'NUT_TREE',
     matureRadiusM: 5.0,
-    matureHeightM: 15,
+    matureHeightM: 15, // planning value (grafted garden tree; sources give only forest maxima)
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1468,7 +1468,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Rheum rhabarbarum',
     category: 'PERENNIAL_HERB',
     matureRadiusM: 0.9,
-    matureHeightM: 1,
+    matureHeightM: 1, // leaf height, planning value
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'FULL_SUN',
@@ -1516,8 +1516,7 @@ export const STAR_TREES: StarTree[] = [
     ],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow rhubarb. RHS Grow Your Own. https://www.rhs.org.uk/vegetables/rhubarb/grow-your-own',
-      'Lyon, E., & Young, C. E. (2021). Growing Rhubarb in the Home Garden (HYG-1631). Ohio State University Extension. https://cfaes.osu.edu/fact-sheet/growing-rhubarb-home-garden',
-      'Plants For A Future (n.d.). Rheum x cultorum – Rhubarb. PFAF Plant Database. https://pfaf.org/user/plant.aspx?latinname=Rheum+x+cultorum'
+      'Lyon, E., & Young, C. E. (2021). Growing Rhubarb in the Home Garden (HYG-1631). Ohio State University Extension. https://cfaes.osu.edu/fact-sheet/growing-rhubarb-home-garden'
     ]
   },
   {
@@ -1663,7 +1662,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Camellia sinensis var. sinensis',
     category: 'BERRY_SHRUB',
     matureRadiusM: 1.2,
-    matureHeightM: 1.2,
+    matureHeightM: 0.8, // plucking-table height, see the tea guide
     rootHabit: 'DEEP_TAP',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',
@@ -1738,7 +1737,7 @@ export const STAR_TREES: StarTree[] = [
     botanicalName: 'Camellia sinensis var. assamica',
     category: 'FRUIT_TREE',
     matureRadiusM: 2,
-    matureHeightM: 1.5,
+    matureHeightM: 0.8, // plucking-table height, see the tea guide
     rootHabit: 'WIDE_SPREADING',
     jugloneProducer: false,
     sunPreference: 'PARTIAL_SUN',

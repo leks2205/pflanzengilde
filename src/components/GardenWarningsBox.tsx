@@ -1,4 +1,5 @@
 import React from 'react';
+import { CollapseChevron, useCollapsible } from './useCollapsible';
 import { GuildRole, Language, getLoc } from '../types/guild';
 import { GardenConflict, GardenShadePocket, GardenStarPlantInstance, GardenStats } from '../types/garden';
 import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, CloudRain, RefreshCw, ShieldCheck, Sparkles, Sun, Undo2 } from 'lucide-react';
@@ -45,6 +46,7 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
   onKeepOriginal,
   onApplySuggestion,
 }) => {
+  const { isOpen, toggle } = useCollapsible();
   const tr = t(language);
   const plantName = (id: string | null) => {
     const name = id ? PLANT_NAMES.get(id) : undefined;
@@ -87,8 +89,8 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-4 sm:p-5 space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-        <div className="flex items-center gap-2">
+      <div role="button" tabIndex={0} aria-expanded={isOpen('card')} onClick={() => toggle('card')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('card'); } }} className="cursor-pointer select-none flex items-center justify-between pb-3 border-b border-stone-100">
+        <div className="flex items-center gap-2"><CollapseChevron open={isOpen('card')} />
           <ShieldCheck className="w-5 h-5 text-forest-700" />
           <h3 className="text-sm font-bold text-stone-900">
             {tr.gardenWarningsTitle}
@@ -106,14 +108,16 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
           </span>
         )}
       </div>
+{isOpen('card') && (<>
 
       <div className="space-y-2.5">
-        <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
-          <span>{tr.gardenWarningsCompatHeading}</span>
+        <div role="button" tabIndex={0} aria-expanded={isOpen('compat')} onClick={() => toggle('compat')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('compat'); } }} className="cursor-pointer select-none text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+          <span className="flex items-center gap-1.5"><CollapseChevron open={isOpen('compat')} />{tr.gardenWarningsCompatHeading}</span>
           <span className="text-[10px] font-normal text-stone-400">
             {conflicts.length} {tr.gardenWarningsDetected}
           </span>
         </div>
+{isOpen('compat') && (<>
 
         {conflicts.length === 0 ? (
           <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2.5">
@@ -164,7 +168,8 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
             })}
           </div>
         )}
-      </div>
+      </>)}
+</div>
 
       {hasStarStarConflict && (
         <p className="text-[11px] text-stone-600 leading-relaxed -mt-2">{tr.gardenResolveStarStarHint}</p>
@@ -245,15 +250,15 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
       )}
 
       <div className="space-y-2 pt-2 border-t border-stone-100">
-        <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
-          <span className="flex items-center gap-1.5">
+        <div role="button" tabIndex={0} aria-expanded={isOpen('canopy')} onClick={() => toggle('canopy')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('canopy'); } }} className="cursor-pointer select-none text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+          <span className="flex items-center gap-1.5"><CollapseChevron open={isOpen('canopy')} />
             <Sun className="w-3.5 h-3.5 text-amber-500" />
             <span>{tr.gardenWarningsCanopyShading}</span>
           </span>
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={onToggleAutoShade}
+              onClick={e => { e.stopPropagation(); onToggleAutoShade?.(); }}
               className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
                 autoShadeEnabled
                   ? 'bg-sky-600 text-white shadow-xs'
@@ -269,6 +274,7 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
             </span>
           </div>
         </div>
+{isOpen('canopy') && (<>
 
         {shadePockets.length > 0 ? (
           <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-950 text-xs space-y-2">
@@ -332,13 +338,15 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
             {tr.gardenWarningsNoShade}
           </p>
         )}
-      </div>
+      </>)}
+</div>
 
       <div className="space-y-2 pt-2 border-t border-stone-100">
-        <div className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
-          <span>{tr.gardenWarningsEfficiency}</span>
+        <div role="button" tabIndex={0} aria-expanded={isOpen('efficiency')} onClick={() => toggle('efficiency')} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('efficiency'); } }} className="cursor-pointer select-none text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center justify-between">
+          <span className="flex items-center gap-1.5"><CollapseChevron open={isOpen('efficiency')} />{tr.gardenWarningsEfficiency}</span>
           <span className="text-emerald-700 font-bold">{stats.savingsPercent}% {tr.gardenWarningsSaved}</span>
         </div>
+{isOpen('efficiency') && (<>
 
         <div className="grid grid-cols-2 gap-2 text-center text-xs">
           <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200">
@@ -365,7 +373,9 @@ export const GardenWarningsBox: React.FC<GardenWarningsBoxProps> = ({
             />
           </div>
         </div>
-      </div>
-    </div>
+      </>)}
+</div>
+    </>)}
+</div>
   );
 };

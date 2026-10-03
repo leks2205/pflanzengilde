@@ -9,11 +9,13 @@ import { isAlliumPlant, isFennelPlant, isLegumePlant, isWormwoodPlant } from './
  * Each cover gets a scalar "suitability" field f(x, y) in [0, 1]; the area is the iso-0.5 contour
  * of that field, traced with marching squares. The field encodes the evidence-based rules:
  *
- *  - bare zone around every trunk: 0.75 m around young trees (weed-free circle/strip trials:
- *    Willoughby 1999, Neilsen & Hogue 2000, Smith et al. 2005), 0.3 m collar around established
+ *  - bare zone around every trunk: 0.9 m radius around young trees (1.83 m weed-free circle gave
+ *    near-maximum growth, Smith et al. 2005; 1.5 m strips: Neilsen & Hogue 2000, Merwin & Stiles
+ *    1994; bare area drives the response: Welker & Glenn 1989, 1991), 0.3 m collar around established
  *    trees (Atucha et al. 2011), 0.5 m for dense, vole-friendly covers (Merwin et al. 1999)
- *  - SHADE covers concentrate in the canopy shadow, which falls poleward of the trunk by
- *    crownHeight × cot(noon sun elevation) (solar geometry, Cooper 1969); SUN covers avoid it;
+ *  - SHADE covers concentrate in the canopy shadow, whose daily-integrated core lies poleward of
+ *    the trunk by about 0.6 × crownHeight × cot(noon sun elevation) (solar geometry with the
+ *    declination formula of Cooper 1969, integrated over the day); SUN covers thin under it;
  *    spring ephemerals ignore it (they grow before leaf-out, Muller & Bormann 1976)
  *  - holes around clump companions (their spread plus one year of runner growth) and around
  *    allelopathic plants (fennel, wormwood) and, for legume covers, around alliums – the same
@@ -63,10 +65,12 @@ export interface GroundCoverInput {
   treeAge: TreeAgeMode;
   /** Season shown; covers that are not active then are flagged `inSeason: false`. */
   season?: PhenoSeason | 'ALL';
-  /** Grid resolution in metres (0.05 radial view, 0.1 garden grid). */
+  /** Grid resolution in metres (0.06 radial view, 0.1–0.25 garden grid). */
   resolutionM: number;
   /** Optional mask (e.g. garden outline, raised-bed compartments): return 0 to forbid a point. */
   mask?: (xM: number, yM: number, cover: CoverInstanceInput) => number;
+  /** Raised-bed compartment of a point (bed id or 'OPEN'): chemical buffers weaken across walls. */
+  compartmentOf?: (xM: number, yM: number) => string;
 }
 
 export interface CoverShape {
@@ -153,13 +157,17 @@ function makeAngularNoise(seed: number): (theta: number) => number {
 const TREE_CATEGORIES = new Set(['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE']);
 
 /**
- * Bare zone around a trunk (m). Young trees: 0.75 m radius (1.5 m weed-free strip / 1.83 m circle
- * trials); established trees: 0.3 m collar, 0.5 m for dense vole-friendly covers. Shrubs, vines
- * and perennials keep at most half their canopy radius (min 0.3 m), since the orchard trials
- * concern trees.
+ * Bare zone around a trunk (m). Young trees (first ~5 years, Atucha et al. 2011): 0.9 m radius
+ * (Smith et al. 2005: 1.83 m weed-free circle ≈ maximum growth). Established trees: a 0.3 m
+ * collar (planning value: collar rot and vole cover at the trunk, Merwin & Stiles 1994), 0.5 m for
+ * dense mats (planning value, Merwin et al. 1999). Shrubs, vines and perennials keep at most half
+ * their canopy radius (min 0.3 m), since the orchard trials concern trees.
  */
 export function trunkClearanceM(star: StarTree, treeAge: TreeAgeMode, spec?: GroundCoverSpec | null): number {
-  const base = treeAge === 'YOUNG' ? 0.75 : spec?.denseVoleFriendly ? 0.5 : 0.3;
+  // Spring ephemerals are dormant while young trees compete for summer water and nitrogen, so they
+  // keep only the collar (planning judgement)
+  const young = treeAge === 'YOUNG' && spec?.seasonLayer !== 'SPRING_EPHEMERAL';
+  const base = young ? 0.9 : spec?.denseMat ? 0.5 : 0.3;
   if (TREE_CATEGORIES.has(star.category)) return base;
   return Math.min(base, Math.max(0.3, star.matureRadiusM * 0.5));
 }
@@ -170,13 +178,20 @@ const ZONE_LATITUDE: Record<ClimateZone, number> = { BOREAL: 60, TEMPERATE: 50, 
 const SUMMER_DECLINATION = 18;
 
 /** Poleward displacement of a tree's noon canopy shadow (m): crown-centre height × cot(α). */
-export function shadeOffsetM(star: StarTree, zone: ClimateZone = 'TEMPERATE'): number {
-  const height = star.matureHeightM ?? star.matureRadiusM * 1.6;
-  const crownCentre = Math.max(height * 0.6, height - star.matureRadiusM);
-  const alphaDeg = 90 - Math.abs(ZONE_LATITUDE[zone] - SUMMER_DECLINATION);
+export function shadeOffsetM(star: StarTree, zone: ClimateZone = 'TEMPERATE', sizeScale = 1): number {
+  const height = (star.matureHeightM ?? star.matureRadiusM * 1.6) * sizeScale;
+  const radius = star.matureRadiusM * sizeScale;
+  const crownCentre = Math.max(height * 0.6, height - radius);
+  // tropics: year-round season, mean declination ~0°, noon sun near the zenith
+  const decl = zone === 'TROPICAL' ? 0 : SUMMER_DECLINATION;
+  const alphaDeg = 90 - Math.abs(ZONE_LATITUDE[zone] - decl);
   const cot = 1 / Math.tan((alphaDeg * Math.PI) / 180);
-  return Math.max(0, crownCentre * cot);
+  // centre of the daily-integrated shade core ≈ 0.6 × the noon shadow offset
+  return Math.max(0, 0.6 * crownCentre * cot);
 }
+
+/** Young plantings cast much less shade than the mature canopy shown on the plan (planning value). */
+const YOUNG_CANOPY_SCALE = 0.5;
 
 /** Half-width of the blend band between two covers (m): guerrilla runners interweave further. */
 function blendHalfWidthM(spec: GroundCoverSpec): number {
@@ -220,6 +235,8 @@ interface StarTerm {
   sy: number;
   /** Preferred direction of this cover around this star (radians, screen frame: 0 = east, y south). */
   prefAngle: number;
+  /** Raised-bed compartment of this star: the cover only grows on the same side of a bed wall. */
+  comp?: string;
   bbox: { minX: number; maxX: number; minY: number; maxY: number };
 }
 
@@ -301,9 +318,10 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
         rOutBase = Math.max(rIn + 0.6, R * g.spec.rOuterFactor);
       }
       const innerEdge = g.spec.mode === 'ALLEY' ? R + 0.5 : rIn;
+      const sizeScale = input.treeAge === 'YOUNG' ? YOUNG_CANOPY_SCALE : 1;
       let off = shadeOffsetCache.get(s.star.id);
       if (off === undefined) {
-        off = shadeOffsetM(s.star, input.zone);
+        off = shadeOffsetM(s.star, input.zone, sizeScale);
         shadeOffsetCache.set(s.star.id, off);
       }
       const peers = coversPerStarLayer.get(`${key}|${g.spec.seasonLayer}|${g.spec.mode === 'ALLEY' ? 'A' : 'C'}`) ?? [g];
@@ -325,12 +343,14 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
         y: s.yM,
         rIn: innerEdge,
         rOutBase,
-        rCanopy: R,
+        // daily shade core ≈ 0.85 × canopy radius (sun sweeps east–west through the day)
+        rCanopy: R * 0.85 * sizeScale,
         noise: makeAngularNoise(hash32(`${key}|${g.plantId}`)),
         noiseAmp,
         sx: s.xM,
         sy: s.yM + hemiSign * off,
         prefAngle: bearingToScreenRad(bearing),
+        comp: input.compartmentOf ? input.compartmentOf(s.xM, s.yM) : undefined,
         bbox: { minX: s.xM - reach, maxX: s.xM + reach, minY: s.yM - reach, maxY: s.yM + reach },
       };
       g.terms.push(term);
@@ -346,7 +366,7 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
   const clumps = input.clumps.filter(c => !getGroundCoverSpec(c.plant));
   const BUCKET = 2;
   const bucketKey = (ix: number, iy: number) => (ix + 32768) * 65536 + (iy + 32768);
-  interface Obstacle { x: number; y: number; r: number }
+  interface Obstacle { x: number; y: number; r: number; comp?: string; rAcrossWall?: number }
   const obstacleBuckets = new Map<CoverGroup, Map<number, Obstacle[]>>();
   const termBuckets = new Map<CoverGroup, Map<number, StarTerm[]>>();
   const insert = <T,>(map: Map<number, T[]>, item: T, x0: number, x1: number, y0: number, y1: number) => {
@@ -361,15 +381,24 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
   };
   for (const g of groups) {
     const ob = new Map<number, Obstacle[]>();
+    const serving = new Set(g.terms.map(t => `${t.x},${t.y}`));
     for (const s of input.stars) {
+      // the cover's own trees are already bare through the term's inner edge
+      if (serving.has(`${s.xM},${s.yM}`)) continue;
       const c = trunkClearanceM(s.star, input.treeAge, g.spec);
       // strips stay outside every canopy (+0.5 m)
       const r = g.spec.mode === 'ALLEY' ? Math.max(c, s.star.matureRadiusM + 0.5) : c;
       insert(ob, { x: s.xM, y: s.yM, r }, s.xM - r - eps, s.xM + r + eps, s.yM - r - eps, s.yM + r + eps);
     }
     for (const c of clumps) {
-      const r = Math.max(clumpHoleRadiusM(c.plant, g.spec), chemicalBufferM(c.plant, g.plant));
-      insert(ob, { x: c.xM, y: c.yM, r }, c.xM - r - eps, c.xM + r + eps, c.yM - r - eps, c.yM + r + eps);
+      const hole = clumpHoleRadiusM(c.plant, g.spec);
+      const chem = chemicalBufferM(c.plant, g.plant);
+      const r = Math.max(hole, chem);
+      // Across a raised-bed wall the soil route is cut: allium–legume buffer dropped, allelopaths
+      // halved (same rules as the garden conflict engine)
+      const acrossWall = isAlliumPlant(c.plant) && isLegumePlant(g.plant) ? hole : Math.max(hole, chem / 2);
+      const comp = input.compartmentOf && chem > hole ? input.compartmentOf(c.xM, c.yM) : undefined;
+      insert(ob, { x: c.xM, y: c.yM, r, comp, rAcrossWall: acrossWall }, c.xM - r - eps, c.xM + r + eps, c.yM - r - eps, c.yM + r + eps);
     }
     obstacleBuckets.set(g, ob);
     const tb = new Map<number, StarTerm[]>();
@@ -387,19 +416,25 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     if (terms.length === 0) return [0, 0];
     vals.length = 0;
     let affinity = 0;
+    let here: string | undefined;
     for (const t of terms) {
       if (x < t.bbox.minX || x > t.bbox.maxX || y < t.bbox.minY || y > t.bbox.maxY) continue;
+      if (t.comp !== undefined) {
+        if (here === undefined) here = input.compartmentOf!(x, y);
+        if (here !== t.comp) continue; // living mulch stays on its guild's side of a bed wall
+      }
       const dx = x - t.x;
       const dy = y - t.y;
       const d = Math.hypot(dx, dy);
       if (d > t.rOutBase * (1 + t.noiseAmp) + eps || d < t.rIn) continue;
       const theta = Math.atan2(dy, dx);
       const rOut = t.rOutBase * (1 + t.noiseAmp * t.noise(theta));
-      let v = smoothstep((d - t.rIn) / eps) * smoothstep((rOut - d) / eps);
+      // ramps centred on the evidence distance (value 0.5 exactly at the edge)
+      let v = smoothstep(0.5 + (d - t.rIn) / eps) * smoothstep(0.5 + (rOut - d) / eps);
       if (v <= 0) continue;
       if (g.spec.seasonLayer !== 'SPRING_EPHEMERAL' && g.spec.mode !== 'ALLEY') {
         const ds = Math.hypot(x - t.sx, y - t.sy);
-        const shade = 1 - smoothstep((ds - t.rCanopy) / 0.5);
+        const shade = 1 - smoothstep(0.5 + (ds - t.rCanopy) / 0.5);
         if (g.spec.light === 'SHADE') v *= 0.25 + 0.75 * shade;
         else if (g.spec.light === 'SUN') v *= 1 - 0.4 * shade; // thins under the canopy but persists (clover grows in peach tree rows, Bussi et al. 2016)
       }
@@ -411,7 +446,8 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     for (const o of obstacleBuckets.get(g)!.get(key) ?? EMPTY) {
       const d = Math.hypot(x - o.x, y - o.y);
       if (d < o.r + eps) {
-        f *= smoothstep((d - o.r) / eps);
+        const r = o.comp !== undefined && input.compartmentOf && input.compartmentOf(x, y) !== o.comp ? o.rAcrossWall ?? o.r : o.r;
+        f *= smoothstep(0.5 + (d - r) / eps);
         if (f <= 0) return [0, 0];
       }
     }
@@ -465,6 +501,29 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     const l = `${g.spec.seasonLayer}|${g.spec.mode === 'ALLEY' ? 'A' : 'C'}`;
     peersOf.set(l, [...(peersOf.get(l) ?? []), g]);
   }
+
+  /** Moves a point out of every clearance circle of this cover (exact evidence distances). */
+  const enforceClearances = (x: number, y: number, g: CoverGroup): [number, number] => {
+    let px = x;
+    let py = y;
+    const circles: Array<{ x: number; y: number; r: number }> = [];
+    for (const t of g.terms) circles.push({ x: t.x, y: t.y, r: t.rIn });
+    const key = bucketKey(Math.floor(x / BUCKET), Math.floor(y / BUCKET));
+    for (const o of obstacleBuckets.get(g)!.get(key) ?? EMPTY) {
+      const r = o.comp !== undefined && input.compartmentOf && input.compartmentOf(x, y) !== o.comp ? o.rAcrossWall ?? o.r : o.r;
+      circles.push({ x: o.x, y: o.y, r });
+    }
+    for (let pass = 0; pass < 2; pass++) {
+      for (const c of circles) {
+        const d = Math.hypot(px - c.x, py - c.y);
+        if (d < c.r && d > 1e-6) {
+          px = c.x + ((px - c.x) / d) * (c.r + 0.005);
+          py = c.y + ((py - c.y) / d) * (c.r + 0.005);
+        }
+      }
+    }
+    return [px, py];
+  };
 
   const shapes: CoverShape[] = [];
   for (const g of groups) {
@@ -528,9 +587,13 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     const rings: Ring[] = [];
     for (const r of gridRings) {
       const m: Ring = r.map(([gx, gy]) => [round2(minX + gx * res), round2(minY + gy * res)]);
-      const simp = simplifyRing(chaikin(simplifyRing(m, Math.max(0.02, res * 0.3)), 2), Math.max(0.01, res * 0.15)).map(
-        ([x, y]) => [round2(x), round2(y)] as [number, number]
-      );
+      const smooth = simplifyRing(chaikin(simplifyRing(m, Math.max(0.02, res * 0.3)), 2), Math.max(0.01, res * 0.15));
+      // Smoothing must never cut into an evidence-based clearance: push such vertices back out to
+      // the exact distance (bare trunk zones, alley offset, clump holes, chemical buffers)
+      const simp = smooth.map(([x, y]) => {
+        const [px, py] = enforceClearances(x, y, g);
+        return [round2(px), round2(py)] as [number, number];
+      });
       if (simp.length >= 3 && Math.abs(signedArea(simp)) >= 0.04) rings.push(simp);
     }
     if (rings.length === 0) continue;
@@ -842,7 +905,7 @@ export function buildRadialCoverInput(
 export function buildGardenCoverInput(
   stars: Array<{ instanceId: string; xM: number; yM: number; starTree: StarTree }>,
   companions: Array<{ instanceId: string; plant: GuildPlant; xM: number; yM: number; servicingTreeIds: string[] }>,
-  opts: { hemisphere: Hemisphere; zone?: ClimateZone; treeAge: TreeAgeMode; resolutionM?: number; mask?: GroundCoverInput['mask'] }
+  opts: { hemisphere: Hemisphere; zone?: ClimateZone; treeAge: TreeAgeMode; resolutionM?: number; mask?: GroundCoverInput['mask']; compartmentOf?: GroundCoverInput['compartmentOf'] }
 ): GroundCoverInput {
   const covers: CoverInstanceInput[] = [];
   const clumps: ClumpInput[] = [];
@@ -875,6 +938,7 @@ export function buildGardenCoverInput(
     season: 'ALL',
     resolutionM: res,
     mask: opts.mask,
+    compartmentOf: opts.compartmentOf,
   };
 }
 

@@ -1,4 +1,5 @@
-import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance } from '../types/garden';
+import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance, RaisedBed } from '../types/garden';
+import { compartmentAt } from './compartments';
 import {
   isAlliumPlant,
   isLegumePlant,
@@ -46,7 +47,8 @@ const JUGLONE_CITATIONS: readonly string[] = [...new Set([...JUGLONE_MECHANISM_C
 /** All pairwise spatial antagonisms between star trees and companions in the garden. */
 export function analyzeGardenAntagonisms(
   starPlants: GardenStarPlantInstance[],
-  placedCompanions: GardenCompanionInstance[]
+  placedCompanions: GardenCompanionInstance[],
+  beds: readonly RaisedBed[] = []
 ): GardenConflict[] {
   const conflicts: GardenConflict[] = [];
 
@@ -353,7 +355,7 @@ export function analyzeGardenAntagonisms(
     }
   }
 
-  return conflicts;
+  return beds.length > 0 ? applyBedWalls(conflicts, starPlants, placedCompanions, beds) : conflicts;
 }
 
 /** Deep-shade pockets where two mature canopies overlap substantially. */
@@ -388,4 +390,92 @@ export function detectGardenShadePockets(
   }
 
   return pockets;
+}
+
+/**
+ * Raised-bed walls (all beds are lined with a root barrier). A conflict only changes when the two
+ * plants sit in different compartments (one inside a bed, the other outside or in another bed):
+ *  - juglone: reduced to INFO by the lined bed (Purdue HO-193, Penn State, UW–Madison: raised beds
+ *    "minimise" root contact); under the walnut canopy leaves and hulls still fall into the bed
+ *    → INFO "keep leaf litter out"
+ *  - allium vs legume, soil pH: soil-borne, blocked
+ *  - fennel / wormwood allelopathy: reduced one severity step (soil route cut, volatiles not),
+ *    unless the allelopath's crown hangs over the other plant (planning judgement, no direct source)
+ *  - pest/pathogen hosts: per spec (`bedWall`); flying or crawling pests and spores pass
+ *  - trunk collision: unchanged (physical space)
+ */
+function applyBedWalls(
+  conflicts: GardenConflict[],
+  starPlants: GardenStarPlantInstance[],
+  companions: GardenCompanionInstance[],
+  beds: readonly RaisedBed[]
+): GardenConflict[] {
+  const starsById = new Map(starPlants.map(s => [s.instanceId, s]));
+  const compsById = new Map(companions.map(c => [c.instanceId, c]));
+  const out: GardenConflict[] = [];
+  const downgrade = (sev: GardenConflict['severity']): GardenConflict['severity'] => (sev === 'CRITICAL' ? 'WARNING' : 'INFO');
+  for (const c of conflicts) {
+    const ca = compartmentAt(c.plantA.xM, c.plantA.yM, beds);
+    const cb = compartmentAt(c.plantB.xM, c.plantB.yM, beds);
+    if (ca === cb) {
+      out.push(c);
+      continue;
+    }
+    switch (c.type) {
+      case 'JUGLONE': {
+        const walnut = starsById.get(c.plantA.id);
+        const canopyR = walnut?.starTree.matureRadiusM ?? 0;
+        // Extension services say a lined bed with fresh soil minimises (not removes) juglone exposure
+        out.push({
+          ...c,
+          severity: 'INFO',
+          bedEffect: c.distanceM < canopyR ? 'BED_LEAF_LITTER' : 'REDUCED_BY_BED',
+          guideHash: 'bed-juglone',
+          description: c.distanceM < canopyR
+            ? locMsg('gardenBedJugloneLitter', { name: c.plantB.name.de }, { name: c.plantB.name.en })
+            : locMsg('gardenBedJugloneReduced', { name: c.plantB.name.de }, { name: c.plantB.name.en }),
+        });
+        break;
+      }
+      case 'ALLIUM_LEGUME':
+      case 'EDAPHIC_PH':
+        break;
+      case 'FENNEL_ALLELOPATHY':
+      case 'WORMWOOD_ALLELOPATHY': {
+        const a = compsById.get(c.plantA.id);
+        const b = compsById.get(c.plantB.id);
+        const isAllelo = (x?: GardenCompanionInstance) => Boolean(x && (isFennelPlant(x.plant) || isWormwoodPlant(x.plant)));
+        const allelopath = isAllelo(a) ? a : isAllelo(b) ? b : undefined;
+        const overhang = allelopath ? c.distanceM < allelopath.plant.spreadM / 2 : false;
+        if (overhang) out.push(c);
+        else {
+          out.push({
+            ...c,
+            severity: downgrade(c.severity),
+            bedEffect: 'REDUCED_BY_BED',
+            guideHash: 'bed-walls',
+            description: {
+              de: `${c.description.de} ${de.gardenBedReducedNote}`,
+              en: `${c.description.en} ${en.gardenBedReducedNote}`,
+            },
+          });
+        }
+        break;
+      }
+      case 'PEST_HOST': {
+        const spec = PEST_HOST_CONFLICTS.find(s => c.id.startsWith(`${s.id}-`));
+        const wall = spec?.bedWall ?? 'NOT_BLOCKED';
+        if (wall === 'BLOCKED') break;
+        if (wall === 'REDUCED') {
+          out.push({ ...c, severity: 'INFO', bedEffect: 'REDUCED_BY_BED', guideHash: 'bed-walls' });
+          break;
+        }
+        out.push(c);
+        break;
+      }
+      default:
+        out.push(c);
+    }
+  }
+  return out;
 }

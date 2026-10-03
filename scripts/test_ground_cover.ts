@@ -31,7 +31,7 @@ const tree = (id: string) => {
 
 // ── Data completeness ────────────────────────────────────────────────────────────────────────────
 const CARPET = ['plant-white-clover', 'plant-woodruff', 'plant-thyme', 'plant-bugleweed', 'plant-creeping-jenny', 'plant-strawberry', 'plant-cranberry', 'plant-wild-garlic', 'plant-sweet-potato', 'plant-peppermint', 'plant-nettle', 'plant-wintergreen', 'plant-lingonberry', 'plant-wild-ginger', 'plant-subterranean-clover', 'plant-ladys-mantle', 'plant-creeping-phlox'];
-const DRIFT = ['plant-daffodil', 'plant-crocus', 'plant-snowdrop', 'plant-winter-aconite', 'plant-miners-lettuce', 'plant-nasturtium', 'plant-chamomile', 'plant-yarrow', 'plant-oregano', 'plant-tansy', 'plant-ostrich-fern'];
+const DRIFT = ['plant-daffodil', 'plant-crocus', 'plant-snowdrop', 'plant-winter-aconite', 'plant-miners-lettuce', 'plant-nasturtium', 'plant-chamomile', 'plant-yarrow', 'plant-oregano', 'plant-tansy', 'plant-ostrich-fern', 'plant-lungwort', 'plant-epimedium'];
 const ALLEY = ['plant-alfalfa', 'plant-sweet-alyssum', 'plant-wild-carrot', 'plant-sainfoin', 'plant-sicklepod', 'plant-soybean', 'plant-sorghum-sudangrass', 'plant-chicory', 'plant-ribwort-plantain', 'plant-salad-burnet', 'plant-buckwheat', 'plant-phacelia', 'plant-fodder-radish', 'plant-basil', 'plant-summer-savory', 'plant-cornflower', 'plant-pot-marigold', 'plant-african-marigold', 'plant-chinese-motherwort', 'plant-indian-mustard', 'plant-common-vetch'];
 for (const [ids, mode] of [[CARPET, 'CARPET'], [DRIFT, 'DRIFT'], [ALLEY, 'ALLEY']] as const) {
   for (const id of ids) check(GROUND_COVER_SPECS[id]?.mode === mode, `${id} should be ${mode}`);
@@ -45,6 +45,15 @@ for (const spec of Object.values(GROUND_COVER_SPECS)) {
 }
 for (const p of ACTIVE_GUILD_PLANTS) {
   if (p.layer === 'GROUND_COVER') check(isAreaPlant(p), `${p.id} has layer GROUND_COVER but no area spec`);
+}
+// Light classes follow the Hill et al. 1999 light value where one is given
+const LIGHT_EXCEPTIONS = new Set(['plant-daffodil', 'plant-snowdrop', 'plant-winter-aconite']); // spring ephemerals: before leaf-out, light class ANY
+for (const spec of Object.values(GROUND_COVER_SPECS)) {
+  if (spec.ellenbergL === undefined || LIGHT_EXCEPTIONS.has(spec.plantId)) continue;
+  const L = spec.ellenbergL;
+  const ok = spec.light === 'ANY' || (spec.light === 'SHADE' && L <= 4) || (spec.light === 'HALF' && L >= 5 && L <= 6) || (spec.light === 'SUN' && L >= 7);
+  check(ok || spec.heuristic.includes('light'), `${spec.plantId}: light class ${spec.light} matches Hill L ${L}`);
+  check(spec.sources.some(src => src.includes('Hill, M. O.')), `${spec.plantId}: Ellenberg value is sourced (Hill et al. 1999)`);
 }
 for (const t of STAR_TREES) check(typeof t.matureHeightM === 'number' && t.matureHeightM > 0, `${t.id} has matureHeightM`);
 
@@ -106,14 +115,16 @@ check(Boolean(clover) && clover.areaM2 > 5, 'clover covers a real area');
 check(!inside(clover, 0, 0) && !inside(clover, 0.6, 0) && !inside(clover, 0, -0.6), 'young tree: trunk zone bare (0.75 m)');
 const cYoung = trunkClearanceM(apple, 'YOUNG');
 for (const s of young.filter(s => s.spec.mode !== 'ALLEY')) {
-  check(minDistToPoint(s, 0, 0) >= cYoung - 0.12, `${s.plantId}: no vertex inside young trunk clearance (${minDistToPoint(s, 0, 0).toFixed(2)})`);
+  const need = trunkClearanceM(apple, 'YOUNG', s.spec);
+  check(minDistToPoint(s, 0, 0) >= need - 0.05, `${s.plantId}: no vertex inside young trunk clearance (${minDistToPoint(s, 0, 0).toFixed(2)})`);
 }
 check(!inside(clover, -2, 1), 'clover leaves a hole around the comfrey clump');
 const alley = byId(young, 'plant-phacelia');
 check(minDistToPoint(alley, 0, 0) >= apple.matureRadiusM + 0.5 - 0.12, 'alley strip stays outside the drip line + 0.5 m');
 const daff = byId(young, 'plant-daffodil');
-check(daff.dots.length > 10 && daff.dots.every(([x, y]) => Math.hypot(x, y) >= cYoung - 0.12), 'daffodil drift dots exist outside the trunk zone');
-const wood = byId(young, 'plant-woodruff');
+check(daff.dots.length > 10 && daff.dots.every(([x, y]) => Math.hypot(x, y) >= trunkClearanceM(apple, 'YOUNG', daff.spec) - 0.05), 'daffodil drift dots exist outside the (spring-ephemeral) collar');
+check(trunkClearanceM(apple, 'YOUNG', daff.spec) === 0.3 && cYoung === 0.9, 'young clearance 0.9 m; spring ephemerals keep the 0.3 m collar');
+const wood = byId(computeGroundCovers(base({ treeAge: 'ESTABLISHED' })), 'plant-woodruff');
 // shade cover: more woodruff north of the trunk (negative y) than south
 const northShare = (() => {
   let n = 0, s = 0;
@@ -130,7 +141,7 @@ const cloverOnly = (treeAge: 'YOUNG' | 'ESTABLISHED') => computeGroundCovers(bas
 const cloverEst = cloverOnly('ESTABLISHED');
 check(cloverEst.areaM2 > cloverOnly('YOUNG').areaM2 + 0.5, 'established trees let covers grow closer to the trunk');
 check(minDistToPoint(cloverOnly('YOUNG'), 0, 0) < 1.0, 'clover alone reaches the young-tree clearance edge');
-check(minDistToPoint(cloverEst, 0, 0) >= trunkClearanceM(apple, 'ESTABLISHED', getGroundCoverSpec(plant('plant-white-clover'))) - 0.12, 'clover keeps the 0.5 m vole-safe collar when established');
+check(minDistToPoint(cloverEst, 0, 0) >= trunkClearanceM(apple, 'ESTABLISHED', getGroundCoverSpec(plant('plant-white-clover'))) - 0.05, 'clover keeps the 0.5 m vole-safe collar when established');
 
 // determinism and translation invariance
 const again = computeGroundCovers(base());
