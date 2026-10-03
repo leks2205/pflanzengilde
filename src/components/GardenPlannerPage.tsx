@@ -29,6 +29,7 @@ import { Check, AlertOctagon } from 'lucide-react';
 import { t } from '../i18n/translations';
 import { buildGardenCoverInput, computeGroundCovers } from '../core/groundCoverEngine';
 import { isAreaPlant } from '../data/groundCoverSpecs';
+import { assignDisplayColors, withDisplayColor } from '../utils/displayColors';
 
 /** Companion list the optimizer will actually use for this tree (empty selection falls back to recommendations). */
 function effectiveCompanionIds(tree: GardenStarPlantInstance): string[] {
@@ -279,7 +280,13 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       beds: infrastructure.raisedBeds
     });
   }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions, infrastructure.raisedBeds]);
-  const { companions, stats } = resolution;
+  const { stats } = resolution;
+  // Display colours: the plants of this garden get maximally distinct colours
+  const displayColors = useMemo(() => assignDisplayColors(resolution.companions.map(c => c.plant)), [resolution.companions]);
+  const companions = useMemo(
+    () => resolution.companions.map(c => ({ ...c, plant: withDisplayColor(c.plant, displayColors) })),
+    [resolution.companions, displayColors]
+  );
   const conflicts = resolution.unresolved;
 
   // Ground-cover areas: computed from deferred values so dragging a tree stays responsive

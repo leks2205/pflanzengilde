@@ -200,8 +200,15 @@ function blendHalfWidthM(spec: GroundCoverSpec): number {
   return 0.08;
 }
 
-/** Clearance a cover keeps around a clump companion (m): its spread plus one year of runner growth. */
-function clumpHoleRadiusM(clump: GuildPlant, spec: GroundCoverSpec): number {
+/**
+ * Clearance a cover keeps around a clump companion (m). Herbs and shrubs: their spread plus one
+ * year of runner growth. Tree companions (sub-canopy, canopy) shade the ground from above, so like
+ * a star only their trunk zone stays bare (same young/established rule).
+ */
+function clumpHoleRadiusM(clump: GuildPlant, spec: GroundCoverSpec, treeAge: TreeAgeMode): number {
+  if (clump.layer === 'SUB_CANOPY' || clump.layer === 'CANOPY') {
+    return treeAge === 'YOUNG' && spec.seasonLayer !== 'SPRING_EPHEMERAL' ? 0.9 : 0.3;
+  }
   const growth = spec.stolonRateMPerYr ?? (spec.strategy === 'GUERRILLA' ? 0.2 : 0.1);
   return Math.max(0.1, clump.spreadM / 2 + growth + (spec.clumpClearanceExtraM ?? 0));
 }
@@ -381,17 +388,16 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
   };
   for (const g of groups) {
     const ob = new Map<number, Obstacle[]>();
-    const serving = new Set(g.terms.map(t => `${t.x},${t.y}`));
+    // every trunk (and, for strips, every canopy) is bare: a neighbouring tree's ring of the same
+    // cover must not grow into it
     for (const s of input.stars) {
-      // the cover's own trees are already bare through the term's inner edge
-      if (serving.has(`${s.xM},${s.yM}`)) continue;
       const c = trunkClearanceM(s.star, input.treeAge, g.spec);
       // strips stay outside every canopy (+0.5 m)
       const r = g.spec.mode === 'ALLEY' ? Math.max(c, s.star.matureRadiusM + 0.5) : c;
       insert(ob, { x: s.xM, y: s.yM, r }, s.xM - r - eps, s.xM + r + eps, s.yM - r - eps, s.yM + r + eps);
     }
     for (const c of clumps) {
-      const hole = clumpHoleRadiusM(c.plant, g.spec);
+      const hole = clumpHoleRadiusM(c.plant, g.spec, input.treeAge);
       const chem = chemicalBufferM(c.plant, g.plant);
       const r = Math.max(hole, chem);
       // Across a raised-bed wall the soil route is cut: allium–legume buffer dropped, allelopaths
@@ -513,12 +519,18 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
       const r = o.comp !== undefined && input.compartmentOf && input.compartmentOf(x, y) !== o.comp ? o.rAcrossWall ?? o.r : o.r;
       circles.push({ x: o.x, y: o.y, r });
     }
-    for (let pass = 0; pass < 2; pass++) {
-      for (const c of circles) {
-        const d = Math.hypot(px - c.x, py - c.y);
-        if (d < c.r && d > 1e-6) {
-          px = c.x + ((px - c.x) / d) * (c.r + 0.005);
-          py = c.y + ((py - c.y) / d) * (c.r + 0.005);
+    // Smoothing moves edges by at most a few grid cells; deeper "penetrations" are vertices of
+    // another part of the outline (e.g. a strip between two trees) and must not be moved.
+    const maxFix = Math.max(0.12, 2.5 * res);
+    for (const c of circles) {
+      const d = Math.hypot(px - c.x, py - c.y);
+      if (d < c.r && d > 1e-6 && c.r - d <= maxFix) {
+        const nx = c.x + ((px - c.x) / d) * (c.r + 0.005);
+        const ny = c.y + ((py - c.y) / d) * (c.r + 0.005);
+        // keep the move only if it does not push the point into another clearance circle
+        if (circles.every(o => o === c || Math.hypot(nx - o.x, ny - o.y) >= o.r - 0.005)) {
+          px = nx;
+          py = ny;
         }
       }
     }
@@ -594,7 +606,7 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
         const [px, py] = enforceClearances(x, y, g);
         return [round2(px), round2(py)] as [number, number];
       });
-      if (simp.length >= 3 && Math.abs(signedArea(simp)) >= 0.04) rings.push(simp);
+      if (simp.length >= 3 && Math.abs(signedArea(simp)) >= 0.1) rings.push(simp); // drop slivers
     }
     if (rings.length === 0) continue;
     const areaM2 = evenOddArea(rings);

@@ -11,6 +11,7 @@ import { AlertOctagon, AlertTriangle, ArrowRight, CheckCircle2, Compass, Eye, Ey
 import { t, formatNumber, translateZone, translateLayer, translateRole } from '../i18n/translations';
 import { PlantThumbnail } from './PlantThumbnail';
 import { SpacingWarningBanner } from './SpacingWarningBanner';
+import { assignDisplayColors, withDisplayColor } from '../utils/displayColors';
 import { GroundCoverLayer } from './GroundCoverLayer';
 import { ShiftHint, SpotLegend, useShiftKey } from './SpotInspector';
 import { plantsAtSpot } from '../core/spotInspector';
@@ -125,13 +126,23 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
   }, [starTree, renderedConfig, selectedPlantIds, hemisphere, selectedZone, selectedSoil, autoResolve]);
 
   const metrics = useMemo(() => calculateSpatialMetrics(starTree), [starTree]);
+  // Display colours: the plants of this guild (and any cluster substitutes) get maximally distinct colours
+  const displayColors = useMemo(
+    () => assignDisplayColors([...selectedPlants, ...(clusterLayout?.resolution.companions.map(c => c.plant) ?? [])]),
+    [selectedPlants, clusterLayout]
+  );
+  const displayPlants = useMemo(() => selectedPlants.map(p => withDisplayColor(p, displayColors)), [selectedPlants, displayColors]);
+  const clusterCompanions = useMemo(
+    () => (clusterLayout ? clusterLayout.resolution.companions.map(c => ({ ...c, plant: withDisplayColor(c.plant, displayColors) })) : []),
+    [clusterLayout, displayColors]
+  );
   const placedPlants = useMemo(() => {
-    return autoPlaceGuildPlants(starTree, selectedPlants, hemisphere);
-  }, [starTree, selectedPlants, hemisphere]);
+    return autoPlaceGuildPlants(starTree, displayPlants, hemisphere);
+  }, [starTree, displayPlants, hemisphere]);
 
   const spacingReport = useMemo(() => {
-    return analyzeGuildSpacing(starTree, selectedPlants, hemisphere);
-  }, [starTree, selectedPlants, hemisphere]);
+    return analyzeGuildSpacing(starTree, displayPlants, hemisphere);
+  }, [starTree, displayPlants, hemisphere]);
 
   // Decimal comma only in German
   const fmtM = (v: number) => formatNumber(v, 1, language);
@@ -151,8 +162,8 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
 
   // Fit the whole cluster (zone rings, companion spreads) into the view, centred on its extent
   const clusterCovers = useMemo(() => {
-    if (!clusterLayout || !clusterLayout.resolution.companions.some(c => isAreaPlant(c.plant))) return [];
-    return computeGroundCovers(buildGardenCoverInput(clusterLayout.starPlants, clusterLayout.resolution.companions, {
+    if (!clusterLayout || !clusterCompanions.some(c => isAreaPlant(c.plant))) return [];
+    return computeGroundCovers(buildGardenCoverInput(clusterLayout.starPlants, clusterCompanions, {
       hemisphere, zone: selectedZone, treeAge, resolutionM: 0.08,
     }));
   }, [clusterLayout, hemisphere, selectedZone, treeAge]);
@@ -999,7 +1010,7 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
 
               {/* Service links: which stars a shared companion serves */}
               <g id="cluster-service-links" className="pointer-events-none select-none">
-                {clusterLayout.resolution.companions.map(comp => {
+                {clusterCompanions.map(comp => {
                   const isHovered = hoveredClusterComp?.instanceId === comp.instanceId;
                   if (!comp.isMerged && !isHovered) return null;
                   const cp = toClusterCoords(comp.xM, comp.yM);
@@ -1053,7 +1064,7 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
 
               {showCanopySpread && (
                 <g id="cluster-canopy-spreads" className="pointer-events-none select-none">
-                  {clusterLayout.resolution.companions.filter(comp => !showGroundCovers || !isAreaPlant(comp.plant)).map(comp => {
+                  {clusterCompanions.filter(comp => !showGroundCovers || !isAreaPlant(comp.plant)).map(comp => {
                     const coords = toClusterCoords(comp.xM, comp.yM);
                     return (
                       <circle
@@ -1103,13 +1114,13 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
               </g>
 
               <g id="cluster-companions">
-                {clusterLayout.resolution.companions.map(comp => {
+                {clusterCompanions.map(comp => {
                   const coords = toClusterCoords(comp.xM, comp.yM);
                   const style = getSeasonalPlantStyle(comp.plant);
                   const isHovered = hoveredClusterComp?.instanceId === comp.instanceId;
                   const isShared = comp.isMerged || comp.servicingTreeIds.length > 1;
                   const isSubstitute = Boolean(clusterDerived.findSubstitution(comp));
-                  const showLabel = isHovered || clusterLayout.resolution.companions.length <= 40;
+                  const showLabel = isHovered || clusterCompanions.length <= 40;
 
                   return (
                     <g
@@ -1178,7 +1189,7 @@ export const GardenPlanCanvas: React.FC<GardenPlanCanvasProps> = ({
             ? plantsAtSpot({
                 xM, yM,
                 stars: clusterLayout.starPlants.map(st => ({ key: st.instanceId, xM: st.xM, yM: st.yM, star: st.starTree })),
-                plants: clusterLayout.resolution.companions.map(c => ({ key: c.instanceId, xM: c.xM, yM: c.yM, plant: c.plant })),
+                plants: clusterCompanions.map(c => ({ key: c.instanceId, xM: c.xM, yM: c.yM, plant: c.plant })),
                 covers: showGroundCovers ? clusterCovers : [],
                 isInSeason: sh => isCoverInSeason(sh.spec, currentSeason),
                 pickRadiusM: 12 / clusterScale,
