@@ -1,5 +1,6 @@
 import { ClimateZone, GuildPlant, Hemisphere, PhenoSeason, StarTree, TreeAgeMode } from '../types/guild';
 import { GroundCoverSpec, getGroundCoverSpec } from '../data/groundCoverSpecs';
+import { coverOverlap } from '../data/groundCoverOverlap';
 import { isAlliumPlant, isFennelPlant, isLegumePlant, isWormwoodPlant } from './placementRules';
 
 /**
@@ -24,7 +25,8 @@ import { isAlliumPlant, isFennelPlant, isLegumePlant, isWormwoodPlant } from './
  *  - the same species around neighbouring trees merges smoothly (smooth maximum), and different
  *    covers that grow at the same time share the ground through a soft partition whose blend width
  *    follows their growth form (guerrilla runners interweave, phalanx mats meet at a near-hard
- *    edge; Lovett Doust 1981). Covers of different season layers overlap.
+ *    edge; Lovett Doust 1981). Which covers may overlap at all follows the evidence-based pair
+ *    rules in data/groundCoverOverlap.ts (documented mixtures, timing, antagonists).
  *
  * The engine is pure and deterministic (seeded noise), works in metres (x east, y south) and is
  * used by the radial guild view, the garden grid and both PDF exporters.
@@ -499,13 +501,18 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     return grid.aff[j * grid.w + i];
   };
 
-  // Covers of the same season layer share the ground (soft partition)
-  const peersOf = new Map<string, CoverGroup[]>();
+  // Which covers compete for the same ground (data/groundCoverOverlap.ts): COEXIST pairs overlap,
+  // MOSAIC pairs split the ground with a mixed border, EXCLUDE pairs meet at a hard edge
+  const competitors = new Map<CoverGroup, Array<{ g: CoverGroup; hard: boolean }>>();
   for (const g of groups) {
     if (!grids.has(g)) continue;
-    // Sown alley strips overlap tree-ring covers (mixed edge) instead of splitting the ground
-    const l = `${g.spec.seasonLayer}|${g.spec.mode === 'ALLEY' ? 'A' : 'C'}`;
-    peersOf.set(l, [...(peersOf.get(l) ?? []), g]);
+    const list: Array<{ g: CoverGroup; hard: boolean }> = [];
+    for (const h of groups) {
+      if (h === g || !grids.has(h)) continue;
+      const rel = coverOverlap(g.plant, h.plant);
+      if (rel.verdict !== 'COEXIST') list.push({ g: h, hard: rel.verdict === 'EXCLUDE' });
+    }
+    competitors.set(g, list);
   }
 
   /** Moves a point out of every clearance circle of this cover (exact evidence distances). */
@@ -542,9 +549,9 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
     const grid = grids.get(g);
     if (!grid) continue;
     const { minX, minY, w, h, own, aff } = grid;
-    const peers = (peersOf.get(`${g.spec.seasonLayer}|${g.spec.mode === 'ALLEY' ? 'A' : 'C'}`) ?? [g]).filter(p => p !== g);
-    // guerrilla covers reach a little past the midline (interweaving band)
-    const reachBoost = g.spec.edge === 'HARD' ? 1 : 1 + Math.min(0.6, g.blendW * 1.6);
+    const comp = competitors.get(g) ?? [];
+    const peers = comp.map(c => c.g);
+    const hardWith = new Set(comp.filter(c => c.hard).map(c => c.g));
     // Where a cover can grow (own >= 0.5) the field is a plateau, elsewhere zero, so the traced
     // edge sits exactly on the suitability boundary and neighbours meet without gaps after blurring
     let field: Float32Array = new Float32Array(w * h);
@@ -555,7 +562,11 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
       // (own >= 0.5) its value is set by its share of the ground, so two equally strong covers
       // both sit exactly at the 0.5 contour on their common border. Guerrilla runners reach a
       // little past it (interweaving band); hard-edged, contained covers do not.
-      const overlap = g.spec.edge === 'HARD' ? 0 : Math.min(0.18, g.blendW * 0.5);
+      // Runner plants (guerrilla) interweave at a mosaic border (Herben et al. 1993); dense fronts,
+      // contained covers and antagonists meet at a near-hard edge
+      const mixBand = (p: CoverGroup) => (g.spec.edge === 'HARD' || p.spec.edge === 'HARD' || hardWith.has(p) ? 0
+        : g.spec.strategy === 'GUERRILLA' && p.spec.strategy === 'GUERRILLA' ? Math.min(0.25, g.blendW * 0.7)
+        : Math.min(0.12, g.blendW * 0.4));
       for (let j = 1; j < h - 1; j++) {
         const y = minY + j * res;
         for (let i = 1; i < w - 1; i++) {
@@ -567,6 +578,7 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
           // temperature: narrow band for phalanx/hard edges, wider for guerrilla runners
           let tau = Math.max(0.03, g.blendW * 0.4);
           const pv: number[] = [];
+          let overlap = Infinity;
           for (const p of peers) {
             const pg = grids.get(p)!;
             // only covers that actually grow here compete for the spot
@@ -575,8 +587,10 @@ export function computeGroundCovers(input: GroundCoverInput): CoverShape[] {
             if (v > 0) {
               pv.push(v);
               tau = Math.min(tau, Math.max(0.03, p.blendW * 0.4));
+              overlap = Math.min(overlap, mixBand(p));
             }
           }
+          if (!Number.isFinite(overlap)) overlap = 0;
           if (o < 0.5) continue;
           if (pv.length === 0) {
             field[idx] = 1;

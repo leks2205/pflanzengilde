@@ -4,6 +4,7 @@ import { GardenPlanCanvas } from '../src/components/GardenPlanCanvas';
 import { STAR_TREES } from '../src/data/starTrees';
 import { ACTIVE_GUILD_PLANTS, GUILD_PLANTS } from '../src/data/guildPlants';
 import { GROUND_COVER_SPECS, getGroundCoverSpec, isAreaPlant } from '../src/data/groundCoverSpecs';
+import { coverOverlap, OVERLAP_PAIRS } from '../src/data/groundCoverOverlap';
 import {
   computeGroundCovers, marchingSquares, simplifyRing, signedArea, evenOddArea, pointInRing,
   trunkClearanceM, GroundCoverInput, CoverShape, Ring, smoothMax,
@@ -191,6 +192,42 @@ check(!JSON.stringify(young).includes('null'), 'no NaN / null coordinates');
   check(out.length === 3, 'big garden produces 3 shapes');
   check(ms < 4000, `25-tree garden computes in < 4 s (took ${ms} ms)`);
   console.log(`ground cover timing: single tree ${tYoung} ms, 25 trees ${ms} ms`);
+}
+
+// ── Which covers may share the ground (evidence-based pair rules) ─────────────────────────────────
+{
+  const v = (a: string, b: string) => coverOverlap(plant(a), plant(b)).verdict;
+  const ids = Object.keys(GROUND_COVER_SPECS);
+  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+    check(v(ids[i], ids[j]) === v(ids[j], ids[i]), `overlap rule symmetric for ${ids[i]} / ${ids[j]}`);
+  }
+  for (const [k, r] of OVERLAP_PAIRS) check(r.sources.length > 0 && r.reason.en.length > 0 && r.reason.de.length > 0, `documented pair ${k} has reason and sources`);
+  const expect: Array<[string, string, string]> = [
+    ['plant-white-clover', 'plant-thyme', 'MOSAIC'], ['plant-white-clover', 'plant-yarrow', 'COEXIST'],
+    ['plant-woodruff', 'plant-wild-ginger', 'COEXIST'], ['plant-white-clover', 'plant-subterranean-clover', 'EXCLUDE'],
+    ['plant-wild-garlic', 'plant-woodruff', 'MOSAIC'], ['plant-wild-garlic', 'plant-white-clover', 'EXCLUDE'],
+    ['plant-nettle', 'plant-woodruff', 'MOSAIC'], ['plant-creeping-jenny', 'plant-nettle', 'MOSAIC'],
+    ['plant-tansy', 'plant-thyme', 'EXCLUDE'], ['plant-sorghum-sudangrass', 'plant-phacelia', 'EXCLUDE'],
+    ['plant-sorghum-sudangrass', 'plant-buckwheat', 'COEXIST'], ['plant-phacelia', 'plant-white-clover', 'EXCLUDE'],
+    ['plant-daffodil', 'plant-white-clover', 'COEXIST'], ['plant-crocus', 'plant-ladys-mantle', 'MOSAIC'],
+    ['plant-snowdrop', 'plant-thyme', 'COEXIST'], ['plant-chicory', 'plant-ribwort-plantain', 'COEXIST'],
+    ['plant-basil', 'plant-summer-savory', 'MOSAIC'], ['plant-woodruff', 'plant-thyme', 'MOSAIC'],
+    ['plant-cranberry', 'plant-alfalfa', 'EXCLUDE'], ['plant-sweet-potato', 'plant-alfalfa', 'EXCLUDE'],
+    ['plant-sainfoin', 'plant-chicory', 'MOSAIC'], ['plant-buckwheat', 'plant-yarrow', 'COEXIST'],
+  ];
+  for (const [a, b, want] of expect) check(v(a, b) === want, `${a} / ${b} should be ${want} (got ${v(a, b)})`);
+
+  // Engine: documented partners overlap, mosaic partners split the ground
+  const cov = (ids2: string[]) => computeGroundCovers(base({
+    treeAge: 'ESTABLISHED', clumps: [],
+    covers: ids2.map((id2, k) => ({ instanceId: `o${k}`, plant: plant(id2), anchor: { xM: 1.5, yM: 0 }, servingStarKeys: ['s1'] })),
+  }));
+  const area = (shapes: CoverShape[], id2: string) => shapes.find(s => s.plantId === id2)?.areaM2 ?? 0;
+  const alone = area(cov(['plant-white-clover']), 'plant-white-clover');
+  const withYarrow = cov(['plant-white-clover', 'plant-yarrow']);
+  const withSub = cov(['plant-white-clover', 'plant-woodruff']);
+  check(area(withYarrow, 'plant-white-clover') > alone * 0.9, 'clover keeps its area next to yarrow (they intermix)');
+  check(area(withSub, 'plant-white-clover') < alone * 0.85, 'clover shares the ground with woodruff (mosaic)');
 }
 
 // Radial view renders the areas (server-side markup, no transforms inside the cover layer)

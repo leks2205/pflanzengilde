@@ -3,6 +3,7 @@ import { GuildRole, Language, getLoc, LocalizedString } from '../types/guild';
 import { ROLE_CROSSES_BED_WALL } from '../core/bedWallRules';
 import { BED_WARNINGS, BedWarningId, COMPANION_BED_SUITABILITY, STAR_BED_SUITABILITY } from '../data/raisedBedSuitability';
 import { GROUND_COVER_SPECS } from '../data/groundCoverSpecs';
+import { OVERLAP_PAIRS, OVERLAP_SOURCES } from '../data/groundCoverOverlap';
 import { GUILD_PLANTS } from '../data/guildPlants';
 import { STAR_TREES } from '../data/starTrees';
 import { translateRole } from '../i18n/translations';
@@ -260,6 +261,50 @@ export const GroundCoverGuide: React.FC<{ language: Language }> = ({ language })
         </table>
       </div>
       <SourceList language={language} ns={[27, 28, 29, 30, 31, 32]} />
+
+      <div id="guide-ground-cover-overlap" className="pt-3 border-t border-stone-100 space-y-2 scroll-mt-24">
+        <h4 className="font-bold text-sm text-stone-900">{g(L('Which ground covers can share the ground', 'Welche Bodendecker sich den Boden teilen können'))}</h4>
+        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-1">
+          <li>{g(L('"A taller plant can simply grow over a lower one" is not a rule the evidence supports: taller plants take a disproportionate share of the light, and grassland plants show little vertical niche separation. Height layering is only used where a pair is documented.', '„Eine höhere Pflanze kann einfach über einer niedrigeren wachsen“ ist keine durch Belege gestützte Regel: Höhere Pflanzen nehmen überproportional viel Licht, und Wiesenpflanzen zeigen kaum Trennung nach Höhenschichten. Höhenschichtung wird nur bei belegten Paaren genutzt.'))}</li>
+          <li>{g(L('Documented partners are drawn overlapping: lawn trials, seed mixtures sown together, and plants that occur together in the same natural habitat (a weaker hint). Where only a related species is documented, the table says so.', 'Belegte Partner werden überlappend gezeichnet: aus Rasenversuchen, gemeinsam gesäten Mischungen und Pflanzen, die im selben natürlichen Lebensraum vorkommen (ein schwächerer Hinweis). Ist nur eine verwandte Art belegt, steht das in der Tabelle.'))}</li>
+          <li>{g(L('Plants that use the ground at different times overlap: spring bulbs under summer covers (by analogy with woodland spring flowers), as long as the cover is at most half as tall as the bulb flower (a rule of thumb from bulb growers, not a measured threshold); winter covers with summer covers (planning judgement), except subterranean clover next to a closed carpet, which competes with its reseeding.', 'Pflanzen, die den Boden zu verschiedenen Zeiten nutzen, überlappen: Frühjahrszwiebeln unter Sommerbodendeckern (in Analogie zu Frühjahrsblühern im Wald), solange der Bodendecker höchstens halb so hoch ist wie die Zwiebelblüte (Faustregel aus dem Zwiebelhandel, kein gemessener Schwellenwert); Winter- mit Sommerbegrünung (Planungsentscheidung), außer Bodenfrüchtigem Klee neben einem geschlossenen Teppich, der mit seiner Selbstaussaat konkurriert.'))}</li>
+          <li>{g(L('Kept apart: sorghum-sudangrass (except with buckwheat and soybean; sorgoleone is documented), and as planning judgements: strips that are cut and dug in next to perennial covers (buckwheat counts as an undisturbed nurse crop in orchard alley mixes), onion-family plants with legumes (traditional rule, not backed by trials), acid-soil with lime-loving plants. Dense colonies (nettle, wild garlic, tansy, creeping jenny) form separate patches.', 'Getrennt gehalten: Sorghum-Sudangras (außer mit Buchweizen und Sojabohne; Sorgoleon ist belegt), und als Planungsentscheidungen: Streifen, die gemulcht und eingearbeitet werden, neben mehrjährigen Bodendeckern (Buchweizen gilt in Obstbau-Fahrgassenmischungen als ungestörte Ammenpflanze), Lauchgewächse mit Leguminosen (überlieferte Regel, nicht durch Versuche belegt), Moorbeet- mit kalkliebenden Pflanzen. Dichte Kolonien (Brennnessel, Bärlauch, Rainfarn, Pfennigkraut) bilden getrennte Flecken.'))}</li>
+          <li>{g(L('Everything else is drawn as neighbouring patches with a mixed border (planning convention: there is no evidence that they intermix, and light competition favours the taller plant); runner plants weave further into each other than dense mats.', 'Alles andere wird als benachbarte Flecken mit gemischtem Rand gezeichnet (Planungskonvention: Es gibt keinen Beleg für Durchmischung, und Lichtkonkurrenz begünstigt die höhere Pflanze); Ausläuferpflanzen verweben sich dabei weiter als dichte Polster.'))}</li>
+        </ul>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs border-collapse">
+            <thead>
+              <tr className="text-left text-stone-500">
+                <th className="py-1 pr-2">{g(L('Pair', 'Paar'))}</th>
+                <th className="py-1 pr-2">{g(L('Together?', 'Gemeinsam?'))}</th>
+                <th className="py-1">{g(L('Why', 'Warum'))}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...OVERLAP_PAIRS.entries()].sort((x, y) => x[0].localeCompare(y[0])).map(([k, r]) => {
+                const [a, b2] = k.split('|');
+                const verdict = r.verdict === 'COEXIST' ? L('mix', 'mischen sich') : r.verdict === 'MOSAIC' ? L('separate patches', 'getrennte Flecken') : L('keep apart', 'getrennt halten');
+                return (
+                  <tr key={k} className="border-t border-stone-100 align-top">
+                    <td className="py-1 pr-2 font-semibold text-stone-800">{name(a)} + {name(b2)}</td>
+                    <td className={`py-1 pr-2 font-bold whitespace-nowrap ${r.verdict === 'COEXIST' ? 'text-emerald-700' : r.verdict === 'MOSAIC' ? 'text-sky-700' : 'text-amber-800'}`}>{g(verdict)}</td>
+                    <td className="py-1 text-stone-600">
+                      {g(r.reason)}
+                      <span className="block text-[10px] text-stone-400">{r.sources.map(src => src.split(' (')[0].split('.')[0] + (src.match(/\((\d{4}|n\.d\.)/)?.[0] ? ` ${src.match(/\((\d{4}|n\.d\.)\)/)?.[0] ?? ''}` : '')).join('; ')}</span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <details className="text-[11px] text-stone-600">
+          <summary className="cursor-pointer font-semibold">{g(L('Full sources for the overlap rules', 'Vollständige Quellen der Überlappungsregeln'))}</summary>
+          <ul className="list-disc pl-5 space-y-0.5 mt-1">
+            {[...new Set(Object.values(OVERLAP_SOURCES))].sort().map(src => <li key={src}>{src}</li>)}
+          </ul>
+        </details>
+      </div>
     </div>
   );
 };
