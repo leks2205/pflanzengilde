@@ -277,9 +277,10 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       soil: selectedSoil,
       enabled: autoResolveEnabled,
       pinned: new Set(pinnedCompanions),
-      beds: infrastructure.raisedBeds
+      beds: infrastructure.raisedBeds,
+      outline: infrastructure.outline
     });
-  }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions, infrastructure.raisedBeds]);
+  }, [starPlants, hemisphere, selectedZone, selectedSoil, autoResolveEnabled, pinnedCompanions, infrastructure.raisedBeds, infrastructure.outline]);
   const { stats } = resolution;
   // Display colours: the plants of this garden get maximally distinct colours
   const displayColors = useMemo(() => assignDisplayColors(resolution.companions.map(c => c.plant)), [resolution.companions]);
@@ -332,6 +333,30 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
       ? { ...prev, outline: null }
       : { ...prev, raisedBeds: prev.raisedBeds.filter(b => b.id !== id) });
     setSelectedShapeId(null);
+  };
+  /** Selecting a shape clears the tree selection, so Delete and Ctrl+C/X act on the shape. */
+  const handleSelectShape = (id: string | null) => {
+    setSelectedShapeId(id);
+    if (id) {
+      setSelectedTreeId(null);
+      setSelectedTreeIds([]);
+    }
+  };
+  const handleSelectTree = (id: string | null) => {
+    setSelectedTreeId(id);
+    if (id) setSelectedShapeId(null);
+  };
+  /** Pastes a copy of a raised bed 1 m to the south-east and selects it; returns the copy. */
+  const handlePasteBed = (bed: RaisedBed): RaisedBed => {
+    let n = infrastructure.raisedBeds.length + 1;
+    while (infrastructure.raisedBeds.some(b => b.id === `bed-${n}`)) n++;
+    const copy: RaisedBed = { ...bed, id: `bed-${n}`, shape: translateShape(bed.shape, 1, 1) };
+    setInfrastructure(prev => ({ ...prev, raisedBeds: [...prev.raisedBeds, copy] }));
+    setSelectedShapeId(copy.id);
+    setSelectedTreeId(null);
+    setSelectedTreeIds([]);
+    setToast({ type: 'success', message: language === 'de' ? 'Hochbeet eingefügt' : 'Raised bed pasted' });
+    return copy;
   };
   const handleUpdateBedHeight = (id: string, heightM: number) => {
     setInfrastructure(prev => ({ ...prev, raisedBeds: prev.raisedBeds.map(b => (b.id === id ? { ...b, heightM } : b)) }));
@@ -841,7 +866,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             stats={stats}
             selectedTreeId={selectedTreeId}
             selectedTreeIds={selectedTreeIds}
-            onSelectTree={setSelectedTreeId}
+            onSelectTree={handleSelectTree}
             onSelectTreeIds={setSelectedTreeIds}
             onAddStarPlant={handleAddStarPlant}
             onRemoveStarPlant={handleRemoveStarPlant}
@@ -867,7 +892,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
               tool={infraTool}
               onSelectTool={setInfraTool}
               selectedShapeId={selectedShapeId}
-              onSelectShape={setSelectedShapeId}
+              onSelectShape={handleSelectShape}
               onDeleteShape={handleDeleteShape}
               onUpdateBedHeight={handleUpdateBedHeight}
               siteWarnings={siteWarnings}
@@ -888,7 +913,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             shadePockets={shadePockets}
             selectedTreeId={selectedTreeId}
             selectedTreeIds={selectedTreeIds}
-            onSelectTree={setSelectedTreeId}
+            onSelectTree={handleSelectTree}
             onSelectTreeIds={setSelectedTreeIds}
             onUpdateStarPlantPosition={handleUpdateStarPlantPosition}
             onBatchUpdateTrees={handleBatchUpdateTrees}
@@ -904,8 +929,9 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
             infrastructure={infrastructure}
             infraTool={infraTool}
             selectedShapeId={selectedShapeId}
-            onSelectShape={setSelectedShapeId}
+            onSelectShape={handleSelectShape}
             onCommitShape={handleCommitShape}
+            onPasteBed={handlePasteBed}
             onUpdateShape={handleUpdateShape}
             onDeleteShape={handleDeleteShape}
             onCancelInfraTool={() => setInfraTool(null)}

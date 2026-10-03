@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { GuildPlant, Language, PhenoSeason, TreeAgeMode, getLoc } from '../types/guild';
-import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance } from '../types/garden';
+import { GardenCompanionInstance, GardenConflict, GardenShadePocket, GardenStarPlantInstance, RaisedBed } from '../types/garden';
 import { ZoomIn, ZoomOut, Maximize2, Sparkles, Move, Trees, MousePointer, Hand } from 'lucide-react';
 import { t, formatNumber, translateSeason } from '../i18n/translations';
 import { CoverShape, ringsToSvgPath } from '../core/groundCoverEngine';
@@ -46,6 +46,8 @@ interface GardenGridCanvasProps {
   onCommitShape?: (target: 'OUTLINE' | 'BED', shape: GardenShape) => void;
   onUpdateShape?: (id: string, shape: GardenShape) => void;
   onDeleteShape?: (id: string) => void;
+  /** Pastes a copy of a raised bed (offset) and returns the copy. */
+  onPasteBed?: (bed: RaisedBed) => RaisedBed;
   onCancelInfraTool?: () => void;
   /** Companion species highlighted from the sidebar. */
   highlightedPlantId?: string | null;
@@ -80,6 +82,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
   onCommitShape,
   onUpdateShape,
   onDeleteShape,
+  onPasteBed,
   onCancelInfraTool,
   highlightedPlantId = null,
   onHighlightPlant,
@@ -100,6 +103,8 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
   const [marqueeCurrent, setMarqueeCurrent] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [clipboardTrees, setClipboardTrees] = useState<GardenStarPlantInstance[]>([]);
+  // One clipboard at a time: copying trees clears a copied bed and vice versa
+  const [clipboardBed, setClipboardBed] = useState<RaisedBed | null>(null);
 
   useEffect(() => {
     if (selectedTreeIds && selectedTreeIds.length > 0) {
@@ -228,7 +233,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
     return () => el.removeEventListener('wheel', handleNativeWheel);
   }, []);
 
-  // Ctrl/Cmd+C/X/V and Delete/Backspace act on the selected trees
+  // Ctrl/Cmd+C/X/V and Delete/Backspace act on the selected raised bed / outline, else the selected trees
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -237,6 +242,31 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
       }
       // Don't hijack a normal text copy elsewhere on the page
       const hasTextSelection = Boolean(window.getSelection()?.toString());
+      const isCtrlKey = e.ctrlKey || e.metaKey;
+      const key = e.key.toLowerCase();
+
+      // A selected shape takes priority (the outline can only be deleted; beds can be copied too)
+      if (selectedShapeId) {
+        const bed = infrastructure?.raisedBeds.find(b => b.id === selectedShapeId) ?? null;
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          e.preventDefault();
+          onDeleteShape?.(selectedShapeId);
+          return;
+        }
+        if (isCtrlKey && (key === 'c' || key === 'x') && bed && !hasTextSelection) {
+          e.preventDefault();
+          setClipboardBed(bed);
+          setClipboardTrees([]);
+          if (key === 'x') onDeleteShape?.(selectedShapeId);
+          return;
+        }
+      }
+      if (isCtrlKey && key === 'v' && clipboardBed && onPasteBed) {
+        e.preventDefault();
+        // the next paste lands 1 m further on, like repeated pastes in drawing apps
+        setClipboardBed(onPasteBed(clipboardBed));
+        return;
+      }
 
       const activeIds = localSelectedIds.length > 0
         ? localSelectedIds
@@ -249,6 +279,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
         const treesToCopy = starPlants.filter(t => activeIds.includes(t.instanceId));
         if (treesToCopy.length > 0) {
           setClipboardTrees(treesToCopy);
+          setClipboardBed(null);
         }
         return;
       }
@@ -258,6 +289,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
         const treesToCut = starPlants.filter(t => activeIds.includes(t.instanceId));
         if (treesToCut.length > 0) {
           setClipboardTrees(treesToCut);
+          setClipboardBed(null);
           onDeleteTrees?.(activeIds);
           setLocalSelectedIds([]);
           onSelectTree(null);
@@ -274,12 +306,6 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
         return;
       }
 
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedShapeId && onDeleteShape && activeIds.length === 0) {
-        e.preventDefault();
-        onDeleteShape(selectedShapeId);
-        return;
-      }
-
       if ((e.key === 'Delete' || e.key === 'Backspace') && activeIds.length > 0) {
         e.preventDefault();
         onDeleteTrees?.(activeIds);
@@ -292,7 +318,7 @@ export const GardenGridCanvas: React.FC<GardenGridCanvasProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [localSelectedIds, selectedTreeId, starPlants, clipboardTrees, onDeleteTrees, onPasteTrees, onSelectTree, onSelectTreeIds, selectedShapeId, onDeleteShape]);
+  }, [localSelectedIds, selectedTreeId, starPlants, clipboardTrees, onDeleteTrees, onPasteTrees, onSelectTree, onSelectTreeIds, selectedShapeId, onDeleteShape, infrastructure, clipboardBed, onPasteBed]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     const isBackground =

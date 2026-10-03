@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  ArrowUpRight, Ban, Blend, BookOpen, BrickWall, CalendarRange, ChevronDown, CloudSun, Droplets, Fence, Hammer, Info, KeyRound, Layers, Leaf,
+  LucideIcon, Moon, Mountain, Ruler, Scale, Shovel, Snowflake, Sprout, Sun, SunMoon, Thermometer, ThumbsDown, ThumbsUp, TreeDeciduous, Waves,
+} from 'lucide-react';
 import { GuildRole, Language, getLoc, LocalizedString } from '../types/guild';
 import { ROLE_CROSSES_BED_WALL } from '../core/bedWallRules';
 import { BED_WARNINGS, BedWarningId, COMPANION_BED_SUITABILITY, STAR_BED_SUITABILITY } from '../data/raisedBedSuitability';
 import { GROUND_COVER_SPECS } from '../data/groundCoverSpecs';
-import { OVERLAP_PAIRS, OVERLAP_SOURCES } from '../data/groundCoverOverlap';
+import { OVERLAP_PAIRS, OVERLAP_SOURCES, OverlapEvidence, OverlapVerdict } from '../data/groundCoverOverlap';
+import { PlantThumbnail } from './PlantThumbnail';
+import {
+  BedCrossSection, BedHeightsDiagram, HolesDiagram, MergeDiagram, SeasonTimeline, ShadeDiagram, StripDiagram, TrunkZoneDiagram, VerdictPicture,
+  WallCrossingDiagram, WalnutDiagram,
+} from './guideDiagrams';
 import { GUILD_PLANTS } from '../data/guildPlants';
 import { STAR_TREES } from '../data/starTrees';
 import { translateRole } from '../i18n/translations';
@@ -122,6 +131,7 @@ const ROLE_REASONS: Partial<Record<GuildRole, L>> = {
 const RATING_LABEL: Record<string, L> = {
   S: L('suitable', 'geeignet'), C: L('conditional', 'bedingt'), C_REC: L('recommended with conditions', 'mit Bedingungen empfohlen'), U: L('unsuitable', 'ungeeignet'),
 };
+const RATING_DOT: Record<string, string> = { S: 'bg-emerald-500', C: 'bg-amber-400', C_REC: 'bg-sky-500', U: 'bg-red-500' };
 
 const SourceRefs: React.FC<{ ns: number[] }> = ({ ns }) => (
   <span className="text-[11px] text-stone-500">
@@ -142,69 +152,228 @@ const SourceList: React.FC<{ language: Language; ns?: number[] }> = ({ language,
   </ol>
 );
 
+type Tone = 'emerald' | 'amber' | 'red' | 'sky' | 'stone';
+const TONE: Record<Tone, { badge: string; icon: string; band: string }> = {
+  emerald: { badge: 'bg-emerald-100 text-emerald-800 border-emerald-200', icon: 'bg-emerald-600', band: 'from-emerald-400 to-emerald-600' },
+  amber: { badge: 'bg-amber-100 text-amber-900 border-amber-200', icon: 'bg-amber-600', band: 'from-amber-300 to-amber-600' },
+  red: { badge: 'bg-red-100 text-red-800 border-red-200', icon: 'bg-red-600', band: 'from-red-400 to-red-600' },
+  sky: { badge: 'bg-sky-100 text-sky-900 border-sky-200', icon: 'bg-sky-600', band: 'from-sky-300 to-sky-600' },
+  stone: { badge: 'bg-stone-200 text-stone-700 border-stone-300', icon: 'bg-stone-600', band: 'from-stone-300 to-stone-500' },
+};
+
+const Badge: React.FC<{ tone: Tone; children: React.ReactNode }> = ({ tone, children }) => (
+  <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${TONE[tone].badge}`}>{children}</span>
+);
+
+/** One guide step as a card: icon, title, badge, the full text, optional picture. */
+const StepCard: React.FC<{ step: Step; language: Language; icon: LucideIcon; tone: Tone; badge?: L; visual?: React.ReactNode; band?: boolean }> = ({ step, language, icon: Icon, tone, badge, visual, band }) => {
+  const g = (l: L) => getLoc(l, language);
+  return (
+    <div id={step.id} className="relative overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-xs scroll-mt-24 flex flex-col">
+      {band && <div className={`h-1.5 bg-gradient-to-r ${TONE[tone].band}`} />}
+      <div className="p-5 space-y-2 flex-1 flex flex-col">
+        <div className="flex items-center gap-3">
+          <div className={`w-9 h-9 rounded-xl ${TONE[tone].icon} text-white flex items-center justify-center shrink-0`}><Icon className="w-5 h-5" /></div>
+          <h3 className="font-bold text-base text-stone-900 flex-1">{g(step.title)}</h3>
+          {badge && <Badge tone={tone}>{g(badge)}</Badge>}
+        </div>
+        {visual && <div className="rounded-xl bg-stone-50 border border-stone-100 p-2">{visual}</div>}
+        {step.body.map((b, k) => <p key={k} className="text-sm text-stone-700 leading-relaxed">{g(b)}</p>)}
+        <div className="mt-auto pt-1"><SourceRefs ns={step.sources} /></div>
+      </div>
+    </div>
+  );
+};
+
+const SectionTitle: React.FC<{ icon: LucideIcon; title: string; subtitle?: string }> = ({ icon: Icon, title, subtitle }) => (
+  <div className="flex items-start gap-3 pt-2">
+    <Icon className="w-6 h-6 text-forest-600 shrink-0 mt-0.5" />
+    <div>
+      <h3 className="text-lg font-bold text-stone-900">{title}</h3>
+      {subtitle && <p className="text-sm text-stone-500">{subtitle}</p>}
+    </div>
+  </div>
+);
+
+const Stat: React.FC<{ value: string; label: string; icon: LucideIcon; tone: Tone; refs: number[] }> = ({ value, label, icon: Icon, tone, refs }) => (
+  <div className="rounded-2xl bg-white border border-stone-200 p-4 flex flex-col gap-1">
+    <div className="flex items-center gap-2">
+      <div className={`w-7 h-7 rounded-lg ${TONE[tone].icon} text-white flex items-center justify-center`}><Icon className="w-4 h-4" /></div>
+      <span className="text-xl font-extrabold text-stone-900 tracking-tight">{value}</span>
+    </div>
+    <span className="text-xs text-stone-600 leading-snug">{label} <SourceRefs ns={refs} /></span>
+  </div>
+);
+
+interface PlantRef { id: string; name: string; imageUrl?: string; color: string }
+
+const PlantChip: React.FC<{ p: PlantRef }> = ({ p }) => (
+  <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-stone-200 pl-0.5 pr-2 py-0.5 text-[11px] font-semibold text-stone-700">
+    <PlantThumbnail src={p.imageUrl} alt={p.name} fallbackColor={p.color} className="w-5 h-5" roundedClassName="rounded-full" targetSize={48} priority="low" />
+    {p.name}
+  </span>
+);
+
+const step = (id: string) => STEPS.find(s => s.id === id)!;
+
+/** Star and companion versions of the same plant share a name; list each name once. */
+const dedupeByName = (list: PlantRef[]) => [...new Map(list.map(p => [p.name.toLowerCase(), p])).values()];
+
 export const RaisedBedGuide: React.FC<{ language: Language }> = ({ language }) => {
   const g = (l: L) => getLoc(l, language);
-  const plantsFor = (w: BedWarningId) => [
-    ...STAR_TREES.filter(t => STAR_BED_SUITABILITY[t.id]?.warnings.includes(w)).map(t => t.commonName),
-    ...GUILD_PLANTS.filter(p => !p.retired && COMPANION_BED_SUITABILITY[p.id]?.warnings.includes(w)).map(p => p.commonName),
-  ];
+  const plantsFor = (w: BedWarningId): PlantRef[] => dedupeByName([
+    ...STAR_TREES.filter(t => STAR_BED_SUITABILITY[t.id]?.warnings.includes(w)).map(t => ({ id: t.id, name: g(t.commonName), imageUrl: t.imageUrl, color: t.color })),
+    ...GUILD_PLANTS.filter(p => !p.retired && COMPANION_BED_SUITABILITY[p.id]?.warnings.includes(w)).map(p => ({ id: p.id, name: g(p.commonName), imageUrl: p.imageUrl, color: p.color })),
+  ]);
+  const ratingCounts = Object.keys(RATING_LABEL).map(k => ({
+    k, n: [...Object.values(STAR_BED_SUITABILITY), ...Object.values(COMPANION_BED_SUITABILITY)].filter(r => r.rating === k).length,
+  }));
+  const crossing = (Object.keys(ROLE_CROSSES_BED_WALL) as GuildRole[]).filter(r => ROLE_CROSSES_BED_WALL[r] === 'CROSSES');
+  const blocked = (Object.keys(ROLE_CROSSES_BED_WALL) as GuildRole[]).filter(r => ROLE_CROSSES_BED_WALL[r] !== 'CROSSES');
   return (
-    <div className="space-y-5">
-      <div className="space-y-2">
-        <h2 className="text-xl font-bold text-stone-900">{g(L('Building raised beds', 'Hochbeete bauen'))}</h2>
-        <p className="text-sm text-stone-600">{g(L('Ways to build a raised bed, what each method is good for, and what the planner assumes when you draw a bed in the garden grid. Numbers in brackets refer to the sources at the bottom.', 'Wege, ein Hochbeet zu bauen, wofür sich jede Bauweise eignet und wovon der Planer ausgeht, wenn du im Gartenraster ein Beet zeichnest. Zahlen in Klammern verweisen auf die Quellen unten.'))}</p>
-      </div>
-      {STEPS.map((st, i) => (
-        <div key={st.id} id={st.id} className="flex gap-4 p-5 rounded-2xl bg-stone-50 border border-stone-200 scroll-mt-24">
-          <div className="w-10 h-10 rounded-xl bg-amber-700 text-white font-extrabold flex items-center justify-center shrink-0">{i + 1}</div>
-          <div className="space-y-1.5">
-            <h3 className="font-bold text-base text-stone-900">{g(st.title)}</h3>
-            {st.body.map((b, k) => <p key={k} className="text-sm text-stone-700 leading-relaxed">{g(b)}</p>)}
-            <SourceRefs ns={st.sources} />
-          </div>
+    <div className="space-y-6">
+      {/* Hero */}
+      <div className="rounded-3xl bg-gradient-to-br from-amber-50 via-white to-emerald-50 border border-stone-200 p-6 grid gap-4 lg:grid-cols-[1fr_1.35fr] items-center">
+        <div className="space-y-2">
+          <Badge tone="amber"><Fence className="w-3 h-3" />{g(L('Raised beds', 'Hochbeete'))}</Badge>
+          <h2 className="text-2xl font-extrabold text-stone-900 tracking-tight">{g(L('Building raised beds', 'Hochbeete bauen'))}</h2>
+          <p className="text-sm text-stone-600 leading-relaxed">{g(L('Ways to build a raised bed, what each method is good for, and what the planner assumes when you draw a bed in the garden grid. Numbers in brackets refer to the sources at the bottom.', 'Wege, ein Hochbeet zu bauen, wofür sich jede Bauweise eignet und wovon der Planer ausgeht, wenn du im Gartenraster ein Beet zeichnest. Zahlen in Klammern verweisen auf die Quellen unten.'))}</p>
         </div>
-      ))}
+        <div className="rounded-2xl bg-white/80 border border-stone-200 p-2">
+          <BedCrossSection language={language} className="w-full h-auto" />
+          <p className="text-[10px] text-stone-400 text-center">{g(L('Schematic; values from the sections below', 'Schema; Werte aus den Abschnitten unten'))} <SourceRefs ns={[5, 18, 19, 20, 21]} /></p>
+        </div>
+      </div>
 
-      <div id="bed-walls" className="p-5 rounded-2xl bg-white border border-stone-200 scroll-mt-24 space-y-2">
-        <h3 className="font-bold text-base text-stone-900">{g(L('What crosses a raised-bed wall', 'Was über eine Hochbeetwand gelangt'))}</h3>
-        <p className="text-sm text-stone-700">{g(L('In the garden grid a raised bed counts as its own small garden. Companions only help across a bed wall through effects that pass over it; a companion is shared across a wall only if everything it does crosses, so guilds on both sides keep their own nitrogen fixers, ground covers and mulch plants.', 'Im Gartenraster zählt ein Hochbeet als eigener kleiner Garten. Begleiter helfen über eine Beetwand nur mit Wirkungen, die darüber gelangen; geteilt wird ein Begleiter über eine Wand nur, wenn alles, was er tut, darüber wirkt, sodass Gilden auf beiden Seiten ihre eigenen Stickstoff-Fixierer, Bodendecker und Mulchpflanzen behalten.'))}</p>
-        <table className="w-full text-xs border-collapse">
-          <tbody>
-            {(Object.keys(ROLE_CROSSES_BED_WALL) as GuildRole[]).map(r => (
-              <tr key={r} className="border-t border-stone-100 align-top">
-                <td className="py-1 pr-2 font-semibold text-stone-800 whitespace-nowrap">{translateRole(r, language)}</td>
-                <td className={`py-1 pr-2 font-bold whitespace-nowrap ${ROLE_CROSSES_BED_WALL[r] === 'CROSSES' ? 'text-emerald-700' : 'text-amber-800'}`}>
-                  {ROLE_CROSSES_BED_WALL[r] === 'CROSSES' ? g(L('crosses', 'gelangt darüber')) : g(L('stays on its side', 'bleibt auf seiner Seite'))}
-                </td>
-                <td className="py-1 text-stone-600">{ROLE_REASONS[r] ? g(ROLE_REASONS[r]!) : ''}</td>
-              </tr>
+      {/* Key numbers */}
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+        <Stat icon={Thermometer} tone="amber" value="+0.5–2.5 °C" label={g(L('warmer soil early in the season (subarctic trial)', 'wärmerer Boden früh in der Saison (subarktischer Versuch)'))} refs={[2]} />
+        <Stat icon={Droplets} tone="sky" value="−41–53 %" label={g(L('less soil moisture in the same beds', 'weniger Bodenfeuchte in denselben Beeten'))} refs={[2]} />
+        <Stat icon={Shovel} tone="emerald" value="−32 %" label={g(L('less irrigation when soil is mixed into compost', 'weniger Bewässerung mit Erde in der Kompostfüllung'))} refs={[3]} />
+        <Stat icon={Snowflake} tone="stone" value="−5 … −23 °C" label={g(L('lethal root temperature of woody plants in containers', 'tödliche Wurzeltemperatur von Gehölzen im Kübel'))} refs={[4]} />
+      </div>
+
+      {/* Pros and cons */}
+      <SectionTitle icon={Scale} title={g(L('Is it worth it?', 'Lohnt es sich?'))} />
+      <div className="grid gap-4 md:grid-cols-2">
+        <StepCard step={step('bed-why')} language={language} icon={ThumbsUp} tone="emerald" band />
+        <StepCard step={step('bed-drawbacks')} language={language} icon={ThumbsDown} tone="amber" band />
+      </div>
+
+      {/* Materials */}
+      <SectionTitle icon={Hammer} title={g(L('Wall materials', 'Material für die Wände'))} subtitle={g(L('What each material does to the soil inside', 'Was jedes Material mit der Erde im Beet macht'))} />
+      <div className="grid gap-4 md:grid-cols-2">
+        <StepCard step={step('bed-timber')} language={language} icon={TreeDeciduous} tone="emerald" band badge={L('good choice', 'gute Wahl')} />
+        <StepCard step={step('bed-sleepers')} language={language} icon={Ban} tone="red" band badge={L('banned', 'verboten')} />
+        <StepCard step={step('bed-steel')} language={language} icon={Layers} tone="amber" band badge={L('line acid beds', 'saure Beete auskleiden')} />
+        <StepCard step={step('bed-stone')} language={language} icon={BrickWall} tone="amber" band badge={L('adds lime', 'gibt Kalk ab')} />
+      </div>
+
+      {/* Bed styles */}
+      <SectionTitle icon={Sprout} title={g(L('Other bed styles', 'Andere Beetformen'))} subtitle={g(L('The badge shows how good the evidence is', 'Das Abzeichen zeigt, wie gut die Belege sind'))} />
+      <div className="grid gap-4 md:grid-cols-2">
+        <StepCard step={step('bed-hugel')} language={language} icon={Mountain} tone="stone" band badge={L('no studies', 'keine Studien')} />
+        <StepCard step={step('bed-wicking')} language={language} icon={Waves} tone="emerald" band badge={L('field trial', 'Feldversuch')} />
+        <StepCard step={step('bed-keyhole')} language={language} icon={KeyRound} tone="amber" band badge={L('survey, drylands', 'Umfrage, Trockengebiet')} />
+        <StepCard step={step('bed-mound')} language={language} icon={Shovel} tone="sky" band badge={L('extension advice', 'Beratung')} />
+      </div>
+
+      {/* Building */}
+      <SectionTitle icon={Ruler} title={g(L('Building it', 'Der Aufbau'))} />
+      <div className="grid gap-4 md:grid-cols-2">
+        <StepCard step={step('bed-fill')} language={language} icon={Shovel} tone="emerald" visual={
+          <div className="space-y-2 p-1">
+            {[
+              { t: L('Mix A', 'Mischung A'), parts: [[33.3, L('topsoil', 'Oberboden'), '#7c5a3a'], [33.3, L('compost', 'Kompost'), '#3f2a14'], [33.4, L('coarse sand', 'grober Sand'), '#d6c29a']] as Array<[number, L, string]> },
+              { t: L('Mix B', 'Mischung B'), parts: [[70, L('topsoil', 'Oberboden'), '#7c5a3a'], [30, L('compost', 'Kompost'), '#3f2a14']] as Array<[number, L, string]> },
+            ].map(m => (
+              <div key={m.t.en} className="flex items-center gap-2">
+                <span className="text-[11px] font-bold text-stone-500 w-20 shrink-0">{g(m.t)}</span>
+                <div className="flex-1 flex h-6 rounded-lg overflow-hidden">
+                  {m.parts.map(([w, l, c], i) => (
+                    <div key={i} className="flex items-center justify-center text-[10px] font-bold" style={{ width: `${w}%`, background: c, color: c === '#d6c29a' ? '#44403c' : '#fff' }}>{Math.round(w)} % {g(l)}</div>
+                  ))}
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        } />
+        <StepCard step={step('bed-dimensions')} language={language} icon={Ruler} tone="sky" visual={<BedHeightsDiagram language={language} className="w-full h-auto max-h-40" />} />
+        <StepCard step={step('bed-bottom')} language={language} icon={Layers} tone="red" visual={
+          <div className="flex flex-wrap gap-2 p-1 text-[11px]">
+            {[
+              { t: L('Vole mesh: keeps voles out', 'Wühlmausgitter: hält Wühlmäuse fern'), c: 'bg-stone-100 text-stone-700 border-stone-300' },
+              { t: L('Fabric: stops roots, not fungal threads', 'Vlies: stoppt Wurzeln, keine Pilzfäden'), c: 'bg-amber-50 text-amber-900 border-amber-200' },
+              { t: L('Solid root-barrier film: what the planner assumes', 'Dichte Wurzelschutzfolie: davon geht der Planer aus'), c: 'bg-red-50 text-red-800 border-red-200' },
+            ].map(x => <span key={x.t.en} className={`rounded-lg border px-2 py-1 font-semibold ${x.c}`}>{g(x.t)}</span>)}
+          </div>
+        } />
+        <StepCard step={step('bed-juglone')} language={language} icon={TreeDeciduous} tone="amber" visual={<WalnutDiagram language={language} className="w-full h-auto max-h-44" />} />
+      </div>
+
+      {/* Walls */}
+      <div id="bed-walls" className="rounded-2xl bg-white border border-stone-200 scroll-mt-24 p-5 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-forest-600 text-white flex items-center justify-center shrink-0"><Fence className="w-5 h-5" /></div>
+          <h3 className="font-bold text-base text-stone-900">{g(L('What crosses a raised-bed wall', 'Was über eine Hochbeetwand gelangt'))}</h3>
+        </div>
+        <p className="text-sm text-stone-700">{g(L('In the garden grid a raised bed counts as its own small garden. Companions only help across a bed wall through effects that pass over it; a companion is shared across a wall only if everything it does crosses, so guilds on both sides keep their own nitrogen fixers, ground covers and mulch plants.', 'Im Gartenraster zählt ein Hochbeet als eigener kleiner Garten. Begleiter helfen über eine Beetwand nur mit Wirkungen, die darüber gelangen; geteilt wird ein Begleiter über eine Wand nur, wenn alles, was er tut, darüber wirkt, sodass Gilden auf beiden Seiten ihre eigenen Stickstoff-Fixierer, Bodendecker und Mulchpflanzen behalten.'))}</p>
+        <div className="rounded-xl bg-sky-50/60 border border-sky-100 p-2"><WallCrossingDiagram language={language} className="w-full h-auto" /></div>
+        <div className="grid gap-3 md:grid-cols-2">
+          {[
+            { roles: crossing, tone: 'emerald' as Tone, icon: ArrowUpRight, t: L('crosses', 'gelangt darüber') },
+            { roles: blocked, tone: 'amber' as Tone, icon: Ban, t: L('stays on its side', 'bleibt auf seiner Seite') },
+          ].map(col => (
+            <div key={col.t.en} className={`rounded-xl border p-3 space-y-2 ${col.tone === 'emerald' ? 'bg-emerald-50/50 border-emerald-200' : 'bg-amber-50/50 border-amber-200'}`}>
+              <div className="flex items-center gap-2"><col.icon className={`w-4 h-4 ${col.tone === 'emerald' ? 'text-emerald-700' : 'text-amber-800'}`} /><Badge tone={col.tone}>{g(col.t)}</Badge></div>
+              {col.roles.map(r => (
+                <div key={r} className="text-xs">
+                  <span className="font-bold text-stone-800">{translateRole(r, language)}</span>
+                  <span className="text-stone-600"> · {ROLE_REASONS[r] ? g(ROLE_REASONS[r]!) : ''}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
         <p className="text-sm text-stone-700">{g(L('Conflicts across a wall: soil pH and onion-family plants next to legumes no longer clash; fennel and wormwood count one level milder; black walnut, Verticillium and Phytophthora become notes because water, soil on tools and leaf litter can still carry them; pests that fly or crawl (spotted wing drosophila, vine weevil, aphids, silver leaf spores) are not stopped.', 'Konflikte über eine Wand: Boden-pH und Lauchgewächse neben Leguminosen stören sich nicht mehr; Fenchel und Wermut zählen eine Stufe milder; Schwarznuss, Verticillium und Phytophthora werden zu Hinweisen, weil Wasser, Erde an Werkzeugen und Laub sie weiter tragen können; Schädlinge, die fliegen oder krabbeln (Kirschessigfliege, Dickmaulrüssler, Blattläuse, Sporen der Bleiglanzkrankheit), werden nicht aufgehalten.'))} <SourceRefs ns={[22, 23, 26]} /></p>
       </div>
 
-      <div id="bed-suitability" className="p-5 rounded-2xl bg-white border border-stone-200 scroll-mt-24 space-y-3">
-        <h3 className="font-bold text-base text-stone-900">{g(L('Which plants suit a raised bed', 'Welche Pflanzen ins Hochbeet passen'))}</h3>
+      {/* Suitability */}
+      <div id="bed-suitability" className="rounded-2xl bg-white border border-stone-200 scroll-mt-24 p-5 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-forest-600 text-white flex items-center justify-center shrink-0"><Sprout className="w-5 h-5" /></div>
+          <h3 className="font-bold text-base text-stone-900">{g(L('Which plants suit a raised bed', 'Welche Pflanzen ins Hochbeet passen'))}</h3>
+        </div>
         <p className="text-sm text-stone-700">{g(L('Each plant has a rating; plants that are not simply suitable carry one of these notes. The garden grid shows them in the Infrastructure card when a plant sits in a bed.', 'Jede Pflanze hat eine Einstufung; Pflanzen, die nicht einfach geeignet sind, tragen einen dieser Hinweise. Das Gartenraster zeigt sie in der Infrastruktur-Karte, sobald eine Pflanze in einem Beet steht.'))}</p>
-        {(Object.keys(BED_WARNINGS) as BedWarningId[]).map(w => {
-          const names = plantsFor(w);
-          if (names.length === 0) return null;
-          return (
-            <div key={w} id={`bed-${w.toLowerCase()}`} className="scroll-mt-24 border-t border-stone-100 pt-2">
-              <div className="text-sm font-bold text-stone-900">{g(BED_WARNINGS[w].title)}</div>
-              <p className="text-xs text-stone-700">{g(BED_WARNINGS[w].text)}</p>
-              <p className="text-[11px] text-stone-500 mt-0.5">{names.map(n => g(n)).join(', ')}</p>
-            </div>
-          );
-        })}
-        <p className="text-[11px] text-stone-500">{g(L('Ratings', 'Einstufungen'))}: {Object.entries(RATING_LABEL).map(([k, v]) => `${k} = ${g(v)}`).join(' · ')}</p>
+        <div className="flex flex-wrap gap-2">
+          {ratingCounts.map(({ k, n }) => (
+            <span key={k} className="inline-flex items-center gap-1.5 rounded-full bg-stone-50 border border-stone-200 px-2.5 py-1 text-xs font-semibold text-stone-700">
+              <span className={`w-2.5 h-2.5 rounded-full ${RATING_DOT[k]}`} />{g(RATING_LABEL[k])}<span className="text-stone-400">{n}</span>
+            </span>
+          ))}
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          {(Object.keys(BED_WARNINGS) as BedWarningId[]).map(w => {
+            const plants = plantsFor(w);
+            if (plants.length === 0) return null;
+            return (
+              <div key={w} id={`bed-${w.toLowerCase()}`} className="scroll-mt-24 rounded-xl border border-stone-200 bg-stone-50/60 p-3 space-y-1.5">
+                <div className="flex items-start gap-2">
+                  <span className="text-[10px] font-extrabold text-white bg-stone-500 rounded-md px-1.5 py-0.5 mt-0.5">{w}</span>
+                  <div className="text-sm font-bold text-stone-900">{g(BED_WARNINGS[w].title)}</div>
+                </div>
+                <p className="text-xs text-stone-700">{g(BED_WARNINGS[w].text)}</p>
+                <div className="flex flex-wrap gap-1">{plants.map(p => <PlantChip key={p.id} p={p} />)}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
-        <h3 className="font-bold text-sm text-stone-900">{g(L('Sources', 'Quellen'))}</h3>
-        <SourceList language={language} ns={[...Array(26).keys()].map(i => i + 1)} />
-      </div>
+      <details className="rounded-2xl bg-stone-50 border border-stone-200 p-5 group" open>
+        <summary className="cursor-pointer font-bold text-sm text-stone-900 flex items-center gap-2"><BookOpen className="w-4 h-4 text-forest-600" />{g(L('Sources', 'Quellen'))}</summary>
+        <div className="mt-2"><SourceList language={language} ns={[...Array(26).keys()].map(i => i + 1)} /></div>
+      </details>
     </div>
   );
 };
@@ -212,91 +381,200 @@ export const RaisedBedGuide: React.FC<{ language: Language }> = ({ language }) =
 const MODE_LABEL: Record<string, L> = {
   CARPET: L('carpet', 'Teppich'), DRIFT: L('drift / patches', 'Gruppen / Flecken'), ALLEY: L('sown strip', 'gesäter Streifen'),
 };
+const MODE_HINT: Record<string, L> = {
+  CARPET: L('closed mat around the tree', 'geschlossene Matte um den Baum'),
+  DRIFT: L('loose groups with gaps', 'lockere Gruppen mit Lücken'),
+  ALLEY: L('sown between the trees', 'zwischen den Bäumen gesät'),
+};
 const LIGHT_LABEL: Record<string, L> = {
   SHADE: L('shade', 'Schatten'), HALF: L('half shade', 'Halbschatten'), SUN: L('sun', 'Sonne'), ANY: L('any', 'beliebig'),
 };
+const LIGHT_ICON: Record<string, LucideIcon> = { SHADE: Moon, HALF: CloudSun, SUN: Sun, ANY: SunMoon };
 const SEASON_LABEL: Record<string, L> = {
   SUMMER: L('growing season', 'Vegetationszeit'), SPRING_EPHEMERAL: L('spring only', 'nur Frühjahr'), COOL_SEASON: L('autumn to spring', 'Herbst bis Frühjahr'),
 };
+const SEASON_DOT: Record<string, string> = { SUMMER: 'bg-green-500', SPRING_EPHEMERAL: 'bg-pink-400', COOL_SEASON: 'bg-sky-400' };
+
+const VERDICT_LABEL: Record<OverlapVerdict, L> = {
+  COEXIST: L('mix', 'mischen sich'), MOSAIC: L('separate patches', 'getrennte Flecken'), EXCLUDE: L('keep apart', 'getrennt halten'),
+};
+const VERDICT_TONE: Record<OverlapVerdict, Tone> = { COEXIST: 'emerald', MOSAIC: 'sky', EXCLUDE: 'amber' };
+const EVIDENCE_LABEL: Record<OverlapEvidence, L> = {
+  trial: L('trial', 'Versuch'), mixture: L('sown mix', 'Saatmischung'), community: L('same habitat', 'gleicher Lebensraum'),
+  guidance: L('advice', 'Empfehlung'), inferred: L('inferred', 'abgeleitet'),
+};
+
+const RuleCard: React.FC<{ visual: React.ReactNode; children: React.ReactNode }> = ({ visual, children }) => (
+  <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden flex flex-col">
+    <div className="bg-gradient-to-b from-stone-50 to-white border-b border-stone-100 p-2">{visual}</div>
+    <div className="p-4 text-sm text-stone-700 leading-relaxed">{children}</div>
+  </div>
+);
 
 /** Explainer for the ground-cover areas (guild-design tab). */
 export const GroundCoverGuide: React.FC<{ language: Language }> = ({ language }) => {
   const g = (l: L) => getLoc(l, language);
   const specs = Object.values(GROUND_COVER_SPECS);
-  const name = (id: string) => g(GUILD_PLANTS.find(p => p.id === id)?.commonName ?? L(id, id));
+  const plantOf = (id: string) => GUILD_PLANTS.find(p => p.id === id);
+  const ref = (id: string): PlantRef => {
+    const p = plantOf(id);
+    return { id, name: g(p?.commonName ?? L(id, id)), imageUrl: p?.imageUrl, color: p?.color ?? '#15803d' };
+  };
+  const [filter, setFilter] = useState<OverlapVerdict | 'ALL'>('ALL');
+  const [showAll, setShowAll] = useState(false);
+  // strongest evidence first; with no filter the verdicts take turns so the first cards show all three
+  const EVIDENCE_RANK: Record<OverlapEvidence, number> = { trial: 0, community: 1, guidance: 2, inferred: 3, mixture: 4 };
+  const pairs = [...OVERLAP_PAIRS.entries()].sort((x, y) => EVIDENCE_RANK[x[1].evidence] - EVIDENCE_RANK[y[1].evidence] || x[0].localeCompare(y[0]));
+  const byVerdict = (v: OverlapVerdict) => pairs.filter(([, r]) => r.verdict === v);
+  const interleaved = (() => {
+    const lists = (['COEXIST', 'MOSAIC', 'EXCLUDE'] as const).map(byVerdict);
+    const out: typeof pairs = [];
+    for (let i = 0; out.length < pairs.length; i++) lists.forEach(l => { if (l[i]) out.push(l[i]); });
+    return out;
+  })();
+  const shown = filter === 'ALL' ? interleaved : byVerdict(filter);
+  const PAIR_LIMIT = 12;
+  const counts = { COEXIST: 0, MOSAIC: 0, EXCLUDE: 0 } as Record<OverlapVerdict, number>;
+  pairs.forEach(([, r]) => { counts[r.verdict]++; });
+  const diagram = 'w-full h-auto max-h-32';
   return (
-    <div id="guide-ground-covers" className="p-5 rounded-2xl bg-white border border-stone-200 scroll-mt-24 space-y-3">
-      <h3 className="font-bold text-base text-stone-900">{g(L('Ground covers are areas, not single plants', 'Bodendecker sind Flächen, keine Einzelpflanzen'))}</h3>
-      <p className="text-sm text-stone-700">{g(L('Clover, woodruff, creeping thyme, naturalising bulbs and sown strips are drawn as translucent areas. Their shapes follow these rules:', 'Klee, Waldmeister, Sand-Thymian, verwildernde Zwiebelblumen und gesäte Streifen werden als durchscheinende Flächen gezeichnet. Ihre Formen folgen diesen Regeln:'))}</p>
-      <ul className="list-disc pl-5 text-sm text-stone-700 space-y-1">
-        <li>{g(L('Bare zone around every trunk: 0.9 m for young plantings (first about 5 years), where a 1.83 m weed-free circle gave near-maximum tree growth and 1.5 m weed-free strips beat living mulches; established trees keep a 0.3 m collar (0.5 m for dense mats, a planning value). Spring bulbs keep only the collar because they are dormant in summer.', 'Offene Zone um jeden Stamm: 0,9 m bei jungen Pflanzungen (etwa die ersten 5 Jahre), wo ein unkrautfreier Kreis von 1,83 m nahezu maximales Baumwachstum brachte und 1,5 m breite unkrautfreie Streifen lebende Mulche übertrafen; etablierte Bäume behalten einen Kragen von 0,3 m (0,5 m bei dichten Teppichen, ein Planungswert). Frühjahrszwiebeln behalten nur den Kragen, weil sie im Sommer ruhen.'))} <SourceRefs ns={[27, 28]} /></li>
-        <li>{g(L('Shade lovers sit in the tree’s daily shade, which lies on the side away from the noon sun (north in the northern hemisphere), offset by about 0.6 × crown height × the cotangent of the noon sun elevation; sun lovers thin out under the canopy. Light classes follow published light indicator values.', 'Schattenpflanzen liegen im Tagesschatten des Baums, der auf der der Mittagssonne abgewandten Seite liegt (auf der Nordhalbkugel im Norden), versetzt um etwa 0,6 × Kronenhöhe × Kotangens der Sonnenhöhe am Mittag; Sonnenpflanzen werden unter der Krone lichter. Die Lichtklassen folgen veröffentlichten Lichtzeigerwerten.'))} <SourceRefs ns={[29, 32]} /></li>
-        <li>{g(L('Holes around other plants (their spread plus a year of runner growth) and around fennel (1.5 m), wormwood (1.2 m) and, for clover-type covers, onion-family plants (1.8 m), the same distances the conflict checks use.', 'Aussparungen um andere Pflanzen (ihr Durchmesser plus ein Jahr Ausläuferwachstum) und um Fenchel (1,5 m), Wermut (1,2 m) und bei kleeartigen Bodendeckern um Lauchgewächse (1,8 m), dieselben Abstände wie bei der Konfliktprüfung.'))}</li>
-        <li>{g(L('Sown flower or cover-crop strips lie outside the drip line, like the alley flower strips of the orchard trials.', 'Gesäte Blüh- oder Gründüngungsstreifen liegen außerhalb der Kronentraufe, wie die Fahrgassen-Blühstreifen der Obstbauversuche.'))} <SourceRefs ns={[30]} /></li>
-        <li>{g(L('The same cover around neighbouring trees merges into one area; covers that grow at the same time share the ground, runner plants interweave at their border; spring bulbs and winter covers overlap summer covers because they use the ground at another time.', 'Derselbe Bodendecker um benachbarte Bäume verschmilzt zu einer Fläche; gleichzeitig wachsende Bodendecker teilen sich den Boden, Ausläuferpflanzen verweben sich an der Grenze; Frühjahrszwiebeln und Winterbegrünung überlappen Sommerbodendecker, weil sie den Boden zu einer anderen Zeit nutzen.'))} <SourceRefs ns={[31]} /></li>
-        <li>{g(L('The exact outline, edge noise and how densely an area is shaded are planning values, not measurements.', 'Der genaue Umriss, das Randrauschen und wie dicht eine Fläche eingefärbt ist, sind Planungswerte, keine Messwerte.'))}</li>
-      </ul>
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs border-collapse">
-          <thead>
-            <tr className="text-left text-stone-500">
-              <th className="py-1 pr-2">{g(L('Plant', 'Pflanze'))}</th>
-              <th className="py-1 pr-2">{g(L('Shape', 'Form'))}</th>
-              <th className="py-1 pr-2">{g(L('Light', 'Licht'))}</th>
-              <th className="py-1 pr-2">{g(L('In the ground', 'Im Boden'))}</th>
-              <th className="py-1">{g(L('Note', 'Hinweis'))}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {specs.map(sp => (
-              <tr key={sp.plantId} className="border-t border-stone-100 align-top">
-                <td className="py-1 pr-2 font-semibold text-stone-800">{name(sp.plantId)}</td>
-                <td className="py-1 pr-2">{g(MODE_LABEL[sp.mode])}</td>
-                <td className="py-1 pr-2">{g(LIGHT_LABEL[sp.light])}{sp.ellenbergL !== undefined ? ` (L ${sp.ellenbergL})` : ''}</td>
-                <td className="py-1 pr-2">{g(SEASON_LABEL[sp.seasonLayer])}</td>
-                <td className="py-1 text-stone-600">{sp.caveat ? g(sp.caveat) : ''}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div id="guide-ground-covers" className="rounded-3xl bg-white border border-stone-200 scroll-mt-24 p-6 space-y-5">
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-xl bg-green-600 text-white flex items-center justify-center shrink-0"><Leaf className="w-5 h-5" /></div>
+        <div className="space-y-1">
+          <h3 className="font-bold text-lg text-stone-900">{g(L('Ground covers are areas, not single plants', 'Bodendecker sind Flächen, keine Einzelpflanzen'))}</h3>
+          <p className="text-sm text-stone-700">{g(L('Clover, woodruff, creeping thyme, naturalising bulbs and sown strips are drawn as translucent areas. Their shapes follow these rules:', 'Klee, Waldmeister, Sand-Thymian, verwildernde Zwiebelblumen und gesäte Streifen werden als durchscheinende Flächen gezeichnet. Ihre Formen folgen diesen Regeln:'))}</p>
+        </div>
       </div>
-      <SourceList language={language} ns={[27, 28, 29, 30, 31, 32]} />
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <RuleCard visual={<TrunkZoneDiagram language={language} className={diagram} />}>
+          {g(L('Bare zone around every trunk: 0.9 m for young plantings (first about 5 years), where a 1.83 m weed-free circle gave near-maximum tree growth and 1.5 m weed-free strips beat living mulches; established trees keep a 0.3 m collar (0.5 m for dense mats, a planning value). Spring bulbs keep only the collar because they are dormant in summer.', 'Offene Zone um jeden Stamm: 0,9 m bei jungen Pflanzungen (etwa die ersten 5 Jahre), wo ein unkrautfreier Kreis von 1,83 m nahezu maximales Baumwachstum brachte und 1,5 m breite unkrautfreie Streifen lebende Mulche übertrafen; etablierte Bäume behalten einen Kragen von 0,3 m (0,5 m bei dichten Teppichen, ein Planungswert). Frühjahrszwiebeln behalten nur den Kragen, weil sie im Sommer ruhen.'))} <SourceRefs ns={[27, 28]} />
+        </RuleCard>
+        <RuleCard visual={<ShadeDiagram language={language} className={diagram} />}>
+          {g(L('Shade lovers sit in the tree’s daily shade, which lies on the side away from the noon sun (north in the northern hemisphere), offset by about 0.6 × crown height × the cotangent of the noon sun elevation; sun lovers thin out under the canopy. Light classes follow published light indicator values.', 'Schattenpflanzen liegen im Tagesschatten des Baums, der auf der der Mittagssonne abgewandten Seite liegt (auf der Nordhalbkugel im Norden), versetzt um etwa 0,6 × Kronenhöhe × Kotangens der Sonnenhöhe am Mittag; Sonnenpflanzen werden unter der Krone lichter. Die Lichtklassen folgen veröffentlichten Lichtzeigerwerten.'))} <SourceRefs ns={[29, 32]} />
+        </RuleCard>
+        <RuleCard visual={<HolesDiagram language={language} className={diagram} />}>
+          {g(L('Holes around other plants (their spread plus a year of runner growth) and around fennel (1.5 m), wormwood (1.2 m) and, for clover-type covers, onion-family plants (1.8 m), the same distances the conflict checks use.', 'Aussparungen um andere Pflanzen (ihr Durchmesser plus ein Jahr Ausläuferwachstum) und um Fenchel (1,5 m), Wermut (1,2 m) und bei kleeartigen Bodendeckern um Lauchgewächse (1,8 m), dieselben Abstände wie bei der Konfliktprüfung.'))}
+        </RuleCard>
+        <RuleCard visual={<StripDiagram language={language} className={diagram} />}>
+          {g(L('Sown flower or cover-crop strips lie outside the drip line, like the alley flower strips of the orchard trials.', 'Gesäte Blüh- oder Gründüngungsstreifen liegen außerhalb der Kronentraufe, wie die Fahrgassen-Blühstreifen der Obstbauversuche.'))} <SourceRefs ns={[30]} />
+        </RuleCard>
+        <RuleCard visual={<MergeDiagram language={language} className={diagram} />}>
+          {g(L('The same cover around neighbouring trees merges into one area; covers that grow at the same time share the ground, runner plants interweave at their border; spring bulbs and winter covers overlap summer covers because they use the ground at another time.', 'Derselbe Bodendecker um benachbarte Bäume verschmilzt zu einer Fläche; gleichzeitig wachsende Bodendecker teilen sich den Boden, Ausläuferpflanzen verweben sich an der Grenze; Frühjahrszwiebeln und Winterbegrünung überlappen Sommerbodendecker, weil sie den Boden zu einer anderen Zeit nutzen.'))} <SourceRefs ns={[31]} />
+        </RuleCard>
+        <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-4 text-sm text-stone-600 flex items-start gap-2">
+          <Info className="w-4 h-4 text-stone-500 shrink-0 mt-0.5" />
+          <span>{g(L('The exact outline, edge noise and how densely an area is shaded are planning values, not measurements.', 'Der genaue Umriss, das Randrauschen und wie dicht eine Fläche eingefärbt ist, sind Planungswerte, keine Messwerte.'))}</span>
+        </div>
+      </div>
 
-      <div id="guide-ground-cover-overlap" className="pt-3 border-t border-stone-100 space-y-2 scroll-mt-24">
-        <h4 className="font-bold text-sm text-stone-900">{g(L('Which ground covers can share the ground', 'Welche Bodendecker sich den Boden teilen können'))}</h4>
-        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-1">
-          <li>{g(L('"A taller plant can simply grow over a lower one" is not a rule the evidence supports: taller plants take a disproportionate share of the light, and grassland plants show little vertical niche separation. Height layering is only used where a pair is documented.', '„Eine höhere Pflanze kann einfach über einer niedrigeren wachsen“ ist keine durch Belege gestützte Regel: Höhere Pflanzen nehmen überproportional viel Licht, und Wiesenpflanzen zeigen kaum Trennung nach Höhenschichten. Höhenschichtung wird nur bei belegten Paaren genutzt.'))}</li>
-          <li>{g(L('Documented partners are drawn overlapping: lawn trials, seed mixtures sown together, and plants that occur together in the same natural habitat (a weaker hint). Where only a related species is documented, the table says so.', 'Belegte Partner werden überlappend gezeichnet: aus Rasenversuchen, gemeinsam gesäten Mischungen und Pflanzen, die im selben natürlichen Lebensraum vorkommen (ein schwächerer Hinweis). Ist nur eine verwandte Art belegt, steht das in der Tabelle.'))}</li>
-          <li>{g(L('Plants that use the ground at different times overlap: spring bulbs under summer covers (by analogy with woodland spring flowers), as long as the cover is at most half as tall as the bulb flower (a rule of thumb from bulb growers, not a measured threshold); winter covers with summer covers (planning judgement), except subterranean clover next to a closed carpet, which competes with its reseeding.', 'Pflanzen, die den Boden zu verschiedenen Zeiten nutzen, überlappen: Frühjahrszwiebeln unter Sommerbodendeckern (in Analogie zu Frühjahrsblühern im Wald), solange der Bodendecker höchstens halb so hoch ist wie die Zwiebelblüte (Faustregel aus dem Zwiebelhandel, kein gemessener Schwellenwert); Winter- mit Sommerbegrünung (Planungsentscheidung), außer Bodenfrüchtigem Klee neben einem geschlossenen Teppich, der mit seiner Selbstaussaat konkurriert.'))}</li>
-          <li>{g(L('Kept apart: sorghum-sudangrass (except with buckwheat and soybean; sorgoleone is documented), and as planning judgements: strips that are cut and dug in next to perennial covers (buckwheat counts as an undisturbed nurse crop in orchard alley mixes), onion-family plants with legumes (traditional rule, not backed by trials), acid-soil with lime-loving plants. Dense colonies (nettle, wild garlic, tansy, creeping jenny) form separate patches.', 'Getrennt gehalten: Sorghum-Sudangras (außer mit Buchweizen und Sojabohne; Sorgoleon ist belegt), und als Planungsentscheidungen: Streifen, die gemulcht und eingearbeitet werden, neben mehrjährigen Bodendeckern (Buchweizen gilt in Obstbau-Fahrgassenmischungen als ungestörte Ammenpflanze), Lauchgewächse mit Leguminosen (überlieferte Regel, nicht durch Versuche belegt), Moorbeet- mit kalkliebenden Pflanzen. Dichte Kolonien (Brennnessel, Bärlauch, Rainfarn, Pfennigkraut) bilden getrennte Flecken.'))}</li>
-          <li>{g(L('Everything else is drawn as neighbouring patches with a mixed border (planning convention: there is no evidence that they intermix, and light competition favours the taller plant); runner plants weave further into each other than dense mats.', 'Alles andere wird als benachbarte Flecken mit gemischtem Rand gezeichnet (Planungskonvention: Es gibt keinen Beleg für Durchmischung, und Lichtkonkurrenz begünstigt die höhere Pflanze); Ausläuferpflanzen verweben sich dabei weiter als dichte Polster.'))}</li>
-        </ul>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs border-collapse">
-            <thead>
-              <tr className="text-left text-stone-500">
-                <th className="py-1 pr-2">{g(L('Pair', 'Paar'))}</th>
-                <th className="py-1 pr-2">{g(L('Together?', 'Gemeinsam?'))}</th>
-                <th className="py-1">{g(L('Why', 'Warum'))}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...OVERLAP_PAIRS.entries()].sort((x, y) => x[0].localeCompare(y[0])).map(([k, r]) => {
-                const [a, b2] = k.split('|');
-                const verdict = r.verdict === 'COEXIST' ? L('mix', 'mischen sich') : r.verdict === 'MOSAIC' ? L('separate patches', 'getrennte Flecken') : L('keep apart', 'getrennt halten');
+      {/* Plants by shape */}
+      <div className="space-y-3">
+        {(['CARPET', 'DRIFT', 'ALLEY'] as const).map(mode => (
+          <div key={mode} className="space-y-2">
+            <div className="flex items-baseline gap-2">
+              <h4 className="font-bold text-sm text-stone-900 capitalize">{g(MODE_LABEL[mode])}</h4>
+              <span className="text-xs text-stone-500">{g(MODE_HINT[mode])}</span>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {specs.filter(sp => sp.mode === mode).map(sp => {
+                const p = ref(sp.plantId);
+                const LightIcon = LIGHT_ICON[sp.light] ?? Sun;
                 return (
-                  <tr key={k} className="border-t border-stone-100 align-top">
-                    <td className="py-1 pr-2 font-semibold text-stone-800">{name(a)} + {name(b2)}</td>
-                    <td className={`py-1 pr-2 font-bold whitespace-nowrap ${r.verdict === 'COEXIST' ? 'text-emerald-700' : r.verdict === 'MOSAIC' ? 'text-sky-700' : 'text-amber-800'}`}>{g(verdict)}</td>
-                    <td className="py-1 text-stone-600">
-                      {g(r.reason)}
-                      <span className="block text-[10px] text-stone-400">{r.sources.map(src => src.split(' (')[0].split('.')[0] + (src.match(/\((\d{4}|n\.d\.)/)?.[0] ? ` ${src.match(/\((\d{4}|n\.d\.)\)/)?.[0] ?? ''}` : '')).join('; ')}</span>
-                    </td>
-                  </tr>
+                  <div key={sp.plantId} className="rounded-xl border border-stone-200 bg-stone-50/50 p-2.5 flex gap-2.5">
+                    <PlantThumbnail src={p.imageUrl} alt={p.name} fallbackColor={p.color} className="w-11 h-11" roundedClassName="rounded-lg" targetSize={96} priority="low" />
+                    <div className="min-w-0 space-y-0.5">
+                      <div className="text-xs font-bold text-stone-900">{p.name}</div>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-stone-600">
+                        <span className="inline-flex items-center gap-0.5"><LightIcon className="w-3 h-3 text-amber-500" />{g(LIGHT_LABEL[sp.light])}{sp.ellenbergL !== undefined ? ` (L ${sp.ellenbergL})` : ''}</span>
+                        <span className="inline-flex items-center gap-1"><span className={`w-2 h-2 rounded-full ${SEASON_DOT[sp.seasonLayer]}`} />{g(SEASON_LABEL[sp.seasonLayer])}</span>
+                      </div>
+                      {sp.caveat && <p className="text-[10.5px] text-stone-500 leading-snug">{g(sp.caveat)}</p>}
+                    </div>
+                  </div>
                 );
               })}
-            </tbody>
-          </table>
+            </div>
+          </div>
+        ))}
+      </div>
+      <details className="text-[11px]">
+        <summary className="cursor-pointer font-semibold text-stone-600">{g(L('Sources', 'Quellen'))}</summary>
+        <div className="mt-1"><SourceList language={language} ns={[27, 28, 29, 30, 31, 32]} /></div>
+      </details>
+
+      {/* Overlap */}
+      <div id="guide-ground-cover-overlap" className="pt-4 border-t border-stone-100 space-y-4 scroll-mt-24">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center shrink-0"><Blend className="w-5 h-5" /></div>
+          <h4 className="font-bold text-lg text-stone-900 pt-1.5">{g(L('Which ground covers can share the ground', 'Welche Bodendecker sich den Boden teilen können'))}</h4>
+        </div>
+        <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 flex gap-3">
+          <div className="shrink-0 rounded-lg bg-amber-500 text-white text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 h-fit">{g(L('Myth check', 'Mythos-Check'))}</div>
+          <p className="text-sm text-amber-950">{g(L('"A taller plant can simply grow over a lower one" is not a rule the evidence supports: taller plants take a disproportionate share of the light, and grassland plants show little vertical niche separation. Height layering is only used where a pair is documented.', '„Eine höhere Pflanze kann einfach über einer niedrigeren wachsen“ ist keine durch Belege gestützte Regel: Höhere Pflanzen nehmen überproportional viel Licht, und Wiesenpflanzen zeigen kaum Trennung nach Höhenschichten. Höhenschichtung wird nur bei belegten Paaren genutzt.'))}</p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {([
+            ['COEXIST', L('Documented partners are drawn overlapping: lawn trials, seed mixtures sown together, and plants that occur together in the same natural habitat (a weaker hint). Where only a related species is documented, the table says so.', 'Belegte Partner werden überlappend gezeichnet: aus Rasenversuchen, gemeinsam gesäten Mischungen und Pflanzen, die im selben natürlichen Lebensraum vorkommen (ein schwächerer Hinweis). Ist nur eine verwandte Art belegt, steht das in der Tabelle.')],
+            ['MOSAIC', L('Everything else is drawn as neighbouring patches with a mixed border (planning convention: there is no evidence that they intermix, and light competition favours the taller plant); runner plants weave further into each other than dense mats.', 'Alles andere wird als benachbarte Flecken mit gemischtem Rand gezeichnet (Planungskonvention: Es gibt keinen Beleg für Durchmischung, und Lichtkonkurrenz begünstigt die höhere Pflanze); Ausläuferpflanzen verweben sich dabei weiter als dichte Polster.')],
+            ['EXCLUDE', L('Kept apart: sorghum-sudangrass (except with buckwheat and soybean; sorgoleone is documented), and as planning judgements: strips that are cut and dug in next to perennial covers (buckwheat counts as an undisturbed nurse crop in orchard alley mixes), onion-family plants with legumes (traditional rule, not backed by trials), acid-soil with lime-loving plants. Dense colonies (nettle, wild garlic, tansy, creeping jenny) form separate patches.', 'Getrennt gehalten: Sorghum-Sudangras (außer mit Buchweizen und Sojabohne; Sorgoleon ist belegt), und als Planungsentscheidungen: Streifen, die gemulcht und eingearbeitet werden, neben mehrjährigen Bodendeckern (Buchweizen gilt in Obstbau-Fahrgassenmischungen als ungestörte Ammenpflanze), Lauchgewächse mit Leguminosen (überlieferte Regel, nicht durch Versuche belegt), Moorbeet- mit kalkliebenden Pflanzen. Dichte Kolonien (Brennnessel, Bärlauch, Rainfarn, Pfennigkraut) bilden getrennte Flecken.')],
+          ] as Array<[OverlapVerdict, L]>).map(([v, text]) => (
+            <div key={v} className="rounded-2xl border border-stone-200 overflow-hidden bg-white">
+              <div className="flex items-center justify-between gap-2 bg-stone-50 px-3 py-2 border-b border-stone-100">
+                <VerdictPicture verdict={v} className="w-24 h-12" />
+                <Badge tone={VERDICT_TONE[v]}>{g(VERDICT_LABEL[v])}</Badge>
+              </div>
+              <p className="p-3 text-sm text-stone-700 leading-relaxed">{g(text)}</p>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-2xl border border-stone-200 p-4 space-y-3 bg-gradient-to-br from-pink-50/50 via-white to-sky-50/50">
+          <div className="flex items-center gap-2"><CalendarRange className="w-4 h-4 text-pink-600" /><span className="text-sm font-bold text-stone-900">{g(L('Different times, same ground', 'Verschiedene Zeiten, gleicher Boden'))}</span></div>
+          <SeasonTimeline language={language} />
+          <p className="text-[10px] text-stone-400">{g(L('Schematic months for Central Europe', 'Schematische Monate für Mitteleuropa'))}</p>
+          <p className="text-sm text-stone-700">{g(L('Plants that use the ground at different times overlap: spring bulbs under summer covers (by analogy with woodland spring flowers), as long as the cover is at most half as tall as the bulb flower (a rule of thumb from bulb growers, not a measured threshold); winter covers with summer covers (planning judgement), except subterranean clover next to a closed carpet, which competes with its reseeding.', 'Pflanzen, die den Boden zu verschiedenen Zeiten nutzen, überlappen: Frühjahrszwiebeln unter Sommerbodendeckern (in Analogie zu Frühjahrsblühern im Wald), solange der Bodendecker höchstens halb so hoch ist wie die Zwiebelblüte (Faustregel aus dem Zwiebelhandel, kein gemessener Schwellenwert); Winter- mit Sommerbegrünung (Planungsentscheidung), außer Bodenfrüchtigem Klee neben einem geschlossenen Teppich, der mit seiner Selbstaussaat konkurriert.'))}</p>
+        </div>
+
+        {/* Documented pairs */}
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-bold text-stone-900 mr-1">{g(L('Documented pairs', 'Belegte Paare'))}</span>
+            {(['ALL', 'COEXIST', 'MOSAIC', 'EXCLUDE'] as const).map(f => (
+              <button key={f} onClick={() => { setFilter(f); setShowAll(false); }}
+                className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${filter === f ? 'bg-stone-900 text-white border-stone-900' : 'bg-white text-stone-600 border-stone-200 hover:border-stone-400'}`}>
+                {f === 'ALL' ? `${g(L('all', 'alle'))} ${pairs.length}` : `${g(VERDICT_LABEL[f])} ${counts[f]}`}
+              </button>
+            ))}
+          </div>
+          <div className="grid gap-3 md:grid-cols-2">
+            {(showAll ? shown : shown.slice(0, PAIR_LIMIT)).map(([k, r]) => {
+              const [a, b2] = k.split('|').map(ref);
+              return (
+                <div key={k} className="rounded-xl border border-stone-200 bg-white p-3 flex gap-3">
+                  <div className={`flex items-center shrink-0 ${r.verdict === 'COEXIST' ? '-space-x-3' : r.verdict === 'MOSAIC' ? '-space-x-1' : 'gap-2'}`}>
+                    <PlantThumbnail src={a.imageUrl} alt={a.name} fallbackColor={a.color} className="w-11 h-11 ring-2 ring-white" roundedClassName="rounded-full" targetSize={96} priority="low" />
+                    {r.verdict === 'EXCLUDE' && <span className="w-0.5 h-8 bg-amber-500 rounded" />}
+                    <PlantThumbnail src={b2.imageUrl} alt={b2.name} fallbackColor={b2.color} className="w-11 h-11 ring-2 ring-white" roundedClassName="rounded-full" targetSize={96} priority="low" />
+                  </div>
+                  <div className="min-w-0 space-y-1">
+                    <div className="text-xs font-bold text-stone-900">{a.name} + {b2.name}</div>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge tone={VERDICT_TONE[r.verdict]}>{g(VERDICT_LABEL[r.verdict])}</Badge>
+                      <Badge tone="stone">{g(EVIDENCE_LABEL[r.evidence])}</Badge>
+                    </div>
+                    <p className="text-xs text-stone-600 leading-snug">{g(r.reason)}</p>
+                    <p className="text-[10px] text-stone-400">{r.sources.map(src => src.split(' (')[0].split('.')[0] + (src.match(/\((\d{4}|n\.d\.)\)/)?.[0] ? ` ${src.match(/\((\d{4}|n\.d\.)\)/)?.[0]}` : '')).join('; ')}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {shown.length > PAIR_LIMIT && (
+            <button onClick={() => setShowAll(v => !v)} className="w-full rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 py-2 text-xs font-bold text-stone-700 inline-flex items-center justify-center gap-1">
+              <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+              {showAll ? g(L('Show fewer', 'Weniger zeigen')) : `${g(L('Show all', 'Alle zeigen'))} (${shown.length})`}
+            </button>
+          )}
         </div>
         <details className="text-[11px] text-stone-600">
           <summary className="cursor-pointer font-semibold">{g(L('Full sources for the overlap rules', 'Vollständige Quellen der Überlappungsregeln'))}</summary>

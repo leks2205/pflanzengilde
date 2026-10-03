@@ -193,6 +193,33 @@ check(getBedSuitability('shrub-blueberry')?.rating === 'C_REC', 'blueberry recom
   check(inside(-12 + 2.5, 0), 'clover of the open-ground tree still grows there');
 }
 
+// ── Garden outline: companions realign to stay inside ─────────────────────────────────────────────
+{
+  const shapes = [
+    { kind: 'RECT' as const, xM: -3, yM: -2.5, wM: 7.5, hM: 5 },
+    { kind: 'CIRCLE' as const, cxM: 0.5, cyM: 0, rM: 3.2 },
+    { kind: 'POLYGON' as const, points: [[-3, -2.5], [4.5, -2.5], [4.5, 0], [1, 0.5], [1, 2.5], [-3, 2.5]] as Array<[number, number]> },
+  ];
+  for (const outline of shapes) {
+    const stars = [
+      star('a', 'tree-apple', -1.2, -0.6, tree('tree-apple').recommendedCompanions.slice(0, 7)),
+      star('b', 'tree-pear', 2.2, -0.9, tree('tree-pear').recommendedCompanions.slice(0, 7)),
+    ];
+    const res = resolveGardenConflicts(stars, { outline });
+    const outside = res.companions.filter(c => !pointInShape(c.xM, c.yM, outline));
+    check(outside.length === 0, `${outline.kind} outline: all companions inside (outside: ${outside.map(c => `${c.plantId}@${c.xM},${c.yM}`).join(' ')})`);
+    const nearTrunk = res.companions.filter(c => stars.some(s => Math.hypot(c.xM - s.xM, c.yM - s.yM) < 0.39));
+    check(nearTrunk.length === 0, `${outline.kind} outline: trunk collars stay bare`);
+    const without = resolveGardenConflicts(stars);
+    check(without.companions.some(c => !pointInShape(c.xM, c.yM, outline)) || outline.kind !== 'RECT', `${outline.kind}: the test garden really is tight (some companions outside without an outline)`);
+    const pos = new Set(res.companions.map(c => `${c.xM},${c.yM}`));
+    check(pos.size === res.companions.length, `${outline.kind} outline: no two companions on the same spot`);
+  }
+  // no outline → identical to before
+  const stars = [star('a', 'tree-apple', 0, 0)];
+  check(JSON.stringify(resolveGardenConflicts(stars)) === JSON.stringify(resolveGardenConflicts(stars, { outline: null })), 'no outline leaves the layout unchanged');
+}
+
 if (failed > 0) {
   console.error(`raised beds: ${failed} failed, ${passed} passed`);
   process.exit(1);

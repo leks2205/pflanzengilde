@@ -1,8 +1,8 @@
 import { ClimateZone, GuildPlant, GuildRole, Hemisphere, LocalizedString, SoilType, StarTree } from '../types/guild';
-import { RaisedBed } from '../types/garden';
+import { GardenShape, RaisedBed } from '../types/garden';
 import { compartmentAt } from './compartments';
 import { plantCrossesBedWall } from './bedWallRules';
-import { nearestPointInside, nearestPointOutside } from './geometry2d';
+import { nearestPointInside, nearestPointOutside, signedDistanceToShape } from './geometry2d';
 import {
   GardenCompanionInstance,
   GardenConflict,
@@ -148,7 +148,8 @@ export function optimizeGardenCompanions(
   starPlants: GardenStarPlantInstance[],
   allGuildPlants: GuildPlant[] = GUILD_PLANTS,
   hemisphere: Hemisphere = 'NORTHERN',
-  beds: readonly RaisedBed[] = []
+  beds: readonly RaisedBed[] = [],
+  outline: GardenShape | null = null
 ): {
   companions: GardenCompanionInstance[];
   stats: GardenStats;
@@ -409,19 +410,45 @@ export function optimizeGardenCompanions(
         }
       }
     }
+
+    // Garden outline: pull companions back inside every iteration, so the push-apart above can
+    // spread them along the border instead of stacking them on it
+    if (outline) {
+      for (const comp of placedCompanions) keepInsideOutline(comp, outline);
+    }
   }
 
   // The per-tree projection above runs tree after tree, so pushing a companion out of one trunk
   // zone can pull it back into a neighbouring one (e.g. chives between two sea buckthorns), and
   // rounding to cm can leave it a few mm inside. Settle every trunk zone at once.
+  const insideOutline = (c: GardenCompanionInstance) => (x: number, y: number) =>
+    !outline || signedDistanceToShape(x, y, outline) <= -outlineInsetM(c.plant) + 0.01;
   for (let ci = 0; ci < placedCompanions.length; ci++) {
     settleTrunkClearance(placedCompanions[ci], starPlants, tree =>
-      tree.starTree.category === 'NITROGEN_FIXING_TREE' && flags[ci].allium ? 1.95 : 0.4
+      tree.starTree.category === 'NITROGEN_FIXING_TREE' && flags[ci].allium ? 1.95 : 0.4,
+      insideOutline(placedCompanions[ci])
     );
   }
 
   // Companions stay on their guild's side of a raised-bed wall
   if (beds.length > 0) settleIntoCompartments(placedCompanions, compartmentOf, beds);
+
+  // Final pass: every companion ends up inside the garden outline (trunk clearance still kept)
+  if (outline) {
+    for (let ci = 0; ci < placedCompanions.length; ci++) {
+      const comp = placedCompanions[ci];
+      if (insideOutline(comp)(comp.xM, comp.yM)) continue;
+      keepInsideOutline(comp, outline);
+      settleTrunkClearance(comp, starPlants, tree =>
+        tree.starTree.category === 'NITROGEN_FIXING_TREE' && flags[ci].allium ? 1.95 : 0.4,
+        insideOutline(comp)
+      );
+    }
+    // positions moved, so the light at each spot may have changed
+    for (const comp of placedCompanions) {
+      comp.currentLightCondition = calculateLocalLight(comp.xM, comp.yM, starPlants, hemisphere);
+    }
+  }
 
   const companionPlantCount = placedCompanions.length;
   const plantsSaved = Math.max(0, totalUnoptimizedCompanions - companionPlantCount);
@@ -564,10 +591,11 @@ function hashString(str: string): number {
 function settleTrunkClearance(
   comp: { xM: number; yM: number },
   starPlants: GardenStarPlantInstance[],
-  minDist: (tree: GardenStarPlantInstance) => number
+  minDist: (tree: GardenStarPlantInstance) => number,
+  allowed: (x: number, y: number) => boolean = () => true
 ): void {
   const ok = (x: number, y: number) =>
-    starPlants.every(t => Math.hypot(x - t.xM, y - t.yM) >= minDist(t) - 1e-9);
+    starPlants.every(t => Math.hypot(x - t.xM, y - t.yM) >= minDist(t) - 1e-9) && allowed(x, y);
   if (ok(comp.xM, comp.yM)) return;
 
   // Aim 1 cm outside the circle so rounding to cm never lands inside it
@@ -771,6 +799,8 @@ export interface ResolveGardenOptions {
   maxIterations?: number;
   /** Raised beds (lined): separate compartments for conflicts and companion sharing. */
   beds?: readonly RaisedBed[];
+  /** Garden outline: companions are kept inside it. */
+  outline?: GardenShape | null;
 }
 
 export interface GardenResolution {
@@ -895,7 +925,7 @@ export function resolveGardenConflicts(
   const beds = options.beds ?? [];
   const evaluate = (current: Map<string, string[]>): ResolutionRun => {
     const trees = starPlants.map(t => ({ ...t, selectedPlantIds: [...(current.get(t.instanceId) ?? [])] }));
-    const { companions, stats } = optimizeGardenCompanions(trees, allPlants, hemisphere, beds);
+    const { companions, stats } = optimizeGardenCompanions(trees, allPlants, hemisphere, beds, options.outline ?? null);
     const conflicts = analyzeGardenAntagonisms(trees, companions, beds);
     const score = conflicts.reduce((s, c) => s + SEVERITY_WEIGHT[c.severity], 0);
     return { companions, stats, conflicts, score };
@@ -1282,6 +1312,20 @@ export function applyGardenSubstitution(
     if (list.length > 0) next[tid] = list;
   }
   return next;
+}
+
+/** How far a companion's centre stays inside the garden outline: half its spread, 0.15–0.5 m. */
+function outlineInsetM(plant: GuildPlant): number {
+  return Math.min(0.5, Math.max(0.15, plant.spreadM / 2));
+}
+
+/** Moves a companion the shortest way back inside the garden outline (unchanged if inside). */
+function keepInsideOutline(comp: GardenCompanionInstance, outline: GardenShape): void {
+  const inset = outlineInsetM(comp.plant);
+  if (signedDistanceToShape(comp.xM, comp.yM, outline) <= -inset + 0.01) return;
+  const [x, y] = nearestPointInside(comp.xM, comp.yM, outline, inset + 0.01);
+  comp.xM = roundCm(x);
+  comp.yM = roundCm(y);
 }
 
 /** Moves companions into the compartment (raised bed or open ground) of the guilds they serve. */
