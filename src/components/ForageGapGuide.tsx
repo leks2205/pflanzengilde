@@ -6,6 +6,7 @@ import { PHENO_SEASONS, plantCoversRoleInSeason } from '../core/seasonalGapEngin
 import { SourceList } from './SourceList';
 import { Badge, Stat, Tone, TONE } from './RaisedBedGuide';
 import { ForageGapTimeline } from './guideDiagrams';
+import { PlantThumbnail } from './PlantThumbnail';
 
 /**
  * Forage-gap guide for bumblebees. Every factual claim comes from the three papers below; their
@@ -83,8 +84,7 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
   const plantsIn = (season: (typeof SEASON_ROWS)[number]['id']) =>
     ACTIVE_GUILD_PLANTS
       .filter(p => plantCoversRoleInSeason(p, 'POLLINATOR_MAGNET', season))
-      .map(p => g(p.commonName))
-      .sort((a, b) => a.localeCompare(b, language));
+      .sort((a, b) => g(a.commonName).localeCompare(g(b.commonName), language));
 
   return (
     <div className="space-y-6">
@@ -164,15 +164,28 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
       <div className="grid gap-3 md:grid-cols-2">
         {SEASON_ROWS.map(row => {
           const def = PHENO_SEASONS.find(s => s.id === row.id)!;
-          const names = plantsIn(row.id);
+          const plants = plantsIn(row.id);
           return (
-            <div key={row.id} className="rounded-2xl bg-white border border-stone-200 p-4 space-y-2">
+            <div key={row.id} className="rounded-2xl bg-white border border-stone-200 p-4 space-y-3">
               <div className="flex items-baseline justify-between gap-2">
                 <h4 className="font-bold text-stone-900">{g(def.label)} <span className="text-xs font-medium text-stone-500">({g(def.months)})</span></h4>
-                <span className="text-xs text-stone-500">{names.length} {g(L('plants', 'Pflanzen'))}</span>
+                <span className="text-xs text-stone-500">{plants.length} {g(L('plants', 'Pflanzen'))}</span>
               </div>
-              {row.note && <p className="text-xs text-stone-600">{g(row.note)} {row.id !== 'LATE_SPRING' && row.id !== 'SUMMER' && <Refs ns={row.id === 'AUTUMN' ? [3] : [1]} />}{(row.id === 'LATE_SPRING' || row.id === 'SUMMER') && <Refs ns={[1]} />})</p>}
-              <p className="text-xs text-stone-700 leading-relaxed">{names.join(', ')}</p>
+              {row.note && <p className="text-xs text-stone-600 mb-1">{g(row.note)} {row.id !== 'LATE_SPRING' && row.id !== 'SUMMER' && <Refs ns={row.id === 'AUTUMN' ? [3] : [1]} />}{(row.id === 'LATE_SPRING' || row.id === 'SUMMER') && <Refs ns={[1]} />})</p>}
+              <div className="flex flex-wrap gap-2">
+                {plants.map(p => (
+                  <div key={p.id} className="flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 pr-3 p-1">
+                    <PlantThumbnail
+                      src={p.imageUrl}
+                      alt={g(p.commonName)}
+                      fallbackColor={p.color}
+                      className="w-6 h-6"
+                      roundedClassName="rounded-full"
+                    />
+                    <span className="text-xs font-medium text-stone-700">{g(p.commonName)}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           );
         })}
