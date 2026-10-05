@@ -72,10 +72,10 @@ const CLAIMS: Claim[] = [
 ];
 
 const SEASON_ROWS: { id: (typeof PHENO_SEASONS)[number]['id']; note?: L }[] = [
-  { id: 'EARLY_SPRING', note: L('Covers the March gap.', 'Deckt die März-Lücke ab.') },
-  { id: 'LATE_SPRING', note: L('Contains the June gap; check June specifically.', 'Enthält die Juni-Lücke; den Juni gezielt prüfen.') },
-  { id: 'SUMMER', note: L('August is part of the late-summer low.', 'Der August gehört zum Spätsommer-Tief.') },
-  { id: 'AUTUMN', note: L('September is the month that predicted colony density.', 'Der September sagte die Völkerdichte voraus.') },
+  { id: 'EARLY_SPRING', note: L('March falls in this block (the March gap itself:', 'Der März liegt in diesem Block (die März-Lücke selbst:') },
+  { id: 'LATE_SPRING', note: L('June falls in this block (the June gap itself:', 'Der Juni liegt in diesem Block (die Juni-Lücke selbst:') },
+  { id: 'SUMMER', note: L('August falls in this block (the late-summer low itself:', 'Der August liegt in diesem Block (das Spätsommer-Tief selbst:') },
+  { id: 'AUTUMN', note: L('September falls in this block (the September finding itself:', 'Der September liegt in diesem Block (der September-Befund selbst:') },
 ];
 
 const Refs: React.FC<{ ns: number[] }> = ({ ns }) => (
@@ -99,8 +99,8 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
         <h2 className="text-2xl font-extrabold text-stone-900 tracking-tight">{g(L('Closing forage gaps: flowers for bumblebees all year', 'Trachtlücken schließen: Blüten für Hummeln das ganze Jahr'))}</h2>
         <p className="text-sm text-stone-600 leading-relaxed max-w-3xl">
           {g(L(
-            'Bumblebee colonies need nectar and pollen from spring to autumn. Research on farmland found stretches of the year when supply falls short. This guide shows where, and how to check your own planting for the same holes. Numbers in brackets refer to the sources at the bottom.',
-            'Hummelvölker brauchen von Frühjahr bis Herbst Nektar und Pollen. Forschung auf Agrarland fand Zeiten im Jahr, in denen das Angebot nicht reicht. Dieser Leitfaden zeigt, wann, und wie du deine eigene Pflanzung auf dieselben Lücken prüfst. Zahlen in Klammern verweisen auf die Quellen unten.'
+            'Bumblebee colonies need nectar and pollen across their entire flight season [1]. Research on farmland found stretches of the year when supply falls short. This guide shows where, and how to check your own planting for the same holes. Numbers in brackets refer to the sources at the bottom.',
+            'Hummelvölker brauchen während ihrer gesamten Flugzeit Nektar und Pollen [1]. Forschung auf Agrarland fand Zeiten im Jahr, in denen das Angebot nicht reicht. Dieser Leitfaden zeigt, wann, und wie du deine eigene Pflanzung auf dieselben Lücken prüfst. Zahlen in Klammern verweisen auf die Quellen unten.'
           ))}
         </p>
       </div>
@@ -114,6 +114,7 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
             <li>{g(L('The gap timing comes from farmland in south-west England. That Germany and home gardens follow the same pattern is our inference, not a finding.', 'Das Lücken-Timing stammt von Agrarland in Südwestengland. Dass Deutschland und Hausgärten dem gleichen Muster folgen, ist unsere Schlussfolgerung, kein Befund.'))}</li>
             <li>{g(L('The September result is a correlation, not proof of cause.', 'Das September-Ergebnis ist eine Korrelation, kein Ursachenbeweis.'))}</li>
             <li>{g(L('All three sources are field studies on farmland; none tested a garden planting plan. Evidence tier for every claim below: moderate.', 'Alle drei Quellen sind Feldstudien auf Agrarland; keine prüfte einen Gartenpflanzplan. Evidenzstufe aller Aussagen unten: moderat.'))}</li>
+            <li>{g(L('The sources were checked at abstract level only; no full text was read.', 'Die Quellen wurden nur auf Abstract-Ebene geprüft; kein Volltext wurde gelesen.'))}</li>
           </ul>
         </div>
       </div>
@@ -144,8 +145,8 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
           <h3 className="text-lg font-bold text-stone-900">{g(L('Which catalogue plants flower when', 'Welche Katalogpflanzen wann blühen'))}</h3>
           <p className="text-sm text-stone-500 max-w-3xl">
             {g(L(
-              'Taken from the planner catalogue (the same flowering seasons the seasonal-gap check uses). The planner works in two-month blocks, so the June gap sits inside May–June and the late-summer low spans July–August and September–October. These lists are not a bumblebee-forage rating and give no exact bloom months: the three studies do not name garden plants, so we make no claim that a given plant closes a gap.',
-              'Aus dem Planer-Katalog (dieselben Blütezeiten, die die Saisonlücken-Prüfung nutzt). Der Planer rechnet in Zwei-Monats-Blöcken: Die Juni-Lücke liegt also in Mai–Juni, das Spätsommer-Tief verteilt sich auf Juli–August und September–Oktober. Die Listen sind keine Bewertung als Hummelnahrung und nennen keine genauen Blütemonate: Die drei Studien nennen keine Gartenpflanzen, wir behaupten daher nicht, dass eine bestimmte Pflanze eine Lücke schließt.'
+              'Taken from the planner catalogue (the same flowering seasons the seasonal-gap check uses). The planner works in two-month blocks, so the June gap sits inside May–June and the late-summer low spans July–August and September–October. These lists are not a bumblebee-forage rating and give no exact bloom months: none of the studies tested the catalogue plants listed here, so we make no claim that a given plant closes a gap.',
+              'Aus dem Planer-Katalog (dieselben Blütezeiten, die die Saisonlücken-Prüfung nutzt). Der Planer rechnet in Zwei-Monats-Blöcken: Die Juni-Lücke liegt also in Mai–Juni, das Spätsommer-Tief verteilt sich auf Juli–August und September–Oktober. Die Listen sind keine Bewertung als Hummelnahrung und nennen keine genauen Blütemonate: Keine der Studien hat die hier gelisteten Katalogpflanzen geprüft, wir behaupten daher nicht, dass eine bestimmte Pflanze eine Lücke schließt.'
             ))}
           </p>
         </div>
@@ -160,7 +161,7 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
                 <h4 className="font-bold text-stone-900">{g(def.label)} <span className="text-xs font-medium text-stone-500">({g(def.months)})</span></h4>
                 <span className="text-xs text-stone-500">{names.length} {g(L('plants', 'Pflanzen'))}</span>
               </div>
-              {row.note && <p className="text-xs text-stone-600">{g(row.note)} {row.id !== 'LATE_SPRING' && row.id !== 'SUMMER' && <Refs ns={row.id === 'AUTUMN' ? [3] : [1]} />}{(row.id === 'LATE_SPRING' || row.id === 'SUMMER') && <Refs ns={[1]} />}</p>}
+              {row.note && <p className="text-xs text-stone-600">{g(row.note)} {row.id !== 'LATE_SPRING' && row.id !== 'SUMMER' && <Refs ns={row.id === 'AUTUMN' ? [3] : [1]} />}{(row.id === 'LATE_SPRING' || row.id === 'SUMMER') && <Refs ns={[1]} />})</p>}
               <p className="text-xs text-stone-700 leading-relaxed">{names.join(', ')}</p>
             </div>
           );
