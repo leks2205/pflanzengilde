@@ -1607,4 +1607,5 @@ export const en = {
   infraBedContents: '{n} plants',
   gardenSidebarHighlightHint: 'Click to highlight this plant on the grid',
   guidesTabRaisedBeds: 'Raised Beds',
+  guidesTabForageGaps: 'Bumblebee Forage Gaps',
 };

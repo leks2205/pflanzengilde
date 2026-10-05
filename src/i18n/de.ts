@@ -1607,4 +1607,5 @@ export const de = {
   infraBedContents: '{n} Pflanzen',
   gardenSidebarHighlightHint: 'Klicken, um diese Pflanze im Raster hervorzuheben',
   guidesTabRaisedBeds: 'Hochbeete',
+  guidesTabForageGaps: 'Hummel-Trachtlücken',
 };
