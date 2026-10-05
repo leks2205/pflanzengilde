@@ -64,7 +64,7 @@ const tabFromHash = (hash: string): GuideTab | null => {
   if (hash.startsWith('tea-sinensis-') || hash.startsWith('tea-pruning-') || hash === 'tea_sinensis') return 'tea_sinensis';
   if (hash.startsWith('tea-assamica-') || hash === 'tea_assamica') return 'tea_assamica';
   if (hash.startsWith('bed-') || hash === 'raised_beds') return 'raised_beds';
-  if (hash.startsWith('forage-gaps')) return 'forage_gaps';
+  if (hash.startsWith('forage-gaps') || hash === 'forage_gaps') return 'forage_gaps';
   if (hash.startsWith('fn-') || hash === 'sources') return 'sources';
   return null;
 };
