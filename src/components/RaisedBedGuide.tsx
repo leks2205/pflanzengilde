@@ -152,8 +152,8 @@ const SourceList: React.FC<{ language: Language; ns?: number[] }> = ({ language,
   </ol>
 );
 
-type Tone = 'emerald' | 'amber' | 'red' | 'sky' | 'stone';
-const TONE: Record<Tone, { badge: string; icon: string; band: string }> = {
+export type Tone = 'emerald' | 'amber' | 'red' | 'sky' | 'stone';
+export const TONE: Record<Tone, { badge: string; icon: string; band: string }> = {
   emerald: { badge: 'bg-emerald-100 text-emerald-800 border-emerald-200', icon: 'bg-emerald-600', band: 'from-emerald-400 to-emerald-600' },
   amber: { badge: 'bg-amber-100 text-amber-900 border-amber-200', icon: 'bg-amber-600', band: 'from-amber-300 to-amber-600' },
   red: { badge: 'bg-red-100 text-red-800 border-red-200', icon: 'bg-red-600', band: 'from-red-400 to-red-600' },
@@ -161,7 +161,7 @@ const TONE: Record<Tone, { badge: string; icon: string; band: string }> = {
   stone: { badge: 'bg-stone-200 text-stone-700 border-stone-300', icon: 'bg-stone-600', band: 'from-stone-300 to-stone-500' },
 };
 
-const Badge: React.FC<{ tone: Tone; children: React.ReactNode }> = ({ tone, children }) => (
+export const Badge: React.FC<{ tone: Tone; children: React.ReactNode }> = ({ tone, children }) => (
   <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${TONE[tone].badge}`}>{children}</span>
 );
 
@@ -195,13 +195,13 @@ const SectionTitle: React.FC<{ icon: LucideIcon; title: string; subtitle?: strin
   </div>
 );
 
-const Stat: React.FC<{ value: string; label: string; icon: LucideIcon; tone: Tone; refs: number[] }> = ({ value, label, icon: Icon, tone, refs }) => (
+export const Stat: React.FC<{ value: string; label: string; icon: LucideIcon; tone: Tone; refs: number[]; refsNode?: React.ReactNode }> = ({ value, label, icon: Icon, tone, refs, refsNode }) => (
   <div className="rounded-2xl bg-white border border-stone-200 p-4 flex flex-col gap-1">
     <div className="flex items-center gap-2">
       <div className={`w-7 h-7 rounded-lg ${TONE[tone].icon} text-white flex items-center justify-center`}><Icon className="w-4 h-4" /></div>
       <span className="text-xl font-extrabold text-stone-900 tracking-tight">{value}</span>
     </div>
-    <span className="text-xs text-stone-600 leading-snug">{label} <SourceRefs ns={refs} /></span>
+    <span className="text-xs text-stone-600 leading-snug">{label} {refsNode ?? <SourceRefs ns={refs} />}</span>
   </div>
 );
 

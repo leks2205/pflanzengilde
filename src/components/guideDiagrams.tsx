@@ -361,3 +361,33 @@ export const SeasonTimeline: React.FC<DiagramProps> = ({ language, className }) 
     </div>
   );
 };
+
+/** Schematic of the nectar pattern reported in the forage-gap study: peaks in May and July, low in March, June and Aug/Sep. */
+export const ForageGapTimeline: React.FC<DiagramProps> = ({ language, className }) => {
+  const g = (l: L) => getLoc(l, language);
+  const months = 'JFMAMJJASOND';
+  const gaps: Array<{ t: L; a: number; b: number }> = [
+    { t: L('March', 'März'), a: 2, b: 3 },
+    { t: L('June', 'Juni'), a: 5, b: 6 },
+    { t: L('Aug–Sep', 'Aug–Sep'), a: 7, b: 9 },
+  ];
+  const peaks: Array<[number, number]> = [[4, 5], [6, 7]];
+  const bar = (a: number, b: number) => ({ left: `${(a / 12) * 100}%`, width: `${((b - a) / 12) * 100}%` });
+  return (
+    <div className={className}>
+      <div className="grid grid-cols-[7.5rem_1fr] gap-x-2 gap-y-1.5 items-center text-[11px]">
+        <span />
+        <div className="grid grid-cols-12 text-center text-[10px] font-bold text-stone-400">{months.split('').map((m, i) => <span key={i}>{m}</span>)}</div>
+        <span className="font-semibold text-stone-700 text-right">{g(L('Nectar peaks', 'Nektarspitzen'))}</span>
+        <div className="relative h-4 rounded-full bg-stone-100">
+          {peaks.map(([a, b], i) => <div key={i} className="absolute top-0 h-4 rounded-full" style={{ ...bar(a, b), background: LEAF, opacity: 0.75 }} />)}
+        </div>
+        <span className="font-semibold text-stone-700 text-right">{g(L('Gaps', 'Lücken'))}</span>
+        <div className="relative h-4 rounded-full bg-stone-100">
+          {gaps.map(x => <div key={x.t.en} className="absolute top-0 h-4 rounded-full" style={{ ...bar(x.a, x.b), background: '#f59e0b', opacity: 0.8 }} />)}
+        </div>
+      </div>
+      <p className="mt-1.5 text-[10px] text-stone-500 text-center">{g(L('Schematic, south-west England farmland [1]. Month positions are approximate.', 'Schema, Agrarland in Südwestengland [1]. Monatslagen sind ungefähr.'))}</p>
+    </div>
+  );
+};

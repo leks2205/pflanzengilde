@@ -1,9 +1,11 @@
 import React from 'react';
-import { CalendarRange, Flower2, Info, Link2, Scale, TriangleAlert } from 'lucide-react';
+import { CalendarRange, Flower2, Home, Info, Link2, Scale, Sprout, Sun, Timer, TriangleAlert, LucideIcon, Snowflake } from 'lucide-react';
 import { Language, LocalizedString, getLoc } from '../types/guild';
 import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 import { PHENO_SEASONS, plantCoversRoleInSeason } from '../core/seasonalGapEngine';
 import { SourceList } from './SourceList';
+import { Badge, Stat, Tone, TONE } from './RaisedBedGuide';
+import { ForageGapTimeline } from './guideDiagrams';
 
 /**
  * Forage-gap guide for bumblebees. Every factual claim comes from the three papers below; their
@@ -20,17 +22,11 @@ const SOURCES = [
   'Timberlake, T. P., Vaughan, I. P., Baude, M., & Memmott, J. (2021). Bumblebee colony density on farmland is influenced by late-summer nectar supply and garden cover. Journal of Applied Ecology, 58(5), 1006–1016. doi:10.1111/1365-2664.13826',
 ];
 
-const Moderate: React.FC<{ language: Language }> = ({ language }) => (
-  <span className="inline-flex items-center rounded-md border border-sky-300 bg-sky-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-sky-900 whitespace-nowrap">
-    {getLoc(L('Evidence: moderate', 'Evidenz: moderat'), language)}
-  </span>
-);
-
-interface Claim { id: string; title: L; text: L; refs: number[]; limit: L }
+interface Claim { id: string; icon: LucideIcon; tone: Tone; visual?: boolean; title: L; text: L; refs: number[]; limit: L }
 
 const CLAIMS: Claim[] = [
   {
-    id: 'forage-gaps-timeline',
+    id: 'forage-gaps-timeline', icon: CalendarRange, tone: 'amber', visual: true,
     title: L('Three gaps in the year', 'Drei Lücken im Jahr'),
     text: L(
       'On farms in south-west England, nectar supply peaked twice, in May and July, with a clear "June Gap" in between. March and August/September were also low. Set against what bumblebees need, supply was unlikely to meet demand in March and much of August/September.',
@@ -40,7 +36,7 @@ const CLAIMS: Claim[] = [
     limit: L('Bumblebees only; whole-farm nectar on replicate farms in south-west UK. Whether gardens in Germany show the same timing is our inference.', 'Nur Hummeln; Nektar auf Hofebene auf mehreren Höfen in Südwestengland. Ob Gärten in Deutschland dasselbe Timing zeigen, ist unsere Schlussfolgerung.'),
   },
   {
-    id: 'forage-gaps-timing',
+    id: 'forage-gaps-timing', icon: Timer, tone: 'emerald',
     title: L('Timing matters, not just amount', 'Der Zeitpunkt zählt, nicht nur die Menge'),
     text: L(
       'The authors conclude that when nectar is available may matter as much as how much there is. They recommend prioritising plants that flower in the deficit periods (early spring and late summer). A few low-yield species (ivy, dandelion) helped keep supply continuous.',
@@ -50,7 +46,7 @@ const CLAIMS: Claim[] = [
     limit: L('Recommendation drawn by the authors from farmland data, not a tested garden design.', 'Empfehlung der Autoren aus Daten von Agrarland, kein geprüfter Gartenentwurf.'),
   },
   {
-    id: 'forage-gaps-local',
+    id: 'forage-gaps-local', icon: Sprout, tone: 'sky',
     title: L('Local flowers help, and the season counts', 'Lokale Blüten helfen, die Jahreszeit zählt'),
     text: L(
       'Sown wildflower strips raised wild-bee numbers and species richness, more so where they created a larger local contrast in flower richness. For bumblebees, the effect grew with more early-season flowers in the surrounding landscape. The authors stress a continuous food supply through the season for bumblebees.',
@@ -60,7 +56,7 @@ const CLAIMS: Claim[] = [
     limit: L('Wildflower strips on farmland in four European countries, not gardens. Effects on population size were not shown (the authors call for further research).', 'Blühstreifen auf Agrarland in vier europäischen Ländern, keine Gärten. Wirkungen auf die Populationsgröße wurden nicht gezeigt (die Autoren fordern weitere Forschung).'),
   },
   {
-    id: 'forage-gaps-september',
+    id: 'forage-gaps-september', icon: Sun, tone: 'amber',
     title: L('Late summer, and what gardens may add', 'Spätsommer und der mögliche Beitrag von Gärten'),
     text: L(
       'On 12 farms, nectar supply in September predicted the density of Bombus terrestris colonies the following year (over half of the variation); no other period did. Garden cover in the landscape was also significantly associated with colony density.',
@@ -123,20 +119,34 @@ export const ForageGapGuide: React.FC<{ language: Language; onNavigate?: (path: 
         <Scale className="w-6 h-6 text-forest-600 shrink-0 mt-0.5" />
         <h3 className="text-lg font-bold text-stone-900">{g(L('What the studies found', 'Was die Studien fanden'))}</h3>
       </div>
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+        <Stat icon={Snowflake} tone="sky" value={g(L('March', 'März'))} label={g(L('supply unlikely to meet bumblebee demand', 'Angebot reichte wahrscheinlich nicht für den Hummelbedarf'))} refs={[1]} refsNode={<Refs ns={[1]} />} />
+        <Stat icon={CalendarRange} tone="amber" value={g(L('June', 'Juni'))} label={g(L('"June Gap" between the May and July nectar peaks', '„Juni-Lücke“ zwischen den Nektarspitzen im Mai und Juli'))} refs={[1]} refsNode={<Refs ns={[1]} />} />
+        <Stat icon={Sun} tone="red" value={g(L('Aug–Sep', 'Aug–Sep'))} label={g(L('much of late summer fell short of demand', 'weite Teile des Spätsommers unter dem Bedarf'))} refs={[1]} refsNode={<Refs ns={[1]} />} />
+        <Stat icon={Home} tone="emerald" value={g(L('> 50 %', '> 50 %'))} label={g(L('of next-year colony density variation explained by September nectar (12 farms)', 'der Streuung der Völkerdichte im Folgejahr durch September-Nektar erklärt (12 Höfe)'))} refs={[3]} refsNode={<Refs ns={[3]} />} />
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {CLAIMS.map(c => (
-          <div key={c.id} id={c.id} className="rounded-2xl bg-white border border-stone-200 p-5 space-y-2 scroll-mt-24">
-            <div className="flex items-start justify-between gap-2">
-              <h4 className="font-bold text-stone-900">{g(c.title)}</h4>
-              <Moderate language={language} />
+        {CLAIMS.map(c => {
+          const Icon = c.icon;
+          return (
+            <div key={c.id} id={c.id} className="overflow-hidden rounded-2xl bg-white border border-stone-200 shadow-xs scroll-mt-24 flex flex-col">
+              <div className={`h-1.5 bg-gradient-to-r ${TONE[c.tone].band}`} />
+              <div className="p-5 space-y-2 flex-1 flex flex-col">
+                <div className="flex items-center gap-3">
+                  <div className={`w-9 h-9 rounded-xl ${TONE[c.tone].icon} text-white flex items-center justify-center shrink-0`}><Icon className="w-5 h-5" /></div>
+                  <h4 className="font-bold text-base text-stone-900 flex-1">{g(c.title)}</h4>
+                  <Badge tone="sky">{g(L('Evidence: moderate', 'Evidenz: moderat'))}</Badge>
+                </div>
+                {c.visual && <div className="rounded-xl bg-stone-50 border border-stone-100 p-2"><ForageGapTimeline language={language} /></div>}
+                <p className="text-sm text-stone-700 leading-relaxed">{g(c.text)} <Refs ns={c.refs} /></p>
+                <p className="mt-auto text-xs text-stone-600 leading-relaxed flex gap-1.5">
+                  <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-stone-400" />
+                  <span><strong>{g(L('Limits: ', 'Grenzen: '))}</strong>{g(c.limit)}</span>
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-stone-700 leading-relaxed">{g(c.text)} <Refs ns={c.refs} /></p>
-            <p className="text-xs text-stone-600 leading-relaxed flex gap-1.5">
-              <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-stone-400" />
-              <span><strong>{g(L('Limits: ', 'Grenzen: '))}</strong>{g(c.limit)}</span>
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div id="forage-gaps-plants" className="flex items-start gap-3 pt-2 scroll-mt-24">
