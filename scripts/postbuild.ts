@@ -64,7 +64,10 @@ for (const route of routes) {
     fs.writeFileSync(path.resolve(dir, 'index.html'), gardenHtml, 'utf8');
     console.log(`Pre-rendered garden page dist/${route}/index.html`);
   } else {
-    fs.copyFileSync(path.resolve(distDir, 'index.html'), path.resolve(dir, 'index.html'));
+    // Each page names itself as canonical; with the root's canonical Google treats /guides/ etc. as duplicates of
+    // the home page. The embed widget keeps the root's (it is the same planner inside an iframe).
+    const html = route === 'embed' ? baseHtml : setCanonical(baseHtml, `https://pflanzengilde.de/${route}/`);
+    fs.writeFileSync(path.resolve(dir, 'index.html'), html, 'utf8');
     console.log(`Mirrored dist/index.html to dist/${route}/index.html`);
   }
 }
