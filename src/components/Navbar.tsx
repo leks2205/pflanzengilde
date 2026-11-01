@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language } from '../types/guild';
-import { Sprout, RotateCcw, Download, Upload, FileText, FileJson, Calendar, BookOpen, MoreVertical, Share2, Grid } from 'lucide-react';
+import { Sprout, RotateCcw, Download, Upload, FileText, FileJson, Calendar, BookOpen, MoreVertical, Share2, Grid, DraftingCompass, PenTool, Sheet, Globe } from 'lucide-react';
 import { t } from '../i18n/translations';
 
 interface NavbarProps {
@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="hidden sm:inline">{tr.exportMenu}</span>
                 </button>
                 <div
-                  className={`absolute right-0 top-full pt-1.5 w-56 z-50 animate-in fade-in zoom-in-95 ${
+                  className={`absolute right-0 top-full pt-1.5 ${isGarden ? 'w-64' : 'w-56'} z-50 animate-in fade-in zoom-in-95 ${
                     openMenu === 'export' ? 'block' : 'hidden group-hover:block'
                   }`}
                 >
@@ -232,6 +232,35 @@ export const Navbar: React.FC<NavbarProps> = ({
                         </div>
                       </div>
                     </button>
+                    {isGarden && (
+                      <>
+                        <div className="mt-1 pt-1.5 border-t border-stone-100 px-3 py-1 text-[10px] font-bold text-stone-400 uppercase tracking-wider">
+                          {tr.navbarExportCadSection}
+                        </div>
+                        {([
+                          { event: 'garden-export-dxf', Icon: DraftingCompass, color: 'text-sky-700', title: tr.navbarExportDxf, sub: tr.navbarExportDxfSub },
+                          { event: 'garden-export-svg', Icon: PenTool, color: 'text-violet-600', title: tr.navbarExportSvg, sub: tr.navbarExportSvgSub },
+                          { event: 'garden-export-csv', Icon: Sheet, color: 'text-emerald-700', title: tr.navbarExportCsv, sub: tr.navbarExportCsvSub },
+                          { event: 'garden-export-geojson', Icon: Globe, color: 'text-teal-600', title: tr.navbarExportGeoJson, sub: tr.navbarExportGeoJsonSub },
+                        ] as const).map(({ event, Icon, color, title, sub }) => (
+                          <button
+                            key={event}
+                            type="button"
+                            onClick={() => {
+                              window.dispatchEvent(new CustomEvent(event));
+                              setOpenMenu(null);
+                            }}
+                            className="w-full text-left px-3 py-2 text-xs text-stone-700 hover:bg-forest-50 hover:text-forest-900 flex items-center gap-2.5 transition-colors cursor-pointer"
+                          >
+                            <Icon className={`w-4 h-4 ${color} shrink-0`} />
+                            <div>
+                              <div className="font-semibold text-stone-800">{title}</div>
+                              <div className="text-[10px] text-stone-500">{sub}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

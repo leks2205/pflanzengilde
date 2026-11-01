@@ -14,6 +14,7 @@ import { GardenGridCanvas } from './GardenGridCanvas';
 import { GardenSidebar } from './GardenSidebar';
 import { PlantDetailModal } from './PlantDetailModal';
 import { ShareGardenModal } from './ShareGardenModal';
+import { GeoReferenceModal, GeoReferenceInput } from './GeoReferenceModal';
 import { parseGardenUrl } from '../utils/shareUtils';
 import { STORAGE_KEY_GARDEN_GRID, sanitizeInfrastructure } from '../utils/gardenStorage';
 import { GardenInfrastructure, GardenShape, RaisedBed } from '../types/garden';
@@ -181,6 +182,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
   const [selectedTreeIds, setSelectedTreeIds] = useState<string[]>([]);
   const [modalPlant, setModalPlant] = useState<GuildPlant | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isGeoRefOpen, setIsGeoRefOpen] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(() => {
     if (urlGarden && urlGarden.starPlants.length > 0) {
       return {
@@ -706,6 +708,79 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     }
   };
 
+  // Exports for design software (CAD, scale SVG, plant list, GIS). Loaded on demand.
+  const isGardenEmpty = () => starPlants.length === 0 && companions.length === 0 && !infrastructure.outline && infrastructure.raisedBeds.length === 0;
+
+  const handleExportDesign = async (format: 'dxf' | 'svg' | 'csv') => {
+    if (isGardenEmpty()) {
+      setToast({ type: 'error', message: tr.cadExportEmpty });
+      return;
+    }
+    try {
+      const { buildGardenDrawing, downloadFile, safeFileName } = await import('../core/gardenDrawing');
+      const drawing = buildGardenDrawing({ garden: buildGardenState(), groundCovers });
+      const base = safeFileName(gardenName);
+      if (format === 'dxf') {
+        const { generateGardenDxf } = await import('../core/gardenDxfExporter');
+        downloadFile(generateGardenDxf(drawing), `${base}.dxf`, 'image/vnd.dxf');
+      } else if (format === 'svg') {
+        const { generateGardenSvg, chooseSvgScale } = await import('../core/gardenSvgExporter');
+        const scale = chooseSvgScale(drawing.widthM, drawing.heightM);
+        downloadFile(generateGardenSvg(drawing, scale), `${base}_1-${scale}.svg`, 'image/svg+xml;charset=utf-8');
+      } else {
+        const { generateGardenCsv } = await import('../core/gardenCsvExporter');
+        downloadFile(generateGardenCsv(drawing), `${base}_${language === 'de' ? 'pflanzenliste' : 'plant_list'}.csv`, 'text/csv;charset=utf-8');
+      }
+      setToast({ type: 'success', message: tr.cadExportSuccess.replace('{format}', format.toUpperCase()) });
+    } catch (e) {
+      console.error(`Failed to export ${format}:`, e);
+      setToast({ type: 'error', message: tr.cadExportError });
+    }
+  };
+
+  const GEO_REF_KEY = 'pflanzengilde-geo-reference';
+  const readGeoRef = (): Partial<GeoReferenceInput> | undefined => {
+    try {
+      const raw = localStorage.getItem(GEO_REF_KEY);
+      const all = raw ? JSON.parse(raw) : {};
+      return all[gardenId];
+    } catch {
+      return undefined;
+    }
+  };
+
+  const handleOpenGeoJson = () => {
+    if (isGardenEmpty()) {
+      setToast({ type: 'error', message: tr.cadExportEmpty });
+      return;
+    }
+    setIsGeoRefOpen(true);
+  };
+
+  const handleExportGeoJson = async (input: GeoReferenceInput) => {
+    try {
+      const { buildGardenDrawing, downloadFile, safeFileName } = await import('../core/gardenDrawing');
+      const { generateGardenGeoJson } = await import('../core/gardenGeoJsonExporter');
+      const drawing = buildGardenDrawing({ garden: buildGardenState(), groundCovers });
+      const tree = drawing.trees.find(t => t.instanceId === input.anchorId);
+      const ref = { planX: tree ? tree.x : 0, planY: tree ? tree.y : 0, lat: input.lat, lon: input.lon };
+      downloadFile(generateGardenGeoJson(drawing, ref), `${safeFileName(gardenName)}.geojson`, 'application/geo+json');
+      try {
+        const raw = localStorage.getItem(GEO_REF_KEY);
+        const all = raw ? JSON.parse(raw) : {};
+        all[gardenId] = input;
+        localStorage.setItem(GEO_REF_KEY, JSON.stringify(all));
+      } catch {
+        // Private mode: nothing to remember
+      }
+      setIsGeoRefOpen(false);
+      setToast({ type: 'success', message: tr.cadExportSuccess.replace('{format}', 'GeoJSON') });
+    } catch (e) {
+      console.error('Failed to export GeoJSON:', e);
+      setToast({ type: 'error', message: tr.cadExportError });
+    }
+  };
+
   const handleResetGarden = () => {
     setStarPlants([]);
     setInfrastructure({ outline: null, raisedBeds: [] });
@@ -830,15 +905,27 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     window.addEventListener('garden-export-cal', onCal);
     window.addEventListener('garden-reset', onReset);
     window.addEventListener('garden-share', onShare);
+    const onDxf = () => handleExportDesign('dxf');
+    const onSvg = () => handleExportDesign('svg');
+    const onCsv = () => handleExportDesign('csv');
+    const onGeo = () => handleOpenGeoJson();
+    window.addEventListener('garden-export-dxf', onDxf);
+    window.addEventListener('garden-export-svg', onSvg);
+    window.addEventListener('garden-export-csv', onCsv);
+    window.addEventListener('garden-export-geojson', onGeo);
 
     return () => {
+      window.removeEventListener('garden-export-dxf', onDxf);
+      window.removeEventListener('garden-export-svg', onSvg);
+      window.removeEventListener('garden-export-csv', onCsv);
+      window.removeEventListener('garden-export-geojson', onGeo);
       window.removeEventListener('garden-export-pdf', onPdf);
       window.removeEventListener('garden-export-json', onJson);
       window.removeEventListener('garden-export-cal', onCal);
       window.removeEventListener('garden-reset', onReset);
       window.removeEventListener('garden-share', onShare);
     };
-  }, [handleExportPdf, handleExportJson, handleExportCalendar, handleResetGarden]);
+  }, [handleExportPdf, handleExportJson, handleExportCalendar, handleResetGarden, handleExportDesign, handleOpenGeoJson]);
 
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-5 space-y-3">
@@ -959,6 +1046,22 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
               : undefined
           }
           onNavigate={onNavigate}
+        />
+      )}
+
+      {isGeoRefOpen && (
+        <GeoReferenceModal
+          language={language}
+          anchors={[
+            ...starPlants.map((s, i) => ({
+              id: s.instanceId,
+              label: tr.geoRefAnchorTree.replace('{name}', `${i + 1}. ${s.customName || getLoc(s.starTree.commonName, language)}`),
+            })),
+            { id: 'origin', label: tr.geoRefAnchorOrigin },
+          ]}
+          initial={readGeoRef()}
+          onCancel={() => setIsGeoRefOpen(false)}
+          onConfirm={handleExportGeoJson}
         />
       )}
 
