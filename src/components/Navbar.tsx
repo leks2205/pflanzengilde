@@ -358,6 +358,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               EN
             </button>
+            <button
+              type="button"
+              onClick={() => setLanguage('nb')}
+              className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
+                language === 'nb'
+                  ? 'bg-white text-stone-900 shadow-xs font-bold'
+                  : 'text-stone-500 hover:text-stone-900'
+              }`}
+            >
+              NO
+            </button>
           </div>
         </div>
       </div>

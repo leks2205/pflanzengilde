@@ -76,8 +76,12 @@ export const App: React.FC = () => {
   const [gardenImportKey, setGardenImportKey] = useState(0);
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_LANG);
-    if (saved === 'de' || saved === 'en') return saved;
-    return typeof navigator !== 'undefined' && navigator.language.startsWith('de') ? 'de' : 'en';
+    if (saved === 'de' || saved === 'en' || saved === 'nb') return saved;
+    if (typeof navigator !== 'undefined') {
+      if (navigator.language.startsWith('de')) return 'de';
+      if (/^(nb|nn|no)\b/i.test(navigator.language)) return 'nb';
+    }
+    return 'en';
   });
 
   const [selectedSoil, setSelectedSoil] = useState<SoilType>(() => {
@@ -177,13 +181,14 @@ export const App: React.FC = () => {
           if (gardenData.soil) setSelectedSoil(gardenData.soil);
           if (gardenData.zone) setSelectedZone(gardenData.zone);
           if (gardenData.hemisphere) setHemisphere(gardenData.hemisphere);
-          if (gardenData.language) setLanguage(gardenData.language);
+          // Share codes only carry DE/EN; keep Norwegian if that is the reader's language
+          if (gardenData.language && language !== 'nb') setLanguage(gardenData.language);
           if (window.location.pathname === '/' || window.location.pathname === '') {
             navigateTo(`/garten/${window.location.search}`);
           }
           setToast({
             type: 'success',
-            message: t(gardenData.language).appSharedGardenLoaded
+            message: t(language === 'nb' ? 'nb' : gardenData.language).appSharedGardenLoaded
           });
           return;
         }
@@ -193,11 +198,11 @@ export const App: React.FC = () => {
           if (parsed.soil) setSelectedSoil(parsed.soil);
           if (parsed.zone) setSelectedZone(parsed.zone);
           if (parsed.hemisphere) setHemisphere(parsed.hemisphere);
-          if (parsed.language) setLanguage(parsed.language);
+          if (parsed.language && language !== 'nb') setLanguage(parsed.language);
 
           setToast({
             type: 'success',
-            message: t(parsed.language || language).guildLoadedFromLink
+            message: t(language === 'nb' ? 'nb' : (parsed.language || language)).guildLoadedFromLink
           });
           return;
         }
@@ -478,7 +483,8 @@ export const App: React.FC = () => {
           const cName = String(data.starTree.commonName).toLowerCase().trim();
           matchedTree = STAR_TREES.find(t =>
             t.commonName.en.toLowerCase().includes(cName) ||
-            t.commonName.de.toLowerCase().includes(cName)
+            t.commonName.de.toLowerCase().includes(cName) ||
+            getLoc(t.commonName, 'nb').toLowerCase().includes(cName)
           );
         }
 
@@ -511,7 +517,8 @@ export const App: React.FC = () => {
               const cName = String(item.commonName).toLowerCase().trim();
               found = GUILD_PLANTS.find(p =>
                 p.commonName.en.toLowerCase() === cName ||
-                p.commonName.de.toLowerCase() === cName
+                p.commonName.de.toLowerCase() === cName ||
+                getLoc(p.commonName, 'nb').toLowerCase() === cName
               );
             }
             if (found && !resolvedPlants.some(p => p.id === found.id)) {

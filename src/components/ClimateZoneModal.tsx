@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ClimateZone, Hemisphere, Language } from '../types/guild';
+import { ClimateZone, Hemisphere, Language, getLoc } from '../types/guild';
 import { ACTIVE_GUILD_PLANTS } from '../data/guildPlants';
 import { STAR_TREES } from '../data/starTrees';
 import { t } from '../i18n/translations';
@@ -181,7 +181,7 @@ export const ClimateZoneModal: React.FC<ClimateZoneModalProps> = ({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 overflow-hidden">
                 <span className="font-extrabold text-sm sm:text-base text-white tracking-tight truncate">
-                  {displayRegion.name[language]}
+                  {getLoc(displayRegion.name, language)}
                 </span>
                 <span
                   className="px-2 py-0.5 rounded-full text-[11px] font-bold shrink-0"
@@ -190,12 +190,12 @@ export const ClimateZoneModal: React.FC<ClimateZoneModalProps> = ({
                   {displayRegion.usda}
                 </span>
                 <span className="text-xs text-slate-400 font-mono shrink-0 hidden sm:inline">
-                  {displayRegion.latRange[language]}
+                  {getLoc(displayRegion.latRange, language)}
                 </span>
               </div>
               <p className="text-xs text-slate-300 mt-0.5 truncate">
                 <strong className="text-slate-200">{tr.climateModalKeyRegions}</strong>
-                <span className="text-slate-300">{displayRegion.geoAreas[language]}</span>
+                <span className="text-slate-300">{getLoc(displayRegion.geoAreas, language)}</span>
               </p>
             </div>
           </div>
@@ -329,7 +329,7 @@ export const ClimateZoneModal: React.FC<ClimateZoneModalProps> = ({
                   onMouseLeave={() => setHoveredRegionId(null)}
                   onClick={() => handleSelectRegion(region)}
                 >
-                  <title>{`${region.name[language]} (${region.usda}) — ${region.geoAreas[language]}`}</title>
+                  <title>{`${getLoc(region.name, language)} (${region.usda}) — ${getLoc(region.geoAreas, language)}`}</title>
                 </path>
               ))}
 
@@ -446,7 +446,7 @@ export const ClimateZoneModal: React.FC<ClimateZoneModalProps> = ({
           <div className="flex items-center gap-2 text-stone-500">
             <Compass className="w-4 h-4 text-forest-600 shrink-0" />
             <span>
-              {tr.climateModalActive.replace('{region}', activeRegion.name[language]).replace('{hemisphere}', activeRegion.hemisphere === 'NORTHERN' ? tr.climateModalNorthernHemisphere : tr.climateModalSouthernHemisphere)}
+              {tr.climateModalActive.replace('{region}', getLoc(activeRegion.name, language)).replace('{hemisphere}', activeRegion.hemisphere === 'NORTHERN' ? tr.climateModalNorthernHemisphere : tr.climateModalSouthernHemisphere)}
             </span>
           </div>
 

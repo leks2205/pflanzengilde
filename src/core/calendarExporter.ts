@@ -1288,10 +1288,10 @@ export function generateGuildCalendarIcs(options: CalendarExportOptions): string
           .replace('{plant}', plantCommon)
           .replace('{season}', seasonLabel);
 
-        const howToCut = chopInfo ? chopInfo.howToCut[language] : tr.calendarChopDefaultHowToCut;
-        const howMuch = chopInfo ? chopInfo.howMuch[language] : tr.calendarChopDefaultHowMuch;
-        const whereToSpread = chopInfo ? chopInfo.whereToSpread[language] : tr.calendarChopDefaultWhereToSpread;
-        const nutrientBenefit = chopInfo ? chopInfo.nutrientBenefit[language] : tr.calendarChopDefaultNutrientBenefit;
+        const howToCut = chopInfo ? getLoc(chopInfo.howToCut, language) : tr.calendarChopDefaultHowToCut;
+        const howMuch = chopInfo ? getLoc(chopInfo.howMuch, language) : tr.calendarChopDefaultHowMuch;
+        const whereToSpread = chopInfo ? getLoc(chopInfo.whereToSpread, language) : tr.calendarChopDefaultWhereToSpread;
+        const nutrientBenefit = chopInfo ? getLoc(chopInfo.nutrientBenefit, language) : tr.calendarChopDefaultNutrientBenefit;
 
         const guideUrl = `${baseUrl}/guides#${chopAnchor}`;
 

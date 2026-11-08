@@ -10,7 +10,7 @@ import { t, formatNumber } from '../i18n/translations';
 export function generateGardenCsv(drawing: GardenDrawing): string {
   const lang = drawing.language;
   const tr = t(lang);
-  const sep = lang === 'de' ? ';' : ',';
+  const sep = lang === 'en' ? ',' : ';';
   const num = (v: number | null | undefined, d = 2) => (v == null || !isFinite(v) ? '' : formatNumber(v, d, lang));
   const cell = (v: string | number) => {
     const s = String(v);

@@ -1,4 +1,5 @@
-import { GuildPlant, LocalizedString, StarTree } from '../types/guild';
+import { GuildPlant, Language, LocalizedString, StarTree, getLoc } from '../types/guild';
+import { t } from '../i18n/translations';
 import {
   isStrictAcidophilePlant,
   isStrictCalcicolePlant,
@@ -59,8 +60,8 @@ function fill(template: string, vars: Record<string, string>): string {
   return Object.keys(vars).reduce((acc, k) => acc.split(`{${k}}`).join(vars[k]), template);
 }
 
-function msg(key: CompatMsgKey, vars: (lang: 'de' | 'en') => Record<string, string>): LocalizedString {
-  return { de: fill(de[key], vars('de')), en: fill(en[key], vars('en')) };
+function msg(key: CompatMsgKey, vars: (lang: Language) => Record<string, string>): LocalizedString {
+  return { de: fill(de[key], vars('de')), en: fill(en[key], vars('en')), nb: fill(t('nb')[key], vars('nb')) };
 }
 
 /** pH class of a star, using the engine's classifiers. */
@@ -87,7 +88,7 @@ export function getStarIncompatibility(plant: GuildPlant, star: StarTree): Incom
       conflictId: 'internal-walnut-sensitive-companions',
       withId: star.id,
       withName: starName,
-      message: msg('compatReasonJuglone', l => ({ other: starName[l] }))
+      message: msg('compatReasonJuglone', l => ({ other: getLoc(starName, l) }))
     });
   }
 
@@ -99,7 +100,7 @@ export function getStarIncompatibility(plant: GuildPlant, star: StarTree): Incom
       conflictId: 'internal-edaphic-ph-antagonism',
       withId: star.id,
       withName: starName,
-      message: msg('compatReasonEdaphic', l => ({ other: starName[l] }))
+      message: msg('compatReasonEdaphic', l => ({ other: getLoc(starName, l) }))
     });
   }
 
@@ -112,7 +113,7 @@ export function getStarIncompatibility(plant: GuildPlant, star: StarTree): Incom
       conflictId: spec.id,
       withId: star.id,
       withName: starName,
-      message: msg('compatReasonPestHost', l => ({ other: starName[l], conflict: spec.title[l] }))
+      message: msg('compatReasonPestHost', l => ({ other: getLoc(starName, l), conflict: getLoc(spec.title, l) }))
     });
   }
 
@@ -140,7 +141,7 @@ export function getCompanionPairIncompatibility(plant: GuildPlant, other: GuildP
       conflictId: 'internal-edaphic-ph-antagonism',
       withId: other.id,
       withName: other.commonName,
-      message: msg('compatReasonEdaphic', l => ({ other: other.commonName[l] }))
+      message: msg('compatReasonEdaphic', l => ({ other: getLoc(other.commonName, l) }))
     }];
   }
   return [];
