@@ -91,6 +91,7 @@ export const STAR_BED_SUITABILITY: Readonly<Record<string, BedSuitability>> = {
   'herb-rhubarb': e('C', ['W18']), 'shrub-elderberry': e('U', ['W3']), 'tree-ginkgo': e('U', ['W1']),
   'tree-tea-sinensis': e('C', ['W4', 'W13']), 'tree-tea-assamica': e('U', ['W14'], true), 'herb-hemp': e('C', ['W11']),
   'shrub-red-currant': e('C', ['W17']), 'tree-linden': e('U', ['W1']), 'shrub-rhododendron': e('C_REC', ['W4']),
+  'tree-rowan': e('U', ['W1']), 'tree-birch': e('U', ['W1']), 'tree-inga': e('U', ['W14']),
 };
 
 export const COMPANION_BED_SUITABILITY: Readonly<Record<string, BedSuitability>> = {
@@ -117,6 +118,9 @@ export const COMPANION_BED_SUITABILITY: Readonly<Record<string, BedSuitability>>
   'plant-gliricidia': e('U', ['W14']), 'plant-basil': e('S'), 'plant-summer-savory': e('S', [], true), 'plant-cornflower': e('S', [], true),
   'plant-pot-marigold': e('S', [], true), 'plant-african-marigold': e('S', [], true), 'plant-chinese-motherwort': e('C', ['W12'], true),
   'plant-indian-mustard': e('S'), 'plant-common-vetch': e('S', [], true), 'plant-garlic-chives': e('C', ['W12']),
+  'plant-grey-alder': e('U', ['W1']), 'plant-italian-alder': e('U', ['W1']), 'plant-caragana': e('U', ['W3'], true),
+  'plant-goat-willow': e('U', ['W1']), 'plant-silver-birch': e('U', ['W1']), 'plant-rowan': e('U', ['W1']), 'plant-inga': e('U', ['W14']),
+  'plant-sweet-gale': e('C', ['W5'], true), 'plant-pigeon-pea': e('C', ['W11']),
 };
 
 export function getBedSuitability(id: string): BedSuitability | null {

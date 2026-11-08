@@ -331,11 +331,14 @@ both('R1 tea + apple 3.5 m', () => [inst('tea', 'tree-tea-sinensis', 0, 0), inst
 });
 both('R1b tea + apple 5 m', () => [inst('tea', 'tree-tea-sinensis', 0, 0), inst('apple', 'tree-apple', 5, 0)], { zone: 'TEMPERATE', soil: 'LOAM' });
 
-// R2 walnut + apple 12 m: star–star juglone stays; sensitive companions (alfalfa, alder, rhubarb) leave the root zone
+// R2 walnut + apple 12 m: star–star juglone stays; sensitive companions (alfalfa, rhubarb) leave the root zone.
+// Black alder (juglone-sensitive) is placed on the apple's far side (~18 m from the walnut) since the pioneer
+// trees joined the outer zone, so it never enters the root zone; the generic invariants still forbid any
+// companion juglone conflict after resolution.
 both('R2 walnut + apple 12 m', () => [inst('wal', 'tree-walnut', 0, 0), inst('apple', 'tree-apple', 12, 0)], { zone: 'TEMPERATE', soil: 'LOAM' }, {
   expectCompanionConflictsBefore: true,
   unresolvedStarTypes: ['JUGLONE'],
-  removed: { apple: ['plant-alfalfa', 'plant-rhubarb', 'plant-alder'] },
+  removed: { apple: ['plant-alfalfa', 'plant-rhubarb'] },
 });
 
 // R2b walnut + apple at 17.9 m (just inside the buffer) and 18.1 m (outside)

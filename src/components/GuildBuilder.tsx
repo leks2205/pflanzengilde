@@ -9,6 +9,7 @@ import { GoogleImagesButton } from './GoogleImagesButton';
 import { plantCoversRoleInSeason, PHENO_SEASONS } from '../core/seasonalGapEngine';
 import { resolvePestDefense } from '../core/pestCompanionEngine';
 import { EvidenceCitations, EvidenceTag } from './EvidenceTag';
+import { PIONEER_TREES } from '../data/pioneerTrees';
 
 interface GuildBuilderProps {
   language: Language;
@@ -542,6 +543,15 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
                           >
                             <Star className="w-2.5 h-2.5 text-amber-600 fill-amber-500" />
                             <span>{tr.starTreeAlly}</span>
+                          </span>
+                        )}
+                        {PIONEER_TREES[plant.id] && (
+                          <span
+                            className="px-1.5 py-0.2 rounded-md bg-lime-100 text-lime-900 border border-lime-300 text-[10px] font-bold flex items-center gap-0.5"
+                            title={tr.pioneerBadgeTitle}
+                          >
+                            <Sprout className="w-2.5 h-2.5 text-lime-700" />
+                            <span>{PIONEER_TREES[plant.id].trialStarIds.includes(selectedTree.id) ? tr.pioneerTierNurseTrial : tr.pioneerBadge}</span>
                           </span>
                         )}
                         {isSuperHero && (

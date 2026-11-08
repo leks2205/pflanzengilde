@@ -59,7 +59,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-apple', 'tree-walnut', 'tree-peach', 'tree-apricot', 'tree-plum', 'tree-pear', 'tree-hazelnut', 'tree-chestnut', 'tree-cherry', 'tree-quince', 'tree-mulberry', 'tree-alder', 'tree-pawpaw', 'shrub-blueberry', 'shrub-blackcurrant', 'herb-rhubarb', 'vine-kiwi', 'shrub-elderberry', 'tree-ginkgo',
       'tree-tea-sinensis',
       'tree-tea-assamica',
-      'herb-hemp', 'shrub-red-currant', 'tree-linden', 'shrub-rhododendron'],
+      'herb-hemp', 'shrub-red-currant', 'tree-linden', 'shrub-rhododendron',
+      'tree-rowan'],
     sources: [
       'Garden Organic (n.d.). Survey of comfrey use. Garden Organic, Coventry, UK. https://garden-organic.files.svdcdn.com/production/documents/Experiment-1-Survey-of-comfrey-use-report.pdf'
     ]
@@ -115,7 +116,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     recommendedForTrees: [
       'tree-apple', 'tree-walnut', 'tree-peach', 'tree-apricot', 'tree-plum', 'tree-pear', 'tree-fig', 'tree-cherry', 'tree-mulberry', 'tree-pawpaw', 'shrub-blackcurrant', 'vine-grape', 'vine-kiwi', 'tree-ginkgo',
       'tree-tea-assamica',
-      'herb-hemp', 'shrub-red-currant', 'tree-linden'],
+      'herb-hemp', 'shrub-red-currant', 'tree-linden',
+      'tree-rowan', 'tree-birch'],
     sources: [
       'Svenning, M. M., Junttila, O., & Solheim, B. (1991). Symbiotic growth of indigenous white clover (Trifolium repens) with local Rhizobium leguminosarum biovar trifolii. Physiologia Plantarum, 83(3), 381–389. doi:10.1034/j.1399-3054.1991.830308.x',
       'Baude, M., Kunin, W. E., Boatman, N. D., Conyers, S., Davies, N., Gillespie, M. A. K., Morton, R. D., Smart, S. M., & Memmott, J. (2016). Historical nectar assessment reveals the fall and rise of floral resources in Britain. Nature, 530(7588), 85–88. doi:10.1038/nature16532',
@@ -181,7 +183,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-apple', 'tree-plum', 'tree-pear', 'tree-chestnut', 'tree-cherry', 'tree-quince', 'tree-mulberry', 'tree-seabuckthorn-star', 'vine-kiwi', 'tree-ginkgo',
       'tree-tea-sinensis',
       'tree-tea-assamica',
-      'herb-hemp', 'shrub-red-currant', 'tree-linden'],
+      'herb-hemp', 'shrub-red-currant', 'tree-linden',
+      'tree-rowan', 'tree-birch'],
     sources: [
       'Wäckers, F. L. (2004). Assessing the suitability of flowering herbs as parasitoid food sources: flower attractiveness and nectar accessibility. Biological Control, 29(3), 307–314. doi:10.1016/j.biocontrol.2003.08.005',
       'Cahenzli, F., Sigsgaard, L., Daniel, C., Herz, A., Jamar, L., Kelderer, M., Jacobsen, S. K., Kruczyńska, D., Matray, S., Porcel, M., Sekrecka, M., Świergiel, W., Tasin, M., Telfser, J., & Pfiffner, L. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
@@ -413,7 +416,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-fig',
       'tree-quince',
       'tree-tea-assamica',
-      'herb-hemp'
+      'herb-hemp', 'tree-inga'
     ],
     sources: [
       'Mahr, S. (n.d.). Nasturtium, Tropaeolum species. Wisconsin Horticulture, University of Wisconsin–Madison Division of Extension. https://hort.extension.wisc.edu/articles/nasturtium-tropaeolum-majus/',
@@ -471,7 +474,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     recommendedForTrees: [
       'tree-plum', 'tree-fig', 'tree-mulberry', 'shrub-blackcurrant', 'vine-grape', 'herb-rhubarb',
       'tree-tea-assamica',
-      'herb-hemp', 'shrub-red-currant'],
+      'herb-hemp', 'shrub-red-currant',
+      'tree-rowan'],
     sources: [
       'Stawiarz, E., Wróblewska, A., Masierowska, M., & Sadowska, D. (2020). Flowering, forage value, and insect pollination in borage (Borago officinalis L.) cultivated in SE Poland. Journal of Apicultural Science, 64(1), 77–89. doi:10.2478/jas-2020-0005'
     ]
@@ -796,7 +800,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Hochsommer (Jul–Aug, um den Johannistag)',
       en: 'Mid-summer (Jul–Aug, around St. John’s Day)'
     },
-    recommendedForTrees: ['tree-walnut', 'tree-pear', 'tree-apple', 'tree-plum', 'tree-cherry', 'tree-hazelnut', 'tree-pawpaw', 'shrub-elderberry', 'tree-ginkgo', 'tree-alder', 'tree-linden'],
+    recommendedForTrees: ['tree-walnut', 'tree-pear', 'tree-apple', 'tree-plum', 'tree-cherry', 'tree-hazelnut', 'tree-pawpaw', 'shrub-elderberry', 'tree-ginkgo', 'tree-alder', 'tree-linden', 'tree-rowan'],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow redcurrants. RHS. https://www.rhs.org.uk/fruit/redcurrants/grow-your-own',
       'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
@@ -908,7 +912,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     recommendedForTrees: [
       'tree-walnut', 'tree-hazelnut', 'tree-pear', 'tree-chestnut', 'tree-mulberry', 'tree-alder', 'tree-pawpaw', 'shrub-blueberry', 'vine-kiwi', 'herb-rhubarb', 'shrub-elderberry', 'tree-ginkgo',
-      'tree-tea-sinensis', 'shrub-red-currant', 'tree-linden', 'shrub-rhododendron'],
+      'tree-tea-sinensis', 'shrub-red-currant', 'tree-linden', 'shrub-rhododendron',
+      'tree-rowan', 'tree-birch'],
     sources: [
       'Herre, I., & Stegemann, T. (2026). Sweet woodruff (Galium odoratum L.)—More than just coumarin: From fundamental to biomass valorization. Molecules, 31(16), 2920. doi:10.3390/molecules31162920',
       'Roman, D., & Sellmer, J. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension (updated 16 Feb 2026). https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
@@ -1195,7 +1200,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Nicht essbar! Blütezeit: Februar bis April (früheste Bienenweide)',
       en: 'Non-edible! Bloom: February to April (first crucial pollen bridge)'
     },
-    recommendedForTrees: ['tree-apricot', 'tree-hazelnut'],
+    recommendedForTrees: ['tree-apricot', 'tree-hazelnut', 'tree-birch'],
     sources: [
       'Wisdom, M. M., Richardson, M. D., Karcher, D. E., Steinkraus, D. C., & McDonald, G. V. (2019). Flowering persistence and pollinator attraction of early-spring bulbs in warm-season lawns. HortScience, 54(10), 1853–1859. doi:10.21273/HORTSCI14259-19',
       'Royal Horticultural Society (n.d.). How to grow crocuses. RHS. https://www.rhs.org.uk/plants/crocus/growing-guide',
@@ -1253,7 +1258,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Nicht essbar! Blütezeit: Januar bis März (Schneeglöckchen-Nektar)',
       en: 'Non-edible! Bloom: January to March (winter/spring sentinel)'
     },
-    recommendedForTrees: ['tree-hazelnut', 'tree-chestnut'],
+    recommendedForTrees: ['tree-hazelnut', 'tree-chestnut', 'tree-birch'],
     sources: [
       'Prokop, P., Ježová, Z., Mešková, M., Vanerková, V., Zvaríková, M., & Fedor, P. (2023). Flower angle favors pollen export efficiency in the snowdrop Galanthus nivalis (Linnaeus, 1753) but not in the lesser celandine Ficaria verna (Huds, 1762). Plant Signaling & Behavior, 18(1), 2163065. doi:10.1080/15592324.2022.2163065',
       'North Carolina State Extension (n.d.). Galanthus nivalis. NC Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/galanthus-nivalis/',
@@ -1588,7 +1593,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
     },
     recommendedForTrees: [
       'tree-fig',
-      'tree-tea-assamica'
+      'tree-tea-assamica', 'tree-inga'
     ],
     sources: [
       'Harvey, L. M., & Shankle, M. W. (rev.) (2022). Growing Sweet Potatoes at Home (Publication 2784, POD-01-22). Mississippi State University Extension. https://extension.msstate.edu/publications/growing-sweet-potatoes-home'
@@ -1813,7 +1818,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Herbst (Sep–Nov, essbare vitaminreiche Ölweidenfrüchte)',
       en: 'Autumn (Sep–Nov, nutrient-dense silverberries)'
     },
-    recommendedForTrees: ['tree-apple', 'tree-apricot', 'tree-peach', 'tree-pear', 'tree-plum', 'tree-chestnut'],
+    recommendedForTrees: ['tree-apple', 'tree-apricot', 'tree-peach', 'tree-pear', 'tree-plum', 'tree-chestnut', 'tree-walnut'],
     sources: [
       'Munger, G. T. (2003). Elaeagnus umbellata. In: Fire Effects Information System. U.S. Department of Agriculture, Forest Service, Rocky Mountain Research Station, Fire Sciences Laboratory. https://www.fs.usda.gov/database/feis/plants/shrub/elaumb/all.html',
       'Fordham, I. M., Clevidence, B. A., Wiley, E. R., & Zimmerman, R. H. (2001). Fruit of autumn olive: A rich source of lycopene. HortScience, 36(6), 1136–1137. doi:10.21273/HORTSCI.36.6.1136',
@@ -3172,7 +3177,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'shrub-blueberry',
       'tree-chestnut',
       'tree-tea-sinensis',
-      'shrub-rhododendron'
+      'shrub-rhododendron', 'tree-birch'
     ],
     sources: [
       'NC State Extension (n.d.). Gaultheria procumbens. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/gaultheria-procumbens/',
@@ -3234,7 +3239,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'shrub-blueberry',
       'tree-chestnut',
       'tree-tea-sinensis',
-      'shrub-rhododendron'
+      'shrub-rhododendron', 'tree-birch'
     ],
     sources: [
       'Penhallegon, R. (2006). Lingonberry production guide for the Pacific Northwest (PNW 583-E). Oregon State University Extension Service. https://s3.wp.wsu.edu/uploads/sites/2056/2023/05/Lingonberry-Production.pdf',
@@ -3296,7 +3301,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-chestnut',
       'tree-pear',
       'tree-cherry',
-      'tree-walnut'
+      'tree-walnut',
+      'tree-rowan', 'tree-birch'
     ],
     sources: [
       'Brys, R., & Jacquemyn, H. (2009). Biological Flora of the British Isles: Primula veris L. Journal of Ecology, 97(3), 581–600. doi:10.1111/j.1365-2745.2009.01495.x',
@@ -3361,7 +3367,8 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'tree-plum',
       'tree-apple',
       'tree-pear',
-      'tree-walnut', 'tree-linden'],
+      'tree-walnut', 'tree-linden',
+      'tree-rowan'],
     sources: [
       'Mizuno, T., Akita, Y., Uehara, A., & Iwashina, T. (2021). Identification of anthocyanins and phenolic acid in the flowers of three lungwort (Pulmonaria) cultivars and their comparisons during flower developmental stage. Bulletin of the National Museum of Nature and Science, Series B (Botany), 47(3), 143–151. doi:10.50826/bnmnsbot.47.3_143',
       'Meeus, S., Honnay, O., & Jacquemyn, H. (2013). Differences in fine-scale spatial genetic structure across the distribution range of the distylous forest herb Pulmonaria officinalis (Boraginaceae). BMC Genetics, 14, 101. doi:10.1186/1471-2156-14-101',
@@ -4253,7 +4260,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Hochsommer (Jul–Aug)',
       en: 'Mid-summer (Jul–Aug)'
     },
-    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-plum', 'tree-hazelnut', 'tree-alder', 'tree-linden'],
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-plum', 'tree-hazelnut', 'tree-alder', 'tree-linden', 'tree-rowan'],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow blackcurrants. RHS Grow Your Own. https://www.rhs.org.uk/fruit/blackcurrants/grow-your-own',
       'Fliszkiewicz, M., Giejdasz, K., & Wilkaniec, Z. (2011). The importance of male red mason bee (Osmia rufa L.) and male bufftailed bumblebee (Bombus terrestris L.) pollination in blackcurrant (Ribes nigrum L.). The Journal of Horticultural Science and Biotechnology, 86(5), 457–460. doi:10.1080/14620316.2011.11512788',
@@ -5208,7 +5215,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Ganzjährig blühend; Blätter und weiche Triebe regelmäßig vor der Samenreife schneiden (nicht essbar)',
       en: 'Flowers all year; cut leaves and soft shoots regularly before seed set (not edible)'
     },
-    recommendedForTrees: ['tree-tea-assamica', 'tree-fig'],
+    recommendedForTrees: ['tree-tea-assamica', 'tree-fig', 'tree-inga'],
     sources: [
       'Jama, B., Palm, C. A., Buresh, R. J., Niang, A., Gachengo, C., Nziguheba, G., & Amadalo, B. (2000). Tithonia diversifolia as a green manure for soil fertility improvement in western Kenya: A review. Agroforestry Systems, 49(2), 201–221. doi:10.1023/A:1006339025728',
       'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Tithonia diversifolia. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Tithonia_diversifolia.PDF',
@@ -5321,7 +5328,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Jun–Sep (Blätter und Triebspitzen laufend)',
       en: 'Jun–Sep (leaves and shoot tips continuously)'
     },
-    recommendedForTrees: ['tree-apple', 'tree-pear'],
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-inga'],
     sources: [
       'Song, B., Tang, G., Sang, X., Zhang, J., Yao, Y., & Wiggins, N. (2013). Intercropping with aromatic plants hindered the occurrence of Aphis citricola in an apple orchard system by shifting predator–prey abundances. Biocontrol Science and Technology, 23(4), 381–395. doi:10.1080/09583157.2013.763904',
       'Song, B. Z., Wu, H. Y., Kong, Y., Zhang, J., Du, Y. L., Hu, J. H., & Yao, Y. C. (2010). Effects of intercropping with aromatic plants on the diversity and structure of an arthropod community in a pear orchard. BioControl, 55(6), 741–751. doi:10.1007/s10526-010-9301-2',
@@ -5548,7 +5555,7 @@ export const GUILD_PLANTS: GuildPlant[] = [
       de: 'Blüte Jul–Okt',
       en: 'Flowers Jul–Oct'
     },
-    recommendedForTrees: ['tree-tea-sinensis', 'tree-tea-assamica'],
+    recommendedForTrees: ['tree-tea-sinensis', 'tree-tea-assamica', 'tree-inga'],
     sources: [
       'Niu, Y., Han, S., Wu, Z., Pan, C., Wang, M., Tang, Y., Zhang, Q.-H., Tan, G., & Han, B. (2022). A push-pull strategy for controlling the tea green leafhopper (Empoasca flavescens F.) using semiochemicals from Tagetes erecta and Flemingia macrophylla. Pest Management Science, 78(6), 2161–2172. doi:10.1002/ps.6840',
       'North Carolina Extension Gardener Plant Toolbox (n.d.). Tagetes erecta. NC State Extension. https://plants.ces.ncsu.edu/plants/tagetes-erecta/',
@@ -5779,6 +5786,518 @@ export const GUILD_PLANTS: GuildPlant[] = [
       'Li, Z., Wang, T., He, C., Cheng, K., Zeng, R., & Song, Y. (2020). Control of Panama disease of banana by intercropping with Chinese chive (Allium tuberosum Rottler): cultivar differences. BMC Plant Biology, 20, 432. doi:10.1186/s12870-020-02640-9',
       'Zhang, H., Mallik, A., & Zeng, R. S. (2013). Control of Panama disease of banana by rotating and intercropping with Chinese chive (Allium tuberosum Rottler): role of plant volatiles. Journal of Chemical Ecology, 39(2), 243–252. doi:10.1007/s10886-013-0243-x',
       'Missouri Botanical Garden (n.d.). Allium tuberosum (garlic chives). Plant Finder. https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?kempercode=u770'
+    ]
+  },
+  {
+    id: 'plant-grey-alder',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Grey Alder (Coppiced Pioneer)',
+      de: 'Grau-Erle (Pionierbaum im Niederwaldschnitt)'
+    },
+    botanicalName: 'Alnus incana',
+    layer: 'SUB_CANOPY',
+    roles: ['NITROGEN_FIXER', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['WINTER', 'EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['WINTER', 'SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['SUMMER']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'WEST_WIND',
+    jugloneTolerance: 'SENSITIVE',
+    minDistanceM: 3.0,
+    maxDistanceM: 7.0,
+    spreadM: 3.0,
+    heightM: 6.0,
+    perennial: true,
+    notes: {
+      en: 'Fast-growing, short-lived (about 60 years) pioneer tree that colonises open, disturbed ground and fixes nitrogen in Frankia root nodules; it is extremely frost tolerant and grows up to the treeline in northern Europe, so it is the alder for cold sites where black alder struggles. It coppices easily and was studied as a short-rotation biomass crop in Finland. NIAB names Alnus incana and Alnus cordata as especially suited for windbreaks in apple orchards, because alders compete less for water and nutrients than willow or poplar. Plant it on the windward edge of the guild, outside the star\'s crown, and coppice it every few years so it never shades the star; the nurse effect is strongest while the planting is young. It regenerates from root suckers, so remove suckers that come up inside the guild. Grey alder is the alder most often hit by Phytophthora alder dieback in Europe: buy healthy nursery stock and avoid flooded clay. Ontario lists alders as juglone-sensitive, so keep it away from walnuts.',
+      de: 'Schnellwüchsiger, kurzlebiger (etwa 60 Jahre) Pionierbaum, der offene, gestörte Flächen besiedelt und über Frankia-Wurzelknöllchen Luftstickstoff bindet; er ist äußerst frosthart und wächst in Nordeuropa bis zur Baumgrenze, ist also die Erle für kalte Lagen, in denen die Schwarzerle kümmert. Er lässt sich leicht auf den Stock setzen und wurde in Finnland als Kurzumtriebs-Biomassekultur untersucht. NIAB nennt Alnus incana und Alnus cordata als besonders geeignete Windschutzbäume für Apfelanlagen, weil Erlen weniger um Wasser und Nährstoffe konkurrieren als Weide oder Pappel. An die Windseite der Gilde außerhalb der Krone der Star-Pflanze setzen und alle paar Jahre auf den Stock setzen, damit sie die Star-Pflanze nie beschattet; die Ammenwirkung ist in der jungen Pflanzung am stärksten. Sie treibt Wurzelbrut, daher Ausläufer innerhalb der Gilde entfernen. Die Grau-Erle ist in Europa die am häufigsten vom Erlensterben (Phytophthora) befallene Erle: gesunde Baumschulware kaufen und überfluteten Ton meiden. Ontario führt Erlen als juglonempfindlich, daher Abstand zu Walnüssen halten.'
+    },
+    color: '#4d7c0f',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-grey-alder.webp',
+    suitableSoils: ['LOAM', 'SILT', 'CLAY', 'SANDY', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Prefers moist to mesic soils but grows on a wide range of soil types, moisture and texture classes; tolerates acid soils down to pH 3.5–4.0. Avoid permanently flooded clay (Phytophthora alder dieback).',
+      de: 'Bevorzugt frische bis feuchte Böden, wächst aber auf sehr unterschiedlichen Bodenarten, Feuchte- und Texturklassen; verträgt saure Böden bis pH 3,5–4,0. Dauerhaft überfluteten Ton meiden (Erlensterben durch Phytophthora).'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr)'
+    },
+    harvestTime: {
+      de: 'Sommerschnitt als Laubmulch (Jun–Jul); auf den Stock setzen im Spätwinter (Jan–Mär)',
+      en: 'Summer leaf cut for mulch (Jun–Jul); coppice in late winter (Jan–Mar)'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-quince', 'tree-hazelnut'],
+    sources: [
+      'Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Alnus incana in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_incana.pdf',
+      'Huss-Danell, K., Lundquist, P. O., & Ohlsson, H. (1992). N2 fixation in a young Alnus incana stand, based on seasonal and diurnal variation in whole plant nitrogenase activity. Canadian Journal of Botany, 70(8), 1537–1544. doi:10.1139/b92-193',
+      'Hytönen, J., & Saarsalmi, A. (2015). Biomass production of coppiced grey alder and the effect of fertilization. Silva Fennica, 49(1), 1260. doi:10.14214/sf.1260',
+      'NIAB (n.d.). Provision of adequate shelter in the orchard. https://niab.com/node/1853',
+      'Jung, T., et al. (2018). Canker and decline diseases caused by soil- and airborne Phytophthora species in forests and woodlands. Persoonia, 40, 182–220. doi:10.3767/persoonia.2018.40.08',
+      'Waldwissen.net (n.d.). Root and collar rot of alder (Phytophthora alni). https://www.waldwissen.net/en/forestry/forest-protection/invasive-species/root-and-collar-rot-of-alder',
+      'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity'
+    ]
+  },
+  {
+    id: 'plant-italian-alder',
+    climateZones: ['TEMPERATE', 'SUBTROPICAL'],
+    commonName: {
+      en: 'Italian Alder (Windbreak Pioneer)',
+      de: 'Herzblättrige Erle / Italienische Erle (Windschutz-Pionier)'
+    },
+    botanicalName: 'Alnus cordata',
+    layer: 'SUB_CANOPY',
+    roles: ['NITROGEN_FIXER', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['WINTER', 'EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['WINTER', 'SUMMER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['SUMMER']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'WEST_WIND',
+    jugloneTolerance: 'SENSITIVE',
+    minDistanceM: 3.5,
+    maxDistanceM: 8.0,
+    spreadM: 3.5,
+    heightM: 7.0,
+    perennial: true,
+    notes: {
+      en: 'Medium-sized, fast-growing pioneer tree of the southern Italian mountains that colonises open ground, fixes nitrogen with Frankia and has long been planted for soil protection and windbreaks. Unlike other alders it is not tied to wet ground and is more drought tolerant, and it prefers calcareous soils, so it is the alder for dry or chalky sites. NIAB recommends Alnus cordata and Alnus incana as especially suited windbreak trees for apple orchards. In a walnut nurse trial at Lount (UK) walnuts grew tall with Italian alder as tree nurse, but the trees later had to be cut back where they shaded the walnuts; in a 20-year Italian plantation the benefit of nurse trees faded once their crowns closed. Coppice or pollard every few years on the windward edge. It is frost-limited: in an Ohio trial Italian alder had the worst survival of the alders tested, mostly from winter injury, so it is not offered for boreal sites. Its windbreaks did not help pear psylla control in a UK study. Alders are listed as juglone-sensitive.',
+      de: 'Mittelgroßer, schnellwüchsiger Pionierbaum der süditalienischen Berge, der offene Flächen besiedelt, mit Frankia Luftstickstoff bindet und seit langem für Bodenschutz und Windschutz gepflanzt wird. Anders als andere Erlen ist sie nicht an nassen Boden gebunden und trockenheitsverträglicher, und sie bevorzugt kalkhaltige Böden: die Erle für trockene oder kalkige Standorte. NIAB empfiehlt Alnus cordata und Alnus incana als besonders geeignete Windschutzbäume für Apfelanlagen. In einem Walnuss-Ammenversuch in Lount (UK) wuchsen Walnüsse mit Italienischer Erle als Ammenbaum hoch, die Erlen mussten aber später zurückgeschnitten werden, wo sie die Walnüsse beschatteten; in einer 20-jährigen italienischen Pflanzung ließ der Nutzen der Ammenbäume nach, sobald sich ihre Kronen schlossen. Alle paar Jahre an der Windseite auf den Stock setzen oder köpfen. Sie ist frostbegrenzt: In einem Versuch in Ohio hatte die Italienische Erle von allen geprüften Erlen das schlechteste Überleben, vor allem durch Winterschäden, daher wird sie für boreale Lagen nicht angeboten. Ihre Windschutzhecken halfen in einer britischen Studie nicht gegen den Birnblattsauger. Erlen gelten als juglonempfindlich.'
+    },
+    color: '#3f6212',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-italian-alder.webp',
+    suitableSoils: ['LOAM', 'CHALKY', 'CLAY', 'SILT', 'SANDY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows on most kinds of soil, including degraded ones, but prefers calcareous soils; more drought tolerant than other alders, yet needs at least about 1,000 mm of annual precipitation and does best where water collects.',
+      de: 'Wächst auf den meisten Böden, auch auf degradierten, bevorzugt aber kalkhaltige; trockenheitsverträglicher als andere Erlen, braucht aber mindestens etwa 1.000 mm Jahresniederschlag und gedeiht am besten dort, wo sich Wasser sammelt.'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr)'
+    },
+    harvestTime: {
+      de: 'Sommerschnitt als Laubmulch (Jun–Jul); auf den Stock setzen im Spätwinter (Jan–Mär)',
+      en: 'Summer leaf cut for mulch (Jun–Jul); coppice in late winter (Jan–Mar)'
+    },
+    recommendedForTrees: ['tree-apple', 'tree-pear', 'tree-quince'],
+    sources: [
+      'Caudullo, G., & Mauri, A. (2016). Alnus cordata in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_cordata.pdf',
+      'NIAB (n.d.). Provision of adequate shelter in the orchard. https://niab.com/node/1853',
+      'Clark, J. (2013). Walnut trials at Lount Wood: report 2013. Earth Trust / National Forest Company. https://nationalforest.org/sites/default/files/2024-05/Walnut%20Trials%20at%20Lount%202013%20%28344kb%29.pdf',
+      'Niccoli, F., Danise, T., Innangi, M., Pelleri, F., Manetti, M. C., & Mastrolonardo, G. (2021). Tree species composition in mixed plantations influences plant growth, intrinsic water use efficiency and soil carbon stock. Forests, 12(9), 1251. doi:10.3390/f12091251',
+      'Innangi, M., Danise, T., D\'Alessandro, F., Curcio, E., & Fioretto, A. (2017). Dynamics of organic matter in leaf litter and topsoil within an Italian alder (Alnus cordata) ecosystem. Forests, 8(7), 240. doi:10.3390/f8070240',
+      'Townsend, A. M., & Douglass, L. W. (1994). Variation among Alnus progenies grown in Ohio. Journal of Arboriculture, 20(3), 165–169. doi:10.48044/jauf.1994.031',
+      'Cross, J. V., Nagy, C., Batki, B., & Linka, J. (2010). Conservation biocontrol of pear psyllids. Mitteilungen Klosterneuburg, 60. Abstract: https://hedgelink.org.uk/?p=4205',
+      'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity'
+    ]
+  },
+  {
+    id: 'plant-caragana',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Siberian Pea Shrub (Nitrogen-Fixing Nurse)',
+      de: 'Gemeiner Erbsenstrauch (Stickstoff-Amme)'
+    },
+    botanicalName: 'Caragana arborescens',
+    layer: 'SHRUB',
+    roles: ['NITROGEN_FIXER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['LATE_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['LATE_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'WEST_WIND',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 3.0,
+    maxDistanceM: 6.0,
+    spreadM: 2.0,
+    heightM: 3.0,
+    perennial: true,
+    notes: {
+      en: 'Very cold-hardy woody legume (rhizobia) that adapts to poor, dry, alkaline or saline sites and is planted as single-row shelterbelts on the North American plains. In a 14-year Illinois trial, black walnut interplanted with Siberian pea shrub or the other nitrogen-fixing nurses (black alder, autumn olive, Russian olive) grew up to 50 % more in height and diameter than walnut in pure plots, while non-fixing nurses gave no significant gain; the pea shrub survived far better on the drier upland site than on the floodplain. A 15N study next to a caragana shelterbelt traced about 40 % of the nitrogen in oat and triticale 4 m from the row to caragana, and still 8–20 % at 20 m, but crops 2 m from the row grew worse: keep it at least 3 m from the star. Prune after flowering to keep it at 2–3 m. Its own pests (aphids, leaf spot, spider mites) are not linked to any star. It naturalises at forest edges in Wisconsin; no listing as invasive in Germany was found.',
+      de: 'Sehr frostharter, holziger Schmetterlingsblütler (Rhizobien), der mit mageren, trockenen, kalkreichen oder salzigen Standorten zurechtkommt und in Nordamerika als einreihige Windschutzhecke gepflanzt wird. In einem 14-jährigen Versuch in Illinois wuchsen Schwarznüsse zwischen Erbsenstrauch oder den anderen stickstoffbindenden Ammen (Schwarzerle, Doldige und Schmalblättrige Ölweide) in Höhe und Durchmesser bis zu 50 % stärker als in reinen Walnussparzellen, während nicht-fixierende Ammen keinen signifikanten Vorteil brachten; der Erbsenstrauch überlebte auf dem trockeneren Hangstandort weit besser als in der Aue. Eine 15N-Studie an einer Caragana-Windschutzhecke führte in 4 m Abstand etwa 40 % des Stickstoffs in Hafer und Triticale auf Caragana zurück, in 20 m noch 8–20 %; 2 m neben der Reihe wuchsen die Kulturen aber schlechter: mindestens 3 m Abstand zur Star-Pflanze halten. Nach der Blüte schneiden, um ihn auf 2–3 m zu halten. Seine eigenen Schädlinge (Blattläuse, Blattflecken, Spinnmilben) sind mit keiner Star-Pflanze verknüpft. In Wisconsin verwildert er an Waldrändern; eine Einstufung als invasiv in Deutschland wurde nicht gefunden.'
+    },
+    color: '#ca8a04',
+    iconName: 'Bean',
+    imageUrl: '/images/plants/plant-caragana.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'CHALKY', 'SILT'],
+    unsuitableSoils: ['CLAY'],
+    soilNotes: {
+      en: 'Best on well-drained loam but tolerates infertile, sandy, alkaline and saline soils and drought; it survived poorly on a wet floodplain site, so avoid waterlogged heavy clay.',
+      de: 'Am besten auf durchlässigem Lehm, verträgt aber magere, sandige, kalkreiche und salzige Böden sowie Trockenheit; auf einem nassen Auenstandort überlebte er schlecht, daher staunassen schweren Ton meiden.'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr)'
+    },
+    harvestTime: {
+      de: 'Gelbe Blüte Mai; nach der Blüte schneiden (nicht als Nahrung gelistet)',
+      en: 'Yellow flowers in May; prune after flowering (not listed as food)'
+    },
+    recommendedForTrees: ['tree-walnut', 'tree-apple', 'tree-pear', 'tree-plum', 'tree-cherry', 'tree-hazelnut', 'tree-rowan'],
+    sources: [
+      'Dawson, J. O., & Van Sambeek, J. W. (1993). Interplanting woody nurse crops promotes differential growth of black walnut saplings. In Proceedings, 9th Central Hardwood Forest Conference (USDA Forest Service Gen. Tech. Rep. NC-161), 455–464. https://research.fs.usda.gov/treesearch/15340',
+      'Issah, G., Kimaro, A. A., Kort, J., & Knight, J. D. (2015). Nitrogen transfer to forage crops from a Caragana shelterbelt. Forests, 6(6), 1922–1932. doi:10.3390/f6061922',
+      'USDA NRCS (n.d.). Plant guide: Siberian peashrub, Caragana arborescens. https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_caar18.pdf',
+      'Wisconsin Department of Natural Resources (n.d.). Caragana arborescens species assessment. https://dnr.wisconsin.gov/sites/default/files/topic/Invasives/LR_caragana_arborescens.pdf'
+    ]
+  },
+  {
+    id: 'plant-goat-willow',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Goat Willow / Pussy Willow (Early Pollen Pioneer)',
+      de: 'Sal-Weide (Frühblühender Pionierbaum)'
+    },
+    botanicalName: 'Salix caprea',
+    layer: 'SUB_CANOPY',
+    roles: ['POLLINATOR_MAGNET', 'BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['WINTER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'WINTER'],
+      harvestSeasons: ['EARLY_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'WEST_WIND',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 4.0,
+    maxDistanceM: 8.0,
+    spreadM: 2.5,
+    heightM: 5.0,
+    perennial: true,
+    notes: {
+      en: 'Fast-growing, short-lived pioneer that colonises open, sunny ground; unlike most willows it is not tied to water. It is among the first plants to flower in spring, and its catkins give bees and other insects a large amount of pollen and nectar (honey yields of 150–200 kg/ha are reported); male and female flowers offer similar nectar, and male catkins smell stronger and attract honey bees more. In UK pear orchards goat and grey willow hedges carried some of the highest numbers of anthocorid predator bugs early in the season, the natural enemies of pear psylla; this is a count of predators, not a measured drop in psylla damage. It coppices and pollards well: cut it back every 1–3 years in winter and keep it on the outer windward edge, because NIAB advises against willow in orchard windbreaks where it competes strongly for water. Willow is a host of silver leaf (Chondrostereum purpureum), so it is not offered for plum, cherry, peach or apricot.',
+      de: 'Schnellwüchsiger, kurzlebiger Pionierbaum, der offene, sonnige Flächen besiedelt; anders als die meisten Weiden ist er nicht an Wasser gebunden. Er gehört zu den ersten Blühern im Frühjahr, und seine Kätzchen liefern Bienen und anderen Insekten viel Pollen und Nektar (berichtet werden Honigerträge von 150–200 kg/ha); männliche und weibliche Blüten bieten ähnlich viel Nektar, männliche Kätzchen duften stärker und locken Honigbienen mehr an. In britischen Birnenanlagen trugen Hecken aus Sal- und Grau-Weide früh im Jahr mit die höchsten Zahlen an Blumenwanzen (Anthocoriden), den Gegenspielern des Birnblattsaugers; gezählt wurden die Räuber, nicht ein Rückgang der Saugerschäden. Er lässt sich gut auf den Stock setzen oder köpfen: alle 1–3 Jahre im Winter zurückschneiden und am äußeren Windrand halten, denn NIAB rät von Weiden im Obstanlagen-Windschutz ab, weil sie stark um Wasser konkurrieren. Weiden sind Wirte der Bleiglanzkrankheit (Chondrostereum purpureum), daher wird die Sal-Weide für Pflaume, Kirsche, Pfirsich und Aprikose nicht angeboten.'
+    },
+    color: '#a3a635',
+    iconName: 'Flower',
+    imageUrl: '/images/plants/plant-goat-willow.webp',
+    suitableSoils: ['LOAM', 'CHALKY', 'CLAY', 'SILT', 'SANDY', 'ACIDIC'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Prefers calcareous sites but grows on almost all soil types, from dry to moist; more sensitive to continuous flooding than other willows, so avoid permanently waterlogged ground.',
+      de: 'Bevorzugt kalkhaltige Standorte, wächst aber auf fast allen Böden, von trocken bis feucht; empfindlicher gegen Dauerüberflutung als andere Weiden, daher dauernd staunassen Boden meiden.'
+    },
+    plantingTime: {
+      de: 'Herbst bis Spätwinter (Okt–Mär), auch als Steckholz im Winter',
+      en: 'Autumn to late winter (Oct–Mar), also as winter cuttings'
+    },
+    harvestTime: {
+      de: 'Kätzchenblüte Mär–Apr; auf den Stock setzen im Winter (Dez–Feb)',
+      en: 'Catkins Mar–Apr; coppice in winter (Dec–Feb)'
+    },
+    recommendedForTrees: ['tree-pear', 'tree-hazelnut', 'tree-chestnut', 'tree-birch'],
+    sources: [
+      'Enescu, C. M., Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Salix caprea in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Salix_caprea.pdf',
+      'Dötterl, S., Glück, U., Jürgens, A., Woodring, J., & Aas, G. (2014). Floral reward, advertisement and attractiveness to honey bees in dioecious Salix caprea. PLoS ONE, 9(3), e93421. doi:10.1371/journal.pone.0093421',
+      'Cross, J. V., Nagy, C., Batki, B., & Linka, J. (2010). Conservation biocontrol of pear psyllids. Mitteilungen Klosterneuburg, 60. Abstract: https://hedgelink.org.uk/?p=4205',
+      'NIAB (n.d.). Provision of adequate shelter in the orchard. https://niab.com/node/1853',
+      'EPPO (2026). Chondrostereum purpureum (STERPU): host plants. EPPO Global Database. https://gd.eppo.int/taxon/STERPU/hosts',
+      'Plants For A Future (n.d.). Salix caprea – Goat Willow. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Salix+caprea'
+    ]
+  },
+  {
+    id: 'plant-silver-birch',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Silver Birch (Temporary Nurse Tree)',
+      de: 'Hänge-Birke / Sand-Birke (Vorwald-Ammenbaum)'
+    },
+    botanicalName: 'Betula pendula',
+    layer: 'SUB_CANOPY',
+    roles: ['BIOMASS_PRODUCER'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['WINTER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['EARLY_SPRING']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'NORTH_SHADE',
+    jugloneTolerance: 'SENSITIVE',
+    minDistanceM: 4.5,
+    maxDistanceM: 9.0,
+    spreadM: 3.5,
+    heightM: 8.0,
+    perennial: true,
+    notes: {
+      en: 'The classic short-lived pioneer of European secondary succession: abundant wind-borne seed, low demands on soil quality and intolerance of shade. It casts light shade, and birch stands shelter seedlings of frost-sensitive trees such as beech and spruce. In a Czech nurse-crop trial silver fir grew significantly taller under silver birch at two sites after three years, while aspen and alder had no effect. Birch does not fix nitrogen, and its soil effect is moderate: in a 30-year common garden its forest floor was more acidic and held far fewer earthworms than under linden. Treat it as a temporary nurse on the north side, felled after about 5–10 years, not as a coppice: silver birch resprouts poorly. Its roots compete in the topsoil, so keep it well outside the star\'s crown. Birch is a listed host of silver leaf and is juglone-sensitive (Wisconsin lists birch, Ontario paper birch), so it is not offered for walnut or stone fruit. In early spring the sap can be tapped.',
+      de: 'Der klassische kurzlebige Pionierbaum der europäischen Sekundärsukzession: reichlich windverbreitete Samen, geringe Ansprüche an den Boden und Schattenunverträglichkeit. Er wirft lichten Schatten, und Birkenbestände schützen Sämlinge frostempfindlicher Bäume wie Buche und Fichte. In einem tschechischen Vorwaldversuch wuchs Weißtanne unter Hänge-Birke an zwei Standorten nach drei Jahren signifikant höher, während Aspe und Erle keine Wirkung hatten. Die Birke bindet keinen Stickstoff, und ihre Bodenwirkung ist mäßig: In einem 30-jährigen Vergleichsgarten war ihre Humusauflage saurer und enthielt weit weniger Regenwürmer als unter Linde. Als vorübergehende Amme auf der Nordseite nutzen und nach etwa 5–10 Jahren fällen, nicht als Niederwald: Die Hänge-Birke treibt schlecht aus dem Stock aus. Ihre Wurzeln konkurrieren im Oberboden, daher weit außerhalb der Krone der Star-Pflanze setzen. Die Birke ist gelisteter Wirt der Bleiglanzkrankheit und juglonempfindlich (Wisconsin nennt Birke, Ontario die Papier-Birke), daher wird sie für Walnuss und Steinobst nicht angeboten. Im Vorfrühling lässt sich der Birkensaft zapfen.'
+    },
+    color: '#94a3b8',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-silver-birch.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'ACIDIC', 'SILT'],
+    unsuitableSoils: ['CHALKY'],
+    soilNotes: {
+      en: 'Thrives on poor, light and acidic soils (site requirements up to about pH 7) as long as they are not waterlogged; does not tolerate prolonged summer drought.',
+      de: 'Gedeiht auf mageren, leichten und sauren Böden (Standortansprüche bis etwa pH 7), solange sie nicht staunass sind; verträgt keine lange Sommertrockenheit.'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr) als wurzelnackte Jungpflanze',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr) as bare-root whips'
+    },
+    harvestTime: {
+      de: 'Birkensaft im Vorfrühling vor dem Austrieb; Fällen/Auslichten im Winter',
+      en: 'Birch sap in early spring before bud burst; fell or thin in winter'
+    },
+    recommendedForTrees: ['tree-chestnut', 'tree-hazelnut'],
+    sources: [
+      'Beck, P., Caudullo, G., de Rigo, D., & Tinner, W. (2016). Betula pendula, Betula pubescens and other birches in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Betula_spp.pdf',
+      'Martiník, A., Sendecký, M., & Urban, J. (2018). Survival and early growth of silver fir and pioneer species on two sites in nurse crop regeneration systems in the Czech Republic. Dendrobiology, 80, 81–90. doi:10.12657/denbio.080.008',
+      'Reich, P. B., et al. (2005). Linking litter calcium, earthworms and soil properties: a common garden test with 14 tree species. Ecology Letters, 8(8), 811–818. doi:10.1111/j.1461-0248.2005.00779.x',
+      'Hytönen, J. (2019). Stump diameter and age affect coppicing of downy birch (Betula pubescens Ehrh.). European Journal of Forest Research, 138(2), 345–352. doi:10.1007/s10342-019-01175-5',
+      'EPPO (2026). Chondrostereum purpureum (STERPU): host plants. EPPO Global Database. https://gd.eppo.int/taxon/STERPU/hosts',
+      'Ontario Ministry of Agriculture, Food and Agribusiness (2022, updated 2026). Walnut toxicity. Government of Ontario. https://www.ontario.ca/page/walnut-toxicity',
+      'Plants For A Future (n.d.). Betula pendula – Silver Birch. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Betula+pendula'
+    ]
+  },
+  {
+    id: 'plant-rowan',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Rowan / Mountain Ash (Pioneer Bird Tree)',
+      de: 'Eberesche / Vogelbeere (Pionier- und Vogelnährgehölz)'
+    },
+    botanicalName: 'Sorbus aucuparia',
+    layer: 'SUB_CANOPY',
+    roles: ['POLLINATOR_MAGNET'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['LATE_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['AUTUMN']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'NORTH_SHADE',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 3.5,
+    maxDistanceM: 8.0,
+    spreadM: 3.0,
+    heightM: 6.0,
+    perennial: true,
+    notes: {
+      en: 'Cold-hardy pioneer tree that often colonises open ground and is one of the least site-demanding trees in Europe; it is more shade tolerant than birch. Its insect-pollinated flowers open in May, and the red fruits stay on the tree into winter as important bird food. It can be coppiced and is wind-firm, so it suits the cooler edge of a nut-tree guild. Two hard limits: rowan is a host of fire blight (Erwinia amylovora), and EPPO names Sorbus among the important inoculum sources for apple and pear in Europe, so it is never offered for apple, pear or quince. It is also the natural host of the apple fruit moth (Argyresthia conjugella), which in Scandinavia moves into apples in years when rowan sets little fruit. Silver leaf is listed on rowan too, so stone fruit are excluded. Wild rowan berries are only eaten cooked; for fresh fruit choose the star plant with sweet \'Edulis\' selections.',
+      de: 'Frostharter Pionierbaum, der häufig offene Flächen besiedelt und zu den anspruchslosesten Baumarten Europas gehört; er ist schattenverträglicher als die Birke. Die insektenbestäubten Blüten öffnen sich im Mai, und die roten Früchte bleiben bis in den Winter als wichtige Vogelnahrung am Baum. Er lässt sich auf den Stock setzen und ist windfest, passt also an den kühleren Rand einer Nussbaum-Gilde. Zwei harte Grenzen: Die Eberesche ist Wirt des Feuerbrands (Erwinia amylovora), und die EPPO nennt Sorbus unter den wichtigen Infektionsquellen für Apfel und Birne in Europa, daher wird sie nie für Apfel, Birne oder Quitte angeboten. Außerdem ist sie der natürliche Wirt der Ebereschenmotte (Argyresthia conjugella), die in Skandinavien in Jahren mit schwachem Ebereschen-Behang auf Äpfel übergeht. Auch die Bleiglanzkrankheit ist für die Eberesche gelistet, daher ist Steinobst ausgeschlossen. Wilde Vogelbeeren werden nur gekocht gegessen; für frisches Obst die Star-Pflanze mit süßen \'Edulis\'-Sorten wählen.'
+    },
+    color: '#dc2626',
+    iconName: 'Apple',
+    imageUrl: '/images/plants/plant-rowan.webp',
+    suitableSoils: ['SANDY', 'LOAM', 'ACIDIC', 'SILT'],
+    unsuitableSoils: ['CLAY', 'CHALKY'],
+    soilNotes: {
+      en: 'Grows on almost any well-drained soil up to about pH 7 but is absent from wetlands, clays and soft limestones; poor drought tolerance limits it in hot, dry lowlands.',
+      de: 'Wächst auf fast jedem durchlässigen Boden bis etwa pH 7, fehlt aber in Feuchtgebieten, auf Ton und weichem Kalk; geringe Trockenheitsverträglichkeit begrenzt sie in heißen, trockenen Tieflagen.'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr)'
+    },
+    harvestTime: {
+      de: 'Blüte Mai; Beeren Aug–Okt (wild nur gekocht essbar, sonst Vogelnahrung)',
+      en: 'Flowers in May; berries Aug–Oct (wild ones only edible cooked, otherwise bird food)'
+    },
+    recommendedForTrees: ['tree-hazelnut', 'tree-chestnut', 'tree-walnut', 'tree-birch'],
+    sources: [
+      'Räty, M., Caudullo, G., & de Rigo, D. (2016). Sorbus aucuparia in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Sorbus_aucuparia.pdf',
+      'EPPO (2026). Erwinia amylovora (ERWIAM): datasheet and host plants. EPPO Global Database. https://gd.eppo.int/taxon/ERWIAM/datasheet',
+      'Kobro, S., Søreide, L., Djønne, E., Rafoss, T., Jaastad, G., & Witzgall, P. (2003). Masting of rowan Sorbus aucuparia L. and consequences for the apple fruit moth Argyresthia conjugella Zeller. Population Ecology, 45(1), 25–30. doi:10.1007/s10144-003-0136-x',
+      'EPPO (2026). Chondrostereum purpureum (STERPU): host plants. EPPO Global Database. https://gd.eppo.int/taxon/STERPU/hosts',
+      'Plants For A Future (n.d.). Sorbus aucuparia – Mountain Ash. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Sorbus+aucuparia'
+    ]
+  },
+  {
+    id: 'plant-inga',
+    climateZones: ['TROPICAL'],
+    commonName: {
+      en: 'Ice-Cream Bean / Inga (Tropical Pioneer Shade Tree)',
+      de: 'Eiscremebohne / Inga (Tropischer Pionier-Schattenbaum)'
+    },
+    botanicalName: 'Inga edulis',
+    layer: 'SUB_CANOPY',
+    roles: ['NITROGEN_FIXER', 'BIOMASS_PRODUCER', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['EARLY_SPRING', 'LATE_SPRING', 'SUMMER', 'AUTUMN', 'WINTER'],
+      chopAndDropSeasons: ['WINTER'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['AUTUMN']
+    },
+    preferredZone: 'ZONE_4_OUTER',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 3.0,
+    maxDistanceM: 8.0,
+    spreadM: 4.0,
+    heightM: 6.0,
+    perennial: true,
+    notes: {
+      en: 'Light-demanding gap pioneer of lowland rain forest and river banks that grows fast even on the poorest, most acidic soils and tolerates 2–3 months of waterlogging. It forms root nodules with Bradyrhizobium, has been planted as shade for coffee and cocoa since the 19th century and is used in improved fallows; its prunings and slowly decomposing litter suppress weeds and cut erosion on slopes. It regrows after repeated pruning, but not when cut below about 0.75 m. The long pods hold seeds in a sweet, white, cottony pulp; the fruit is popular and sold in markets in Bolivia, Brazil, Costa Rica and Ecuador. No trial with tea was found, so it is offered only as an alternative shade tree for Assam tea in the humid tropics; keep the shade light, because in the only tea survey available, denser shade went with more tea mosquito bug damage. Frost tolerance has not been documented, so it is listed for tropical climates only.',
+      de: 'Lichtbedürftiger Lückenpionier des Tiefland-Regenwalds und der Flussufer, der selbst auf ärmsten, sehr sauren Böden schnell wächst und 2–3 Monate Staunässe verträgt. Er bildet Wurzelknöllchen mit Bradyrhizobium, wird seit dem 19. Jahrhundert als Schattenbaum für Kaffee und Kakao gepflanzt und in verbesserten Brachen genutzt; Schnittgut und langsam zersetzte Streu unterdrücken Unkraut und mindern die Erosion an Hängen. Er treibt nach wiederholtem Schnitt wieder aus, aber nicht, wenn er unter etwa 0,75 m geschnitten wird. Die langen Hülsen enthalten die Samen in süßem, weißem, watteartigem Fruchtfleisch; die Frucht ist beliebt und wird in Bolivien, Brasilien, Costa Rica und Ecuador auf Märkten verkauft. Ein Versuch mit Tee wurde nicht gefunden, daher wird er nur als alternativer Schattenbaum für Assam-Tee in den feuchten Tropen angeboten; den Schatten licht halten, denn in der einzigen vorliegenden Tee-Erhebung ging dichterer Schatten mit mehr Schäden durch die Teewanze einher. Eine Frosttoleranz ist nicht belegt, daher nur für tropisches Klima gelistet.'
+    },
+    color: '#65a30d',
+    iconName: 'Bean',
+    imageUrl: '/images/plants/plant-inga.webp',
+    suitableSoils: ['ACIDIC', 'LOAM', 'SANDY', 'CLAY', 'SILT'],
+    unsuitableSoils: ['CHALKY'],
+    soilNotes: {
+      en: 'Adapted to very poor, acidic tropical soils (Oxisols) and tolerates 2–3 months of waterlogging; needs at least about 1,200 mm of annual rainfall. Calcareous soils are not part of its documented range.',
+      de: 'An sehr arme, saure tropische Böden (Oxisole) angepasst und verträgt 2–3 Monate Staunässe; braucht mindestens etwa 1.200 mm Jahresniederschlag. Kalkböden gehören nicht zu seinem belegten Standortspektrum.'
+    },
+    plantingTime: {
+      de: 'Zu Beginn der Regenzeit',
+      en: 'At the start of the rainy season'
+    },
+    harvestTime: {
+      de: 'Hülsen mit süßem Fruchtfleisch reifen nach der Blüte (im Amazonasgebiet ab Oktober); Schnitt in der Trockenzeit',
+      en: 'Pods with sweet pulp ripen after flowering (from October in Amazonia); prune in the dry season'
+    },
+    recommendedForTrees: ['tree-tea-assamica'],
+    sources: [
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Inga edulis. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Inga_edulis.PDF',
+      'Porto, D. S., Farias, E. N. C., Chaves, J. S., Souza, B. F., Medeiros, R. D., & Zilli, J. E. (2017). Symbiotic effectiveness of Bradyrhizobium ingae in promoting growth of Inga edulis Mart. seedlings. Revista Brasileira de Ciência do Solo, 41, e0160222. doi:10.1590/18069657rbcs20160222',
+      'Yao, Q., Lin, Y., Qin, S., Lin, Z., & Ji, X. (2025). Characterization of feeding damage by tea mosquito bug, Helopeltis theivora Waterhouse (Hemiptera: Miridae) on Hainan Dayezhong tea cultivar. Frontiers in Plant Science, 15, 1529535. doi:10.3389/fpls.2024.1529535'
+    ]
+  },
+  {
+    id: 'plant-sweet-gale',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Sweet Gale / Bog Myrtle (Wet-Soil Nitrogen Fixer)',
+      de: 'Gagelstrauch (Stickstoffbinder für nasse Böden)'
+    },
+    botanicalName: 'Myrica gale',
+    layer: 'SHRUB',
+    roles: ['NITROGEN_FIXER'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['EARLY_SPRING'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: [],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['AUTUMN', 'EARLY_SPRING'],
+      harvestSeasons: ['EARLY_SPRING']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'ANY',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.5,
+    maxDistanceM: 3.5,
+    spreadM: 1.0,
+    heightM: 1.2,
+    perennial: true,
+    notes: {
+      en: 'Deciduous shrub of open, wet, acidic ground (peat, lake and stream shores) that fixes nitrogen with Frankia in root nodules, in the same way as alder. Dense stands fixed 24–34 kg N per hectare and year, and 37 kg in one Massachusetts year; nitrogenase starts after bud break in May, peaks from late June to mid-August and stops when the leaves fall in October. It grows 0.6–1.5 m tall, flowers in catkins just before the leaves, and spreads by woody rhizomes into thickets. The crushed leaves smell sweet; the oil repelled Highland biting midges in tests, which is not a claim about garden pests. Only for permanently moist, acidic beds next to acid-loving stars; whether its nitrogen reaches a blueberry has not been studied.',
+      de: 'Sommergrüner Strauch offener, nasser, saurer Standorte (Moor, Seeufer, Bachränder), der wie die Erle mit Frankia in Wurzelknöllchen Luftstickstoff bindet. Dichte Bestände banden 24–34 kg N je Hektar und Jahr, in einem Jahr in Massachusetts 37 kg; die Nitrogenase setzt nach dem Austrieb im Mai ein, ist von Ende Juni bis Mitte August am stärksten und endet mit dem Laubfall im Oktober. Er wird 0,6–1,5 m hoch, blüht in Kätzchen kurz vor dem Laubaustrieb und breitet sich über holzige Rhizome zu Dickichten aus. Die zerriebenen Blätter duften süßlich; das Öl hielt in Tests Gnitzen (Highland-Midges) ab, was keine Aussage über Gartenschädlinge ist. Nur für dauerhaft feuchte, saure Beete neben säureliebenden Star-Pflanzen; ob sein Stickstoff eine Heidelbeere erreicht, wurde nicht untersucht.'
+    },
+    color: '#78716c',
+    iconName: 'Leaf',
+    imageUrl: '/images/plants/plant-sweet-gale.webp',
+    suitableSoils: ['ACIDIC', 'SILT', 'LOAM'],
+    unsuitableSoils: ['CHALKY', 'SANDY'],
+    soilNotes: {
+      en: 'Wet, acidic, nutrient-poor soils such as peat and the shores of lakes and streams; it fails on dry or calcareous ground.',
+      de: 'Nasse, saure, nährstoffarme Böden wie Moor und Ufer von Seen und Bächen; auf trockenem oder kalkhaltigem Boden versagt er.'
+    },
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr) in dauerhaft feuchten Boden',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr) into permanently moist soil'
+    },
+    harvestTime: {
+      de: 'Kätzchenblüte im zeitigen Frühjahr vor dem Laubaustrieb (nicht als Nahrung gelistet)',
+      en: 'Catkins in early spring before the leaves (not listed as food)'
+    },
+    recommendedForTrees: ['shrub-blueberry', 'shrub-rhododendron', 'tree-alder'],
+    sources: [
+      'Schwintzer, C. R., Berry, A. M., & Disney, L. D. (1982). Seasonal patterns of root nodule growth, endophyte morphology, nitrogenase activity, and shoot development in Myrica gale. Canadian Journal of Botany, 60(6), 746–757. doi:10.1139/b82-098',
+      'Trees for Life (n.d.). Bog myrtle (Myrica gale). https://treesforlife.org.uk/into-the-forest/trees-plants-animals/plants/bog-myrtle/'
+    ]
+  },
+  {
+    id: 'plant-pigeon-pea',
+    climateZones: ['SUBTROPICAL', 'TROPICAL'],
+    commonName: {
+      en: 'Pigeon Pea (Short-Lived Nitrogen-Fixing Nurse Shrub)',
+      de: 'Straucherbse / Taubenerbse (Kurzlebiger Stickstoff-Ammenstrauch)'
+    },
+    botanicalName: 'Cajanus cajan',
+    layer: 'SHRUB',
+    roles: ['NITROGEN_FIXER', 'BIOMASS_PRODUCER', 'EDIBLE_UNDERSTORY'],
+    seasonalActivity: {
+      activeSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      floweringSeasons: ['SUMMER', 'AUTUMN'],
+      foliageSeasons: ['LATE_SPRING', 'SUMMER', 'AUTUMN'],
+      chopAndDropSeasons: ['AUTUMN'],
+      pestDeterrenceSeasons: [],
+      plantingSeasons: ['LATE_SPRING', 'SUMMER'],
+      harvestSeasons: ['AUTUMN']
+    },
+    preferredZone: 'ZONE_3_DRIP',
+    preferredSector: 'SOUTH_SUN',
+    jugloneTolerance: 'NEUTRAL',
+    minDistanceM: 1.5,
+    maxDistanceM: 4.0,
+    spreadM: 1.0,
+    heightM: 2.0,
+    perennial: false,
+    notes: {
+      en: 'Erect woody legume, grown as an annual or short-lived perennial shrub 1–4 m tall with a taproot to 2 m; under good management perennial varieties have lasted up to 5 years. It is one of the most important pulses (over 4 million hectares grown for the seeds) and nodulates without special inoculant. In a cover-crop trial in Uruguay it fixed on average about 149 kg N/ha (up to about 253 kg) with about 11 t/ha of above-ground biomass in about 120 days, and the authors call it the most promising nitrogen-fixing cover crop there. Use it as a fast nitrogen and mulch shrub while a young warm-climate star establishes, and cut it back at the end of the season. Its leaves cannot tolerate frost, it does not tolerate waterlogging (Fusarium wilt on wet soils), and the pod borer Helicoverpa armigera attacks it. No trial as an orchard nurse was found.',
+      de: 'Aufrechter, holziger Schmetterlingsblütler, angebaut als einjähriger oder kurzlebig ausdauernder Strauch von 1–4 m mit bis zu 2 m tiefer Pfahlwurzel; ausdauernde Sorten hielten bei guter Pflege bis zu 5 Jahre. Sie ist eine der wichtigsten Hülsenfrüchte (über 4 Millionen Hektar für die Samen) und bildet ohne besondere Impfung Knöllchen. In einem Zwischenfruchtversuch in Uruguay band sie im Mittel etwa 149 kg N/ha (bis etwa 253 kg) bei rund 11 t/ha oberirdischer Biomasse in etwa 120 Tagen; die Autoren nennen sie die vielversprechendste stickstoffbindende Zwischenfrucht dort. Als schneller Stickstoff- und Mulchstrauch nutzen, solange eine junge Star-Pflanze warmer Klimate anwächst, und am Ende der Saison zurückschneiden. Die Blätter vertragen keinen Frost, sie verträgt keine Staunässe (Fusarium-Welke auf nassen Böden), und der Baumwollkapselwurm Helicoverpa armigera befällt sie. Ein Versuch als Ammenpflanze im Obstbau wurde nicht gefunden.'
+    },
+    color: '#eab308',
+    iconName: 'Bean',
+    imageUrl: '/images/plants/plant-pigeon-pea.webp',
+    suitableSoils: ['LOAM', 'SANDY', 'SILT', 'ACIDIC', 'CHALKY'],
+    unsuitableSoils: [],
+    soilNotes: {
+      en: 'Grows on soils from sand to heavy clay as long as they drain freely; prefers pH 5–7 but tolerates pH 4.5–8.4. Very drought tolerant (dry seasons of over 6 months), but not tolerant of waterlogging.',
+      de: 'Wächst auf Böden von Sand bis schwerem Ton, solange sie gut abtrocknen; bevorzugt pH 5–7, verträgt pH 4,5–8,4. Sehr trockenheitsverträglich (Trockenzeiten über 6 Monate), aber nicht staunässeverträglich.'
+    },
+    plantingTime: {
+      de: 'Aussaat nach dem letzten Frost bzw. zu Beginn der Regenzeit',
+      en: 'Sow after the last frost or at the start of the rainy season'
+    },
+    harvestTime: {
+      de: 'Hülsen nach der Blüte (Erbsen frisch oder getrocknet); Rückschnitt am Saisonende als Mulch',
+      en: 'Pods after flowering (peas fresh or dried); cut back at the end of the season for mulch'
+    },
+    recommendedForTrees: ['tree-fig', 'tree-tea-assamica', 'tree-inga'],
+    sources: [
+      'Cook, B. G., et al. (2020). Cajanus cajan. Tropical Forages: an interactive selection tool. CIAT and ILRI. https://tropicalforages.info/text/entities/cajanus_cajan.htm',
+      'Berriel, V., & Perdomo, C. H. (2023). Cajanus cajan: a promissory high-nitrogen fixing cover crop for Uruguay. Frontiers in Agronomy, 5, 1214811. doi:10.3389/fagro.2023.1214811'
     ]
   }
 ];

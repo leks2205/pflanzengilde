@@ -53,7 +53,7 @@ export function buildGardenIcsContent(options: GardenCalendarExportOptions): str
     const treeName = getLoc(tree.commonName, language);
     const treeCount = starPlants.filter(sp => sp.treeId === tree.id).length;
 
-    const isAutumnPlanting = ['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE', 'BERRY_SHRUB'].includes(tree.category);
+    const isAutumnPlanting = ['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE', 'PIONEER_TREE', 'BERRY_SHRUB'].includes(tree.category);
     const plantMonth = isAutumnPlanting
       ? (hemisphere === 'NORTHERN' ? 10 : 4)
       : (hemisphere === 'NORTHERN' ? 4 : 10);

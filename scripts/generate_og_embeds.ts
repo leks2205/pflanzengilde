@@ -55,6 +55,12 @@ function wrapText(text: string, maxCharsPerLine = 46, maxLines = 3): string[] {
   return lines;
 }
 
+// Long names (e.g. "Hänge-Birke / Sand-Birke (…)") would run off the 1200 px card at 52 px: shrink to fit
+// ~1060 px, assuming ~0.56 em average glyph width for bold Arial. Short names keep the original 52 px.
+function titleFontSize(title: string): number {
+  return Math.max(30, Math.min(52, Math.floor(1060 / (title.length * 0.56))));
+}
+
 function createSvgOverlay(title: string, botanical: string, description: string): string {
   const descLines = wrapText(description, 44, 3);
   const descSvgLines = descLines.map((line, idx) =>
@@ -85,7 +91,7 @@ function createSvgOverlay(title: string, botanical: string, description: string)
   <text x="195" y="87" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" fill="#86efac" letter-spacing="1.5">PERMAKULTUR-GILDE</text>
 
   <!-- Title & Botanical Name -->
-  <text x="70" y="155" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="bold" fill="#ffffff">${escapeXml(title)}</text>
+  <text x="70" y="155" font-family="Arial, Helvetica, sans-serif" font-size="${titleFontSize(title)}" font-weight="bold" fill="#ffffff">${escapeXml(title)}</text>
   <text x="70" y="200" font-family="Arial, Helvetica, sans-serif" font-size="26" font-style="italic" fill="#86efac">${escapeXml(botanical)}</text>
 
   <!-- Short Description -->

@@ -181,7 +181,8 @@ export function isStrictCalcicolePlant(plant: GuildPlant): boolean {
  * (Tilia), rhododendron, blueberry and rhubarb do not grow near black walnut, while peach,
  * nectarine, cherry, plum (Prunus) and pear were observed growing near it. Purdue HO-193
  * (Dana & Lerner 1994) lists apple, pear, blueberry, rhubarb, rhododendron, black alder and
- * basswood as sensitive and cherry and pawpaw as tolerant. Penn State lists Prunus, quince,
+ * basswood as sensitive and cherry and pawpaw as tolerant. Birch: UW–Madison lists birch and Ontario
+ * lists paper birch (Betula papyrifera) as sensitive; silver birch is included as a precaution. Penn State lists Prunus, quince,
  * wild grape and American hazel as tolerant. Pear stays on the list as a precaution because
  * the lists disagree; species on no list (tea, fig, mulberry, chestnut …) are not flagged.
  */
@@ -190,6 +191,7 @@ export const JUGLONE_SENSITIVE_STAR_IDS: ReadonlySet<string> = new Set([
   'tree-pear',
   'tree-alder',
   'tree-linden',
+  'tree-birch',
   'shrub-blueberry',
   'shrub-rhododendron',
   'herb-rhubarb'

@@ -25,6 +25,18 @@ const API = 'https://commons.wikimedia.org/w/api.php';
 
 // Local image path (as referenced by imageUrl) -> Commons file title (without the "File:" prefix).
 export const IMAGE_SOURCES: Record<string, string> = {
+  "/images/plants/plant-grey-alder.webp": "Grey alder (Alnus incana) 4227.jpg",
+  "/images/plants/plant-italian-alder.webp": "Alnus cordata alder tree.jpg",
+  "/images/plants/plant-caragana.webp": "Caragana arborescens f002.jpg",
+  "/images/plants/plant-goat-willow.webp": "Salix caprea Male.jpg",
+  "/images/plants/plant-silver-birch.webp": "Betula pendula in Sedovo 1.jpg",
+  "/images/plants/tree-rowan.webp": "Sorbus aucuparia var. edulis - fruits and leaves.JPG",
+  "/images/plants/plant-rowan.webp": "Sorbus aucuparia fruit 8.JPG",
+  "/images/plants/plant-inga.webp": "Inga edulis 08.jpg",
+  "/images/plants/plant-sweet-gale.webp": "Myrica gale kz19.jpg",
+  "/images/plants/plant-pigeon-pea.webp": "Cajanus caja 080716-1078 ayot.jpg",
+  "/images/plants/tree-birch.webp": "Betula pendula 01.jpg",
+  "/images/plants/tree-inga.webp": "Inga edulis, mature and juvenile Guama pods (10108341614).jpg",
   "/images/plants/herb-hemp.webp": "Hemp plants-cannabis sativa-single 1.JPG",
   "/images/plants/herb-rhubarb.webp": "Rheum rhabarbarum.2006-04-27.uellue.jpg",
   "/images/plants/plant-african-marigold.webp": "Inniswood - Tagetes erecta 1.jpg",

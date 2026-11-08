@@ -104,7 +104,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-pot-marigold',
       'plant-indian-mustard',
       'plant-garlic-chives',
-      'plant-strawberry'
+      'plant-strawberry',
+      'plant-caragana'
     ],
     sources: [
       'Oster, M., et al. (2021). Comfrey (Symphytum spp.) as a feed supplement in pig nutrition contributes to regional resource cycles. Science of The Total Environment, 796, 148988. doi:10.1016/j.scitotenv.2021.148988',
@@ -184,7 +185,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-epimedium',
       'plant-wild-ginger',
       'plant-ostrich-fern',
-      'plant-meadowsweet'],
+      'plant-meadowsweet',
+      'plant-caragana', 'plant-rowan', 'plant-elaeagnus'],
     sources: [
       'Dana, M. N., & Lerner, B. R. (1994). Black Walnut Toxicity. Purdue University Cooperative Extension Service, HO-193. https://www.extension.purdue.edu/extmedia/ho/ho-193.pdf',
       'Sellmer, J., & Roman, D. (n.d.). Landscaping and Gardening Around Walnuts and Other Juglone Producing Plants. Penn State Extension. https://extension.psu.edu/landscaping-and-gardening-around-walnuts-and-other-juglone-producing-plants',
@@ -361,7 +363,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-ladys-mantle',
       'plant-chicory',
       'plant-ribwort-plantain',
-      'plant-garlic-chives'
+      'plant-garlic-chives',
+      'plant-caragana'
     ],
     sources: [
       'Cahenzli, F., et al. (2019). Perennial flower strips for pest control in organic apple orchards – A pan-European study. Agriculture, Ecosystems & Environment, 278, 43–53. doi:10.1016/j.agee.2019.03.011',
@@ -454,7 +457,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-basil',
       'plant-summer-savory',
       'plant-cornflower',
-      'plant-catmint'
+      'plant-catmint',
+      'plant-caragana'
     ],
     sources: [
       'Ellis, M. A., & Ivey, M. L. (2016). Fire Blight of Apples and Pears. Ohio State University Extension, PLPATH-FRU-22. https://cfaes.osu.edu/fact-sheet/fire-blight-apples-and-pears',
@@ -528,7 +532,7 @@ export const STAR_TREES: StarTree[] = [
       'plant-subterranean-clover',
       'plant-salad-burnet',
       'plant-buckwheat',
-      'plant-tithonia'
+      'plant-tithonia', 'plant-pigeon-pea'
     ],
     sources: [
       'Morton, J. F. (1987). Fig. In Fruits of Warm Climates (pp. 47–50). Julia F. Morton, Miami, FL. https://hort.purdue.edu/newcrop/morton/fig.html',
@@ -603,7 +607,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-epimedium',
       'plant-wild-ginger',
       'plant-ostrich-fern',
-      'plant-blackcurrant'
+      'plant-blackcurrant',
+      'plant-grey-alder', 'plant-caragana', 'plant-goat-willow', 'plant-silver-birch', 'plant-rowan'
     ],
     sources: [
       'Hicks, D. (2022). Biological Flora of Britain and Ireland: Corylus avellana. Journal of Ecology, 110(12), 3053–3089. doi:10.1111/1365-2745.14008',
@@ -673,7 +678,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-lingonberry',
       'plant-cowslip',
       'plant-rhododendron',
-      'plant-blueberry'
+      'plant-blueberry',
+      'plant-goat-willow', 'plant-silver-birch', 'plant-rowan'
     ],
     sources: [
       'Conedera, M., Tinner, W., Krebs, P., de Rigo, D., & Caudullo, G. (2016). Castanea sativa in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Castanea_sativa.pdf',
@@ -843,7 +849,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-ribwort-plantain',
       'plant-phacelia',
       'plant-fodder-radish',
-      'plant-garlic-chives'
+      'plant-garlic-chives',
+      'plant-caragana'
     ],
     sources: [
       'Welk, E., de Rigo, D., & Caudullo, G. (2016). Prunus avium in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Prunus_avium.pdf',
@@ -913,7 +920,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-lovage',
       'plant-meadowsweet',
       'plant-wild-carrot',
-      'plant-chicory'
+      'plant-chicory',
+      'plant-grey-alder', 'plant-italian-alder'
     ],
     sources: [
       'Royal Horticultural Society (n.d.). How to grow quinces. RHS Grow Your Own. https://www.rhs.org.uk/fruit/quince/grow-your-own',
@@ -1118,7 +1126,7 @@ export const STAR_TREES: StarTree[] = [
       'plant-rhododendron',
       'plant-blackcurrant',
       'plant-red-currant',
-      'plant-rhubarb'
+      'plant-rhubarb', 'plant-sweet-gale'
     ],
     sources: [
       'Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Alnus glutinosa in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_glutinosa.pdf',
@@ -1248,7 +1256,7 @@ export const STAR_TREES: StarTree[] = [
       'plant-comfrey',
       'plant-wintergreen',
       'plant-lingonberry',
-      'plant-rhododendron'
+      'plant-rhododendron', 'plant-sweet-gale'
     ],
     sources: [
       'Fernandez, G., Cline, B., Spayd, S., & Burrack, H. (2022). Chapter 14: Small Fruits. Extension Gardener Handbook. NC State Extension. https://content.ces.ncsu.edu/extension-gardener-handbook/14-small-fruits',
@@ -1788,7 +1796,8 @@ export const STAR_TREES: StarTree[] = [
       'plant-sicklepod',
       'plant-tithonia',
       'plant-african-marigold',
-      'plant-chinese-motherwort'
+      'plant-chinese-motherwort',
+      'plant-pigeon-pea'
     ],
     sources: [
       'NC State Extension (n.d.). Camellia sinensis. North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/camellia-sinensis/',
@@ -2080,7 +2089,7 @@ export const STAR_TREES: StarTree[] = [
       'plant-chamomile',
       'plant-tea-sinensis',
       'plant-alder',
-      'plant-blueberry'
+      'plant-blueberry', 'plant-sweet-gale'
     ],
     sources: [
       'NC State Extension (n.d.). Rhododendron catawbiense (Catawba Rhododendron). North Carolina Extension Gardener Plant Toolbox. https://plants.ces.ncsu.edu/plants/rhododendron-catawbiense/',
@@ -2090,6 +2099,209 @@ export const STAR_TREES: StarTree[] = [
       'Egan, P. A., Stevenson, P. C., & Stout, J. C. (2022). Pollinator selection against toxic nectar as a key facilitator of a plant invasion. Philosophical Transactions of the Royal Society B, 377(1853), 20210168. doi:10.1098/rstb.2021.0168',
       'Polomski, R. F., Bir, R. E., & Beasley, J. (2016). Rododendros (HGIC 1073S). Clemson Cooperative Extension, Home & Garden Information Center. https://hgic.clemson.edu/factsheet/rhododendron/',
       'The Morton Arboretum (n.d.). Black walnut toxicity. https://mortonarb.org/plant-and-protect/tree-plant-care/plant-care-resources/black-walnut-toxicity/'
+    ]
+  },
+  {
+    id: 'tree-rowan',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Edible Rowan (\'Edulis\' Pioneer Fruit Tree)',
+      de: 'Mährische Eberesche / Edeleberesche (\'Edulis\')'
+    },
+    botanicalName: 'Sorbus aucuparia',
+    category: 'FRUIT_TREE',
+    matureRadiusM: 2.5,
+    matureHeightM: 10,
+    rootHabit: 'WIDE_SPREADING',
+    jugloneProducer: false,
+    sunPreference: 'FULL_SUN',
+    vulnerabilities: {
+      en: [
+        'Fire Blight (Erwinia amylovora)',
+        'Apple Fruit Moth (Argyresthia conjugella)',
+        'Rowan Rust (Gymnosporangium cornutum)',
+        'Bird Predation on Berries'
+      ],
+      de: [
+        'Feuerbrand (Erwinia amylovora)',
+        'Ebereschenmotte (Argyresthia conjugella)',
+        'Ebereschen-Gitterrost (Gymnosporangium cornutum)',
+        'Vogelfraß an den Beeren'
+      ]
+    },
+    description: {
+      en: 'The fruit form of the native pioneer tree rowan. Sweet selections such as \'Edulis\' (Moravian rowan), \'Konzentra\' and \'Rosina\' carry large red berries rich in vitamin C that can be eaten fresh or made into jam; fresh wild rowan berries contain about 0.4 % parasorbic acid, which is strongly laxative, and are only eaten cooked. As a pioneer, rowan colonises open ground together with willow and birch, is frost hardy at all altitudes, has a low risk of late-frost damage and a very high ability to resprout. Its litter decomposes quickly and is relatively rich in lime and phosphorus. In a commercial planting full yield (about 10 kg per tree) came from the 8th year, with 10–15 kg on average, but harvests dropped in hot summers; poor pollination of the very early flowers, when few bees fly, was named as a main cause of low yields, so early-flowering pollinator plants belong in its guild. Keep it away from apple, pear and quince: rowan hosts fire blight and is the natural host of the apple fruit moth.',
+      de: 'Die Obstform des heimischen Pionierbaums Eberesche. Süße Sorten wie \'Edulis\' (Mährische Eberesche), \'Konzentra\' und \'Rosina\' tragen große, vitamin-C-reiche rote Beeren, die frisch oder als Marmelade gegessen werden; frische wilde Vogelbeeren enthalten etwa 0,4 % stark abführende Parasorbinsäure und werden nur gekocht gegessen. Als Pionier besiedelt die Eberesche zusammen mit Weide und Birke offene Flächen, ist in allen Höhenlagen frosthart, nur gering spätfrostgefährdet und hat ein sehr hohes Stockausschlagsvermögen. Ihre Streu zersetzt sich rasch und ist relativ kalk- und phosphorreich. In einer Erwerbsanlage kam der Vollertrag (etwa 10 kg pro Baum) ab dem 8. Standjahr, im Mittel 10–15 kg, in heißen Sommern fielen die Ernten aber gering aus; als eine Hauptursache niedriger Erträge galt die schlechte Bestäubung der sehr frühen Blüten, wenn kaum Bienen fliegen. Frühblühende Bestäuberpflanzen gehören daher in ihre Gilde. Abstand zu Apfel, Birne und Quitte halten: Die Eberesche ist Wirt des Feuerbrands und natürlicher Wirt der Ebereschenmotte.'
+    },
+    bloomSeason: 'LATE_SPRING',
+    harvestSeason: 'AUTUMN',
+    color: '#dc2626',
+    imageUrl: '/images/plants/tree-rowan.webp',
+    preferredSoils: ['SANDY', 'LOAM', 'ACIDIC', 'SILT'],
+    unsuitableSoils: ['CLAY', 'CHALKY'],
+    soilAdvice: {
+      en: 'Prefers light, sandy or stony, well-aerated soils with a good water supply and grows well on lime-poor sandy soils; dry, hot sites and heavy, waterlogged soils suit it poorly. In Europe it is absent from wetlands, clays and soft limestones. On heavy clay plant on a raised mound of 30–40 cm with coarse sand worked in.',
+      de: 'Bevorzugt leichte, sandige oder steinige, gut durchlüftete Böden mit guter Wasserversorgung und wächst gut auf kalkarmen Sandböden; trockene, heiße Standorte und schwere, staunasse Böden sind schlecht geeignet. In Europa fehlt sie in Feuchtgebieten, auf Ton und weichem Kalk. Auf schwerem Ton auf einen 30–40 cm hohen Hügel mit eingearbeitetem Grobsand pflanzen.'
+    },
+    recommendedCompanions: [
+      'plant-comfrey',
+      'plant-white-clover',
+      'plant-cowslip',
+      'plant-lungwort',
+      'plant-yarrow',
+      'plant-borage',
+      'plant-woodruff',
+      'plant-red-currant',
+      'plant-blackcurrant',
+      'plant-caragana'
+    ],
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr)',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr)'
+    },
+    harvestTime: {
+      de: 'Beeren reifen ab Mitte August bis Oktober; rechtzeitig vor den Vögeln ernten',
+      en: 'Berries ripen from mid-August to October; pick before the birds do'
+    },
+    sources: [
+      'Räty, M., Caudullo, G., & de Rigo, D. (2016). Sorbus aucuparia in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Sorbus_aucuparia.pdf',
+      'Bayerische Landesanstalt für Wald und Forstwirtschaft (n.d.). Beiträge zur Vogelbeere (LWF Wissen 17; proceedings of the 1997 Tree of the Year conference). Freising. https://www.lwf.bayern.de/mam/cms04/service/dateien/w17_beitraege_zur_vogelbeere_gesamtheft_gesch.pdf',
+      'Kobro, S., Søreide, L., Djønne, E., Rafoss, T., Jaastad, G., & Witzgall, P. (2003). Masting of rowan Sorbus aucuparia L. and consequences for the apple fruit moth Argyresthia conjugella Zeller. Population Ecology, 45(1), 25–30. doi:10.1007/s10144-003-0136-x',
+      'EPPO (2026). Erwinia amylovora (ERWIAM): datasheet and host plants. EPPO Global Database. https://gd.eppo.int/taxon/ERWIAM/datasheet',
+      'Plants For A Future (n.d.). Sorbus aucuparia – Mountain Ash. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Sorbus+aucuparia'
+    ]
+  },
+  {
+    id: 'tree-birch',
+    climateZones: ['BOREAL', 'TEMPERATE'],
+    commonName: {
+      en: 'Silver Birch (Pioneer Nurse Tree)',
+      de: 'Hänge-Birke / Sand-Birke (Pionier- und Vorwaldbaum)'
+    },
+    botanicalName: 'Betula pendula',
+    category: 'PIONEER_TREE',
+    matureRadiusM: 5,
+    matureHeightM: 20,
+    rootHabit: 'SURFACE_FEEDER',
+    jugloneProducer: false,
+    sunPreference: 'FULL_SUN',
+    vulnerabilities: {
+      en: [
+        'Birch Rust (Melampsoridium betulinum)',
+        'Witches\' Broom (Taphrina betulina)',
+        'Birch Polypore Wood Rot (Fomitopsis betulina)',
+        'Autumnal Moth Defoliation (Epirrita autumnata)'
+      ],
+      de: [
+        'Birkenrost (Melampsoridium betulinum)',
+        'Hexenbesen (Taphrina betulina)',
+        'Birkenporling-Holzfäule (Fomitopsis betulina)',
+        'Kahlfraß durch Herbst-Kleinspanner (Epirrita autumnata)'
+      ]
+    },
+    description: {
+      en: 'The classic short-lived pioneer of European secondary succession: abundant wind-borne seed, low demands on soil quality, intolerance of shade, and the only European pioneer tree with a short-term persistent soil seed bank (1–5 years). As a star it anchors a young forest-garden edge: birch casts light shade, and birch stands shelter seedlings of frost-sensitive trees; in a Czech trial silver fir grew significantly taller under birch after three years. Birch does not fix nitrogen and its litter is moderately acidic, so pair it with acid-tolerant woodland plants and pioneer companions. In early spring root pressure drives sap flow, and birch sap is tapped as a drink. Birch is a host of silver leaf and is listed as juglone-sensitive, so keep it away from stone fruit and walnuts.',
+      de: 'Der klassische kurzlebige Pionier der europäischen Sekundärsukzession: reichlich windverbreitete Samen, geringe Ansprüche an den Boden, Schattenunverträglichkeit und als einziger europäischer Pionierbaum eine kurzzeitig überdauernde Bodensamenbank (1–5 Jahre). Als Star-Pflanze bildet sie den Rand eines jungen Waldgartens: Die Birke wirft lichten Schatten, und Birkenbestände schützen Sämlinge frostempfindlicher Bäume; in einem tschechischen Versuch wuchs Weißtanne unter Birke nach drei Jahren signifikant höher. Die Birke bindet keinen Stickstoff und ihre Streu ist mäßig sauer, daher passen säuretolerante Waldpflanzen und Pionier-Begleiter. Im Vorfrühling treibt der Wurzeldruck den Saftfluss an, und Birkensaft wird als Getränk gezapft. Die Birke ist Wirt der Bleiglanzkrankheit und gilt als juglonempfindlich, daher Abstand zu Steinobst und Walnüssen halten.'
+    },
+    bloomSeason: 'EARLY_SPRING',
+    harvestSeason: 'EARLY_SPRING',
+    color: '#94a3b8',
+    imageUrl: '/images/plants/tree-birch.webp',
+    preferredSoils: ['SANDY', 'LOAM', 'ACIDIC', 'SILT'],
+    unsuitableSoils: ['CHALKY'],
+    soilAdvice: {
+      en: 'Thrives on poor, light and acidic soils as long as they are not waterlogged, and tolerates a broad range of site conditions; it does not tolerate prolonged summer drought. Its roots compete in the topsoil, so give shallow-rooted companions room and a 5–8 cm mulch layer. On heavy, wet clay plant on a 30–40 cm mound.',
+      de: 'Gedeiht auf mageren, leichten und sauren Böden, solange sie nicht staunass sind, und verträgt ein breites Standortspektrum; lange Sommertrockenheit verträgt sie nicht. Ihre Wurzeln konkurrieren im Oberboden, daher flachwurzelnden Begleitern Platz und eine 5–8 cm dicke Mulchschicht geben. Auf schwerem, nassem Ton auf einen 30–40 cm hohen Hügel pflanzen.'
+    },
+    recommendedCompanions: [
+      'plant-lingonberry',
+      'plant-cowslip',
+      'plant-woodruff',
+      'plant-white-clover',
+      'plant-yarrow',
+      'plant-snowdrop',
+      'plant-crocus',
+      'plant-wintergreen',
+      'plant-rowan',
+      'plant-goat-willow'
+    ],
+    plantingTime: {
+      de: 'Herbst (Okt–Nov) oder Vorfrühling (Mär–Apr) als wurzelnackte Jungpflanze',
+      en: 'Autumn (Oct–Nov) or early spring (Mar–Apr) as bare-root whips'
+    },
+    harvestTime: {
+      de: 'Birkensaft im Vorfrühling vor dem Austrieb (Mär–Apr); Kätzchenblüte im April',
+      en: 'Birch sap in early spring before bud burst (Mar–Apr); catkins in April'
+    },
+    sources: [
+      'Beck, P., Caudullo, G., de Rigo, D., & Tinner, W. (2016). Betula pendula, Betula pubescens and other birches in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Betula_spp.pdf',
+      'Tiebel, K., Huth, F., & Wagner, S. (2018). Soil seed banks of pioneer tree species in European temperate forests: a review. iForest, 11, 48–57. doi:10.3832/ifor2400-011',
+      'Martiník, A., Sendecký, M., & Urban, J. (2018). Survival and early growth of silver fir and pioneer species on two sites in nurse crop regeneration systems in the Czech Republic. Dendrobiology, 80, 81–90. doi:10.12657/denbio.080.008',
+      'Reich, P. B., et al. (2005). Linking litter calcium, earthworms and soil properties: a common garden test with 14 tree species. Ecology Letters, 8(8), 811–818. doi:10.1111/j.1461-0248.2005.00779.x',
+      'Plants For A Future (n.d.). Betula pendula – Silver Birch. PFAF Plant Database. https://pfaf.org/user/Plant.aspx?LatinName=Betula+pendula'
+    ]
+  },
+  {
+    id: 'tree-inga',
+    climateZones: ['TROPICAL'],
+    commonName: {
+      en: 'Ice-Cream Bean Tree (Inga)',
+      de: 'Eiscremebohnen-Baum (Inga)'
+    },
+    botanicalName: 'Inga edulis',
+    category: 'NITROGEN_FIXING_TREE',
+    matureRadiusM: 4,
+    matureHeightM: 15,
+    rootHabit: 'WIDE_SPREADING',
+    jugloneProducer: false,
+    sunPreference: 'FULL_SUN',
+    vulnerabilities: {
+      en: [
+        'Caterpillar Defoliation (Lepidoptera larvae)',
+        'Fruit Fly Larvae in Seeds',
+        'Seedling Damping-Off (Rhizoctonia)',
+        'Mistletoe Infestation'
+      ],
+      de: [
+        'Kahlfraß durch Raupen (Lepidoptera-Larven)',
+        'Fruchtfliegenlarven in den Samen',
+        'Umfallkrankheit der Sämlinge (Rhizoctonia)',
+        'Mistelbefall'
+      ]
+    },
+    description: {
+      en: 'Light-demanding gap pioneer of lowland rain forest that grows rapidly even on the poorest acidic soils, nodulates with Bradyrhizobium and has shaded coffee and cocoa since the early 19th century. The ribbed pods, up to 1 m long, hold the seeds in a sweet, white, cottony pulp; the fruit is popular and sold in markets in Bolivia, Brazil, Costa Rica and Ecuador. Its open crown gives good shade, the nitrogen-rich, slowly decomposing litter suppresses weeds far more than other leguminous trees in agroforestry trials, and its mulch cut erosion on cultivated slopes almost to secondary-forest levels. Wild trees reach 30 m; in a garden prune it regularly (never below about 0.75 m). It tolerates 2–3 months of waterlogging and a 6-month dry season, but no frost limit is documented, so it is listed for tropical climates only.',
+      de: 'Lichtbedürftiger Lückenpionier des Tiefland-Regenwalds, der selbst auf ärmsten sauren Böden schnell wächst, mit Bradyrhizobium Knöllchen bildet und seit Anfang des 19. Jahrhunderts Kaffee und Kakao beschattet. Die gerippten, bis 1 m langen Hülsen enthalten die Samen in süßem, weißem, watteartigem Fruchtfleisch; die Frucht ist beliebt und wird in Bolivien, Brasilien, Costa Rica und Ecuador auf Märkten verkauft. Die offene Krone spendet guten Schatten, die stickstoffreiche, langsam verrottende Streu unterdrückte Unkraut in Agroforst-Versuchen weit stärker als andere Leguminosenbäume, und ihr Mulch senkte die Erosion an bewirtschafteten Hängen fast auf das Niveau von Sekundärwald. Wilde Bäume werden 30 m hoch; im Garten regelmäßig schneiden (nie tiefer als etwa 0,75 m). Sie verträgt 2–3 Monate Staunässe und 6 Monate Trockenzeit, eine Frostgrenze ist aber nicht belegt, daher nur für tropisches Klima gelistet.'
+    },
+    bloomSeason: 'SUMMER',
+    harvestSeason: 'AUTUMN',
+    color: '#65a30d',
+    imageUrl: '/images/plants/tree-inga.webp',
+    preferredSoils: ['ACIDIC', 'LOAM', 'SANDY', 'CLAY', 'SILT'],
+    unsuitableSoils: ['CHALKY'],
+    soilAdvice: {
+      en: 'Particularly tolerant of acid and poor soils (Oxisols) and of 2–3 months of waterlogging; needs at least about 1,200 mm of annual rainfall. Keep a 1 m circle around the young tree free of weeds for the first 6 months.',
+      de: 'Besonders tolerant gegenüber sauren und armen Böden (Oxisole) und 2–3 Monaten Staunässe; braucht mindestens etwa 1.200 mm Jahresniederschlag. In den ersten 6 Monaten einen Kreis von 1 m um den Jungbaum unkrautfrei halten.'
+    },
+    recommendedCompanions: [
+      'plant-sweet-potato',
+      'plant-pigeon-pea',
+      'plant-tithonia',
+      'plant-nasturtium',
+      'plant-african-marigold',
+      'plant-basil'
+    ],
+    plantingTime: {
+      de: 'Zu Beginn der Regenzeit',
+      en: 'At the start of the rainy season'
+    },
+    harvestTime: {
+      de: 'Hülsen in der Regenzeit, im westlichen Amazonasgebiet vor allem ab Oktober',
+      en: 'Pods in the wet season, in western Amazonia mainly from October'
+    },
+    sources: [
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Inga edulis. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Inga_edulis.PDF',
+      'Porto, D. S., Farias, E. N. C., Chaves, J. S., Souza, B. F., Medeiros, R. D., & Zilli, J. E. (2017). Symbiotic effectiveness of Bradyrhizobium ingae in promoting growth of Inga edulis Mart. seedlings. Revista Brasileira de Ciência do Solo, 41, e0160222. doi:10.1590/18069657rbcs20160222'
     ]
   }
 ];

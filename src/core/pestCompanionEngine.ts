@@ -646,6 +646,41 @@ export const PEST_RESEARCH_NOTES: PestResearchNote[] = [
       de: 'In einer Einzelstudie senkte ein Tee-Soja-Mischanbau wichtige Blattkrankheiten des Tees deutlich – vor allem Anthraknose – und steigerte den Ertrag, begleitet von mehr Pseudomonas-Bakterien auf den Blättern. Werte speziell zur Teeblasenkrankheit ließen sich in der zugänglichen Zusammenfassung nicht prüfen; daher bis zur Bestätigung kein Abwehr-Badge.'
     },
     citations: [{ label: 'Shao et al. 2026, Ind. Crops Prod. 251:124159 (single study)', doi: '10.1016/j.indcrop.2026.124159' }]
+  },
+  {
+    id: 'note-pear-psylla-goat-willow',
+    pest: { en: 'Pear psylla', de: 'Birnenblattsauger' },
+    companions: { en: 'Goat willow (hedge with hazel and nettle)', de: 'Sal-Weide (Hecke mit Hasel und Brennnessel)' },
+    evidence: 'promising',
+    note: {
+      en: 'In UK pear orchards, goat and grey willow, hazel, nettle and hawthorn were good early-season sources of anthocorid bugs, the main natural enemies of pear psylla; willows carried some of the highest numbers early in the year. The authors expect willow–hazel–nettle hedges to be excellent for conservation biocontrol, but the study counted predators and did not measure psylla or damage. Hawthorn was left out of the planner because it is a fire blight source.',
+      de: 'In britischen Birnenanlagen waren Sal- und Grau-Weide, Hasel, Brennnessel und Weißdorn früh im Jahr gute Quellen für Blumenwanzen (Anthocoriden), die wichtigsten Gegenspieler des Birnblattsaugers; Weiden trugen früh im Jahr mit die höchsten Zahlen. Die Autoren erwarten, dass Hecken aus Weide, Hasel und Brennnessel sich hervorragend für die Nützlingsförderung eignen, die Studie zählte aber nur die Räuber und maß weder Blattsauger noch Schäden. Weißdorn wurde im Planer weggelassen, weil er eine Feuerbrandquelle ist.'
+    },
+    citations: [{ label: 'Cross et al. 2010, Mitt. Klosterneuburg 60 (predator counts)', url: 'https://hedgelink.org.uk/?p=4205' }],
+    seeAlso: ['note-pear-psylla', 'note-pear-psylla-italian-alder']
+  },
+  {
+    id: 'note-pear-psylla-italian-alder',
+    pest: { en: 'Pear psylla', de: 'Birnenblattsauger' },
+    companions: { en: 'Italian alder windbreak', de: 'Windschutz aus Italienischer Erle' },
+    evidence: 'folklore',
+    note: {
+      en: 'Italian alder windbreaks, commonly planted around pear orchards, provided little or no benefit for conservation biocontrol of pear psyllids in the same UK study. Plant Italian alder for shelter and nitrogen, not against psylla.',
+      de: 'Windschutzhecken aus Italienischer Erle, die häufig um Birnenanlagen stehen, brachten in derselben britischen Studie kaum oder keinen Nutzen für die Nützlingsförderung gegen den Birnblattsauger. Italienische Erle für Windschutz und Stickstoff pflanzen, nicht gegen Blattsauger.'
+    },
+    citations: [{ label: 'Cross et al. 2010, Mitt. Klosterneuburg 60', url: 'https://hedgelink.org.uk/?p=4205' }],
+    seeAlso: ['note-pear-psylla-goat-willow']
+  },
+  {
+    id: 'note-alder-windbreak-capsid',
+    pest: { en: 'Orchard mites and aphids (apple)', de: 'Obstbaum-Spinnmilben und Blattläuse (Apfel)' },
+    companions: { en: 'Alder windbreak', de: 'Erlen-Windschutz' },
+    evidence: 'promising',
+    note: {
+      en: 'The alder aphid on alder windbreaks feeds the black-kneed capsid (Blepharidopterus angulatus), a predator of orchard pests. Clipping the windbreak after the aphid peak sent both sexes of the capsid into nearby orchards, so trimming time decides whether the predator moves in. The study followed the predator, not pest numbers or damage in the orchard, and red spider mite is not a key pest listed for apple here.',
+      de: 'Die Erlenblattlaus auf Erlen-Windschutzhecken ernährt die Schwarzknie-Weichwanze (Blepharidopterus angulatus), einen Räuber von Obstbaumschädlingen. Wurde die Hecke nach dem Blattlaus-Höhepunkt geschnitten, wanderten beide Geschlechter der Wanze in benachbarte Anlagen; der Schnittzeitpunkt entscheidet also, ob der Räuber zuwandert. Untersucht wurde der Räuber, nicht Schädlingszahlen oder Schäden in der Anlage, und die Obstbaumspinnmilbe ist hier kein gelisteter Hauptschädling des Apfels.'
+    },
+    citations: [{ label: 'Gange & Llewellyn 1989, Ann. Appl. Biol. 114:221', doi: '10.1111/j.1744-7348.1989.tb02099.x' }]
   }
 ];
 
