@@ -11,6 +11,8 @@ import { SourceList } from './SourceList';
 import { PlantThumbnail } from './PlantThumbnail';
 import { GoogleImagesButton } from './GoogleImagesButton';
 import { getImageCredit } from '../data/imageCredits';
+import { getPioneerInfo } from '../data/pioneerTrees';
+import { GUILD_PLANTS } from '../data/guildPlants';
 
 const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-comfrey': 'chop-plant-comfrey',
@@ -52,6 +54,14 @@ const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-tithonia': 'chop-plant-tithonia',
   'plant-gliricidia': 'chop-plant-gliricidia',
   'plant-common-vetch': 'chop-plant-common-vetch',
+  'plant-grey-alder': 'chop-tree-alder',
+  'plant-italian-alder': 'chop-tree-alder',
+  'plant-goat-willow': 'chop-plant-willow',
+  'plant-silver-birch': 'chop-plant-silver-birch',
+  'tree-birch': 'chop-plant-silver-birch',
+  'plant-pigeon-pea': 'chop-plant-pigeon-pea',
+  'tree-inga': 'chop-plant-tea-shade-trees',
+  'plant-inga': 'chop-plant-tea-shade-trees',
 };
 
 const ROLE_ANCHOR_MAP: Record<string, string> = {
@@ -132,6 +142,11 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
     ? summarizeIncompatibility(incompatibility, selectedTree.id).map(r => getLoc(r.message, language)).join(' · ')
     : '';
   const photoCredit = getImageCredit(plant.imageUrl);
+  const pioneer = getPioneerInfo(plant.id, plant.botanicalName, GUILD_PLANTS);
+  const pioneerTrialNames = pioneer
+    ? pioneer.info.trialStarIds.map(id => STAR_TREES.find(s => s.id === id)).filter(Boolean).map(s => getLoc(s!.commonName, language))
+    : [];
+  const pioneerTrialHere = Boolean(pioneer && selectedTree && pioneer.info.trialStarIds.includes(selectedTree.id));
 
   const handleNavigateToGuide = (path: string) => {
     if (onNavigate) {
@@ -450,6 +465,34 @@ export const PlantDetailModal: React.FC<PlantDetailModalProps> = ({
               <span>{tr.plantDetailsGuideSection}</span>
             </span>
           </div>
+
+          {pioneer && (
+            <div className="p-3 rounded-xl bg-white border border-lime-300 shadow-xs space-y-1.5">
+              <div className="flex items-center gap-1.5 flex-wrap font-bold text-lime-900 text-xs">
+                <Sprout className="w-3.5 h-3.5 text-lime-700" />
+                <span>{tr.pioneerSectionTitle}</span>
+                <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${pioneer.info.tier === 'NURSE_TRIAL' ? 'bg-emerald-100 text-emerald-800' : 'bg-lime-100 text-lime-800'}`}>
+                  {pioneer.info.tier === 'NURSE_TRIAL' ? tr.pioneerTierNurseTrial : tr.pioneerTierPioneer}
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-700 leading-snug">{getLoc(pioneer.info.evidence, language)}</p>
+              {pioneerTrialNames.length > 0 && (
+                <p className="text-[11px] text-stone-700"><span className="font-semibold">{tr.pioneerTrialHosts}</span> {pioneerTrialNames.join(', ')}</p>
+              )}
+              {selectedTree && !pioneerTrialHere && selectedTree.id !== plant.id && (
+                <p className="text-[11px] text-amber-800">{tr.pioneerNoTrialHere}</p>
+              )}
+              <p className="text-[11px] text-stone-700"><span className="font-semibold">{tr.pioneerManagementLabel}</span> {getLoc(pioneer.info.management, language)}</p>
+              <button
+                type="button"
+                onClick={() => handleNavigateToGuide(`/guides?tab=pioneers#pioneer-${pioneer.plantId.replace(/^plant-/, '')}`)}
+                className="px-2.5 py-1 rounded-lg bg-lime-700 hover:bg-lime-800 text-white font-bold text-[11px] inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>{tr.pioneerGuideBtn}</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          )}
 
           {isChopAndDrop && (
             <div className="p-3 rounded-xl bg-white border border-emerald-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">

@@ -72,6 +72,14 @@ export const CHOP_PLANT_ANCHORS: Record<string, string> = {
   'plant-tithonia': 'chop-plant-tithonia',
   'plant-gliricidia': 'chop-plant-gliricidia',
   'plant-common-vetch': 'chop-plant-common-vetch',
+  'plant-grey-alder': 'chop-tree-alder',
+  'plant-italian-alder': 'chop-tree-alder',
+  'plant-goat-willow': 'chop-plant-willow',
+  'plant-silver-birch': 'chop-plant-silver-birch',
+  'tree-birch': 'chop-plant-silver-birch',
+  'plant-pigeon-pea': 'chop-plant-pigeon-pea',
+  'tree-inga': 'chop-plant-tea-shade-trees',
+  'plant-inga': 'chop-plant-tea-shade-trees',
 };
 
 interface ChopInstruction {
@@ -398,6 +406,138 @@ export const DEDICATED_CHOP_INSTRUCTIONS: Record<string, ChopInstruction> = {
     sources: [
       SRC_ALDER_ATLAS,
       'Tobita, H., et al. (2015). Responses of symbiotic N2 fixation in Alnus species to the projected elevated CO2 environment. Trees, 30(2), 523–537. doi:10.1007/s00468-015-1297-x'
+    ]
+  },
+  'plant-grey-alder': {
+    howToCut: {
+      de: 'Im Spätwinter (Jan–Mär) alle 2–4 Jahre auf den Stock setzen oder belaubte Sommertriebe im Juli schneiden; Wurzelbrut innerhalb der Gilde abstechen.',
+      en: 'Coppice every 2–4 years in late winter (Jan–Mar) or cut leafy summer shoots in July; dig out root suckers inside the guild.'
+    },
+    howMuch: {
+      de: 'Alle Stangen 15–20 cm über dem Stock kappen, damit die Krone nie über die Star-Pflanze wächst.',
+      en: 'Cut all poles 15–20 cm above the stool so the crown never grows over the star plant.'
+    },
+    whereToSpread: {
+      de: 'Zweige zu Häcksel verarbeiten, Sommerlaub 5–10 cm dick in Zone 3 und 4 auslegen; 30 cm Abstand zum Stamm.',
+      en: 'Chip branches; lay summer leaves 5–10 cm deep in Zone 3 and 4, keeping 30 cm from the trunk.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffreiches Laub aus der Frankia-Symbiose; die Grau-Erle treibt nach dem Schnitt leicht wieder aus.',
+      en: 'Nitrogen-rich leaves from the Frankia symbiosis; grey alder resprouts easily after cutting.'
+    },
+    sources: [
+      'Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Alnus incana in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_incana.pdf',
+      'Hytönen, J., & Saarsalmi, A. (2015). Biomass production of coppiced grey alder and the effect of fertilization. Silva Fennica, 49(1), 1260. doi:10.14214/sf.1260'
+    ]
+  },
+  'plant-italian-alder': {
+    howToCut: {
+      de: 'Im Spätwinter (Jan–Mär) auf den Stock setzen oder köpfen, sobald die Krone die Star-Pflanze zu beschatten beginnt.',
+      en: 'Coppice or pollard in late winter (Jan–Mar) as soon as the crown starts to shade the star plant.'
+    },
+    howMuch: {
+      de: 'Stangen 15–20 cm über dem Stock oder auf einen Kopf in 1,8–2,0 m zurücknehmen.',
+      en: 'Cut poles back to 15–20 cm above the stool or to a pollard head at 1.8–2.0 m.'
+    },
+    whereToSpread: {
+      de: 'Zweige häckseln und mit dem Laub 5–10 cm dick in Zone 3 und 4 verteilen; 30 cm Abstand zum Stamm.',
+      en: 'Chip twigs and spread them with the leaves 5–10 cm deep in Zone 3 and 4, keeping 30 cm from the trunk.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffreiche Streu, die sich rasch zersetzt.',
+      en: 'Nitrogen-rich litter that decomposes quickly.'
+    },
+    sources: [
+      'Innangi, M., Danise, T., D\'Alessandro, F., Curcio, E., & Fioretto, A. (2017). Dynamics of organic matter in leaf litter and topsoil within an Italian alder (Alnus cordata) ecosystem. Forests, 8(7), 240. doi:10.3390/f8070240',
+      'Caudullo, G., & Mauri, A. (2016). Alnus cordata in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Alnus_cordata.pdf'
+    ]
+  },
+  'plant-goat-willow': {
+    howToCut: {
+      de: 'Nach der Kätzchenblüte nicht schneiden, sondern im nächsten Winter (Dez–Feb) alle 1–3 Jahre auf den Stock setzen oder köpfen, damit die Frühjahrsblüte für Bienen erhalten bleibt.',
+      en: 'Do not cut in spring; coppice or pollard every 1–3 years in winter (Dec–Feb) so the early catkins stay for the bees.'
+    },
+    howMuch: {
+      de: 'Ruten 30–50 cm über dem Boden oder auf Kopfhöhe zurücknehmen; höchstens die Hälfte der Ruten pro Jahr, damit jedes Frühjahr Kätzchen blühen.',
+      en: 'Cut rods back to 30–50 cm above ground or to a pollard head; take at most half the rods per year so catkins flower every spring.'
+    },
+    whereToSpread: {
+      de: 'Dünne Ruten häckseln und in Zone 3 und 4 verteilen; dicke Ruten nicht in der Nähe von Steinobst lagern (Bleiglanz-Sporen an Schnittholz).',
+      en: 'Chip thin rods and spread them in Zone 3 and 4; do not stack thick cut wood near stone fruit (silver leaf spores form on cut wood).'
+    },
+    nutrientBenefit: {
+      de: 'Kohlenstoffreicher Zweighäcksel; die Sal-Weide verträgt den Schnitt sehr gut.',
+      en: 'Carbon-rich ramial chips; goat willow tolerates cutting very well.'
+    },
+    sources: [
+      'Enescu, C. M., Houston Durrant, T., de Rigo, D., & Caudullo, G. (2016). Salix caprea in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Salix_caprea.pdf',
+      'Setliff, E. C. (2002). The wound pathogen Chondrostereum purpureum, its history and incidence on trees in North America. Australian Journal of Botany, 50(5), 645–651. doi:10.1071/BT01058'
+    ]
+  },
+  'plant-silver-birch': {
+    howToCut: {
+      de: 'Nicht als Niederwald nutzen (die Hänge-Birke treibt schlecht aus dem Stock aus): als vorübergehende Amme stehen lassen und im Winter auslichten oder nach etwa 5–10 Jahren fällen, sobald die Star-Pflanze selbst Schatten verträgt.',
+      en: 'Do not coppice (silver birch resprouts poorly): keep it as a temporary nurse, thin it in winter or fell it after about 5–10 years once the star plant no longer needs shelter.'
+    },
+    howMuch: {
+      de: 'Untere Äste bis etwa 2 m aufasten, damit Licht seitlich einfällt; beim Fällen den Stubben entfernen oder flach abdecken.',
+      en: 'Lift the crown to about 2 m so light reaches the side; when felling, remove the stump or cover it.'
+    },
+    whereToSpread: {
+      de: 'Feine Zweige und Laub in Zone 4 als Mulch; Stammholz aus der Nähe von Steinobst entfernen (Bleiglanz).',
+      en: 'Use fine twigs and leaves as mulch in Zone 4; remove trunk wood from the vicinity of stone fruit (silver leaf).'
+    },
+    nutrientBenefit: {
+      de: 'Mäßige Bodenwirkung: Birkenstreu ist saurer und ernährt weniger Regenwürmer als Lindenstreu.',
+      en: 'Moderate soil effect: birch litter is more acidic and feeds fewer earthworms than linden litter.'
+    },
+    sources: [
+      'Hytönen, J. (2019). Stump diameter and age affect coppicing of downy birch (Betula pubescens Ehrh.). European Journal of Forest Research, 138(2), 345–352. doi:10.1007/s10342-019-01175-5',
+      'Reich, P. B., et al. (2005). Linking litter calcium, earthworms and soil properties: a common garden test with 14 tree species. Ecology Letters, 8(8), 811–818. doi:10.1111/j.1461-0248.2005.00779.x',
+      'Martiník, A., Sendecký, M., & Urban, J. (2018). Survival and early growth of silver fir and pioneer species on two sites in nurse crop regeneration systems in the Czech Republic. Dendrobiology, 80, 81–90. doi:10.12657/denbio.080.008'
+    ]
+  },
+  'plant-pigeon-pea': {
+    howToCut: {
+      de: 'Am Ende der Saison (bzw. nach der Hülsenernte) auf etwa die Hälfte zurückschneiden; häufigen, starken Schnitt verträgt die Straucherbse nicht.',
+      en: 'At the end of the season (or after the pod harvest) cut back by about half; pigeon pea does not tolerate frequent, severe cutting.'
+    },
+    howMuch: {
+      de: 'Höchstens die Hälfte der Triebe pro Schnitt; nach 2–5 Jahren, wenn die Pflanze verholzt und schlecht nachtreibt, durch eine neue Aussaat ersetzen.',
+      en: 'Take at most half the shoots per cut; replace with a new sowing after 2–5 years, once the plant turns woody and regrows poorly.'
+    },
+    whereToSpread: {
+      de: 'Blätter und dünne Triebe in Zone 2 und 3 als Mulch auslegen, 30 cm Abstand zum Stamm.',
+      en: 'Lay leaves and thin shoots as mulch in Zone 2 and 3, keeping 30 cm from the trunk.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffreiche Gründüngung: Im Versuch in Uruguay im Mittel etwa 149 kg gebundener Stickstoff je Hektar in rund 120 Tagen.',
+      en: 'Nitrogen-rich green manure: about 149 kg of fixed nitrogen per hectare on average in about 120 days in the Uruguayan trial.'
+    },
+    sources: [
+      'Berriel, V., & Perdomo, C. H. (2023). Cajanus cajan: a promissory high-nitrogen fixing cover crop for Uruguay. Frontiers in Agronomy, 5, 1214811. doi:10.3389/fagro.2023.1214811',
+      'Cook, B. G., et al. (2020). Cajanus cajan. Tropical Forages: an interactive selection tool. CIAT and ILRI. https://tropicalforages.info/text/entities/cajanus_cajan.htm'
+    ]
+  },
+  'plant-inga': {
+    howToCut: {
+      de: 'In der Trockenzeit Seitenäste schneiteln; nie tiefer als etwa 0,75 m schneiden und einige Äste stehen lassen, sonst treibt der Baum schlecht wieder aus.',
+      en: 'Lop side branches in the dry season; never cut below about 0.75 m and leave a few branches uncut, otherwise regrowth is poor.'
+    },
+    howMuch: {
+      de: 'Krone auf lichten Filterschatten über dem Tee auslichten.',
+      en: 'Thin the crown to light, filtered shade over the tea.'
+    },
+    whereToSpread: {
+      de: 'Laub und Zweige zwischen den Teereihen (Zone 3 und 4) liegen lassen; die langsam verrottende Streu unterdrückt Unkraut.',
+      en: 'Leave leaves and twigs between the tea rows (Zone 3 and 4); the slowly decomposing litter suppresses weeds.'
+    },
+    nutrientBenefit: {
+      de: 'Stickstoffreiche, lignin- und polyphenolreiche Streu, die langfristig organischen Stickstoff aufbaut.',
+      en: 'Litter rich in nitrogen, lignins and polyphenols that builds up organic nitrogen over the long term.'
+    },
+    sources: [
+      'Orwa, C., Mutua, A., Kindt, R., Jamnadass, R., & Anthony, S. (2009). Agroforestree Database: a tree reference and selection guide version 4.0 – Inga edulis. World Agroforestry Centre, Kenya. https://apps.worldagroforestry.org/treedb/AFTPDFS/Inga_edulis.PDF'
     ]
   },
   'plant-linden': {

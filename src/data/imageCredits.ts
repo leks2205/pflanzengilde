@@ -122,6 +122,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ajuga_reptans_20070429_132711_1.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-caragana.webp": {
+    "title": "Caragana arborescens f002.jpg",
+    "author": "Ural-66",
+    "license": "CC0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caragana_arborescens_f002.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-catmint.webp": {
     "title": "Nepeta cataria RF.jpg",
     "author": "Robert Flogaus-Faust",
@@ -314,12 +322,28 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gliricidia_sepium_(Fabaceae)_01.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-goat-willow.webp": {
+    "title": "Salix caprea Male.jpg",
+    "author": "Didier Descouens",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Salix_caprea_Male.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-goumi.webp": {
     "title": "Elaeagnus multiflora2.jpg",
     "author": "KENPEI",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elaeagnus_multiflora2.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-grey-alder.webp": {
+    "title": "Grey alder (Alnus incana) 4227.jpg",
+    "author": "Chris Light",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Grey_alder_(Alnus_incana)_4227.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-hellebore.webp": {
@@ -376,6 +400,22 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brassica_juncea_var._juncea.JPG",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-inga.webp": {
+    "title": "Inga edulis 08.jpg",
+    "author": "Burkhard Mücke",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Inga_edulis_08.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-italian-alder.webp": {
+    "title": "Alnus cordata alder tree.jpg",
+    "author": "AnemoneProjectors (Flickr)",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alnus_cordata_alder_tree.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-ladys-mantle.webp": {
@@ -522,6 +562,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Phacelia_tanacetifolia_(KPFC)_01.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-pigeon-pea.webp": {
+    "title": "Cajanus caja 080716-1078 ayot.jpg",
+    "author": "Wibowo Djatmiko (Wie146)",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cajanus_caja_080716-1078_ayot.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-pot-marigold.webp": {
     "title": "Ringelblume (Calendula officinalis) Blüte focus stack-20220619-RM-165610.jpg",
     "author": "Ermell",
@@ -570,6 +618,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rosemary_in_bloom.JPG",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/plant-rowan.webp": {
+    "title": "Sorbus aucuparia fruit 8.JPG",
+    "author": "Andrikkos",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sorbus_aucuparia_fruit_8.JPG",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/plant-sage.webp": {
     "title": "Salvia officinalis in Cardaillac (1).jpg",
     "author": "Krzysztof Golik",
@@ -616,6 +672,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "Public domain",
     "licenseUrl": "",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Senna_tora_Blanco1.122-cropped.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-silver-birch.webp": {
+    "title": "Betula pendula in Sedovo 1.jpg",
+    "author": "Andrew Butko",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Betula_pendula_in_Sedovo_1.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-snowdrop.webp": {
@@ -696,6 +760,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:AcorusCalamus.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/plant-sweet-gale.webp": {
+    "title": "Myrica gale kz19.jpg",
+    "author": "Krzysztof Ziarnek, Kenraiz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Myrica_gale_kz19.jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/plant-sweet-potato.webp": {
@@ -890,6 +962,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Apricots.jpg",
     "sourceName": "Wikimedia Commons"
   },
+  "/images/plants/tree-birch.webp": {
+    "title": "Betula pendula 01.jpg",
+    "author": "Emőke Dénes",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Betula_pendula_01.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
   "/images/plants/tree-cherry.webp": {
     "title": "Cherries on a tree Germany 2020.jpg",
     "author": "NiTenIchiRyu",
@@ -928,6 +1008,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Corylus_avellana_(Betulaceae)_-_(fruit-bearing),_Elst_(Gld),_the_Netherlands.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/tree-inga.webp": {
+    "title": "Inga edulis, mature and juvenile Guama pods (10108341614).jpg",
+    "author": "Dick Culbert from Gibsons, B.C., Canada",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Inga_edulis,_mature_and_juvenile_Guama_pods_(10108341614).jpg",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/tree-linden.webp": {
@@ -984,6 +1072,14 @@ export const IMAGE_CREDITS: Record<string, ImageCredit> = {
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:2022-09-11_Birnenquitte.jpg",
+    "sourceName": "Wikimedia Commons"
+  },
+  "/images/plants/tree-rowan.webp": {
+    "title": "Sorbus aucuparia var. edulis - fruits and leaves.JPG",
+    "author": "Genet",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sorbus_aucuparia_var._edulis_-_fruits_and_leaves.JPG",
     "sourceName": "Wikimedia Commons"
   },
   "/images/plants/tree-seabuckthorn-star.webp": {

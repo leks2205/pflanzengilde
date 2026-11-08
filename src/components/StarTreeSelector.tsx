@@ -66,7 +66,7 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
       if (shadeFilter === 'FULL_SHADE' && tree.sunPreference !== 'FULL_SHADE') return false;
 
       if (categoryFilter === 'TREES') {
-        if (!['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE'].includes(tree.category)) return false;
+        if (!['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE', 'PIONEER_TREE'].includes(tree.category)) return false;
       } else if (categoryFilter === 'SHRUBS') {
         if (tree.category !== 'BERRY_SHRUB') return false;
       } else if (categoryFilter === 'VINES_HERBS') {

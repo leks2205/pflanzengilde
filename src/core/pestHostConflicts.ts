@@ -70,26 +70,27 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
     kind: 'INTERNAL',
     severity: 'WARNING',
     starTreeIds: PRUNUS_STARS,
-    hostPlantIds: ['plant-willow', 'plant-alder', 'plant-nepal-alder'],
-    hostStarIds: ['tree-alder'],
+    hostPlantIds: ['plant-willow', 'plant-alder', 'plant-nepal-alder', 'plant-grey-alder', 'plant-italian-alder', 'plant-goat-willow', 'plant-silver-birch', 'plant-rowan'],
+    hostStarIds: ['tree-alder', 'tree-rowan', 'tree-birch'],
     safeDistanceM: 10,
-    antagonistName: { de: 'Weide & Erle (Stockausschlag, Schnittholz)', en: 'Willow & Alder (coppice stumps, cut wood)' },
-    antagonistBotanical: 'Salix spp., Alnus spp.',
+    antagonistName: { de: 'Weide, Erle, Birke & Eberesche (Stockausschlag, Schnittholz)', en: 'Willow, Alder, Birch & Rowan (coppice stumps, cut wood)' },
+    antagonistBotanical: 'Salix spp., Alnus spp., Betula pendula, Sorbus aucuparia',
     title: {
       de: 'Wirtspflanzen der Bleiglanzkrankheit (Chondrostereum purpureum)',
       en: 'Hosts of Silver Leaf (Chondrostereum purpureum)'
     },
     mechanism: {
-      de: 'Der Bleiglanz-Pilz ist ein Wundparasit, der als Erreger der Bleiglanzkrankheit an Steinobst und anderen Rosengewächsen bekannt ist. In einer Auswertung von 561 Herbarbelegen aus Nordamerika gehörten Erlen (15 %) und Weiden (5 %) zu den häufigen Wirten; Sporen bilden sich an Fruchtkörpern auf Schnittholz und Stubben und infizieren frische Wunden.',
-      en: 'The silver leaf fungus is a wound pathogen best known for causing silver leaf of stone fruit and other Rosaceae. In a survey of 561 North American herbarium records, alder (15 %) and willow (5 %) were among its common hosts; spores come from fruiting bodies on cut wood and stumps and infect fresh wounds.'
+      de: 'Der Bleiglanz-Pilz ist ein Wundparasit, der als Erreger der Bleiglanzkrankheit an Steinobst und anderen Rosengewächsen bekannt ist. In einer Auswertung von 561 Herbarbelegen aus Nordamerika gehörten Erlen (15 %) und Weiden (5 %) zu den häufigen Wirten; Sporen bilden sich an Fruchtkörpern auf Schnittholz und Stubben und infizieren frische Wunden. Die EPPO-Wirtsliste nennt außerdem Hänge-Birke, Sal-Weide und Eberesche, die als Begleiter angebotenen Pionierbäume.',
+      en: 'The silver leaf fungus is a wound pathogen best known for causing silver leaf of stone fruit and other Rosaceae. In a survey of 561 North American herbarium records, alder (15 %) and willow (5 %) were among its common hosts; spores come from fruiting bodies on cut wood and stumps and infect fresh wounds. The EPPO host list also names silver birch, goat willow and rowan, the pioneer trees offered as companions.'
     },
     scientificCitations: [
       'Setliff, E. C. (2002). The wound pathogen Chondrostereum purpureum, its history and incidence on trees in North America. Australian Journal of Botany, 50(5), 645–651. doi:10.1071/BT01058',
-      'De Jong, M. T. (2000). The BioChon story: deployment of Chondrostereum purpureum to suppress stump sprouting in hardwoods. Mycologist, 14(2), 58–62. doi:10.1016/S0269-915X(00)80005-1'
+      'De Jong, M. T. (2000). The BioChon story: deployment of Chondrostereum purpureum to suppress stump sprouting in hardwoods. Mycologist, 14(2), 58–62. doi:10.1016/S0269-915X(00)80005-1',
+      'EPPO (2026). Chondrostereum purpureum (STERPU): host plants. EPPO Global Database. https://gd.eppo.int/taxon/STERPU/hosts'
     ],
     spatialAdvice: {
-      de: 'Weiden und Erlen, die regelmäßig auf den Stock gesetzt werden, nicht in die Gilde von Steinobst setzen und Schnittholz sowie Stubben entfernen. Die 10 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
-      en: 'Keep regularly coppiced willow and alder out of stone-fruit guilds and remove cut wood and stumps. The 10 m distance is a precautionary planning value, not a measured limit.'
+      de: 'Weiden, Erlen, Birken und Ebereschen, die regelmäßig auf den Stock gesetzt oder gefällt werden, nicht in die Gilde von Steinobst setzen und Schnittholz sowie Stubben entfernen. Die 10 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Keep regularly coppiced or felled willow, alder, birch and rowan out of stone-fruit guilds and remove cut wood and stumps. The 10 m distance is a precautionary planning value, not a measured limit.'
     }
   },
   {
@@ -181,6 +182,59 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
     }
   },
   {
+    id: 'internal-rowan-fire-blight',
+    kind: 'INTERNAL',
+    severity: 'WARNING',
+    starTreeIds: ['tree-apple', 'tree-pear', 'tree-quince'],
+    hostPlantIds: ['plant-rowan'],
+    hostStarIds: ['tree-rowan'],
+    safeDistanceM: 20,
+    antagonistName: { de: 'Eberesche / Vogelbeere', en: 'Rowan / Mountain Ash' },
+    antagonistBotanical: 'Sorbus aucuparia',
+    title: {
+      de: 'Wirtspflanze des Feuerbrands (Erwinia amylovora)',
+      en: 'Host of Fire Blight (Erwinia amylovora)'
+    },
+    mechanism: {
+      de: 'Die Eberesche steht auf der EPPO-Wirtsliste des Feuerbrands, und die EPPO nennt Weißdorn sowie Zierpflanzen wie Pyracantha, Cotoneaster und Sorbus wichtige Infektionsquellen für Apfel- und Birnbäume in Europa. Das Bakterium wird von blütenbesuchenden Insekten, Regen und Wind übertragen; eine Begleitpflanze, die es abwehrt, ist nicht bekannt.',
+      en: 'Rowan is on the EPPO host list of fire blight, and EPPO names hawthorn and ornamentals such as Pyracantha, Cotoneaster and Sorbus as important sources of inoculum for apple and pear trees in Europe. The bacterium is spread by flower-visiting insects, rain and wind; no companion plant is known to stop it.'
+    },
+    scientificCitations: [
+      'EPPO (2026). Erwinia amylovora (ERWIAM): datasheet and host plants. EPPO Global Database. https://gd.eppo.int/taxon/ERWIAM/datasheet',
+      'Räty, M., Caudullo, G., & de Rigo, D. (2016). Sorbus aucuparia in Europe: distribution, habitat, usage and threats. In San-Miguel-Ayanz, J., et al. (Eds.), European Atlas of Forest Tree Species. Publications Office of the EU, Luxembourg. https://forest.jrc.ec.europa.eu/media/atlas/Sorbus_aucuparia.pdf'
+    ],
+    spatialAdvice: {
+      de: 'Ebereschen nicht in die Gilde von Apfel, Birne oder Quitte setzen; bei Feuerbrand-Befall befallene Triebe weit ins gesunde Holz zurückschneiden. Die 20 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Keep rowan out of apple, pear and quince guilds; cut fire-blighted shoots back well into healthy wood. The 20 m distance is a precautionary planning value, not a measured limit.'
+    }
+  },
+  {
+    id: 'external-rowan-apple-fruit-moth',
+    kind: 'EXTERNAL',
+    severity: 'INFO',
+    starTreeIds: ['tree-apple'],
+    hostPlantIds: ['plant-rowan'],
+    hostStarIds: ['tree-rowan'],
+    safeDistanceM: 20,
+    antagonistName: { de: 'Eberesche (Ebereschenmotte)', en: 'Rowan (apple fruit moth)' },
+    antagonistBotanical: 'Sorbus aucuparia',
+    title: {
+      de: 'Ebereschenmotte (Argyresthia conjugella): Ausweichen auf Äpfel',
+      en: 'Apple Fruit Moth (Argyresthia conjugella): Moves to Apples'
+    },
+    mechanism: {
+      de: 'Die Ebereschenmotte ist ein Samenräuber der Eberesche. Eine 22-jährige Erhebung an 45 Orten in Südnorwegen zeigte, dass die Eberesche in ganz Skandinavien synchron Mastjahre und Fehljahre hat; in Fehljahren legt die Motte ihre Eier an Äpfel und wird dort zum Schädling. Ebereschen in der Nähe halten also die Mottenpopulation aufrecht.',
+      en: 'The apple fruit moth is a seed predator of rowan. A 22-year survey at 45 sites in southern Norway showed that rowan masts and fails in synchrony across Scandinavia; in poor rowan years the moth lays its eggs on apples and becomes a pest there. Rowans nearby therefore sustain the moth population.'
+    },
+    scientificCitations: [
+      'Kobro, S., Søreide, L., Djønne, E., Rafoss, T., Jaastad, G., & Witzgall, P. (2003). Masting of rowan Sorbus aucuparia L. and consequences for the apple fruit moth Argyresthia conjugella Zeller. Population Ecology, 45(1), 25–30. doi:10.1007/s10144-003-0136-x'
+    ],
+    spatialAdvice: {
+      de: 'Vor allem in kühlen, nördlichen Lagen Ebereschen nicht direkt neben Apfelbäume setzen und in Fehljahren der Eberesche die Äpfel kontrollieren. Die 20 m Abstand sind ein vorsorglicher Planungswert, keine gemessene Grenze.',
+      en: 'Especially in cool, northern regions, do not plant rowan right next to apple trees, and check apples in years when rowan sets little fruit. The 20 m distance is a precautionary planning value, not a measured limit.'
+    }
+  },
+  {
     id: 'external-lupine-chestnut-ink-disease',
     bedWall: 'REDUCED',
     kind: 'EXTERNAL',
@@ -214,11 +268,11 @@ export const PEST_HOST_CONFLICTS: PestHostConflictSpec[] = [
     kind: 'EXTERNAL',
     severity: 'INFO',
     starTreeIds: ['tree-tea-assamica'],
-    hostPlantIds: ['plant-nepal-alder', 'plant-albizia', 'plant-gliricidia'],
-    hostStarIds: [],
+    hostPlantIds: ['plant-nepal-alder', 'plant-albizia', 'plant-gliricidia', 'plant-inga'],
+    hostStarIds: ['tree-inga'],
     safeDistanceM: 3,
     antagonistName: { de: 'Dichter Schatten durch Schattenbäume', en: 'Dense shade from shade trees' },
-    antagonistBotanical: 'Alnus nepalensis, Albizia chinensis, Gliricidia sepium',
+    antagonistBotanical: 'Alnus nepalensis, Albizia chinensis, Gliricidia sepium, Inga edulis',
     title: {
       de: 'Teewanze (Helopeltis theivora): Schatten nicht zu dicht werden lassen',
       en: 'Tea Mosquito Bug (Helopeltis theivora): Keep the Shade Light'

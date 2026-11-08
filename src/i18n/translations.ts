@@ -103,6 +103,7 @@ export function translateStarCategory(category: StarPlantCategory | string, lang
     case 'FRUIT_TREE': return dict.catFruitTree;
     case 'NUT_TREE': return dict.catNutTree;
     case 'NITROGEN_FIXING_TREE': return dict.catNFixer;
+    case 'PIONEER_TREE': return dict.catPioneerTree;
     case 'BERRY_SHRUB': return dict.catBerryShrub;
     case 'VINE': return dict.catVine;
     case 'PERENNIAL_HERB': return dict.catPerennialHerb;

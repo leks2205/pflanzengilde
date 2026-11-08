@@ -156,7 +156,7 @@ function makeAngularNoise(seed: number): (theta: number) => number {
 
 // ── Evidence-based parameters ──────────────────────────────────────────────────────────────────────
 
-const TREE_CATEGORIES = new Set(['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE']);
+const TREE_CATEGORIES = new Set(['FRUIT_TREE', 'NUT_TREE', 'NITROGEN_FIXING_TREE', 'PIONEER_TREE']);
 
 /**
  * Bare zone around a trunk (m). Young trees (first ~5 years, Atucha et al. 2011): 0.9 m radius
