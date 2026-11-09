@@ -146,7 +146,7 @@ const SourceList: React.FC<{ language: Language; ns?: number[] }> = ({ language,
     {BED_GUIDE_SOURCES.filter(s => !ns || ns.includes(s.n)).map(s => (
       <li key={s.n} id={`bed-src-${s.n}`} className="scroll-mt-24">
         <span className="font-bold text-stone-700">[{s.n}]</span> {s.text}{' '}
-        {s.url && <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-forest-700 underline break-all">{language === 'de' ? 'Quelle' : 'source'}</a>}
+        {s.url && <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-forest-700 underline break-all">{language === 'de' ? 'Quelle' : language === 'nb' ? 'kilde' : 'source'}</a>}
       </li>
     ))}
   </ol>

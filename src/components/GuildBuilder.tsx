@@ -146,9 +146,10 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
       if (query !== '') {
         const matchesEn = plant.commonName.en.toLowerCase().includes(query);
         const matchesDe = plant.commonName.de.toLowerCase().includes(query);
+        const matchesNb = getLoc(plant.commonName, 'nb').toLowerCase().includes(query);
         const matchesBotanical = plant.botanicalName.toLowerCase().includes(query);
-        const matchesRole = plant.roles.some(r => r.toLowerCase().includes(query));
-        if (!matchesEn && !matchesDe && !matchesBotanical && !matchesRole) {
+        const matchesRole = plant.roles.some(r => r.toLowerCase().includes(query) || translateRole(r, language).toLowerCase().includes(query));
+        if (!matchesEn && !matchesDe && !matchesNb && !matchesBotanical && !matchesRole) {
           return false;
         }
       }
@@ -255,7 +256,7 @@ export const GuildBuilder: React.FC<GuildBuilderProps> = ({
       {activePestFilter && pestDefense && (() => {
         const defense = pestDefense;
         const mechanism = defense.scientificMechanism
-          ? (defense.scientificMechanism[language] || defense.scientificMechanism.en)
+          ? getLoc(defense.scientificMechanism, language)
           : null;
 
         // resolvePestDefense already drops star-incompatible plants; also drop pair conflicts

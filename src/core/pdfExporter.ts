@@ -12,7 +12,8 @@ import {
   StarTree,
   TreeAgeMode,
   ClimateZone,
-  getLoc
+  getLoc,
+  getLocList
 } from '../types/guild';
 import { autoPlaceGuildPlants, calculateSpatialMetrics } from './placementRules';
 import { calculateRoleCoverage, ALL_ROLES } from './roleCoverageEngine';
@@ -465,7 +466,7 @@ export function generateGuildPdf({
   doc.setFont('helvetica', 'bold');
   doc.text(tr.pdfPestsLabel, textLeftX, currentY + 24.4);
   doc.setFont('helvetica', 'normal');
-  const vulnText = starTree.vulnerabilities[language].slice(0, 2).join(', ');
+  const vulnText = getLocList(starTree.vulnerabilities, language).slice(0, 2).join(', ');
   const vulnLines = doc.splitTextToSize(vulnText, textWidth - 11);
   doc.text(vulnLines[0] || '', textLeftX + 11, currentY + 24.4);
 

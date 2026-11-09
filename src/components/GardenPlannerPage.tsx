@@ -357,7 +357,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
     setSelectedShapeId(copy.id);
     setSelectedTreeId(null);
     setSelectedTreeIds([]);
-    setToast({ type: 'success', message: language === 'de' ? 'Hochbeet eingefügt' : 'Raised bed pasted' });
+    setToast({ type: 'success', message: language === 'de' ? 'Hochbeet eingefügt' : language === 'nb' ? 'Høybed limt inn' : 'Raised bed pasted' });
     return copy;
   };
   const handleUpdateBedHeight = (id: string, heightM: number) => {
@@ -729,7 +729,7 @@ export const GardenPlannerPage: React.FC<GardenPlannerPageProps> = ({
         downloadFile(generateGardenSvg(drawing, scale), `${base}_1-${scale}.svg`, 'image/svg+xml;charset=utf-8');
       } else {
         const { generateGardenCsv } = await import('../core/gardenCsvExporter');
-        downloadFile(generateGardenCsv(drawing), `${base}_${language === 'de' ? 'pflanzenliste' : 'plant_list'}.csv`, 'text/csv;charset=utf-8');
+        downloadFile(generateGardenCsv(drawing), `${base}_${language === 'de' ? 'pflanzenliste' : language === 'nb' ? 'planteliste' : 'plant_list'}.csv`, 'text/csv;charset=utf-8');
       }
       setToast({ type: 'success', message: tr.cadExportSuccess.replace('{format}', format.toUpperCase()) });
     } catch (e) {

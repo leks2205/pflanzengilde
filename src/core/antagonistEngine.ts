@@ -7,6 +7,7 @@ import {
   StarTree,
   getLoc
 } from '../types/guild';
+import type { Language } from '../types/guild';
 import {
   autoPlaceGuildPlants,
   calculatePolarDistanceM,
@@ -210,7 +211,7 @@ export function analyzeGuildAntagonisms(
         id: 'internal-walnut-sensitive-companions',
         type: 'INTERNAL_PROXIMITY',
         severity: 'CRITICAL',
-        antagonistName: { de: `${starTree.commonName.de} (Zentraler Leitbaum)`, en: `${starTree.commonName.en} (Central Star Tree)` },
+        antagonistName: { de: `${starTree.commonName.de} (Zentraler Leitbaum)`, en: `${starTree.commonName.en} (Central Star Tree)`, nb: `${getLoc(starTree.commonName, 'nb')} (stjernetre i midten)` },
         antagonistBotanical: starTree.botanicalName,
         title: {
           de: 'Kritischer Juglon-Kontakt: Empfindliche Pflanzen im Walnuss-Wurzelraum',
@@ -224,7 +225,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: JUGLONE_ROOT_ZONE_M,
         spatialAdvice: {
           de: `Die markierten juglon-empfindlichen Pflanzen stehen höchstens ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'de')} m vom Stamm entfernt – die ganze Gilde liegt im Wurzelraum des Walnussbaums, der bei einem ausgewachsenen Baum im Mittel 15–18 m (bis etwa 24 m) weit reicht. Aus der Gilde entfernen und durch Arten ersetzen, die in Beobachtungslisten als juglon-tolerant geführt werden (z. B. Hyazinthe, Waldmeister, Günsel), oder vorsorglich mindestens ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'de')} m vom Stamm entfernt pflanzen.`,
-          en: `The highlighted juglone-sensitive plants sit at most ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'en')} m from the trunk – the whole guild lies inside the walnut root zone, which averages 15–18 m (up to about 24 m) around a mature tree. Remove them from this guild and replace them with species that observation lists rate as juglone-tolerant (e.g. hyacinth, sweet woodruff, bugleweed), or, as a precaution, plant them at least ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'en')} m from the trunk.`
+          en: `The highlighted juglone-sensitive plants sit at most ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'en')} m from the trunk – the whole guild lies inside the walnut root zone, which averages 15–18 m (up to about 24 m) around a mature tree. Remove them from this guild and replace them with species that observation lists rate as juglone-tolerant (e.g. hyacinth, sweet woodruff, bugleweed), or, as a precaution, plant them at least ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'en')} m from the trunk.`,
+          nb: `De markerte juglonfølsomme plantene står høyst ${formatNumber(Math.max(...sensitiveCompanions.map(p => p.distanceM)), 1, 'nb')} m fra stammen – hele lauget ligger i rotsonen til valnøtta, som i snitt strekker seg 15–18 m (opptil ca. 24 m) rundt et voksent tre. Fjern dem fra lauget og erstatt dem med arter som observasjonslister regner som juglontolerante (f.eks. hyasint, myske, krypjonsokkoll), eller plant dem for sikkerhets skyld minst ${formatNumber(JUGLONE_ROOT_ZONE_M, 0, 'nb')} m fra stammen.`,
         },
         affectedPlants: sensitiveCompanions
       });
@@ -234,8 +236,8 @@ export function analyzeGuildAntagonisms(
   // Guild contains juglone-sensitive plants: siting guidance for any walnut nearby
   if (!starTree.jugloneProducer && sensitivePlants.length > 0) {
     const maxDist = Math.max(...sensitivePlants.map(p => p.distanceM), starTree.matureRadiusM);
-    const sectorList = (lang: 'de' | 'en') =>
-      Array.from(new Set(sensitivePlants.map(p => p.cardinalDirection[lang].split(' (')[0]))).join(', ');
+    const sectorList = (lang: Language) =>
+      Array.from(new Set(sensitivePlants.map(p => getLoc(p.cardinalDirection, lang).split(' (')[0]))).join(', ');
 
     conflicts.push({
       id: 'external-walnut-spatial-planning',
@@ -255,7 +257,8 @@ export function analyzeGuildAntagonisms(
       safeDistanceM: JUGLONE_ROOT_ZONE_M,
       spatialAdvice: {
         de: `Vorsorglicher Mindestabstand für neue Walnuss-Pflanzungen: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'de')} m zur äußersten Grenze dieser Gilde (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'de')} m vom Stammzentrum) – das obere Ende der beobachteten mittleren Giftzone von 15–18 m (bei sehr großen Bäumen bis etwa 24 m). Empfindliche Pflanzen erstrecken sich in Richtung ${sectorList('de')} bis ${formatNumber(maxDist, 1, 'de')} m. Walnusslaub, -schalen und -häcksel nicht als Mulch in dieser Gilde verwenden.`,
-        en: `Precautionary minimum buffer for any new walnut planting: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'en')} m beyond the outer perimeter of this guild (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'en')} m from the central trunk) – the upper end of the observed average toxic zone of 15–18 m (up to about 24 m for very large trees). Sensitive species extend towards ${sectorList('en')} up to ${formatNumber(maxDist, 1, 'en')} m. Do not use walnut leaves, hulls or chips as mulch in this guild.`
+        en: `Precautionary minimum buffer for any new walnut planting: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'en')} m beyond the outer perimeter of this guild (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'en')} m from the central trunk) – the upper end of the observed average toxic zone of 15–18 m (up to about 24 m for very large trees). Sensitive species extend towards ${sectorList('en')} up to ${formatNumber(maxDist, 1, 'en')} m. Do not use walnut leaves, hulls or chips as mulch in this guild.`,
+        nb: `Føre-var-avstand for nye valnøttplantinger: ≥ ${formatNumber(JUGLONE_ROOT_ZONE_M, 1, 'nb')} m utenfor ytterkanten av dette lauget (${formatNumber(maxDist + JUGLONE_ROOT_ZONE_M, 1, 'nb')} m fra stammen i midten) – øvre del av den observerte giftige sonen på 15–18 m i snitt (opptil ca. 24 m for svært store trær). Følsomme arter strekker seg mot ${sectorList('nb')} opptil ${formatNumber(maxDist, 1, 'nb')} m. Ikke bruk valnøttblader, -skall eller -flis som mulch i dette lauget.`,
       },
       affectedPlants: sensitivePlants
     });
@@ -303,7 +306,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Aktueller Abstand beträgt nur ${formatNumber(minPairDist, 2, 'de')} m. Lauchgewächse und Leguminosen vorsorglich in unterschiedliche Sektoren setzen (z. B. Schnittlauch im Südbereich bei ${affectedPair[0].angleDeg}°, Leguminosen im Ostsektor), mit mindestens 1,8 m Abstand.`,
-          en: `Current measured distance is only ${formatNumber(minPairDist, 2, 'en')} m. As a precaution, place alliums and legumes in different sectors (e.g. chives in the southern sector at ${affectedPair[0].angleDeg}°, legumes in the eastern sector), at least 1.8 m apart.`
+          en: `Current measured distance is only ${formatNumber(minPairDist, 2, 'en')} m. As a precaution, place alliums and legumes in different sectors (e.g. chives in the southern sector at ${affectedPair[0].angleDeg}°, legumes in the eastern sector), at least 1.8 m apart.`,
+          nb: `Avstanden nå er bare ${formatNumber(minPairDist, 2, 'nb')} m. Plasser for sikkerhets skyld løkplanter og belgvekster i ulike sektorer (f.eks. gressløk i sørsektoren ved ${affectedPair[0].angleDeg}°, belgvekster i østsektoren), minst 1,8 m fra hverandre.`,
         },
         affectedPlants: affectedPair
       });
@@ -326,7 +330,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Erfolgreich gelöst: Gemessener Mindestabstand beträgt ${formatNumber(minPairDist, 2, 'de')} m (≥ 1,8 m Pufferzone). Allium (${getLoc(closestAllium.plant.commonName, 'de')}) steht bei ${closestAllium.angleDeg}°, Leguminose (${getLoc(closestLegume.plant.commonName, 'de')}) bei ${closestLegume.angleDeg}°.`,
-          en: `Successfully resolved: Measured distance is ${formatNumber(minPairDist, 2, 'en')} m (≥ 1.8 m buffer zone). Allium (${getLoc(closestAllium.plant.commonName, 'en')}) is sited at ${closestAllium.angleDeg}°, Legume (${getLoc(closestLegume.plant.commonName, 'en')}) at ${closestLegume.angleDeg}°.`
+          en: `Successfully resolved: Measured distance is ${formatNumber(minPairDist, 2, 'en')} m (≥ 1.8 m buffer zone). Allium (${getLoc(closestAllium.plant.commonName, 'en')}) is sited at ${closestAllium.angleDeg}°, Legume (${getLoc(closestLegume.plant.commonName, 'en')}) at ${closestLegume.angleDeg}°.`,
+          nb: `Løst: Målt minsteavstand er ${formatNumber(minPairDist, 2, 'nb')} m (≥ 1,8 m buffersone). Løkplanten (${getLoc(closestAllium.plant.commonName, 'nb')}) står ved ${closestAllium.angleDeg}°, belgveksten (${getLoc(closestLegume.plant.commonName, 'nb')}) ved ${closestLegume.angleDeg}°.`,
         },
         affectedPlants: affectedPair
       });
@@ -427,7 +432,8 @@ export function analyzeGuildAntagonisms(
       safeDistanceM: Number((starTree.matureRadiusM + 2.0).toFixed(1)),
       spatialAdvice: {
         de: `Vorsorglich keine Kartoffeln oder Tomaten innerhalb der Baumscheibe oder des Kronentraufbereichs (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'de')} m) anbauen; dieser Abstand ist ein Planungswert, keine gemessene Grenze.`,
-        en: `As a precaution, do not grow potatoes, tomatoes or eggplants within the tree basin or canopy drip line (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'en')} m); this distance is a planning value, not a measured limit.`
+        en: `As a precaution, do not grow potatoes, tomatoes or eggplants within the tree basin or canopy drip line (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'en')} m); this distance is a planning value, not a measured limit.`,
+        nb: `Ikke dyrk poteter, tomater eller auberginer innenfor treskålen eller dryppsonen (${formatNumber(starTree.matureRadiusM + 2.0, 1, 'nb')} m) for sikkerhets skyld; avstanden er en planleggingsverdi, ikke en målt grense.`,
       },
       affectedPlants: [starAt(starTree, 'Susceptible Vascular Host')]
     });
@@ -445,7 +451,8 @@ export function analyzeGuildAntagonisms(
         antagonistBotanical: `Allium spp. vs. ${starTree.botanicalName}`,
         title: {
           de: `Vorsorge-Abstand: Lauchgewächse am Stamm von ${starTree.commonName.de}`,
-          en: `Precautionary Spacing: Alliums at the Trunk of ${starTree.commonName.en}`
+          en: `Precautionary Spacing: Alliums at the Trunk of ${starTree.commonName.en}`,
+          nb: `Føre-var-avstand: løkplanter ved stammen til ${getLoc(starTree.commonName, 'nb')}`,
         },
         mechanism: {
           de: 'Im Gewächshaus verringerte Knoblauchextrakt im Boden die Knöllchenbildung von Leguminosen (Rhizobien-Symbiose). Eine Studie dazu, ob Lauchgewächse die Frankia-Knöllchen stickstoffbindender Bäume wie Erle oder Sanddorn beeinträchtigen, wurde nicht gefunden. Der Planer überträgt den Vorsorge-Abstand von 1,8 m daher auch auf diese Bäume.',
@@ -455,7 +462,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Lauchgewächse vorsorglich mindestens 1,8 m vom Stammzentrum von ${starTree.commonName.de} entfernt pflanzen (in die äußere Traufzone versetzen).`,
-          en: `As a precaution, keep alliums at least 1.8 m away from the trunk center of ${starTree.commonName.en} (place them in the outer drip zone).`
+          en: `As a precaution, keep alliums at least 1.8 m away from the trunk center of ${starTree.commonName.en} (place them in the outer drip zone).`,
+          nb: `Hold for sikkerhets skyld løkplanter minst 1,8 m fra stammen til ${getLoc(starTree.commonName, 'nb')} (plasser dem i den ytre dryppsonen).`,
         },
         affectedPlants: [
           starAt(starTree, 'Actinorhizal Nitrogen-Fixing Tree'),
@@ -468,21 +476,24 @@ export function analyzeGuildAntagonisms(
         id: 'resolved-allium-nfixing-tree-spacing',
         type: 'RESOLVED_HARMONY',
         severity: 'INFO',
-        antagonistName: { de: `Allium & ${starTree.commonName.de} (Optimal entzerrt)`, en: `Allium & ${starTree.commonName.en} (Optimally Separated)` },
+        antagonistName: { de: `Allium & ${starTree.commonName.de} (Optimal entzerrt)`, en: `Allium & ${starTree.commonName.en} (Optimally Separated)`, nb: `Løkplanter og ${getLoc(starTree.commonName, 'nb')} (optimalt adskilt)` },
         antagonistBotanical: `Allium spp. vs. ${starTree.botanicalName}`,
         title: {
           de: `Harmonisch entzerrt: Allium in sicherer Traufzone von ${starTree.commonName.de}`,
-          en: `Harmoniously Spaced: Allium Placed in Safe Drip Zone of ${starTree.commonName.en}`
+          en: `Harmoniously Spaced: Allium Placed in Safe Drip Zone of ${starTree.commonName.en}`,
+          nb: `Godt fordelt: løkplanter plassert i trygg dryppsone hos ${getLoc(starTree.commonName, 'nb')}`,
         },
         mechanism: {
           de: `Da ${starTree.commonName.de} mit Frankia-Knöllchen Luftstickstoff bindet, wurden Lauchgewächse (Allium) vorsorglich in die äußere Traufzone (≥ 1,8 m vom Stamm) verschoben. Eine Studie zur Hemmung von Frankia durch Lauch wurde nicht gefunden; der Abstand folgt einem Gewächshausbefund mit Knoblauchextrakt an Leguminosen.`,
-          en: `Because ${starTree.commonName.en} fixes atmospheric nitrogen with Frankia root nodules, alliums were moved to the outer drip zone (≥ 1.8 m from the trunk) as a precaution. No study on inhibition of Frankia by alliums was found; the spacing follows a greenhouse finding with garlic extract on legumes.`
+          en: `Because ${starTree.commonName.en} fixes atmospheric nitrogen with Frankia root nodules, alliums were moved to the outer drip zone (≥ 1.8 m from the trunk) as a precaution. No study on inhibition of Frankia by alliums was found; the spacing follows a greenhouse finding with garlic extract on legumes.`,
+          nb: `Fordi ${getLoc(starTree.commonName, 'nb')} fikserer nitrogen fra lufta med Frankia-rotknoller, ble løkplantene for sikkerhets skyld flyttet til den ytre dryppsonen (≥ 1,8 m fra stammen). Ingen studie av hemming av Frankia fra løkplanter ble funnet; avstanden følger et drivhusfunn med hvitløksekstrakt på belgvekster.`,
         },
         scientificCitations: [...ALLIUM_LEGUME_CITATIONS],
         safeDistanceM: 1.8,
         spatialAdvice: {
           de: `Erfolgreich gelöst: Gemessener Abstand zum Stammzentrum beträgt ${formatNumber(closestTreeAllium.distanceM, 2, 'de')} m (≥ 1,8 m Pufferzone).`,
-          en: `Successfully resolved: Measured distance from trunk center is ${formatNumber(closestTreeAllium.distanceM, 2, 'en')} m (≥ 1.8 m buffer zone).`
+          en: `Successfully resolved: Measured distance from trunk center is ${formatNumber(closestTreeAllium.distanceM, 2, 'en')} m (≥ 1.8 m buffer zone).`,
+          nb: `Løst: Målt avstand fra stammen er ${formatNumber(closestTreeAllium.distanceM, 2, 'nb')} m (≥ 1,8 m buffersone).`,
         },
         affectedPlants: [
           starAt(starTree, 'Actinorhizal Nitrogen-Fixing Tree'),
@@ -518,7 +529,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: 1.5,
         spatialAdvice: {
           de: `Fenchel steht aktuell nur ${formatNumber(minFennelDist, 2, 'de')} m von benachbarten Begleitern entfernt. Fenchel vorsorglich am äußeren Gildenrand platzieren, mit mindestens 1,5 m Abstand zu anderen Begleitpflanzen.`,
-          en: `Fennel is currently sited only ${formatNumber(minFennelDist, 2, 'en')} m from neighbouring companions. As a precaution, place fennel at the outer guild boundary, at least 1.5 m from other companion plants.`
+          en: `Fennel is currently sited only ${formatNumber(minFennelDist, 2, 'en')} m from neighbouring companions. As a precaution, place fennel at the outer guild boundary, at least 1.5 m from other companion plants.`,
+          nb: `Fennikel står nå bare ${formatNumber(minFennelDist, 2, 'nb')} m fra nabofølgeplanter. Plasser for sikkerhets skyld fennikel i ytterkanten av lauget, minst 1,5 m fra andre følgeplanter.`,
         },
         affectedPlants: [
           placedAt(fennel, 'Apiaceae Allelopath'),
@@ -563,7 +575,10 @@ export function analyzeGuildAntagonisms(
             : `Erfolgreich gelöst: Optimal platziert am Außenrand bei ${formatNumber(fennel.distanceM, 1, 'de')} m (${getLoc(getCardinalDirection(fennel.angleDeg), 'de')}) mit ≥ 1,5 m Abstand.`,
           en: closestFennelPeer
             ? `Successfully resolved: Measured minimum distance to nearest neighbor (${getLoc(closestFennelPeer.plant.commonName, 'en')}) is ${formatNumber(minFennelClearance, 2, 'en')} m (≥ 1.5 m buffer zone). Fennel is sited on the outer perimeter at ${formatNumber(fennel.distanceM, 1, 'en')} m (${fennel.angleDeg}°).`
-            : `Successfully resolved: Optimally sited on the outer perimeter at ${formatNumber(fennel.distanceM, 1, 'en')} m (${getLoc(getCardinalDirection(fennel.angleDeg), 'en')}) with ≥ 1.5 m clearance.`
+            : `Successfully resolved: Optimally sited on the outer perimeter at ${formatNumber(fennel.distanceM, 1, 'en')} m (${getLoc(getCardinalDirection(fennel.angleDeg), 'en')}) with ≥ 1.5 m clearance.`,
+            nb: closestFennelPeer
+            ? `Løst: Målt minsteavstand til nærmeste nabo (${getLoc(closestFennelPeer.plant.commonName, 'nb')}) er ${formatNumber(minFennelClearance, 2, 'nb')} m (≥ 1,5 m buffersone). Fennikel står i ytterkanten ved ${formatNumber(fennel.distanceM, 1, 'nb')} m (${fennel.angleDeg}°).`
+            : `Løst: Optimalt plassert i ytterkanten ved ${formatNumber(fennel.distanceM, 1, 'nb')} m (${getLoc(getCardinalDirection(fennel.angleDeg), 'nb')}) med ≥ 1,5 m avstand.`,
         },
         affectedPlants: fennelAffectedList
       });
@@ -596,7 +611,8 @@ export function analyzeGuildAntagonisms(
         safeDistanceM: 1.2,
         spatialAdvice: {
           de: `Wermut steht nur ${formatNumber(minWormwoodDist, 2, 'de')} m von krautigen Begleitern entfernt. Wermut als Solitär am Außenrand (Zone 4) platzieren, mit mindestens 1,2 m Abstand zu anderen Pflanzen – etwas mehr als die in Versuchen beobachtete Wirkzone von etwa 1 m.`,
-          en: `Wormwood is currently only ${formatNumber(minWormwoodDist, 2, 'en')} m from herbaceous companions. Place wormwood as an isolated boundary plant (Zone 4) at least 1.2 m from other plants – a little more than the effect zone of about 1 m observed in trials.`
+          en: `Wormwood is currently only ${formatNumber(minWormwoodDist, 2, 'en')} m from herbaceous companions. Place wormwood as an isolated boundary plant (Zone 4) at least 1.2 m from other plants – a little more than the effect zone of about 1 m observed in trials.`,
+          nb: `Malurt står nå bare ${formatNumber(minWormwoodDist, 2, 'nb')} m fra urteaktige følgeplanter. Plasser malurt som en isolert kantplante (sone 4) minst 1,2 m fra andre planter – litt mer enn virkningssonen på ca. 1 m som er observert i forsøk.`,
         },
         affectedPlants: [
           placedAt(wormwood, 'Asteraceae Allelopath (Absinthin)'),
@@ -641,7 +657,10 @@ export function analyzeGuildAntagonisms(
             : `Erfolgreich gelöst: Optimal platziert am Außenrand bei ${formatNumber(wormwood.distanceM, 1, 'de')} m (${getLoc(getCardinalDirection(wormwood.angleDeg), 'de')}) mit ≥ 1,2 m Abstand.`,
           en: closestWormwoodPeer
             ? `Successfully resolved: Measured minimum distance to nearest sensitive neighbor (${getLoc(closestWormwoodPeer.plant.commonName, 'en')}) is ${formatNumber(minWormwoodClearance, 2, 'en')} m (≥ 1.2 m buffer zone). Wormwood is sited on the outer perimeter at ${formatNumber(wormwood.distanceM, 1, 'en')} m (${wormwood.angleDeg}°).`
-            : `Successfully resolved: Optimally sited on the outer perimeter at ${formatNumber(wormwood.distanceM, 1, 'en')} m (${getLoc(getCardinalDirection(wormwood.angleDeg), 'en')}) with ≥ 1.2 m separation.`
+            : `Successfully resolved: Optimally sited on the outer perimeter at ${formatNumber(wormwood.distanceM, 1, 'en')} m (${getLoc(getCardinalDirection(wormwood.angleDeg), 'en')}) with ≥ 1.2 m separation.`,
+            nb: closestWormwoodPeer
+            ? `Løst: Målt minsteavstand til nærmeste følsomme nabo (${getLoc(closestWormwoodPeer.plant.commonName, 'nb')}) er ${formatNumber(minWormwoodClearance, 2, 'nb')} m (≥ 1,2 m buffersone). Malurt står i ytterkanten ved ${formatNumber(wormwood.distanceM, 1, 'nb')} m (${wormwood.angleDeg}°).`
+            : `Løst: Optimalt plassert i ytterkanten ved ${formatNumber(wormwood.distanceM, 1, 'nb')} m (${getLoc(getCardinalDirection(wormwood.angleDeg), 'nb')}) med ≥ 1,2 m avstand.`,
         },
         affectedPlants: wormwoodAffectedList
       });

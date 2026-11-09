@@ -297,7 +297,7 @@ export function buildGardenDrawing({ garden, groundCovers: screenCovers }: Build
   });
 
   return {
-    name: garden.name || (de ? 'Gartenplan' : 'Garden plan'),
+    name: garden.name || (de ? 'Gartenplan' : lang === 'nb' ? 'Hageplan' : 'Garden plan'),
     language: lang,
     createdAt: new Date().toISOString(),
     originGrid: { xM: originX, yM: originYSouth },
@@ -313,7 +313,9 @@ export interface DxfLayerNames {
   groundCovers: string; labels: string; dimensions: string; legend: string;
 }
 
-export function dxfLayerNames(lang: 'de' | 'en'): DxfLayerNames {
+export function dxfLayerNames(lang: Language): DxfLayerNames {
+  if (lang === 'nb') return { grid: 'PG-Rutenett', outline: 'PG-Tomt', beds: 'PG-Hoybed', trunks: 'PG-Traer-stamme', canopies: 'PG-Traer-krone',
+        plants: 'PG-Planter', groundCovers: 'PG-Bunndekke', labels: 'PG-Etiketter', dimensions: 'PG-Avstander', legend: 'PG-Tegnforklaring' };
   return lang === 'de'
     ? { grid: 'PG-Raster', outline: 'PG-Grundstueck', beds: 'PG-Hochbeete', trunks: 'PG-Baeume-Stamm', canopies: 'PG-Baeume-Krone',
         plants: 'PG-Pflanzen', groundCovers: 'PG-Bodendecker', labels: 'PG-Beschriftung', dimensions: 'PG-Abstaende', legend: 'PG-Legende' }

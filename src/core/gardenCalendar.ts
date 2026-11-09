@@ -73,7 +73,7 @@ export function buildGardenIcsContent(options: GardenCalendarExportOptions): str
       .replace('{radius}', String(tree.matureRadiusM))
       .replace('{origin}', origin);
 
-    const htmlDesc = `<!DOCTYPE html><html><body><h2>${plantingTitle}</h2><p>${tree.description[language]}</p><p><a href="${origin}/garten">Pflanzengilde.de Garten-Planer</a></p></body></html>`;
+    const htmlDesc = `<!DOCTYPE html><html><body><h2>${plantingTitle}</h2><p>${getLoc(tree.description, language)}</p><p><a href="${origin}/garten">Pflanzengilde.de Garten-Planer</a></p></body></html>`;
 
     events.push({
       uid: `${uidPrefix}-tree-${tree.id}-planting@pflanzengilde.de`,
@@ -150,10 +150,10 @@ export function buildGardenIcsContent(options: GardenCalendarExportOptions): str
         const guideAnchor = CHOP_PLANT_ANCHORS[plant.id] ? `${origin}/guides#${CHOP_PLANT_ANCHORS[plant.id]}` : `${origin}/guides`;
 
         const chopDesc = tr.calendarGardenChopDesc
-          .replace('{howToCut}', chopInfo.howToCut[language])
-          .replace('{howMuch}', chopInfo.howMuch[language])
-          .replace('{where}', chopInfo.whereToSpread[language])
-          .replace('{benefit}', chopInfo.nutrientBenefit[language])
+          .replace('{howToCut}', getLoc(chopInfo.howToCut, language))
+          .replace('{howMuch}', getLoc(chopInfo.howMuch, language))
+          .replace('{where}', getLoc(chopInfo.whereToSpread, language))
+          .replace('{benefit}', getLoc(chopInfo.nutrientBenefit, language))
           .replace('{guide}', guideAnchor);
 
         events.push({

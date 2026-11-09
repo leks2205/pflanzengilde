@@ -1,14 +1,15 @@
 import { GardenCompanionInstance, GardenInfrastructure, GardenSiteWarning, GardenStarPlantInstance } from '../types/garden';
-import { LocalizedString } from '../types/guild';
+import { LocalizedString, getLoc } from '../types/guild';
 import { BED_WARNINGS, getBedSuitability } from '../data/raisedBedSuitability';
 import { pointInShape } from './geometry2d';
 import { compartmentAt } from './compartments';
 import { formatNumber } from '../i18n/translations';
 
-const L = (de: string, en: string): LocalizedString => ({ de, en });
+const L = (de: string, en: string, nb?: string): LocalizedString => (nb === undefined ? { de, en } : { de, en, nb });
+const nbOf = (l: LocalizedString) => getLoc(l, 'nb');
 
 export function bedLabel(index: number): LocalizedString {
-  return L(`Hochbeet ${index + 1}`, `Raised bed ${index + 1}`);
+  return L(`Hochbeet ${index + 1}`, `Raised bed ${index + 1}`, `Høybed ${index + 1}`);
 }
 
 /**
@@ -28,7 +29,7 @@ export function analyzeGardenSite(
       if (!pointInShape(s.xM, s.yM, outline)) {
         out.push({
           id: `outside-${s.instanceId}`, kind: 'OUTSIDE_OUTLINE', severity: 'WARNING', instanceId: s.instanceId, plantId: s.treeId,
-          title: L(`${s.starTree.commonName.de} steht außerhalb des Gartens`, `${s.starTree.commonName.en} is outside the garden`),
+          title: L(`${s.starTree.commonName.de} steht außerhalb des Gartens`, `${s.starTree.commonName.en} is outside the garden`, `${nbOf(s.starTree.commonName)} står utenfor hagen`),
           description: L('Der Stamm liegt außerhalb des gezeichneten Gartenumrisses. Pflanze verschieben oder den Umriss anpassen.', 'The trunk lies outside the drawn garden outline. Move the plant or adjust the outline.'),
         });
       }
@@ -39,7 +40,7 @@ export function analyzeGardenSite(
       seen.add(c.plantId);
       out.push({
         id: `outside-${c.instanceId}`, kind: 'OUTSIDE_OUTLINE', severity: 'INFO', instanceId: c.instanceId, plantId: c.plantId,
-        title: L(`${c.plant.commonName.de} liegt außerhalb des Gartens`, `${c.plant.commonName.en} lies outside the garden`),
+        title: L(`${c.plant.commonName.de} liegt außerhalb des Gartens`, `${c.plant.commonName.en} lies outside the garden`, `${nbOf(c.plant.commonName)} ligger utenfor hagen`),
         description: L('Diese Begleitpflanze wurde außerhalb des Gartenumrisses platziert; die Gilde braucht dort mehr Platz.', 'This companion was placed outside the garden outline; the guild needs more room there.'),
       });
     }
@@ -61,15 +62,15 @@ export function analyzeGardenSite(
     const suit = getBedSuitability(it.id);
     if (!suit) continue;
     const bed = beds[bedIndex.get(comp)!];
-    const label = bed.name ? L(bed.name, bed.name) : bedLabel(bedIndex.get(comp)!);
+    const label = bed.name ? L(bed.name, bed.name, bed.name) : bedLabel(bedIndex.get(comp)!);
     const texts = suit.warnings.map(w => BED_WARNINGS[w]);
     const sources = [...new Set(texts.flatMap(t => t.sources))];
     if (suit.rating !== 'S' && texts.length > 0) {
       const kind = suit.rating === 'U' ? 'BED_UNSUITABLE' : suit.rating === 'C_REC' ? 'BED_RECOMMENDED' : 'BED_CONDITIONAL';
       out.push({
         id: `bed-${comp}-${it.id}`, kind, severity: suit.rating === 'U' ? 'WARNING' : 'INFO', instanceId: it.key, plantId: it.id, bedId: comp,
-        title: L(`${it.name.de} in ${label.de}: ${texts[0].title.de}`, `${it.name.en} in ${label.en}: ${texts[0].title.en}`),
-        description: L(texts.map(t => t.text.de).join(' '), texts.map(t => t.text.en).join(' ')),
+        title: L(`${it.name.de} in ${label.de}: ${texts[0].title.de}`, `${it.name.en} in ${label.en}: ${texts[0].title.en}`, `${nbOf(it.name)} i ${nbOf(label)}: ${nbOf(texts[0].title)}`),
+        description: L(texts.map(t => t.text.de).join(' '), texts.map(t => t.text.en).join(' '), texts.map(t => nbOf(t.text)).join(' ')),
         sources, guideHash: `bed-${suit.warnings[0].toLowerCase()}`,
       });
     }
@@ -77,10 +78,11 @@ export function analyzeGardenSite(
     if (need > 0 && bed.heightM + 1e-9 < need) {
       out.push({
         id: `bedlow-${comp}-${it.id}`, kind: 'BED_TOO_LOW', severity: 'WARNING', instanceId: it.key, plantId: it.id, bedId: comp,
-        title: L(`${label.de} ist zu niedrig für ${it.name.de}`, `${label.en} is too low for ${it.name.en}`),
+        title: L(`${label.de} ist zu niedrig für ${it.name.de}`, `${label.en} is too low for ${it.name.en}`, `${nbOf(label)} er for lavt for ${nbOf(it.name)}`),
         description: L(
           `Das Beet ist ${formatNumber(bed.heightM * 100, 0, 'de')} cm hoch; ${it.name.de} braucht mindestens ${formatNumber(need * 100, 0, 'de')} cm Erde.`,
-          `The bed is ${formatNumber(bed.heightM * 100, 0, 'en')} cm high; ${it.name.en} needs at least ${formatNumber(need * 100, 0, 'en')} cm of soil.`
+          `The bed is ${formatNumber(bed.heightM * 100, 0, 'en')} cm high; ${it.name.en} needs at least ${formatNumber(need * 100, 0, 'en')} cm of soil.`,
+          `Bedet er ${formatNumber(bed.heightM * 100, 0, 'nb')} cm høyt; ${nbOf(it.name)} trenger minst ${formatNumber(need * 100, 0, 'nb')} cm jord.`
         ),
         sources, guideHash: 'bed-dimensions',
       });

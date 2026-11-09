@@ -124,7 +124,10 @@ export function suggestAlternativeRolePlants(
         : `Nischendifferenzierte Schicht (${candidate.layer === 'BULB_ROOT' ? 'Wurzel-/Zwiebelschicht' : 'Bodendecker'}) zur Entlastung des Kronenraums.`,
       en: isMoreCompact
         ? `${formatNumber(spreadDiff, 1, 'en')} m more compact (${spreadReductionPercent}% space saved) while fulfilling ${sharedRoles.length} core role(s).`
-        : `Vertically stratified layer (${candidate.layer === 'BULB_ROOT' ? 'Bulb/Root' : 'Ground Cover'}) alleviating canopy competition.`
+        : `Vertically stratified layer (${candidate.layer === 'BULB_ROOT' ? 'Bulb/Root' : 'Ground Cover'}) alleviating canopy competition.`,
+      nb: isMoreCompact
+        ? `${formatNumber(spreadDiff, 1, 'nb')} m mer kompakt (${spreadReductionPercent} % mindre plass) og dekker ${sharedRoles.length} kjernerolle(r).`
+        : `Eget sjikt i høyden (${candidate.layer === 'BULB_ROOT' ? 'løk/rot' : 'bunndekke'}) som avlaster kronesjiktet.`
     };
 
     candidates.push({

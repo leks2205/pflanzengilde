@@ -14,7 +14,7 @@ Pick a tree, add companions by what they do, and get a metric planting plan that
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
-![Languages](https://img.shields.io/badge/i18n-DE%20%7C%20EN-16a34a)
+![Languages](https://img.shields.io/badge/i18n-DE%20%7C%20EN%20%7C%20NB-16a34a)
 ![Tracking](https://img.shields.io/badge/cookies%20%26%20tracking-none-16a34a)
 
 </div>
@@ -37,7 +37,7 @@ Pick a tree, add companions by what they do, and get a metric planting plan that
 
 A plant guild is a group of plants arranged around a central tree, where each plant has a job: fixing nitrogen, drawing up nutrients, attracting pollinators, repelling pests, or suppressing grass. Advice on guilds is spread across scientific papers, forums, and videos, and a lot of it contradicts itself.
 
-Pflanzengilde puts that knowledge in one place. Each companion recommendation comes with an evidence tier and sources, so you can see whether a claim rests on field trials or on folklore. The app runs entirely in the browser, works in German and English, and uses metric units throughout.
+Pflanzengilde puts that knowledge in one place. Each companion recommendation comes with an evidence tier and sources, so you can see whether a claim rests on field trials or on folklore. The app runs entirely in the browser, works in German, English and Norwegian (Bokmål), and uses metric units throughout.
 
 ## Features
 
@@ -124,7 +124,7 @@ Files that depend on who runs the site are not part of the repository and are gi
     │   ├── pdfExporter.ts           # Client-side PDF generation
     │   └── calendarExporter.ts      # iCalendar (.ics) export
     ├── data/              # Star trees, companion plants, climate regions
-    ├── i18n/              # German and English dictionaries (kept key-symmetric)
+    ├── i18n/              # German and English dictionaries (kept key-symmetric), Norwegian (nb/, nb-data/)
     └── types/             # Shared TypeScript types
 ```
 
@@ -135,7 +135,7 @@ Plant data lives in plain TypeScript modules ([`src/data/starTrees.ts`](src/data
 A few rules hold across the codebase:
 
 - **Metric only.** All distances, heights, and radii are in metres and centimetres.
-- **Bilingual parity.** Every user-facing string exists in both [`de.ts`](src/i18n/de.ts) and [`en.ts`](src/i18n/en.ts). Data fields use `{ de, en }` objects.
+- **Bilingual parity.** Every user-facing string exists in both [`de.ts`](src/i18n/de.ts) and [`en.ts`](src/i18n/en.ts). Data fields use `{ de, en }` objects. Norwegian (Bokmål) lives in [`nb/`](src/i18n/nb/) for the UI and in [`nb-data/`](src/i18n/nb-data/) for data texts, keyed by a hash of the English text; anything missing falls back to English. `npx tsx scripts/extract_localized.ts` lists data texts that still lack a Norwegian translation.
 - **Claims need sources.** Companion effects and pest defenses carry an evidence tier and citations. Weakly supported claims are labelled as such rather than dropped silently.
 
 ## Privacy by design

@@ -1,8 +1,13 @@
-export type Language = 'en' | 'de';
+import { NB_DATA } from '../i18n/nb-data';
+import { locKey } from '../i18n/locKey';
+
+export type Language = 'en' | 'de' | 'nb';
 
 export interface LocalizedString {
   en: string;
   de: string;
+  /** Norwegian; usually supplied by the overlay in src/i18n/nb-data instead. */
+  nb?: string;
 }
 
 export type GuildRole = 
@@ -189,5 +194,12 @@ export type TreeAgeMode = 'YOUNG' | 'ESTABLISHED';
 
 export function getLoc(val: LocalizedString | string, lang: Language): string {
   if (typeof val === 'string') return val;
+  if (lang === 'nb') return val.nb ?? NB_DATA[locKey(val.en)] ?? val.en;
+  return val[lang] || val.en;
+}
+
+/** Localized string list (e.g. vulnerabilities); Norwegian is looked up per item. */
+export function getLocList(val: { en: string[]; de: string[] }, lang: Language): string[] {
+  if (lang === 'nb') return val.en.map(s => NB_DATA[locKey(s)] ?? s);
   return val[lang] || val.en;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ClimateZone, Language, SoilType, StarTree, getLoc } from '../types/guild';
+import { ClimateZone, Language, SoilType, StarTree, getLoc, getLocList } from '../types/guild';
 import { STAR_TREES } from '../data/starTrees';
 import { AlertTriangle, TreePine, Sun, CloudSun, Cloud, Droplet, Bug, Mountain, Filter, Sparkles, Calendar, Scissors, Globe, ShieldCheck } from 'lucide-react';
 import { t, formatNumber, translateSeason, translateSun, translateRootHabit, translateStarCategory, translateClimateZone } from '../i18n/translations';
@@ -371,7 +371,7 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
                           className="text-[9px] sm:text-[10px] font-bold px-1 sm:px-1.5 py-0.5 rounded bg-amber-100 text-amber-800"
                           title={tr.starSelectorProducesJuglone}
                         >
-                          Juglone
+                          {language === 'en' ? 'Juglone' : 'Juglon'}
                         </span>
                       )}
 
@@ -492,7 +492,7 @@ export const StarTreeSelector: React.FC<StarTreeSelectorProps> = ({
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {(selectedTree.vulnerabilities[language] || selectedTree.vulnerabilities.en).map((pest, pIdx) => {
+              {getLocList(selectedTree.vulnerabilities, language).map((pest, pIdx) => {
                 const defense = resolvePestDefense(pest, selectedTree.id, selectedZone);
                 if (defense.combatable && defense.evidence) {
                   return (

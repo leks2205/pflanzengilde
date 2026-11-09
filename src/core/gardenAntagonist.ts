@@ -23,6 +23,10 @@ import {
 } from './antagonistEngine';
 import { en } from '../i18n/en';
 import { de } from '../i18n/de';
+import { t } from '../i18n/translations';
+import { getLoc } from '../types/guild';
+
+const nb = t('nb');
 import { formatNumber } from '../i18n/translations';
 
 type AntagonistMsgKey = keyof typeof en & keyof typeof de;
@@ -36,9 +40,10 @@ function fillMsg(template: string, vars: Record<string, string>): string {
 function locMsg(
   key: AntagonistMsgKey,
   deVars: Record<string, string>,
-  enVars: Record<string, string>
-): { de: string; en: string } {
-  return { de: fillMsg(de[key], deVars), en: fillMsg(en[key], enVars) };
+  enVars: Record<string, string>,
+  nbVars: Record<string, string> = enVars
+): { de: string; en: string; nb: string } {
+  return { de: fillMsg(de[key], deVars), en: fillMsg(en[key], enVars), nb: fillMsg(nb[key], nbVars) };
 }
 
 /** The garden juglone texts cite both the mechanism (respiration) and the root-zone distance. */
@@ -70,12 +75,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistJugloneTreeTitle',
             { name: otherTree.starTree.commonName.de },
-            { name: otherTree.starTree.commonName.en }
+            { name: otherTree.starTree.commonName.en },
+            { name: getLoc(otherTree.starTree.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistJugloneTreeDesc',
             { botanical: otherTree.starTree.botanicalName, dist: formatNumber(dist, 1, 'de') },
-            { botanical: otherTree.starTree.botanicalName, dist: formatNumber(dist, 1, 'en') }
+            { botanical: otherTree.starTree.botanicalName, dist: formatNumber(dist, 1, 'en') },
+            { botanical: otherTree.starTree.botanicalName, dist: formatNumber(dist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: JUGLONE_ROOT_ZONE_M,
@@ -97,12 +104,14 @@ export function analyzeGardenAntagonisms(
             title: locMsg(
               'gardenAntagonistJugloneCompTitle',
               { name: comp.plant.commonName.de },
-              { name: comp.plant.commonName.en }
+              { name: comp.plant.commonName.en },
+            { name: getLoc(comp.plant.commonName, 'nb') }
             ),
             description: locMsg(
               'gardenAntagonistJugloneCompDesc',
               { name: comp.plant.commonName.de, botanical: comp.plant.botanicalName, dist: formatNumber(dist, 1, 'de') },
-              { name: comp.plant.commonName.en, botanical: comp.plant.botanicalName, dist: formatNumber(dist, 1, 'en') }
+              { name: comp.plant.commonName.en, botanical: comp.plant.botanicalName, dist: formatNumber(dist, 1, 'en') },
+            { name: getLoc(comp.plant.commonName, 'nb'), botanical: comp.plant.botanicalName, dist: formatNumber(dist, 1, 'nb') }
             ),
             distanceM: Number(dist.toFixed(1)),
             requiredDistanceM: JUGLONE_ROOT_ZONE_M,
@@ -131,12 +140,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistAlliumLegumeTitle',
             { allium: allium.plant.commonName.de, legume: legume.plant.commonName.de },
-            { allium: allium.plant.commonName.en, legume: legume.plant.commonName.en }
+            { allium: allium.plant.commonName.en, legume: legume.plant.commonName.en },
+            { allium: getLoc(allium.plant.commonName, 'nb'), legume: getLoc(legume.plant.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistAlliumLegumeDesc',
             { dist: formatNumber(dist, 1, 'de') },
-            { dist: formatNumber(dist, 1, 'en') }
+            { dist: formatNumber(dist, 1, 'en') },
+            { dist: formatNumber(dist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.8,
@@ -157,12 +168,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistAlliumTreeTitle',
             { allium: allium.plant.commonName.de, tree: nTree.starTree.commonName.de },
-            { allium: allium.plant.commonName.en, tree: nTree.starTree.commonName.en }
+            { allium: allium.plant.commonName.en, tree: nTree.starTree.commonName.en },
+            { allium: getLoc(allium.plant.commonName, 'nb'), tree: getLoc(nTree.starTree.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistAlliumTreeDesc',
             { allium: allium.plant.commonName.de, tree: nTree.starTree.commonName.de, dist: formatNumber(dist, 1, 'de') },
-            { allium: allium.plant.commonName.en, tree: nTree.starTree.commonName.en, dist: formatNumber(dist, 1, 'en') }
+            { allium: allium.plant.commonName.en, tree: nTree.starTree.commonName.en, dist: formatNumber(dist, 1, 'en') },
+            { allium: getLoc(allium.plant.commonName, 'nb'), tree: getLoc(nTree.starTree.commonName, 'nb'), dist: formatNumber(dist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.8,
@@ -189,12 +202,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistFennelTitle',
             { fennel: fennel.plant.commonName.de, other: other.plant.commonName.de },
-            { fennel: fennel.plant.commonName.en, other: other.plant.commonName.en }
+            { fennel: fennel.plant.commonName.en, other: other.plant.commonName.en },
+            { fennel: getLoc(fennel.plant.commonName, 'nb'), other: getLoc(other.plant.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistFennelDesc',
             { other: other.plant.commonName.de, dist: formatNumber(dist, 1, 'de') },
-            { other: other.plant.commonName.en, dist: formatNumber(dist, 1, 'en') }
+            { other: other.plant.commonName.en, dist: formatNumber(dist, 1, 'en') },
+            { other: getLoc(other.plant.commonName, 'nb'), dist: formatNumber(dist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.5,
@@ -222,12 +237,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistWormwoodTitle',
             { wormwood: wormwood.plant.commonName.de, other: other.plant.commonName.de },
-            { wormwood: wormwood.plant.commonName.en, other: other.plant.commonName.en }
+            { wormwood: wormwood.plant.commonName.en, other: other.plant.commonName.en },
+            { wormwood: getLoc(wormwood.plant.commonName, 'nb'), other: getLoc(other.plant.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistWormwoodDesc',
             { other: other.plant.commonName.de, dist: formatNumber(dist, 1, 'de') },
-            { other: other.plant.commonName.en, dist: formatNumber(dist, 1, 'en') }
+            { other: other.plant.commonName.en, dist: formatNumber(dist, 1, 'en') },
+            { other: getLoc(other.plant.commonName, 'nb'), dist: formatNumber(dist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 1.2,
@@ -269,12 +286,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistSoilPhTitle',
             { acid: acid.name.de, calc: calc.name.de },
-            { acid: acid.name.en, calc: calc.name.en }
+            { acid: acid.name.en, calc: calc.name.en },
+            { acid: getLoc(acid.name, 'nb'), calc: getLoc(calc.name, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistSoilPhDesc',
             { dist: formatNumber(dist, 1, 'de'), acid: acid.name.de, calc: calc.name.de },
-            { dist: formatNumber(dist, 1, 'en'), acid: acid.name.en, calc: calc.name.en }
+            { dist: formatNumber(dist, 1, 'en'), acid: acid.name.en, calc: calc.name.en },
+            { dist: formatNumber(dist, 1, 'nb'), acid: getLoc(acid.name, 'nb'), calc: getLoc(calc.name, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: 2.5,
@@ -306,12 +325,14 @@ export function analyzeGardenAntagonisms(
           type: 'PEST_HOST',
           title: {
             de: `${spec.title.de}: ${host.name.de} ↔ ${star.starTree.commonName.de}`,
-            en: `${spec.title.en}: ${host.name.en} ↔ ${star.starTree.commonName.en}`
+            en: `${spec.title.en}: ${host.name.en} ↔ ${star.starTree.commonName.en}`,
+            nb: `${getLoc(spec.title, 'nb')}: ${getLoc(host.name, 'nb')} ↔ ${getLoc(star.starTree.commonName, 'nb')}`
           },
           description: locMsg(
             'gardenAntagonistPestHostDesc',
             { mechanism: spec.mechanism.de, dist: formatNumber(dist, 1, 'de'), safe: String(spec.safeDistanceM) },
-            { mechanism: spec.mechanism.en, dist: formatNumber(dist, 1, 'en'), safe: String(spec.safeDistanceM) }
+            { mechanism: spec.mechanism.en, dist: formatNumber(dist, 1, 'en'), safe: String(spec.safeDistanceM) },
+            { mechanism: getLoc(spec.mechanism, 'nb'), dist: formatNumber(dist, 1, 'nb'), safe: String(spec.safeDistanceM) }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: spec.safeDistanceM,
@@ -339,12 +360,14 @@ export function analyzeGardenAntagonisms(
           title: locMsg(
             'gardenAntagonistTrunkTitle',
             { a: t1.starTree.commonName.de, b: t2.starTree.commonName.de },
-            { a: t1.starTree.commonName.en, b: t2.starTree.commonName.en }
+            { a: t1.starTree.commonName.en, b: t2.starTree.commonName.en },
+            { a: getLoc(t1.starTree.commonName, 'nb'), b: getLoc(t2.starTree.commonName, 'nb') }
           ),
           description: locMsg(
             'gardenAntagonistTrunkDesc',
             { dist: formatNumber(dist, 1, 'de'), min: formatNumber(minTrunkDist, 1, 'de') },
-            { dist: formatNumber(dist, 1, 'en'), min: formatNumber(minTrunkDist, 1, 'en') }
+            { dist: formatNumber(dist, 1, 'en'), min: formatNumber(minTrunkDist, 1, 'en') },
+            { dist: formatNumber(dist, 1, 'nb'), min: formatNumber(minTrunkDist, 1, 'nb') }
           ),
           distanceM: Number(dist.toFixed(1)),
           requiredDistanceM: Number(minTrunkDist.toFixed(1)),
@@ -432,8 +455,8 @@ function applyBedWalls(
           bedEffect: c.distanceM < canopyR ? 'BED_LEAF_LITTER' : 'REDUCED_BY_BED',
           guideHash: 'bed-juglone',
           description: c.distanceM < canopyR
-            ? locMsg('gardenBedJugloneLitter', { name: c.plantB.name.de }, { name: c.plantB.name.en })
-            : locMsg('gardenBedJugloneReduced', { name: c.plantB.name.de }, { name: c.plantB.name.en }),
+            ? locMsg('gardenBedJugloneLitter', { name: c.plantB.name.de }, { name: c.plantB.name.en }, { name: getLoc(c.plantB.name, 'nb') })
+            : locMsg('gardenBedJugloneReduced', { name: c.plantB.name.de }, { name: c.plantB.name.en }, { name: getLoc(c.plantB.name, 'nb') }),
         });
         break;
       }
@@ -457,6 +480,7 @@ function applyBedWalls(
             description: {
               de: `${c.description.de} ${de.gardenBedReducedNote}`,
               en: `${c.description.en} ${en.gardenBedReducedNote}`,
+              nb: `${getLoc(c.description, 'nb')} ${nb.gardenBedReducedNote}`,
             },
           });
         }

@@ -285,8 +285,10 @@ export function parseGuildUrl(searchString: string, pathname: string = '/'): Par
 
   const langRaw = params.get('lang')?.toLowerCase();
   let language: Language | null = null;
-  if (langRaw === 'de' || langRaw === 'en') {
+  if (langRaw === 'de' || langRaw === 'en' || langRaw === 'nb') {
     language = langRaw as Language;
+  } else if (langRaw === 'no' || langRaw === 'nn') {
+    language = 'nb';
   }
 
   const hasGuildParams = Boolean(treeId || plantIds.length > 0);

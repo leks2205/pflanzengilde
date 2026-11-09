@@ -11,10 +11,13 @@ import {
 } from '../types/guild';
 import { en } from './en';
 import { de } from './de';
+import { nb } from './nb';
 
-const TRANSLATIONS = {
+const TRANSLATIONS: Record<Language, typeof en> = {
   en,
-  de
+  de,
+  // Keys not yet translated fall back to English
+  nb: { ...en, ...nb },
 };
 
 export function t(lang: Language): typeof en {
@@ -143,8 +146,8 @@ export function translateClimateZone(zone: ClimateZone | string, lang: Language)
   }
 }
 
-/** Fixed-decimal number in the language's convention: comma for German, dot for English. */
+/** Fixed-decimal number in the language's convention: comma for German and Norwegian, dot for English. */
 export function formatNumber(value: number, digits: number, lang: Language): string {
   const s = value.toFixed(digits);
-  return lang === 'de' ? s.replace('.', ',') : s;
+  return lang === 'en' ? s : s.replace('.', ',');
 }
